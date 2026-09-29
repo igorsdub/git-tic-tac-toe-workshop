@@ -9,6 +9,8 @@ A two-hour, beginner-friendly Git and GitHub workshop where pairs play tic-tac-t
 - **[Learner Starter Template](https://github.com/igorsdub/tic-tac-toe-template)**: Public GitHub template repository used by learners to instantiate their pair game (`board.md` and onboarding instructions).
 - **[Template & Board Specification](template-spec/README.md)**: Canonical specification of the 3x3 board format, player metadata headers, game state parity rules, and test samples.
 - **[Board Validation Script](scripts/validate_board.py)**: Python CLI and module to parse, validate, and evaluate game board files.
+- **[Game Wall](docs/index.html)**: Live interactive workshop display showing 3x3 boards, player avatars, turn states, and 30-second auto-refresh across registered games (hosted on GitHub Pages).
+- **[Game Registration Form](.github/ISSUE_TEMPLATE/register-game.yml)**: GitHub Issue Form for pairs to submit their repository URL and player handles for display on the Game Wall.
 - **[Pre-Session Readiness Checklist](PRE_SESSION_CHECK.md)**: Operating-system-neutral preparation checklist verifying GitHub accounts, Git installation, author configuration, and push authentication.
 - **[Terminology & Context](CONTEXT.md)**: Standard terminology used across the workshop and pair games (Pair game, Board, Move, Game wall, Event).
 
@@ -22,6 +24,14 @@ A two-hour, beginner-friendly Git and GitHub workshop where pairs play tic-tac-t
 | **00:40 – 01:40** | **Paired Game Play** | Pairs play their 9-turn game; fast pairs begin branch rematch extension. |
 | **01:40 – 01:55** | **Game Wall & History Discussion** | Inspecting the Game Wall, analyzing `git log`, reviewing real-world logs. |
 | **01:55 – 02:00** | **Research & Work Transfer** | Connecting the game workflow to scientific collaboration and codebases. |
+
+## Game Wall & Pair Registration
+
+The workshop features a shared public [Game Wall](docs/index.html) designed for GitHub Pages that visualizes all active and completed pair games in real time.
+
+- **Register a Game**: Pairs register their repository URL and handles using the [Pair Game Registration Form](.github/ISSUE_TEMPLATE/register-game.yml).
+- **Live Board Tracking**: The Game Wall queries issues labeled `game-registration`, fetches raw `board.md` files from learners' repositories, validates canonical state and turn parity, and renders responsive cards with player avatars and visual 3x3 boards.
+- **Facilitator Projection**: Includes a projection display mode (`📽️`) for classroom projectors, dark/light theme toggle, and auto-refreshes every 30 seconds without full-page reloads.
 
 ## Learner Template & Board Format
 
