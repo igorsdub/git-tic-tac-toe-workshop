@@ -1,0 +1,43 @@
+name: Pair Game Registration
+description: Register your pair repository to display on the workshop Game Wall
+title: "[Game]: "
+labels: ["game-registration"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### 🎮 Register Your Pair Game
+        Submit this form to register your pair repository on the live workshop Game Wall.
+        Ensure your repository is **public** so the Game Wall can read your `board.md`.
+  - type: input
+    id: repo_url
+    attributes:
+      label: Repository URL
+      description: Full URL to your pair's public GitHub repository.
+      placeholder: https://github.com/username/repository
+    validations:
+      required: true
+  - type: input
+    id: player_x
+    attributes:
+      label: Player X Handle
+      description: GitHub username for Player X (with or without @).
+      placeholder: octocat
+    validations:
+      required: false
+  - type: input
+    id: player_o
+    attributes:
+      label: Player O Handle
+      description: GitHub username for Player O (with or without @).
+      placeholder: hubot
+    validations:
+      required: false
+  - type: input
+    id: event_id
+    attributes:
+      label: Event ID / Session Name
+      description: Event identifier or session name.
+      value: "Default Event"
+    validations:
+      required: false
