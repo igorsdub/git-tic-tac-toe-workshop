@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Git Tic-Tac-Toe Game Wall</title>
+  <meta name="description" content="Live paired-game activity wall for the Git Tic-Tac-Toe Workshop. Displays real-time game status and 3x3 board representations for all registered pairs.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%22><text y=%2226%22 font-size=%2224%22>🎮</text></svg>">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="wall-header">
+    <div class="header-container">
+      <div class="brand">
+        <span class="brand-icon">🎮</span>
+        <div class="brand-text">
+          <h1>Git Tic-Tac-Toe Game Wall</h1>
+          <p class="subtitle">Live pair collaboration boards for the Git &amp; GitHub Workshop</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <a href="https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml" 
+           target="_blank" rel="noopener noreferrer" class="btn btn-primary register-btn">
+          ➕ Register Pair Game
+        </a>
+        <a href="https://github.com/igorsdub/git-tic-tac-toe-workshop" 
+           target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+          📖 Workshop Repo
+        </a>
+        <button id="theme-toggle" class="btn btn-icon" title="Toggle dark/light theme" aria-label="Toggle theme">
+          🌙
+        </button>
+        <button id="projection-toggle" class="btn btn-icon" title="Toggle projector/large display mode" aria-label="Toggle projector mode">
+          📽️
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wall-main">
+    <!-- Notice / Alert Banner -->
+    <div id="notice-banner" class="notice-banner hidden" role="alert">
+      <span id="notice-icon" class="notice-icon">ℹ️</span>
+      <span id="notice-message" class="notice-message"></span>
+      <button id="notice-action-btn" class="btn btn-sm btn-outline notice-action-btn hidden"></button>
+    </div>
+
+    <!-- Summary Stats Bar -->
+    <section class="summary-section" aria-label="Game Summary Statistics">
+      <div class="stat-card" data-filter="all">
+        <span class="stat-icon">🎮</span>
+        <div class="stat-info">
+          <span class="stat-label">Total Games</span>
+          <span class="stat-value" id="count-total">0</span>
+        </div>
+      </div>
+      <div class="stat-card stat-card-active" data-filter="active">
+        <span class="stat-icon">⏳</span>
+        <div class="stat-info">
+          <span class="stat-label">Active</span>
+          <span class="stat-value" id="count-active">0</span>
+        </div>
+      </div>
+      <div class="stat-card stat-card-wins" data-filter="wins">
+        <span class="stat-icon">🏆</span>
+        <div class="stat-info">
+          <span class="stat-label">Wins</span>
+          <span class="stat-value" id="count-wins">0</span>
+        </div>
+      </div>
+      <div class="stat-card stat-card-draws" data-filter="draws">
+        <span class="stat-icon">🤝</span>
+        <div class="stat-info">
+          <span class="stat-label">Draws</span>
+          <span class="stat-value" id="count-draws">0</span>
+        </div>
+      </div>
+      <div class="stat-card stat-card-errors" data-filter="errors">
+        <span class="stat-icon">⚠️</span>
+        <div class="stat-info">
+          <span class="stat-label">Errors</span>
+          <span class="stat-value" id="count-errors">0</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Status & Filter Toolbar -->
+    <section class="toolbar-section">
+      <div class="status-bar">
+        <div class="status-indicator">
+          <span class="pulse-dot" id="live-indicator"></span>
+          <span id="last-updated">Updating...</span>
+        </div>
+        <div class="countdown-indicator">
+          Auto-refresh: <strong id="refresh-countdown">30s</strong>
+        </div>
+        <button id="refresh-btn" class="btn btn-sm btn-refresh" title="Refresh all game boards now">
+          🔄 Refresh
+        </button>
+      </div>
+
+      <div class="filters-bar">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="search-input" placeholder="Search players, repo, or event..." aria-label="Search games">
+          <button id="clear-search-btn" class="btn-clear hidden" title="Clear search">&times;</button>
+        </div>
+        <div class="select-group">
+          <label for="status-filter" class="sr-only">Status Filter</label>
+          <select id="status-filter" aria-label="Filter by state">
+            <option value="all">All States</option>
+            <option value="active">Active (Turn in progress)</option>
+            <option value="Ready for X">Ready for X</option>
+            <option value="Waiting for O">Waiting for O</option>
+            <option value="Waiting for X">Waiting for X</option>
+            <option value="X won">X won</option>
+            <option value="O won">O won</option>
+            <option value="Draw">Draw</option>
+            <option value="errors">Invalid / Errors</option>
+          </select>
+
+          <label for="event-filter" class="sr-only">Event Filter</label>
+          <select id="event-filter" aria-label="Filter by event">
+            <option value="all">All Events</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- Game Card Grid -->
+    <section class="grid-section" aria-label="Game Wall Boards">
+      <div id="loading-indicator" class="loading-state hidden">
+        <div class="spinner"></div>
+        <p>Loading registered games and parsing board states...</p>
+      </div>
+
+      <div id="empty-state" class="empty-state hidden">
+        <div class="empty-icon">🎲</div>
+        <h2>No games found</h2>
+        <p id="empty-message">No pair games match the selected filters.</p>
+        <a href="https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml"
+           target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+          Register the first game!
+        </a>
+      </div>
+
+      <div id="game-grid" class="game-grid"></div>
+    </section>
+  </main>
+
+  <footer class="wall-footer">
+    <div class="footer-container">
+      <p>
+        <strong>Git Tic-Tac-Toe Workshop</strong> &bull; Boards refresh automatically every 30 seconds.
+        Games are discovered via GitHub Issue registrations labeled <code>game-registration</code>.
+      </p>
+      <p class="footer-links">
+        <a href="https://github.com/igorsdub/git-tic-tac-toe-workshop/blob/main/LEARNER_GUIDE.md" target="_blank" rel="noopener noreferrer">Learner Guide</a> &bull;
+        <a href="https://github.com/igorsdub/git-tic-tac-toe-workshop/blob/main/FACILITATOR_GUIDE.md" target="_blank" rel="noopener noreferrer">Facilitator Guide</a> &bull;
+        <a href="https://github.com/igorsdub/git-tic-tac-toe-workshop/tree/main/template-spec" target="_blank" rel="noopener noreferrer">Board Specification</a> &bull;
+        <button id="toggle-data-mode-btn" class="footer-btn">Switch to Demo Data</button>
+      </p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
