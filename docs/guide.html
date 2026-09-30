@@ -48,6 +48,16 @@
         </div>
       </header>
 
+      <!-- Quick Jump Navigation -->
+      <nav class="jump-nav" aria-label="Quick jump to section">
+        <span class="jump-nav-label">Jump to:</span>
+        <a href="#roles-setup" class="jump-pill">Roles &amp; Setup</a>
+        <a href="#turn-cycle" class="jump-pill">Turn Cycle</a>
+        <a href="#cheat-sheet" class="jump-pill">Git Cheat Sheet</a>
+        <a href="#troubleshooting" class="jump-pill">Troubleshooting</a>
+        <a href="#rematch-extension" class="jump-pill">Branch Rematch</a>
+      </nav>
+
       <!-- Section 1: Pair Roles & Setup -->
       <section class="guide-section" id="roles-setup">
         <h2>1. Pair Roles &amp; Initial Setup</h2>
@@ -81,7 +91,7 @@
                 <div class="code-block-wrapper">
                   <pre><code>git clone &lt;your-repo-url&gt;
 cd &lt;repo-folder&gt;</code></pre>
-                  <button class="copy-btn" title="Copy to clipboard">📋 Copy</button>
+                  <button class="copy-btn" title="Copy to clipboard" aria-label="Copy command to clipboard">📋 Copy</button>
                 </div>
               </li>
               <li>You are ready to make Move 1!</li>
@@ -101,7 +111,7 @@ cd &lt;repo-folder&gt;</code></pre>
                 <div class="code-block-wrapper">
                   <pre><code>git clone &lt;repo-url&gt;
 cd &lt;repo-folder&gt;</code></pre>
-                  <button class="copy-btn" title="Copy to clipboard">📋 Copy</button>
+                  <button class="copy-btn" title="Copy to clipboard" aria-label="Copy command to clipboard">📋 Copy</button>
                 </div>
               </li>
               <li>
@@ -130,7 +140,7 @@ cd &lt;repo-folder&gt;</code></pre>
             <p>Fetch and integrate your partner's latest move before modifying any files:</p>
             <div class="code-block-wrapper">
               <pre><code>git pull origin main</code></pre>
-              <button class="copy-btn" title="Copy to clipboard">📋 Copy</button>
+              <button class="copy-btn" title="Copy to clipboard" aria-label="Copy command to clipboard">📋 Copy</button>
             </div>
           </div>
 
@@ -160,7 +170,7 @@ cd &lt;repo-folder&gt;</code></pre>
               <pre><code>git status
 git diff
 git add board.md</code></pre>
-              <button class="copy-btn" title="Copy to clipboard">📋 Copy</button>
+              <button class="copy-btn" title="Copy to clipboard" aria-label="Copy command to clipboard">📋 Copy</button>
             </div>
           </div>
 
@@ -176,7 +186,7 @@ git add board.md</code></pre>
             <p>Save your move permanently into the Git history:</p>
             <div class="code-block-wrapper">
               <pre><code>git commit -m "Move 3: X in center square 5"</code></pre>
-              <button class="copy-btn" title="Copy to clipboard">📋 Copy</button>
+              <button class="copy-btn" title="Copy to clipboard" aria-label="Copy command to clipboard">📋 Copy</button>
             </div>
           </div>
 
@@ -192,7 +202,7 @@ git add board.md</code></pre>
             <p>Publish your move to the shared repository and let your partner know:</p>
             <div class="code-block-wrapper">
               <pre><code>git push origin main</code></pre>
-              <button class="copy-btn" title="Copy to clipboard">📋 Copy</button>
+              <button class="copy-btn" title="Copy to clipboard" aria-label="Copy command to clipboard">📋 Copy</button>
             </div>
             <p>Tell your partner: <strong>"Your turn!"</strong> Watch the <a href="index.html">Game Wall</a> update within seconds!</p>
           </div>
@@ -272,7 +282,7 @@ git add board.md</code></pre>
                   <pre><code>git add board.md
 git commit -m "Resolve merge conflict in board.md"
 git push origin main</code></pre>
-                  <button class="copy-btn" title="Copy to clipboard">📋 Copy</button>
+                  <button class="copy-btn" title="Copy to clipboard" aria-label="Copy command to clipboard">📋 Copy</button>
                 </div>
               </li>
             </ol>
@@ -304,7 +314,7 @@ git push origin main</code></pre>
             <div class="code-block-wrapper">
               <pre><code>git checkout -b rematch
 git push -u origin rematch</code></pre>
-              <button class="copy-btn" title="Copy to clipboard">📋 Copy</button>
+              <button class="copy-btn" title="Copy to clipboard" aria-label="Copy command to clipboard">📋 Copy</button>
             </div>
           </li>
           <li>
@@ -312,7 +322,7 @@ git push -u origin rematch</code></pre>
             <div class="code-block-wrapper">
               <pre><code>git fetch origin
 git checkout rematch</code></pre>
-              <button class="copy-btn" title="Copy to clipboard">📋 Copy</button>
+              <button class="copy-btn" title="Copy to clipboard" aria-label="Copy command to clipboard">📋 Copy</button>
             </div>
           </li>
           <li>

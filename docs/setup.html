@@ -48,6 +48,15 @@
         </div>
       </header>
 
+      <!-- Quick Jump Navigation -->
+      <nav class="jump-nav" aria-label="Quick jump to section">
+        <span class="jump-nav-label">Jump to:</span>
+        <a href="#step-github" class="jump-pill">Account &amp; Privacy</a>
+        <a href="#step-install" class="jump-pill">Install Git</a>
+        <a href="#step-auth" class="jump-pill">Authenticate</a>
+        <a href="#step-verify" class="jump-pill">Verification</a>
+      </nav>
+
       <!-- Step 1: GitHub Account & Privacy -->
       <section class="guide-section" id="step-github">
         <h2>1. GitHub Account, 2FA &amp; Privacy</h2>
@@ -80,7 +89,7 @@
 
         <div class="code-block-wrapper">
           <pre><code>git --version</code></pre>
-          <button class="copy-btn" title="Copy to clipboard">📋 Copy</button>
+          <button class="copy-btn" title="Copy to clipboard" aria-label="Copy command to clipboard">📋 Copy</button>
         </div>
 
         <p>If Git is already installed (any version 2.20+), you can proceed directly to Step 3. If not, follow your operating system below:</p>
@@ -91,7 +100,7 @@
             <p>Run the following command in Terminal (<code>Cmd + Space</code>, type <code>Terminal</code>):</p>
             <div class="code-block-wrapper">
               <pre><code>xcode-select --install</code></pre>
-              <button class="copy-btn" title="Copy to clipboard">📋 Copy</button>
+              <button class="copy-btn" title="Copy to clipboard" aria-label="Copy command to clipboard">📋 Copy</button>
             </div>
             <p>Click <strong>Install</strong> when the dialog appears. Alternatively, if you use Homebrew: <code>brew install git</code>.</p>
           </div>
@@ -108,7 +117,7 @@
             <p>Run the standard package manager in your terminal (<code>Ctrl + Alt + T</code>):</p>
             <div class="code-block-wrapper">
               <pre><code>sudo apt update && sudo apt install -y git curl</code></pre>
-              <button class="copy-btn" title="Copy to clipboard">📋 Copy</button>
+              <button class="copy-btn" title="Copy to clipboard" aria-label="Copy command to clipboard">📋 Copy</button>
             </div>
           </div>
         </div>
@@ -134,7 +143,7 @@
             <p>2. Run the authentication wizard:</p>
             <div class="code-block-wrapper">
               <pre><code>gh auth login</code></pre>
-              <button class="copy-btn" title="Copy to clipboard">📋 Copy</button>
+              <button class="copy-btn" title="Copy to clipboard" aria-label="Copy command to clipboard">📋 Copy</button>
             </div>
 
             <p>3. Select the recommended answers in the terminal prompts:</p>
@@ -170,7 +179,7 @@
               <pre><code>git config --global user.name "Firstname Lastname"
 git config --global user.email "username@users.noreply.github.com"
 git config --global init.defaultBranch main</code></pre>
-              <button class="copy-btn" title="Copy to clipboard">📋 Copy</button>
+              <button class="copy-btn" title="Copy to clipboard" aria-label="Copy command to clipboard">📋 Copy</button>
             </div>
 
             <p>On your first <code>git push</code> or clone over HTTPS, Git Credential Manager will open a browser window asking you to sign in to GitHub.</p>
@@ -185,7 +194,7 @@ git config --global init.defaultBranch main</code></pre>
 
         <div class="code-block-wrapper">
           <pre><code>echo "Git: $(git --version)" && echo "Author: $(git config user.name) &lt;$(git config user.email)&gt;"</code></pre>
-          <button class="copy-btn" title="Copy to clipboard">📋 Copy</button>
+          <button class="copy-btn" title="Copy to clipboard" aria-label="Copy command to clipboard">📋 Copy</button>
         </div>
 
         <p>If this prints your Git version along with your configured name and email, your setup is complete!</p>
