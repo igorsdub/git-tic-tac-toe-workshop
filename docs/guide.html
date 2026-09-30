@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How to Play - Git Tic-Tac-Toe Workshop</title>
+  <meta name="description" content="In-session learner guide for Git Tic-Tac-Toe: pair roles, the 5-step turn cycle, Git cheat sheet, and game recovery.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><text y=%2226%22 font-size=%2224%22>📖</text></svg>">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="wall-header">
+    <div class="header-container">
+      <div class="brand">
+        <a href="index.html" class="brand-link">
+          <span class="brand-icon">🎮</span>
+          <div class="brand-text">
+            <h1>Git Tic-Tac-Toe</h1>
+            <p class="subtitle">Git &amp; GitHub Workshop Hub</p>
+          </div>
+        </a>
+      </div>
+      <nav class="nav-links" aria-label="Workshop Navigation">
+        <a href="index.html" class="nav-link">🎮 Game Wall</a>
+        <a href="setup.html" class="nav-link">🛠️ Setup</a>
+        <a href="guide.html" class="nav-link active">📖 How to Play</a>
+      </nav>
+      <div class="header-actions">
+        <a href="https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml" 
+           target="_blank" rel="noopener noreferrer" class="btn btn-primary register-btn">
+          ➕ Register Pair Game
+        </a>
+        <button id="theme-toggle" class="btn btn-icon" title="Toggle dark/light theme" aria-label="Toggle theme">
+          🌙
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="guide-main">
+    <div class="guide-container">
+      <header class="guide-hero">
+        <h1>How to Play Git Tic-Tac-Toe</h1>
+        <p class="lead">A hands-on paired collaboration game. You and your partner will play tic-tac-toe by committing and pushing moves to a shared GitHub repository.</p>
+        <div class="callout-box tip">
+          <strong>Need to configure Git or authenticate?</strong>
+          If your terminal isn't set up yet, visit the <a href="setup.html" style="text-decoration:underline; font-weight:600;">Pre-Session Setup Guide</a> first!
+        </div>
+      </header>
+
+      <!-- Section 1: Pair Roles & Setup -->
+      <section class="guide-section" id="roles-setup">
+        <h2>1. Pair Roles &amp; Initial Setup</h2>
+        <p>Pick who will be <strong>Player X</strong> (the opening mover) and who will be <strong>Player O</strong> (the collaborator):</p>
+
+        <div class="role-grid">
+          <!-- Player X -->
+          <div class="role-card">
+            <span class="role-badge">Player X (Host / First Mover)</span>
+            <p><strong>Responsibilities:</strong> Owns the repository, makes Move 1 (`X`).</p>
+            <ol>
+              <li>
+                Create the repository from the starter template:
+                <div style="margin-top:0.35rem;">
+                  <a href="https://github.com/igorsdub/tic-tac-toe-template" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="font-size:0.825rem;">
+                    Open Starter Template &rarr;
+                  </a>
+                </div>
+                Click <strong>Use this template &gt; Create a new repository</strong>.
+              </li>
+              <li>
+                In your new repository, go to <strong>Settings &gt; Collaborators &gt; Add people</strong>, and invite <strong>Player O</strong> by their GitHub handle.
+              </li>
+              <li>
+                <a href="https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml" target="_blank" rel="noopener noreferrer">
+                  <strong>Register your game</strong>
+                </a> so your board shows up on the live <a href="index.html">Game Wall</a>!
+              </li>
+              <li>
+                Clone the repository locally:
+                <div class="code-block-wrapper">
+                  <pre><code>git clone &lt;your-repo-url&gt;
+cd &lt;repo-folder&gt;</code></pre>
+                  <button class="copy-btn" title="Copy to clipboard">📋 Copy</button>
+                </div>
+              </li>
+              <li>You are ready to make Move 1!</li>
+            </ol>
+          </div>
+
+          <!-- Player O -->
+          <div class="role-card">
+            <span class="role-badge">Player O (Collaborator / Second Mover)</span>
+            <p><strong>Responsibilities:</strong> Collaborates on repository, makes Move 2 (`O`).</p>
+            <ol>
+              <li>
+                Accept the repository invitation: Check your email or GitHub notifications (<a href="https://github.com/notifications" target="_blank" rel="noopener noreferrer">github.com/notifications</a>).
+              </li>
+              <li>
+                Clone the shared repository to your machine:
+                <div class="code-block-wrapper">
+                  <pre><code>git clone &lt;repo-url&gt;
+cd &lt;repo-folder&gt;</code></pre>
+                  <button class="copy-btn" title="Copy to clipboard">📋 Copy</button>
+                </div>
+              </li>
+              <li>
+                <strong>Wait for Player X</strong>: Let Player X complete Move 1 and push it. Once they tell you <em>"Your turn!"</em>, begin your Turn Cycle!
+              </li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: The Turn Cycle -->
+      <section class="guide-section" id="turn-cycle">
+        <h2>2. The Turn Cycle</h2>
+        <p>Every single turn follows these five steps in exact order. <strong>Never edit the board before pulling!</strong></p>
+
+        <div class="turn-flow">
+          <!-- Step 1 -->
+          <div class="step-card">
+            <div class="step-header">
+              <div class="step-title-wrap">
+                <span class="step-number">1</span>
+                <span class="step-title">PULL the latest move</span>
+              </div>
+              <span class="step-rule">Always pull first!</span>
+            </div>
+            <p>Fetch and integrate your partner's latest move before modifying any files:</p>
+            <div class="code-block-wrapper">
+              <pre><code>git pull origin main</code></pre>
+              <button class="copy-btn" title="Copy to clipboard">📋 Copy</button>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="step-card">
+            <div class="step-header">
+              <div class="step-title-wrap">
+                <span class="step-number">2</span>
+                <span class="step-title">EDIT board.md</span>
+              </div>
+              <span class="step-rule">Change exactly one square</span>
+            </div>
+            <p>Open <code>board.md</code> in your text editor. Replace <strong>one</strong> empty square (<code>[ ]</code>) with your mark (<code>[X]</code> or <code>[O]</code>), update the <code>State:</code> line (e.g. <code>State: Waiting for O</code>), and save the file.</p>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="step-card">
+            <div class="step-header">
+              <div class="step-title-wrap">
+                <span class="step-number">3</span>
+                <span class="step-title">STAGE your change</span>
+              </div>
+              <span class="step-rule">Check your diff before staging</span>
+            </div>
+            <p>Verify that you only changed one square and prepare the file for commit:</p>
+            <div class="code-block-wrapper">
+              <pre><code>git status
+git diff
+git add board.md</code></pre>
+              <button class="copy-btn" title="Copy to clipboard">📋 Copy</button>
+            </div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="step-card">
+            <div class="step-header">
+              <div class="step-title-wrap">
+                <span class="step-number">4</span>
+                <span class="step-title">COMMIT with a clear message</span>
+              </div>
+              <span class="step-rule">State move number and position</span>
+            </div>
+            <p>Save your move permanently into the Git history:</p>
+            <div class="code-block-wrapper">
+              <pre><code>git commit -m "Move 3: X in center square 5"</code></pre>
+              <button class="copy-btn" title="Copy to clipboard">📋 Copy</button>
+            </div>
+          </div>
+
+          <!-- Step 5 -->
+          <div class="step-card">
+            <div class="step-header">
+              <div class="step-title-wrap">
+                <span class="step-number">5</span>
+                <span class="step-title">PUSH to GitHub</span>
+              </div>
+              <span class="step-rule">Pass the turn</span>
+            </div>
+            <p>Publish your move to the shared repository and let your partner know:</p>
+            <div class="code-block-wrapper">
+              <pre><code>git push origin main</code></pre>
+              <button class="copy-btn" title="Copy to clipboard">📋 Copy</button>
+            </div>
+            <p>Tell your partner: <strong>"Your turn!"</strong> Watch the <a href="index.html">Game Wall</a> update within seconds!</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: Git Quick Reference -->
+      <section class="guide-section" id="cheat-sheet">
+        <h2>3. Git Quick Reference</h2>
+        <p>Keep these essential inspection commands handy throughout the game:</p>
+
+        <div class="guide-table-wrap">
+          <table class="guide-table">
+            <thead>
+              <tr>
+                <th>Command</th>
+                <th>What It Does</th>
+                <th>When to Use</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>git status</code></td>
+                <td>Shows modified, staged, and untracked files</td>
+                <td>Whenever you are unsure what state your local directory is in</td>
+              </tr>
+              <tr>
+                <td><code>git diff</code></td>
+                <td>Displays line-by-line file modifications</td>
+                <td>Before staging to confirm you only changed one square</td>
+              </tr>
+              <tr>
+                <td><code>git log --oneline</code></td>
+                <td>Lists commit history concisely in one line per move</td>
+                <td>After pulling to see who made which moves</td>
+              </tr>
+              <tr>
+                <td><code>git log --graph --oneline</code></td>
+                <td>Visualizes branch and commit history visually</td>
+                <td>At the end of the match to review the full game trajectory</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Section 4: Troubleshooting -->
+      <section class="guide-section" id="troubleshooting">
+        <h2>4. Troubleshooting &amp; Recovery</h2>
+        <p>If something unexpected happens, expand the solutions below:</p>
+
+        <details class="accordion">
+          <summary>Push Rejected: <code>[rejected] main -&gt; main (fetch first)</code></summary>
+          <div class="accordion-content">
+            <p><strong>Why this happened:</strong> Your partner pushed a move to GitHub while you were editing, or you forgot to run <code>git pull</code> before making your change.</p>
+            <p><strong>Solution:</strong></p>
+            <ol>
+              <li>Run <code>git pull origin main</code> to fetch your partner's commit.</li>
+              <li>Inspect <code>board.md</code> to confirm the board looks right.</li>
+              <li>Run <code>git push origin main</code>.</li>
+            </ol>
+          </div>
+        </details>
+
+        <details class="accordion">
+          <summary>Merge Conflict in <code>board.md</code></summary>
+          <div class="accordion-content">
+            <p><strong>Why this happened:</strong> Both of you edited the same lines in <code>board.md</code> at the same time.</p>
+            <p><strong>Solution:</strong></p>
+            <ol>
+              <li>Open <code>board.md</code> in your editor.</li>
+              <li>Look for the conflict markers: <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code>, <code>=======</code>, and <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>.</li>
+              <li>Delete the markers and resolve the board so that both moves are accurately represented and <code>State:</code> is valid.</li>
+              <li>Save the file.</li>
+              <li>Stage and commit the resolution:
+                <div class="code-block-wrapper">
+                  <pre><code>git add board.md
+git commit -m "Resolve merge conflict in board.md"
+git push origin main</code></pre>
+                  <button class="copy-btn" title="Copy to clipboard">📋 Copy</button>
+                </div>
+              </li>
+            </ol>
+          </div>
+        </details>
+
+        <details class="accordion">
+          <summary>Typo or Incorrect Square Marked</summary>
+          <div class="accordion-content">
+            <p><strong>Do not panic and never force push (<code>git push -f</code>)!</strong></p>
+            <p>In Git collaboration, the cleanest fix is simply another commit:</p>
+            <ol>
+              <li>Edit <code>board.md</code> to fix the square or state.</li>
+              <li>Stage and commit: <code>git commit -am "Fix: correct square 4"</code></li>
+              <li>Push to GitHub: <code>git push origin main</code></li>
+            </ol>
+          </div>
+        </details>
+      </section>
+
+      <!-- Section 5: Branch Rematch Extension -->
+      <section class="guide-section" id="rematch-extension">
+        <h2>5. Extension: Branch Rematch (Finished Early?)</h2>
+        <p>If you and your partner finish your 9-turn match before time is called, play a <strong>rematch on a branch</strong>! This keeps your first match safe on <code>main</code> while you play Game 2 in branch isolation:</p>
+
+        <ol>
+          <li>
+            <strong>Player X</strong> creates and pushes a new branch:
+            <div class="code-block-wrapper">
+              <pre><code>git checkout -b rematch
+git push -u origin rematch</code></pre>
+              <button class="copy-btn" title="Copy to clipboard">📋 Copy</button>
+            </div>
+          </li>
+          <li>
+            <strong>Player O</strong> fetches and switches to the rematch branch:
+            <div class="code-block-wrapper">
+              <pre><code>git fetch origin
+git checkout rematch</code></pre>
+              <button class="copy-btn" title="Copy to clipboard">📋 Copy</button>
+            </div>
+          </li>
+          <li>
+            Reset <code>board.md</code> back to empty squares (<code>[ ]</code>), update <code>State: Ready for X</code> (or swap roles if Player O wants to go first), commit as <code>"Start Rematch Game 2"</code>, push, and play!
+          </li>
+        </ol>
+      </section>
+    </div>
+  </main>
+
+  <footer class="wall-footer">
+    <div class="footer-container">
+      <span>Workshop: <strong>SCDA Training Week</strong> &bull; Git Tic-Tac-Toe Learner Guide</span>
+      <a href="index.html" class="footer-btn">&larr; Return to Game Wall</a>
+    </div>
+  </footer>
+
+  <script src="guide-utils.js"></script>
+</body>
+</html>
