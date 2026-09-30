@@ -840,7 +840,49 @@ body {
   line-height: 1.6;
 }
 
+/* Quick-Jump Section Navigation */
+.jump-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0;
+  margin: -0.25rem 0 0.25rem 0;
+}
+
+.jump-nav-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  margin-right: 0.25rem;
+}
+
+.jump-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.8rem;
+  font-size: 0.825rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-medium);
+  border-radius: 9999px;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.jump-pill:hover {
+  background-color: var(--bg-secondary);
+  color: var(--primary);
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+
 .guide-section {
+  scroll-margin-top: 5.5rem;
   background-color: var(--bg-card);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-md);
