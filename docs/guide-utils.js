@@ -31,8 +31,43 @@
     setTheme(current === 'dark' ? 'light' : 'dark');
   }
 
+  async function copyToClipboard(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return;
+      } catch {
+        // Fall back to document.execCommand if clipboard API is rejected or restricted
+      }
+    }
+
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.top = '0';
+    textArea.style.left = '0';
+    textArea.style.opacity = '0';
+    textArea.style.pointerEvents = 'none';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+
+    try {
+      const successful = document.execCommand('copy');
+      if (!successful) {
+        throw new Error('document.execCommand copy returned false');
+      }
+    } finally {
+      document.body.removeChild(textArea);
+    }
+  }
+
   function initCopyButtons() {
     document.querySelectorAll('.copy-btn').forEach((btn) => {
+      if (!btn.getAttribute('aria-label')) {
+        btn.setAttribute('aria-label', 'Copy command to clipboard');
+      }
+
       btn.addEventListener('click', async () => {
         let textToCopy = '';
         const targetId = btn.getAttribute('data-copy-target');
@@ -47,13 +82,15 @@
         if (!textToCopy) return;
 
         try {
-          await navigator.clipboard.writeText(textToCopy);
+          await copyToClipboard(textToCopy);
           const originalText = btn.innerHTML;
           btn.innerHTML = '✓ Copied';
           btn.classList.add('copied');
+          btn.setAttribute('aria-label', 'Copied to clipboard');
           setTimeout(() => {
             btn.innerHTML = originalText;
             btn.classList.remove('copied');
+            btn.setAttribute('aria-label', 'Copy command to clipboard');
           }, 2000);
         } catch (err) {
           console.error('Failed to copy: ', err);
