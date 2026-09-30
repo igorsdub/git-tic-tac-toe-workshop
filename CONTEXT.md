@@ -22,5 +22,13 @@ One training session (e.g. SCDA Training Week) and the set of pair games registe
 _Avoid_: Event, Session, Cohort
 
 **Learner guide**:
-The web page and reference document that guides workshop participants through environment setup, the turn cycle, and Git commands.
-_Avoid_: Handout, Cheat sheet, Tutorial, Instructions
+The in-session web page (`docs/guide.html`) explaining pair roles, the turn cycle, and Git commands for playing the game.
+_Avoid_: Handout, Cheat sheet, Playbook, Instructions
+
+**Setup guide**:
+The pre-session web page (`docs/setup.html`) covering Git installation, GitHub authentication, and identity configuration.
+_Avoid_: Prerequisites, Installation guide
+
+**Turn cycle**:
+The five-step sequence of Git operations (pull, edit, stage, commit, push) each player follows to make a move.
+_Avoid_: Sacred turn cycle, Game loop, Play cycle
