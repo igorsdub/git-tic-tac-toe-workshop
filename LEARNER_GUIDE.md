@@ -1,5 +1,11 @@
 # Git Tic-Tac-Toe: Learner Handout
 
+> [!TIP]
+> **Interactive Web Version Available!**
+> Prefer an interactive guide with 1-click terminal copy buttons, quick section jumps, and dark mode?
+> Open **[`docs/guide.html`](docs/guide.html)** in your browser!
+> Need laptop setup first? Check out **[`docs/setup.html`](docs/setup.html)**.
+
 Welcome to the **Git Tic-Tac-Toe Workshop**! In this session, you and your partner will play a game of tic-tac-toe by committing and pushing moves to a single shared GitHub repository.
 
 ---

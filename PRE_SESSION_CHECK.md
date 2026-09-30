@@ -1,5 +1,10 @@
 # Pre-Session Readiness Checklist: Git Tic-Tac-Toe Workshop
 
+> [!TIP]
+> **Interactive Web Version Available!**
+> Open **[`docs/setup.html`](docs/setup.html)** in your browser for 1-click terminal command copy buttons, quick section jump navigation, and dark mode support.
+> Once setup is complete, read the in-session gameplay rules in **[`docs/guide.html`](docs/guide.html)**.
+
 Complete this 10-minute checklist **before** arriving at the workshop. Ensuring your laptop has Git installed and configured ensures you and your partner can jump straight into the game without technical delays.
 
 > [!NOTE]
