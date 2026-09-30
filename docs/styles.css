@@ -756,3 +756,395 @@ body {
     align-items: flex-start;
   }
 }
+
+/* ==========================================================================
+   Navigation Bar & Links
+   ========================================================================== */
+.brand-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.85rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.nav-link:hover {
+  color: var(--text-primary);
+  background-color: var(--bg-secondary);
+  border-color: var(--border-light);
+}
+
+.nav-link.active {
+  color: var(--text-primary);
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-medium);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   Learner & Setup Guides Page Layout
+   ========================================================================== */
+.guide-main {
+  flex: 1;
+  padding: 2rem 1.5rem 4rem 1.5rem;
+}
+
+.guide-container {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.guide-hero {
+  border-bottom: 1.5px solid var(--border-light);
+  padding-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.guide-hero h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.guide-hero .lead {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.guide-section {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.guide-section h2 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 0.75rem;
+}
+
+.guide-section h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-top: 0.5rem;
+}
+
+.guide-section p,
+.guide-section li {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.guide-section ul,
+.guide-section ol {
+  padding-left: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Callout Box */
+.callout-box {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  border-left: 4px solid var(--primary);
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.925rem;
+}
+
+.callout-box.tip {
+  border-left-color: var(--primary);
+}
+
+.callout-box.warning {
+  border-left-color: var(--border-dark);
+}
+
+.callout-box strong {
+  color: var(--text-primary);
+}
+
+/* Roles Layout */
+.role-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.25rem;
+}
+
+.role-card {
+  background-color: var(--bg-surface);
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-radius: var(--radius-sm);
+  background-color: var(--primary);
+  color: var(--text-inverse);
+  align-self: flex-start;
+}
+
+/* Turn Cycle Steps Flow */
+.turn-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.step-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  border-left: 4px solid var(--primary);
+  border-radius: var(--radius-sm);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.step-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.step-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  color: var(--text-inverse);
+  font-weight: 700;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.step-title {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text-primary);
+}
+
+.step-rule {
+  font-size: 0.825rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Code Block with 1-Click Copy */
+.code-block-wrapper {
+  position: relative;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  margin: 0.35rem 0;
+}
+
+.code-block-wrapper pre {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  padding-right: 5.5rem;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  line-height: 1.45;
+}
+
+.copy-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  user-select: none;
+}
+
+.copy-btn:hover {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.copy-btn.copied {
+  background-color: var(--primary);
+  color: var(--text-inverse);
+  border-color: var(--primary);
+}
+
+/* Accordion Details */
+details.accordion {
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-surface);
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+details.accordion summary {
+  padding: 0.9rem 1.25rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  background-color: var(--bg-card);
+  border-bottom: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  list-style: none;
+  user-select: none;
+  color: var(--text-primary);
+}
+
+details.accordion summary::-webkit-details-marker {
+  display: none;
+}
+
+details.accordion summary::after {
+  content: '▼';
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  transition: transform 0.2s ease;
+}
+
+details.accordion[open] summary::after {
+  transform: rotate(180deg);
+}
+
+details.accordion[open] summary {
+  border-bottom: 1px solid var(--border-light);
+  background-color: var(--bg-secondary);
+}
+
+.accordion-content {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  font-size: 0.925rem;
+}
+
+/* Tables in Guides */
+.guide-table-wrap {
+  overflow-x: auto;
+  margin: 0.5rem 0;
+}
+
+.guide-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.guide-table th,
+.guide-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.guide-table th {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.guide-table td {
+  color: var(--text-secondary);
+}
+
+.guide-table td code {
+  font-family: var(--font-mono);
+  background-color: var(--bg-secondary);
+  padding: 0.15rem 0.35rem;
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    width: 100%;
+    order: 3;
+    justify-content: flex-start;
+  }
+  .role-grid {
+    grid-template-columns: 1fr;
+  }
+}
