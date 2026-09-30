@@ -305,9 +305,9 @@ State: Waiting for O
       if (val && val !== '_No response_') playerO = val;
     }
 
-    // Extract Event ID
+    // Extract Event ID / Workshop Name
     let eventId = 'Default Event';
-    const eventMatch = text.match(/###\s*(?:Event\s*ID|Session\s*Name|Event\s*ID\s*\/\s*Session\s*Name)\s*\n+([^\n#]+)/i);
+    const eventMatch = text.match(/###\s*(?:Workshop\s*Name|Event\s*ID|Session\s*Name|Event\s*ID\s*\/\s*Session\s*Name)\s*\n+([^\n#]+)/i);
     if (eventMatch) {
       const val = eventMatch[1].trim();
       if (val && val !== '_No response_') eventId = val;

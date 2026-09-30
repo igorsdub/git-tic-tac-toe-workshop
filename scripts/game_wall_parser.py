@@ -64,6 +64,7 @@ def parse_registration_issue(body: str, title: str = "") -> Dict[str, Any]:
         "player_x": None,
         "player_o": None,
         "event_id": "Default Event",
+        "workshop_name": "Default Event",
         "is_valid": False,
         "error": None,
     }
@@ -120,9 +121,9 @@ def parse_registration_issue(body: str, title: str = "") -> Dict[str, Any]:
         if o_val and o_val != "_No response_":
             result["player_o"] = o_val
 
-    # 4. Extract Event ID
+    # 4. Extract Event ID / Workshop Name
     event_match = re.search(
-        r"###\s*(?:Event\s*ID|Session\s*Name|Event\s*ID\s*/\s*Session\s*Name)\s*\n+([^\n#]+)",
+        r"###\s*(?:Workshop\s*Name|Event\s*ID|Session\s*Name|Event\s*ID\s*/\s*Session\s*Name)\s*\n+([^\n#]+)",
         body,
         re.IGNORECASE,
     )
@@ -130,6 +131,7 @@ def parse_registration_issue(body: str, title: str = "") -> Dict[str, Any]:
         event_val = event_match.group(1).strip()
         if event_val and event_val != "_No response_":
             result["event_id"] = event_val
+            result["workshop_name"] = event_val
 
     result["is_valid"] = True
     return result
