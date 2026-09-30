@@ -4,7 +4,9 @@ Automated tests validating the static HTML web guides:
 - docs/setup.html (Pre-Session Setup Guide)
 - docs/guide.html (In-Session Learner Guide)
 - docs/guide-utils.js (Theme sync and copy utility)
+- docs/styles.css (Jump navigation and guide styles)
 - Shared navbar links in docs/index.html
+- Markdown banners in LEARNER_GUIDE.md and PRE_SESSION_CHECK.md
 """
 
 from __future__ import annotations
@@ -13,7 +15,8 @@ import unittest
 from pathlib import Path
 
 
-DOCS_DIR = Path(__file__).resolve().parent.parent / "docs"
+REPO_ROOT = Path(__file__).resolve().parent.parent
+DOCS_DIR = REPO_ROOT / "docs"
 
 
 class TestWebGuides(unittest.TestCase):
@@ -24,11 +27,17 @@ class TestWebGuides(unittest.TestCase):
         self.setup_html = (DOCS_DIR / "setup.html").read_text(encoding="utf-8")
         self.guide_html = (DOCS_DIR / "guide.html").read_text(encoding="utf-8")
         self.guide_utils_js = (DOCS_DIR / "guide-utils.js").read_text(encoding="utf-8")
+        self.styles_css = (DOCS_DIR / "styles.css").read_text(encoding="utf-8")
+        self.learner_guide_md = (REPO_ROOT / "LEARNER_GUIDE.md").read_text(encoding="utf-8")
+        self.pre_session_check_md = (REPO_ROOT / "PRE_SESSION_CHECK.md").read_text(encoding="utf-8")
 
     def test_files_exist(self):
         self.assertTrue((DOCS_DIR / "setup.html").is_file())
         self.assertTrue((DOCS_DIR / "guide.html").is_file())
         self.assertTrue((DOCS_DIR / "guide-utils.js").is_file())
+        self.assertTrue((DOCS_DIR / "styles.css").is_file())
+        self.assertTrue((REPO_ROOT / "LEARNER_GUIDE.md").is_file())
+        self.assertTrue((REPO_ROOT / "PRE_SESSION_CHECK.md").is_file())
 
     def test_shared_navigation_links(self):
         """All three pages must contain the shared navigation bar."""
@@ -44,6 +53,24 @@ class TestWebGuides(unittest.TestCase):
                 self.assertIn('href="setup.html"', html)
                 self.assertIn('href="guide.html"', html)
                 self.assertIn('id="theme-toggle"', html)
+
+    def test_quick_jump_navigation(self):
+        """Guides must feature quick-jump navigation bars linking to page sections."""
+        # Guide HTML quick jump
+        self.assertIn('class="jump-nav"', self.guide_html)
+        self.assertIn('class="jump-pill"', self.guide_html)
+        for anchor in ['#roles-setup', '#turn-cycle', '#cheat-sheet', '#troubleshooting', '#rematch-extension']:
+            self.assertIn(f'href="{anchor}"', self.guide_html)
+
+        # Setup HTML quick jump
+        self.assertIn('class="jump-nav"', self.setup_html)
+        self.assertIn('class="jump-pill"', self.setup_html)
+        for anchor in ['#step-github', '#step-install', '#step-auth', '#step-verify']:
+            self.assertIn(f'href="{anchor}"', self.setup_html)
+
+        # Stylesheet rules for jump navigation
+        self.assertIn('.jump-nav', self.styles_css)
+        self.assertIn('.jump-pill', self.styles_css)
 
     def test_setup_guide_content(self):
         """Setup guide must contain GitHub account, OS Git install, gh auth login, and email privacy."""
@@ -67,15 +94,29 @@ class TestWebGuides(unittest.TestCase):
         self.assertIn("rematch", self.guide_html)
         self.assertIn("guide-utils.js", self.guide_html)
 
-    def test_copy_buttons_present(self):
-        """Both guides must feature copy buttons for code snippets."""
+    def test_copy_buttons_and_accessibility(self):
+        """Both guides must feature copy buttons with accessibility aria-labels."""
         self.assertGreater(self.setup_html.count('class="copy-btn"'), 3)
         self.assertGreater(self.guide_html.count('class="copy-btn"'), 4)
+        self.assertIn('aria-label="Copy command to clipboard"', self.setup_html)
+        self.assertIn('aria-label="Copy command to clipboard"', self.guide_html)
 
     def test_guide_utils_logic(self):
-        """guide-utils.js must implement theme sync and clipboard copy."""
+        """guide-utils.js must implement theme sync, clipboard copy, and fallback."""
         self.assertIn("ttt_gamewall_theme", self.guide_utils_js)
         self.assertIn("navigator.clipboard.writeText", self.guide_utils_js)
+        self.assertIn("execCommand", self.guide_utils_js)
+        self.assertIn("Copy command to clipboard", self.guide_utils_js)
+
+    def test_markdown_interactive_banners(self):
+        """Markdown guides must include top banners linking to interactive web guides."""
+        self.assertIn("docs/guide.html", self.learner_guide_md)
+        self.assertIn("docs/setup.html", self.learner_guide_md)
+        self.assertIn("1-click", self.learner_guide_md)
+
+        self.assertIn("docs/setup.html", self.pre_session_check_md)
+        self.assertIn("docs/guide.html", self.pre_session_check_md)
+        self.assertIn("1-click", self.pre_session_check_md)
 
 
 if __name__ == "__main__":
