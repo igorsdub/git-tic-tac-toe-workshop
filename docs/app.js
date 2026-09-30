@@ -15,7 +15,6 @@
     REPO_NAME: 'git-tic-tac-toe-workshop',
     REFRESH_INTERVAL_SEC: 30,
     STORAGE_KEY_THEME: 'ttt_gamewall_theme',
-    STORAGE_KEY_PROJECTION: 'ttt_gamewall_projection',
     DEFAULT_BRANCHES: ['main', 'master'],
   };
 
@@ -29,7 +28,8 @@
       repo: 'git-ttt-pair1',
       playerX: 'alice-researcher',
       playerO: 'bob-engineer',
-      eventId: 'Bioinformatics-Cohort-A',
+      workshopName: 'SCDA Training Week',
+      eventId: 'SCDA Training Week',
       boardContent: `# Git Tic-Tac-Toe
 Player X: @alice-researcher
 Player O: @bob-engineer
@@ -50,7 +50,8 @@ State: Waiting for O
       repo: 'git-ttt-pair2',
       playerX: 'carol-dev',
       playerO: 'david-analyst',
-      eventId: 'Bioinformatics-Cohort-A',
+      workshopName: 'SCDA Training Week',
+      eventId: 'SCDA Training Week',
       boardContent: `# Git Tic-Tac-Toe
 Player X: @carol-dev
 Player O: @david-analyst
@@ -71,7 +72,8 @@ State: Waiting for X
       repo: 'git-ttt-pair3',
       playerX: 'eva-student',
       playerO: 'frank-postdoc',
-      eventId: 'Bioinformatics-Cohort-A',
+      workshopName: 'SCDA Training Week',
+      eventId: 'SCDA Training Week',
       boardContent: `# Git Tic-Tac-Toe
 Player X: @eva-student
 Player O: @frank-postdoc
@@ -92,7 +94,8 @@ State: Ready for X
       repo: 'git-ttt-pair4',
       playerX: 'grace-hopper',
       playerO: 'alan-turing',
-      eventId: 'CS-Foundations-2026',
+      workshopName: 'SCDA Training Week',
+      eventId: 'SCDA Training Week',
       boardContent: `# Git Tic-Tac-Toe
 Player X: @grace-hopper
 Player O: @alan-turing
@@ -113,7 +116,8 @@ State: X won
       repo: 'git-ttt-pair5',
       playerX: 'helen-pi',
       playerO: 'ian-fellow',
-      eventId: 'CS-Foundations-2026',
+      workshopName: 'SCDA Training Week',
+      eventId: 'SCDA Training Week',
       boardContent: `# Git Tic-Tac-Toe
 Player X: @helen-pi
 Player O: @ian-fellow
@@ -134,7 +138,8 @@ State: O won
       repo: 'git-ttt-pair6',
       playerX: 'julia-phd',
       playerO: 'kevin-ra',
-      eventId: 'Bioinformatics-Cohort-A',
+      workshopName: 'SCDA Training Week',
+      eventId: 'SCDA Training Week',
       boardContent: `# Git Tic-Tac-Toe
 Player X: @julia-phd
 Player O: @kevin-ra
@@ -155,7 +160,8 @@ State: Draw
       repo: 'git-ttt-pair7',
       playerX: 'laura-sci',
       playerO: 'mike-fellow',
-      eventId: 'Bioinformatics-Cohort-A',
+      workshopName: 'SCDA Training Week',
+      eventId: 'SCDA Training Week',
       boardContent: `# Git Tic-Tac-Toe
 Player X: @laura-sci
 Player O: @mike-fellow
@@ -176,7 +182,8 @@ State: Waiting for O
       repo: 'git-ttt-pair8',
       playerX: 'nina-coder',
       playerO: 'oscar-dev',
-      eventId: 'CS-Foundations-2026',
+      workshopName: 'SCDA Training Week',
+      eventId: 'SCDA Training Week',
       boardContent: `# Git Tic-Tac-Toe
 Player X: @nina-coder
 Player O: @oscar-dev
@@ -197,14 +204,10 @@ State: Waiting for O
   const state = {
     useDemoData: false,
     allGames: [],
-    events: new Set(),
-    countdown: CONFIG.REFRESH_INTERVAL_SEC,
-    timerId: null,
-    searchQuery: '',
-    statusFilter: 'all',
-    eventFilter: 'all',
+    currentFilter: 'all', // 'all', 'pending', 'finished', 'errors'
     isLoading: false,
     lastUpdated: null,
+    timerId: null,
   };
 
   // --- DOM Elements ---
@@ -217,22 +220,14 @@ State: Waiting for O
     noticeMessage: document.getElementById('notice-message'),
     noticeActionBtn: document.getElementById('notice-action-btn'),
     lastUpdated: document.getElementById('last-updated'),
-    refreshCountdown: document.getElementById('refresh-countdown'),
-    refreshBtn: document.getElementById('refresh-btn'),
     themeToggle: document.getElementById('theme-toggle'),
-    projectionToggle: document.getElementById('projection-toggle'),
-    searchInput: document.getElementById('search-input'),
-    clearSearchBtn: document.getElementById('clear-search-btn'),
-    statusFilter: document.getElementById('status-filter'),
-    eventFilter: document.getElementById('event-filter'),
     toggleDataModeBtn: document.getElementById('toggle-data-mode-btn'),
     liveIndicator: document.getElementById('live-indicator'),
-    statCards: document.querySelectorAll('.stat-card'),
+    tabErrors: document.getElementById('tab-errors'),
     counts: {
-      total: document.getElementById('count-total'),
-      active: document.getElementById('count-active'),
-      wins: document.getElementById('count-wins'),
-      draws: document.getElementById('count-draws'),
+      all: document.getElementById('count-all'),
+      pending: document.getElementById('count-pending'),
+      finished: document.getElementById('count-finished'),
       errors: document.getElementById('count-errors'),
     },
   };
@@ -305,12 +300,16 @@ State: Waiting for O
       if (val && val !== '_No response_') playerO = val;
     }
 
-    // Extract Event ID
-    let eventId = 'Default Event';
-    const eventMatch = text.match(/###\s*(?:Event\s*ID|Session\s*Name|Event\s*ID\s*\/\s*Session\s*Name)\s*\n+([^\n#]+)/i);
+    // Extract Event ID / Workshop Name (default to 'SCDA Training Week')
+    let eventId = 'SCDA Training Week';
+    let workshopName = 'SCDA Training Week';
+    const eventMatch = text.match(/###\s*(?:Workshop\s*Name|Event\s*ID|Session\s*Name|Event\s*ID\s*\/\s*Session\s*Name)\s*\n+([^\n#]+)/i);
     if (eventMatch) {
       const val = eventMatch[1].trim();
-      if (val && val !== '_No response_') eventId = val;
+      if (val && val !== '_No response_') {
+        eventId = val;
+        workshopName = val;
+      }
     }
 
     return {
@@ -320,6 +319,7 @@ State: Waiting for O
       playerX,
       playerO,
       eventId,
+      workshopName,
     };
   }
 
@@ -416,12 +416,12 @@ State: Waiting for O
       };
     }
 
-    // 1. Players
+    // 1. Players (optional metadata)
     const playerX = extractBoardHeader(content, /^[ \t]*\*?\*?Player\s+X\*?\*?:\s*(.+)$/m);
     const playerO = extractBoardHeader(content, /^[ \t]*\*?\*?Player\s+O\*?\*?:\s*(.+)$/m);
 
-    if (!playerX) errors.push("Missing 'Player X:' header.");
-    if (!playerO) errors.push("Missing 'Player O:' header.");
+    if (!playerX) warnings.push("Missing 'Player X:' header; handle will be sourced from registration.");
+    if (!playerO) warnings.push("Missing 'Player O:' header; handle will be sourced from registration.");
 
     // 2. Declared state
     const declaredState = extractBoardHeader(content, /^[ \t]*\*?\*?Stat(?:e|us)\*?\*?:\s*(.+)$/m);
@@ -695,13 +695,13 @@ State: Waiting for O
           repo: reg.repo,
           repoUrl: reg.repoUrl,
           eventId: reg.eventId,
+          workshopName: reg.workshopName || reg.eventId || 'SCDA Training Week',
           ...evaluation,
         };
       });
 
       state.allGames = await Promise.all(gamePromises);
       state.lastUpdated = new Date();
-      updateEventOptions();
       render();
     } catch (err) {
       console.warn('Network or API failure fetching live games:', err);
@@ -726,11 +726,11 @@ State: Waiting for O
         repo: mock.repo,
         repoUrl: mock.repoUrl,
         eventId: mock.eventId,
+        workshopName: mock.workshopName || mock.eventId || 'SCDA Training Week',
         ...evaluation,
       };
     });
     state.lastUpdated = new Date();
-    updateEventOptions();
     render();
   }
 
@@ -770,7 +770,7 @@ State: Waiting for O
   function getAvatarUrl(handle) {
     const cleaned = cleanHandle(handle);
     if (!cleaned || cleaned === 'Unknown' || cleaned.startsWith('[')) {
-      return 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="%23cbd5e1"/><text x="16" y="21" font-size="14" text-anchor="middle" fill="%23475569">👤</text></svg>';
+      return 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="%23e5e7eb"/><text x="16" y="21" font-size="14" text-anchor="middle" fill="%234b5563">👤</text></svg>';
     }
     return `https://github.com/${cleaned}.png?size=64`;
   }
@@ -790,7 +790,6 @@ State: Waiting for O
     const statusIcon = getStatusIcon(game.state);
     const playerX = cleanHandle(game.playerX);
     const playerO = cleanHandle(game.playerO);
-    const totalMoves = (game.moveCounts?.X || 0) + (game.moveCounts?.O || 0);
 
     // Board table cells
     let cellsHtml = '';
@@ -799,7 +798,7 @@ State: Waiting for O
         const mark = game.grid && game.grid[r] ? game.grid[r][c] : ' ';
         const isWin = isCellWinning(game.winningCells, r, c);
         const markClass = mark === 'X' ? 'cell-x' : mark === 'O' ? 'cell-o' : 'cell-empty';
-        const winClass = isWin ? `cell-winning ${mark === 'O' ? 'cell-o' : 'cell-x'}` : '';
+        const winClass = isWin ? 'cell-winning' : '';
 
         cellsHtml += `
           <div class="board-cell ${markClass} ${winClass}" data-row="${r}" data-col="${c}">
@@ -809,7 +808,7 @@ State: Waiting for O
       }
     }
 
-    // Errors / warnings HTML
+    // Errors HTML
     let errorsHtml = '';
     if (game.errors && game.errors.length > 0) {
       errorsHtml = `
@@ -829,7 +828,7 @@ State: Waiting for O
             <a href="${escapeHtml(game.repoUrl)}" target="_blank" rel="noopener noreferrer" class="repo-link" title="${escapeHtml(game.repoUrl)}">
               📦 ${escapeHtml(game.owner)}/${escapeHtml(game.repo)}
             </a>
-            <span class="card-event">${escapeHtml(game.eventId || 'Default Event')}</span>
+            <span class="card-workshop">${escapeHtml(game.workshopName || game.eventId || 'SCDA Training Week')}</span>
           </div>
           <span class="status-badge ${badgeClass}">
             <span>${statusIcon}</span> ${escapeHtml(game.state)}
@@ -838,7 +837,7 @@ State: Waiting for O
 
         <div class="card-players">
           <div class="player-info player-x">
-            <img src="${getAvatarUrl(playerX)}" alt="${escapeHtml(playerX)}" class="player-avatar" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><circle cx=%2216%22 cy=%2216%22 r=%2216%22 fill=%22%23cbd5e1%22/><text x=%2216%22 y=%2221%22 font-size=%2214%22 text-anchor=%22middle%22 fill=%22%23475569%22>X</text></svg>'">
+            <img src="${getAvatarUrl(playerX)}" alt="${escapeHtml(playerX)}" class="player-avatar" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><circle cx=%2216%22 cy=%2216%22 r=%2216%22 fill=%22%23e5e7eb%22/><text x=%2216%22 y=%2221%22 font-size=%2214%22 text-anchor=%22middle%22 fill=%22%234b5563%22>X</text></svg>'">
             <div class="player-details">
               <span class="player-role role-x">Player X</span>
               <a href="https://github.com/${escapeHtml(playerX)}" target="_blank" rel="noopener noreferrer" class="player-handle">
@@ -856,7 +855,7 @@ State: Waiting for O
                 @${escapeHtml(playerO)}
               </a>
             </div>
-            <img src="${getAvatarUrl(playerO)}" alt="${escapeHtml(playerO)}" class="player-avatar" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><circle cx=%2216%22 cy=%2216%22 r=%2216%22 fill=%22%23cbd5e1%22/><text x=%2216%22 y=%2221%22 font-size=%2214%22 text-anchor=%22middle%22 fill=%22%23475569%22>O</text></svg>'">
+            <img src="${getAvatarUrl(playerO)}" alt="${escapeHtml(playerO)}" class="player-avatar" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><circle cx=%2216%22 cy=%2216%22 r=%2216%22 fill=%22%23e5e7eb%22/><text x=%2216%22 y=%2221%22 font-size=%2214%22 text-anchor=%22middle%22 fill=%22%234b5563%22>O</text></svg>'">
           </div>
         </div>
 
@@ -867,13 +866,6 @@ State: Waiting for O
         </div>
 
         ${errorsHtml}
-
-        <div class="card-footer">
-          <span class="move-count">Moves: X: ${game.moveCounts?.X || 0} | O: ${game.moveCounts?.O || 0} (${totalMoves}/9)</span>
-          <a href="${escapeHtml(game.repoUrl)}/blob/main/board.md" target="_blank" rel="noopener noreferrer" class="raw-link">
-            view board.md ↗
-          </a>
-        </div>
       </article>
     `;
   }
@@ -888,98 +880,53 @@ State: Waiting for O
       .replace(/'/g, '&#039;');
   }
 
-  function updateSummaryCounts(allGames) {
-    let total = allGames.length;
-    let active = 0;
-    let wins = 0;
-    let draws = 0;
-    let errors = 0;
+  function updateTabCounts(allGames) {
+    let countAll = allGames.length;
+    let countPending = 0;
+    let countFinished = 0;
+    let countErrors = 0;
 
     for (const g of allGames) {
       if (!g.isValid || g.state === 'Invalid board') {
-        errors++;
-      } else if (g.state === 'X won' || g.state === 'O won') {
-        wins++;
-      } else if (g.state === 'Draw') {
-        draws++;
+        countErrors++;
+      } else if (g.state === 'X won' || g.state === 'O won' || g.state === 'Draw') {
+        countFinished++;
       } else if (g.state === 'Waiting for X' || g.state === 'Waiting for O' || g.state === 'Ready for X') {
-        active++;
+        countPending++;
       }
     }
 
-    DOM.counts.total.textContent = total;
-    DOM.counts.active.textContent = active;
-    DOM.counts.wins.textContent = wins;
-    DOM.counts.draws.textContent = draws;
-    DOM.counts.errors.textContent = errors;
-  }
+    if (DOM.counts.all) DOM.counts.all.textContent = countAll;
+    if (DOM.counts.pending) DOM.counts.pending.textContent = countPending;
+    if (DOM.counts.finished) DOM.counts.finished.textContent = countFinished;
+    if (DOM.counts.errors) DOM.counts.errors.textContent = countErrors;
 
-  function updateEventOptions() {
-    const currentSelected = DOM.eventFilter.value;
-    const events = new Set();
-    for (const g of state.allGames) {
-      if (g.eventId) events.add(g.eventId);
-    }
-
-    DOM.eventFilter.innerHTML = '<option value="all">All Events</option>';
-    for (const ev of Array.from(events).sort()) {
-      const opt = document.createElement('option');
-      opt.value = ev;
-      opt.textContent = ev;
-      if (ev === currentSelected) opt.selected = true;
-      DOM.eventFilter.appendChild(opt);
+    if (DOM.tabErrors) {
+      DOM.tabErrors.style.display = countErrors > 0 ? 'inline-flex' : 'none';
     }
   }
 
   function filterGames() {
-    const query = state.searchQuery.toLowerCase().trim();
-    const status = state.statusFilter;
-    const eventVal = state.eventFilter;
-
     return state.allGames.filter((g) => {
-      // Event filter
-      if (eventVal !== 'all' && g.eventId !== eventVal) {
-        return false;
+      if (state.currentFilter === 'pending') {
+        return g.isValid && (g.state === 'Waiting for X' || g.state === 'Waiting for O' || g.state === 'Ready for X');
       }
-
-      // Status filter
-      if (status === 'active') {
-        const isActive = g.isValid && (g.state === 'Waiting for X' || g.state === 'Waiting for O' || g.state === 'Ready for X');
-        if (!isActive) return false;
-      } else if (status === 'wins') {
-        if (g.state !== 'X won' && g.state !== 'O won') return false;
-      } else if (status === 'draws') {
-        if (g.state !== 'Draw') return false;
-      } else if (status === 'errors') {
-        if (g.isValid && g.state !== 'Invalid board') return false;
-      } else if (status !== 'all') {
-        if (g.state !== status) return false;
+      if (state.currentFilter === 'finished') {
+        return g.isValid && (g.state === 'X won' || g.state === 'O won' || g.state === 'Draw');
       }
-
-      // Search query filter
-      if (query) {
-        const matchPlayerX = (g.playerX || '').toLowerCase().includes(query);
-        const matchPlayerO = (g.playerO || '').toLowerCase().includes(query);
-        const matchOwner = (g.owner || '').toLowerCase().includes(query);
-        const matchRepo = (g.repo || '').toLowerCase().includes(query);
-        const matchEvent = (g.eventId || '').toLowerCase().includes(query);
-        const matchState = (g.state || '').toLowerCase().includes(query);
-
-        if (!matchPlayerX && !matchPlayerO && !matchOwner && !matchRepo && !matchEvent && !matchState) {
-          return false;
-        }
+      if (state.currentFilter === 'errors') {
+        return !g.isValid || g.state === 'Invalid board';
       }
-
-      return true;
+      return true; // 'all'
     });
   }
 
   function render() {
-    updateSummaryCounts(state.allGames);
+    updateTabCounts(state.allGames);
 
     const filtered = filterGames();
 
-    if (state.lastUpdated) {
+    if (state.lastUpdated && DOM.lastUpdated) {
       DOM.lastUpdated.textContent = `Updated ${formatTime(state.lastUpdated)}`;
     }
 
@@ -989,7 +936,7 @@ State: Waiting for O
       if (state.allGames.length === 0) {
         DOM.emptyMessage.textContent = 'No pair games have registered yet.';
       } else {
-        DOM.emptyMessage.textContent = 'No games match your search or filter criteria.';
+        DOM.emptyMessage.textContent = 'No games match the selected filter.';
       }
     } else {
       DOM.emptyState.classList.add('hidden');
@@ -1001,10 +948,10 @@ State: Waiting for O
     state.isLoading = loading;
     if (loading) {
       DOM.loadingIndicator.classList.remove('hidden');
-      DOM.liveIndicator.classList.add('warning');
+      if (DOM.liveIndicator) DOM.liveIndicator.classList.add('warning');
     } else {
       DOM.loadingIndicator.classList.add('hidden');
-      DOM.liveIndicator.classList.remove('warning');
+      if (DOM.liveIndicator) DOM.liveIndicator.classList.remove('warning');
     }
   }
 
@@ -1019,31 +966,18 @@ State: Waiting for O
   }
 
   // ==========================================
-  // 4. Countdown & Auto-Refresh Timer
+  // 4. Auto-Refresh Polling
   // ==========================================
 
-  function startCountdown() {
+  function startPolling() {
     if (state.timerId) clearInterval(state.timerId);
-    state.countdown = CONFIG.REFRESH_INTERVAL_SEC;
-    DOM.refreshCountdown.textContent = `${state.countdown}s`;
-
     state.timerId = setInterval(() => {
-      state.countdown--;
-      DOM.refreshCountdown.textContent = `${state.countdown}s`;
-
-      if (state.countdown <= 0) {
-        state.countdown = CONFIG.REFRESH_INTERVAL_SEC;
-        loadGames();
-      }
-    }, 1000);
-  }
-
-  function resetCountdown() {
-    startCountdown();
+      loadGames();
+    }, CONFIG.REFRESH_INTERVAL_SEC * 1000);
   }
 
   // ==========================================
-  // 5. Theme & Projection Mode
+  // 5. Theme Handling
   // ==========================================
 
   function initTheme() {
@@ -1054,17 +988,14 @@ State: Waiting for O
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       setTheme(prefersDark ? 'dark' : 'light');
     }
-
-    const savedProjection = localStorage.getItem(CONFIG.STORAGE_KEY_PROJECTION);
-    if (savedProjection === 'true') {
-      document.body.classList.add('projection-mode');
-    }
   }
 
   function setTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem(CONFIG.STORAGE_KEY_THEME, theme);
-    DOM.themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+    if (DOM.themeToggle) {
+      DOM.themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+    }
   }
 
   function toggleTheme() {
@@ -1072,86 +1003,43 @@ State: Waiting for O
     setTheme(current === 'dark' ? 'light' : 'dark');
   }
 
-  function toggleProjection() {
-    const isProj = document.body.classList.toggle('projection-mode');
-    localStorage.setItem(CONFIG.STORAGE_KEY_PROJECTION, isProj);
-  }
-
   // ==========================================
   // 6. Event Listeners
   // ==========================================
 
   function setupEventListeners() {
-    // Theme and projection toggles
-    DOM.themeToggle.addEventListener('click', toggleTheme);
-    DOM.projectionToggle.addEventListener('click', toggleProjection);
+    // Theme toggle
+    if (DOM.themeToggle) {
+      DOM.themeToggle.addEventListener('click', toggleTheme);
+    }
 
-    // Refresh button
-    DOM.refreshBtn.addEventListener('click', () => {
-      resetCountdown();
-      loadGames();
-    });
-
-    // Search input
-    DOM.searchInput.addEventListener('input', (e) => {
-      state.searchQuery = e.target.value;
-      if (state.searchQuery) {
-        DOM.clearSearchBtn.classList.remove('hidden');
-      } else {
-        DOM.clearSearchBtn.classList.add('hidden');
-      }
-      render();
-    });
-
-    DOM.clearSearchBtn.addEventListener('click', () => {
-      DOM.searchInput.value = '';
-      state.searchQuery = '';
-      DOM.clearSearchBtn.classList.add('hidden');
-      render();
-    });
-
-    // Select filters
-    DOM.statusFilter.addEventListener('change', (e) => {
-      state.statusFilter = e.target.value;
-      syncStatCardActiveState();
-      render();
-    });
-
-    DOM.eventFilter.addEventListener('change', (e) => {
-      state.eventFilter = e.target.value;
-      render();
-    });
-
-    // Stat cards click to filter
-    DOM.statCards.forEach((card) => {
-      card.addEventListener('click', () => {
-        const filterType = card.getAttribute('data-filter');
-        state.statusFilter = filterType;
-        DOM.statusFilter.value = filterType;
-        syncStatCardActiveState();
+    // Filter tabs
+    const tabs = document.querySelectorAll('.filter-tab');
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const filter = tab.getAttribute('data-filter') || 'all';
+        state.currentFilter = filter;
+        tabs.forEach((t) => {
+          if (t === tab) {
+            t.classList.add('active');
+          } else {
+            t.classList.remove('active');
+          }
+        });
         render();
       });
     });
 
     // Toggle between live and demo mode
-    DOM.toggleDataModeBtn.addEventListener('click', () => {
-      state.useDemoData = !state.useDemoData;
-      DOM.toggleDataModeBtn.textContent = state.useDemoData
-        ? 'Switch to Live GitHub Data'
-        : 'Switch to Demo Data';
-      resetCountdown();
-      loadGames();
-    });
-  }
-
-  function syncStatCardActiveState() {
-    DOM.statCards.forEach((c) => {
-      if (c.getAttribute('data-filter') === state.statusFilter) {
-        c.classList.add('active-filter');
-      } else {
-        c.classList.remove('active-filter');
-      }
-    });
+    if (DOM.toggleDataModeBtn) {
+      DOM.toggleDataModeBtn.addEventListener('click', () => {
+        state.useDemoData = !state.useDemoData;
+        DOM.toggleDataModeBtn.textContent = state.useDemoData
+          ? 'Switch to Live GitHub Data'
+          : 'Switch to Demo Data';
+        loadGames();
+      });
+    }
   }
 
   // ==========================================
@@ -1161,7 +1049,7 @@ State: Waiting for O
   function init() {
     initTheme();
     setupEventListeners();
-    startCountdown();
+    startPolling();
     loadGames();
   }
 

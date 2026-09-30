@@ -1,14 +1,13 @@
 name: Pair Game Registration
 description: Register your pair repository to display on the workshop Game Wall
-title: "[Game]: "
+title: "[Game Registration]: "
 labels: ["game-registration"]
 body:
   - type: markdown
     attributes:
       value: |
-        ### 🎮 Register Your Pair Game
-        Submit this form to register your pair repository on the live workshop Game Wall.
-        Ensure your repository is **public** so the Game Wall can read your `board.md`.
+        ### 🎮 Register for the Big Screen Game Wall
+        Submit this quick form to display your paired match live on the classroom projector screen! Ensure your repository is **public** so the Game Wall can read your board.md. Only **one partner** needs to submit this form for your pair.
   - type: input
     id: repo_url
     attributes:
@@ -24,7 +23,7 @@ body:
       description: GitHub username for Player X (with or without @).
       placeholder: octocat
     validations:
-      required: false
+      required: true
   - type: input
     id: player_o
     attributes:
@@ -32,12 +31,13 @@ body:
       description: GitHub username for Player O (with or without @).
       placeholder: hubot
     validations:
-      required: false
+      required: true
   - type: input
-    id: event_id
+    id: workshop_name
     attributes:
-      label: Event ID / Session Name
-      description: Event identifier or session name.
-      value: "Default Event"
+      label: Workshop Name
+      description: Workshop or cohort name for this training session.
+      value: "SCDA Training Week"
+      placeholder: "SCDA Training Week"
     validations:
       required: false

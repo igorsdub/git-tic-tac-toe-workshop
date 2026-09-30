@@ -6,10 +6,10 @@ This document defines the official file format and parsing rules for `board.md` 
 
 ## 1. Specification Overview
 
-A valid `board.md` file consists of four required sections:
+A valid `board.md` file consists of the following sections:
 1. **Title Header**: Top-level heading `# Git Tic-Tac-Toe` (or `# Tic-Tac-Toe`).
-2. **Player Metadata**: Declarations of Player X and Player O GitHub usernames.
-3. **Game State**: Current status indicator line.
+2. **Player Metadata (Optional)**: Optional declarations of Player X and Player O GitHub usernames. (The Game Wall sources handles directly from the GitHub issue registration form.)
+3. **Game State**: Current status indicator line (`State:` or `Status:`).
 4. **Board Grid**: Fenced monospace block representing the 3x3 tic-tac-toe grid.
 5. **Instructions**: Learner reference for the 5-step turn cycle.
 
@@ -17,15 +17,16 @@ A valid `board.md` file consists of four required sections:
 
 ## 2. Format Requirements
 
-### 2.1 Player Metadata
-The file must contain two lines identifying each player:
+### 2.1 Player Metadata (Optional)
+The file may optionally contain two lines identifying each player:
 ```markdown
 Player X: @username_x
 Player O: @username_o
 ```
-- Must start with `Player X:` and `Player O:` (bold formatting `**Player X**:` is also accepted).
+- Must start with `Player X:` and `Player O:` if present (bold formatting `**Player X**:` is also accepted).
 - Usernames may be prefixed with `@` or written as plain GitHub handles.
 - Before players set their handles, placeholders such as `[GitHub Username]` or `[Player X Username]` are valid initial states.
+- **Decoupled Registration**: Player handles in `board.md` are optional metadata. The Game Wall sources player handles directly from the GitHub issue registration form (`register-game.yml`). If player headers are omitted or remain as placeholders, the board remains valid and handles are populated from registration.
 
 ### 2.2 Status Line
 The file must contain a `State:` (or `Status:`) line:
@@ -81,6 +82,8 @@ Let $N_X$ be the count of X marks and $N_O$ be the count of O marks on the board
 ---
 
 ## 4. Sample Board States
+
+*(Note: In all samples below, the `Player X:` and `Player O:` headers are optional metadata. Boards omitting them or using placeholder values validate identically, and player handles are sourced directly from the registration issue).*
 
 ### 4.1 Sample: New Game (`Ready for X`)
 ```markdown

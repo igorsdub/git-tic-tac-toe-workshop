@@ -93,8 +93,41 @@ _No response_
         self.assertIsNone(res["player_o"])
         self.assertEqual(res["event_id"], "Default Event")
 
+    def test_workshop_name_field(self):
+        body = """### Repository URL
+
+https://github.com/pair-org/pair-repo
+
+### Player X Handle
+
+@alice_coder
+
+### Player O Handle
+
+@bob_coder
+
+### Workshop Name
+
+SCDA Training Week
+"""
+        res = parse_registration_issue(body)
+        self.assertTrue(res["is_valid"])
+        self.assertEqual(res["owner"], "pair-org")
+        self.assertEqual(res["repo"], "pair-repo")
+        self.assertEqual(res["player_x"], "alice_coder")
+        self.assertEqual(res["player_o"], "bob_coder")
+        self.assertEqual(res["workshop_name"], "SCDA Training Week")
+        self.assertEqual(res["event_id"], "SCDA Training Week")
+
     def test_repo_in_title_fallback(self):
         title = "[Game]: https://github.com/partner1/partner2-ttt"
+        res = parse_registration_issue("", title=title)
+        self.assertTrue(res["is_valid"])
+        self.assertEqual(res["owner"], "partner1")
+        self.assertEqual(res["repo"], "partner2-ttt")
+
+    def test_game_registration_in_title_fallback(self):
+        title = "[Game Registration]: https://github.com/partner1/partner2-ttt"
         res = parse_registration_issue("", title=title)
         self.assertTrue(res["is_valid"])
         self.assertEqual(res["owner"], "partner1")

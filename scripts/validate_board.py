@@ -132,19 +132,38 @@ def _check_winner(grid: List[List[str]], mark: str) -> bool:
     return False
 
 
+def _is_missing_or_placeholder(handle: Optional[str]) -> bool:
+    """Returns True if handle is None, empty, or a template placeholder."""
+    if not handle:
+        return True
+    cleaned = handle.strip()
+    if not cleaned:
+        return True
+    lower = cleaned.lower()
+    if (
+        (cleaned.startswith("[") and cleaned.endswith("]"))
+        or (cleaned.startswith("<") and cleaned.endswith(">"))
+        or "github username" in lower
+        or "placeholder" in lower
+        or lower in ("none", "tbd", "todo", "<missing>")
+    ):
+        return True
+    return False
+
+
 def validate_board(board_content: str) -> BoardValidationResult:
     """Parses and validates a tic-tac-toe markdown board string."""
     errors: List[str] = []
     warnings: List[str] = []
 
-    # 1. Player handles
+    # 1. Player handles (optional metadata)
     player_x = _extract_header(board_content, r"^[ \t]*\*?\*?Player\s+X\*?\*?:\s*(.+)$")
     player_o = _extract_header(board_content, r"^[ \t]*\*?\*?Player\s+O\*?\*?:\s*(.+)$")
 
-    if not player_x:
-        errors.append("Missing or empty 'Player X:' header.")
-    if not player_o:
-        errors.append("Missing or empty 'Player O:' header.")
+    if _is_missing_or_placeholder(player_x):
+        warnings.append("Missing or placeholder 'Player X:' header; handle will be sourced from registration.")
+    if _is_missing_or_placeholder(player_o):
+        warnings.append("Missing or placeholder 'Player O:' header; handle will be sourced from registration.")
 
     # 2. Declared state
     declared_state = _extract_header(board_content, r"^[ \t]*\*?\*?Stat(?:e|us)\*?\*?:\s*(.+)$")

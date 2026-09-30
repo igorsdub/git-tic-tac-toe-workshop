@@ -8,7 +8,7 @@ A successful workshop relies on smooth technical setup, tight time management, a
 
 ## 1. Operational Readiness Timeline & Checklist
 
-Conduct rehearsals in three progressive milestones prior to the event:
+Conduct rehearsals in three progressive milestones prior to the workshop:
 
 ```
 [ T - 7 Days ] ──► Full Facilitator Rehearsal (Dry Run with Demo Partner)
@@ -29,7 +29,7 @@ Conduct rehearsals in three progressive milestones prior to the event:
 - [ ] Outbound SSH port 22 verified (`ssh -T git@github.com`).
 - [ ] HTTPS clone/push verified without captive-portal or proxy interference.
 - [ ] Room projector tested with presentation laptop at native 1080p (1920x1080) resolution.
-- [ ] Game Wall ([docs/index.html](docs/index.html)) loaded in browser and verified in Projection Mode (`📽️`).
+- [ ] Game Wall ([docs/index.html](docs/index.html)) loaded in browser and verified with high-contrast monochrome design and theme toggle (🌙 / ☀️).
 
 #### C. Starter Template & Registrations
 - [ ] Template repository [igorsdub/tic-tac-toe-template](https://github.com/igorsdub/tic-tac-toe-template) verified public and accessible.
@@ -266,14 +266,14 @@ Before projecting the Game Wall in front of 20–40 learners, the facilitator mu
    - Open [docs/index.html](docs/index.html) in the presentation browser.
    - Open Developer Tools Console and execute the simulation script from [docs/load_test_simulation.md](docs/load_test_simulation.md) to generate 10 and 20 simulated cards.
    - Verify that all cards render crisply, grid CSS flexbox/grid layouts reflow cleanly, and no horizontal scrollbars occur.
-2. **Projection Mode Test:**
-   - Toggle **Projection Mode** (`📽️`) in the Game Wall header.
-   - Confirm high-contrast board markings, enlarged typography, and clear badge indicators.
+2. **Display & Contrast Test:**
+   - Test theme toggle (`🌙` / `☀️`) in the Game Wall header to check light and dark mode visibility.
+   - Confirm high-contrast monochrome board markings, clean typography, and clear badge indicators.
 3. **API Rate-Limit Handling Verification:**
    - Simulate GitHub API 403 response or network timeout.
    - Confirm that the Game Wall displays the yellow notice banner (`"GitHub API rate limit reached. Displaying simulated workshop games."`) and gracefully renders mock game data without blank screens.
-4. **Auto-Refresh Countdown Check:**
-   - Confirm the countdown timer decrements from 30 seconds and refreshes seamlessly without causing screen flicker or clearing user search filters.
+4. **Auto-Refresh Check:**
+   - Confirm the status indicator updates every 30 seconds and refreshes seamlessly without causing screen flicker or resetting active filter tabs.
 
 ---
 
