@@ -20,3 +20,7 @@ _Avoid_: Leaderboard
 **Workshop**:
 One training session (e.g. SCDA Training Week) and the set of pair games registered for its game wall.
 _Avoid_: Event, Session, Cohort
+
+**Learner guide**:
+The web page and reference document that guides workshop participants through environment setup, the turn cycle, and Git commands.
+_Avoid_: Handout, Cheat sheet, Tutorial, Instructions
