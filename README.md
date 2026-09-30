@@ -6,15 +6,15 @@ A two-hour, beginner-friendly Git and GitHub workshop where pairs play tic-tac-t
 
 - **[Facilitator Guide](FACILITATOR_GUIDE.md)**: Complete 2-hour timeline, live demonstration script with a prepared co-player, error recovery strategies, and research transfer discussion points.
 - **[Rehearsal & Operational Readiness Guide](REHEARSAL_GUIDE.md)**: Facilitator rehearsal protocol, operating system readiness matrix, contingency workflows, and timed checks (60+ min pair play guarantee).
-- **[Learner Guide](LEARNER_GUIDE.md)**: Concise one-page handout detailing roles (Player X and Player O), the 5-step turn workflow, helpful Git commands, and branch rematch extensions.
+- **[Learner Guide (Web)](docs/guide.html)** / **[Markdown](LEARNER_GUIDE.md)**: Hands-on guide detailing roles (Player X and Player O), the 5-step turn workflow, helpful Git commands, and branch rematch extensions.
+- **[Pre-Session Setup Guide (Web)](docs/setup.html)** / **[Markdown](PRE_SESSION_CHECK.md)**: Preparation checklist verifying GitHub accounts, 2FA & email privacy, Git installation, and push authentication options.
 - **[Learner Starter Template](https://github.com/igorsdub/tic-tac-toe-template)**: Public GitHub template repository used by learners to instantiate their pair game (`board.md` and onboarding instructions).
 - **[Template & Board Specification](template-spec/README.md)**: Canonical specification of the 3x3 board format, player metadata headers, game state parity rules, and test samples.
 - **[Board Validation Script](scripts/validate_board.py)**: Python CLI and module to parse, validate, and evaluate game board files.
 - **[Game Wall](docs/index.html)**: Live interactive workshop display showing 3x3 boards, player avatars, turn states, and 30-second auto-refresh across registered games (hosted on GitHub Pages).
 - **[Game Wall Scalability & Load Simulation](docs/load_test_simulation.md)**: Technical analysis of Game Wall scalability under 10 and 20 concurrent pair repositories, rate limit budgeting, and error handling verification.
 - **[Game Registration Form](.github/ISSUE_TEMPLATE/register-game.yml)**: GitHub Issue Form for pairs to submit their repository URL and player handles for display on the Game Wall.
-- **[Pre-Session Readiness Checklist](PRE_SESSION_CHECK.md)**: Operating-system-neutral preparation checklist verifying GitHub accounts, Git installation, author configuration, and push authentication.
-- **[Terminology & Context](CONTEXT.md)**: Standard terminology used across the workshop and pair games (Pair game, Board, Move, Game wall, Workshop).
+- **[Terminology & Context](CONTEXT.md)**: Standard terminology used across the workshop and pair games (Pair game, Board, Move, Game wall, Workshop, Learner guide, Setup guide, Turn cycle).
 
 ## Workshop Structure at a Glance
 
