@@ -119,7 +119,7 @@ Before hosting a session with 10–20 pairs, facilitators should execute this 5-
 5. Verify:
    - Spinner displays smoothly without layout jumping.
    - Total refresh completes in under 2.5 seconds.
-   - UI controls (search filter, theme toggle, projection mode) remain responsive.
+   - UI controls (filter tabs, theme toggle) remain responsive.
 
 ### Phase 2: High-Density UI Validation (20-Card Scale)
 1. In the browser console, inject a simulated 20-game dataset:
@@ -131,17 +131,17 @@ Before hosting a session with 10–20 pairs, facilitators should execute this 5-
      repo: 'tic-tac-toe',
      playerX: `learner_x_${i + 1}`,
      playerO: `learner_o_${i + 1}`,
-     eventId: i < 10 ? 'Cohort-Morning' : 'Cohort-Afternoon',
+     workshopName: 'SCDA Training Week',
      boardContent: i % 3 === 0 
        ? '# Git Tic-Tac-Toe\nPlayer X: @a\nPlayer O: @b\nState: X won\n\n```text\n [X] | [X] | [X]\n-----+-----+-----\n [O] | [O] | [ ]\n-----+-----+-----\n [ ] | [ ] | [ ]\n```'
        : '# Git Tic-Tac-Toe\nPlayer X: @a\nPlayer O: @b\nState: Waiting for O\n\n```text\n [X] | [ ] | [ ]\n-----+-----+-----\n [ ] | [ ] | [ ]\n-----+-----+-----\n [ ] | [ ] | [ ]\n```'
    }));
    ```
-2. Toggle **Projection Mode** (`📽️`).
+2. Test theme toggle (`🌙` / `☀️`) to verify light and dark mode presentation.
 3. Confirm that:
    - Cards scale cleanly into a multi-column responsive layout.
-   - High-contrast board cells and winning line highlights are legible from 20+ feet away.
-   - Filter dropdowns correctly filter by Event ID and Game Status.
+   - High-contrast monochrome board cells and winning line highlights are legible from 20+ feet away.
+   - Filter tabs (All, Pending, Finished) correctly filter pair games and update count badges.
 
 ### Phase 3: Rate-Limit Fallback Verification
 1. Click the **Toggle Data Mode** button (`Demo Mode / Live Mode`).

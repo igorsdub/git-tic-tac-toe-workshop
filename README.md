@@ -14,7 +14,7 @@ A two-hour, beginner-friendly Git and GitHub workshop where pairs play tic-tac-t
 - **[Game Wall Scalability & Load Simulation](docs/load_test_simulation.md)**: Technical analysis of Game Wall scalability under 10 and 20 concurrent pair repositories, rate limit budgeting, and error handling verification.
 - **[Game Registration Form](.github/ISSUE_TEMPLATE/register-game.yml)**: GitHub Issue Form for pairs to submit their repository URL and player handles for display on the Game Wall.
 - **[Pre-Session Readiness Checklist](PRE_SESSION_CHECK.md)**: Operating-system-neutral preparation checklist verifying GitHub accounts, Git installation, author configuration, and push authentication.
-- **[Terminology & Context](CONTEXT.md)**: Standard terminology used across the workshop and pair games (Pair game, Board, Move, Game wall, Event).
+- **[Terminology & Context](CONTEXT.md)**: Standard terminology used across the workshop and pair games (Pair game, Board, Move, Game wall, Workshop).
 
 ## Workshop Structure at a Glance
 
@@ -33,7 +33,7 @@ The workshop features a shared public [Game Wall](docs/index.html) designed for 
 
 - **Register a Game**: Pairs register their repository URL and handles using the [Pair Game Registration Form](.github/ISSUE_TEMPLATE/register-game.yml).
 - **Live Board Tracking**: The Game Wall queries issues labeled `game-registration`, fetches raw `board.md` files from learners' repositories, validates canonical state and turn parity, and renders responsive cards with player avatars and visual 3x3 boards.
-- **Facilitator Projection**: Includes a projection display mode (`📽️`) for classroom projectors, dark/light theme toggle, and auto-refreshes every 30 seconds without full-page reloads.
+- **Facilitator Projection**: Features a high-contrast monochrome design optimized for classroom projectors and displays, dark/light theme toggle, simplified filter tabs (All, Pending, Finished), and auto-refreshes every 30 seconds without full-page reloads.
 - **Load Simulation & Rate Limits**: See [Game Wall Scalability & Load Simulation](docs/load_test_simulation.md) for rate-limit budget calculations (60 unauthenticated requests/hr) and performance verification under 10–20 concurrent pair repositories.
 
 ## Learner Template & Board Format

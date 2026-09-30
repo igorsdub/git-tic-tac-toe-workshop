@@ -146,7 +146,7 @@ Learners work through their games in pairs. Facilitators and TAs circulate.
 Gather the entire room back together.
 
 1. **The Game Wall:**
-   - Project the event's **Game Wall** showing all registered pair games and their final boards.
+   - Project the workshop's **Game Wall** showing all registered pair games and their final boards.
    - Celebrate completed games, clever commit messages, and creative ties.
 2. **History Exploration in the Terminal:**
    - Ask learners to run:
