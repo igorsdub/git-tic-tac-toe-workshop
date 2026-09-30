@@ -33,7 +33,7 @@ class TestBoardValidator(unittest.TestCase):
             "08_malformed_double_win.md": ("Invalid board", False),
             "09_malformed_bad_char.md": ("Invalid board", False),
             "10_malformed_dimensions.md": ("Invalid board", False),
-            "11_malformed_missing_headers.md": ("Invalid board", False),
+            "11_malformed_missing_headers.md": ("Ready for X", True),
         }
 
         for filename, (expected_state, expected_valid) in expected.items():
@@ -185,6 +185,93 @@ State: Ready for X
         self.assertTrue(res.is_valid)
         self.assertEqual(res.state, "Waiting for O")
         self.assertTrue(any("does not match evaluated state 'Waiting for O'" in w for w in res.warnings))
+
+    def test_missing_player_headers(self):
+        """Verifies that missing player headers produce non-fatal warnings and allow is_valid == True."""
+        sample_path = self.samples_dir / "11_malformed_missing_headers.md"
+        res = validate_file(sample_path)
+        self.assertTrue(res.is_valid)
+        self.assertEqual(res.state, "Ready for X")
+        self.assertEqual(res.player_o, "@bob")
+        self.assertIsNone(res.player_x)
+        self.assertTrue(
+            any("Missing or placeholder 'Player X:' header" in w for w in res.warnings)
+        )
+        self.assertEqual(len(res.errors), 0)
+
+    def test_board_without_player_headers_is_valid(self):
+        """Demonstrates that a board with only '# Git Tic-Tac-Toe', 'State: Ready for X',
+
+        and an empty 3x3 grid validates successfully with is_valid == True.
+        """
+        content = """# Git Tic-Tac-Toe
+State: Ready for X
+
+```text
+ [ ] | [ ] | [ ]
+-----+-----+-----
+ [ ] | [ ] | [ ]
+-----+-----+-----
+ [ ] | [ ] | [ ]
+```
+"""
+        res = validate_board(content)
+        self.assertTrue(res.is_valid)
+        self.assertEqual(res.state, "Ready for X")
+        self.assertIsNone(res.player_x)
+        self.assertIsNone(res.player_o)
+        self.assertEqual(len(res.errors), 0)
+        self.assertTrue(
+            any("Missing or placeholder 'Player X:' header" in w for w in res.warnings)
+        )
+        self.assertTrue(
+            any("Missing or placeholder 'Player O:' header" in w for w in res.warnings)
+        )
+
+    def test_placeholder_player_headers_produce_warnings(self):
+        """Verifies that placeholder handles like [GitHub Username] produce warnings but are valid."""
+        content = """# Git Tic-Tac-Toe
+Player X: [GitHub Username]
+Player O: [GitHub Username]
+State: Ready for X
+
+```text
+ [ ] | [ ] | [ ]
+-----+-----+-----
+ [ ] | [ ] | [ ]
+-----+-----+-----
+ [ ] | [ ] | [ ]
+```
+"""
+        res = validate_board(content)
+        self.assertTrue(res.is_valid)
+        self.assertEqual(res.state, "Ready for X")
+        self.assertEqual(res.player_x, "[GitHub Username]")
+        self.assertEqual(res.player_o, "[GitHub Username]")
+        self.assertEqual(len(res.errors), 0)
+        self.assertTrue(
+            any("Missing or placeholder 'Player X:' header" in w for w in res.warnings)
+        )
+        self.assertTrue(
+            any("Missing or placeholder 'Player O:' header" in w for w in res.warnings)
+        )
+
+    def test_missing_state_header_is_invalid(self):
+        """Verifies that a missing State line remains a fatal validation error."""
+        content = """# Git Tic-Tac-Toe
+
+```text
+ [ ] | [ ] | [ ]
+-----+-----+-----
+ [ ] | [ ] | [ ]
+-----+-----+-----
+ [ ] | [ ] | [ ]
+```
+"""
+        res = validate_board(content)
+        self.assertFalse(res.is_valid)
+        self.assertEqual(res.state, "Invalid board")
+        self.assertTrue(any("Missing 'State:' or 'Status:' indicator line" in err for err in res.errors))
 
 
 if __name__ == "__main__":
