@@ -19,6 +19,7 @@
   };
 
   const ISSUES_API_URL = `https://api.github.com/repos/${CONFIG.REPO_OWNER}/${CONFIG.REPO_NAME}/issues?labels=game-registration&state=all&per_page=100`;
+  const ALL_ISSUES_API_URL = `https://api.github.com/repos/${CONFIG.REPO_OWNER}/${CONFIG.REPO_NAME}/issues?state=all&per_page=100`;
 
   // --- Fallback / Mock Data for Offline & Demo Modes ---
   const MOCK_GAMES = [
@@ -630,7 +631,28 @@ State: Waiting for O
         throw new Error(`GitHub API responded with status ${res.status}`);
       }
 
-      const issues = await res.json();
+      let issues = await res.json();
+
+      // Defensive fallback: if no issues found with label 'game-registration',
+      // fetch issues without label filter and match issues with label OR '[Game Registration]' title prefix
+      if (!Array.isArray(issues) || issues.length === 0) {
+        try {
+          const fallbackRes = await fetch(ALL_ISSUES_API_URL);
+          if (fallbackRes.ok) {
+            const allIssues = await fallbackRes.json();
+            if (Array.isArray(allIssues)) {
+              issues = allIssues.filter((issue) => {
+                const hasLabel = issue.labels && issue.labels.some((l) => l.name === 'game-registration');
+                const hasTitle = (issue.title || '').toLowerCase().includes('[game registration]');
+                return hasLabel || hasTitle;
+              });
+            }
+          }
+        } catch (fallbackErr) {
+          console.warn('Fallback issue discovery error:', fallbackErr);
+        }
+      }
+
       hideNotice();
 
       if (!Array.isArray(issues) || issues.length === 0) {

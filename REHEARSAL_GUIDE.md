@@ -34,6 +34,7 @@ Conduct rehearsals in three progressive milestones prior to the workshop:
 #### C. Starter Template & Registrations
 - [ ] Template repository [igorsdub/git-tic-tac-toe-template](https://github.com/igorsdub/git-tic-tac-toe-template) verified public and accessible.
 - [ ] Registration issue form ([.github/ISSUE_TEMPLATE/register-game.yml](.github/ISSUE_TEMPLATE/register-game.yml)) accessible and accepting test issues.
+- [ ] Repository label `game-registration` verified in GitHub repository settings (`gh label list`) so issue forms tag submissions.
 - [ ] Clean demo repository created for the live demonstration (or previous demo repo purged).
 
 ---

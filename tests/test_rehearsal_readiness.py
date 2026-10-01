@@ -185,6 +185,10 @@ class TestRehearsalGuideContents(unittest.TestCase):
         """Verify closing discussion check connecting game moves to scientific research."""
         self.assertIn("Research Transfer", self.content)
 
+    def test_registration_label_verification(self):
+        """Verify rehearsal guide includes checking repository game-registration label."""
+        self.assertIn("game-registration", self.content)
+
 
 class TestRepositoryTestSuiteExecution(unittest.TestCase):
     """Executes the full test discovery across the repository to verify 100% passing tests."""
