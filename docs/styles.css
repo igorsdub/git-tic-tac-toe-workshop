@@ -161,21 +161,23 @@ body {
 a:link,
 a:visited {
   color: #0284c7;
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 a:hover {
   color: #0369a1;
+  text-decoration: none;
 }
 
 [data-theme="dark"] a:link,
 [data-theme="dark"] a:visited {
   color: #38bdf8;
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 [data-theme="dark"] a:hover {
   color: #7dd3fc;
+  text-decoration: none;
 }
 
 .brand-link, .brand-link:visited {
@@ -562,7 +564,7 @@ a:hover {
 }
 
 .repo-link:hover {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .card-workshop {
@@ -681,7 +683,7 @@ a:hover {
 }
 
 .player-handle:hover {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .players-vs {
@@ -795,7 +797,7 @@ a:hover {
   font-size: 0.85rem;
   cursor: pointer;
   padding: 0;
-  text-decoration: underline;
+  text-decoration: none;
   font-weight: 500;
 }
 
