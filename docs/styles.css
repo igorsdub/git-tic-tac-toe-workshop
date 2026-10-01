@@ -234,6 +234,23 @@ body {
   white-space: nowrap;
 }
 
+.btn-outline {
+  background-color: transparent;
+  color: var(--text-primary);
+  border-color: var(--border-medium);
+}
+
+.btn-outline:hover {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-dark);
+}
+
+.nav-btn.active {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-dark);
+  font-weight: 600;
+}
+
 .btn-primary.register-btn {
   background-color: var(--primary);
   color: var(--text-inverse);
