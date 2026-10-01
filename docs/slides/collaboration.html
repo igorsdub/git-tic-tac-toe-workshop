@@ -15,19 +15,19 @@
     <div class="title-content">
       <div class="title-meta">SCDA TRAINING WEEK</div>
       <h1 class="title-main">Git and GitHub Collaboration</h1>
-      <p class="title-sub">Workflows for Tic-Tac-Toe & Scientific Teamwork</p>
+      <p class="title-sub">Workflows for Tic-Tac-Toe &amp; Scientific Teamwork</p>
     </div>
     <div class="slide-footer">
       <span>SCDA training week</span>
-      <span>1 / 13</span>
+      <span>1 / 24</span>
     </div>
   </div>
 
-  <!-- SLIDE 2: The Problem: File Sprawl -->
+  <!-- SLIDE 2: File Sprawl Step 1 -->
   <div class="slide" id="slide-2">
     <div class="slide-header">
       <h2>The Problem: File Sprawl</h2>
-      <span class="tag">SCDA training week</span>
+      <span class="tag">Ad-hoc Versioning</span>
     </div>
     <div class="slide-body">
       <div class="horror-grid">
@@ -52,15 +52,15 @@
     </div>
     <div class="slide-footer">
       <span>SCDA training week</span>
-      <span>2 / 13</span>
+      <span>2 / 24</span>
     </div>
   </div>
 
   <!-- SLIDE 3: The Solution: Single File & Full History -->
   <div class="slide" id="slide-3">
     <div class="slide-header">
-      <h2>The Solution: Single File & Full History</h2>
-      <span class="tag">SCDA training week</span>
+      <h2>The Solution: Single File &amp; Full History</h2>
+      <span class="tag">Clean Project</span>
     </div>
     <div class="slide-body">
       <div class="horror-grid">
@@ -78,20 +78,35 @@
           </div>
         </div>
         <div style="font-size: clamp(20px, 2.5cqw, 36px); color: var(--text-muted); text-align: center;">&rarr;</div>
-        <div class="card-pane">
-          <div class="pane-header" style="color: var(--green);">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
-            Single File &bull; Full History
-          </div>
-          <div class="file-list">
-            <div class="file-item good">
-              <span>board.txt</span>
-              <span style="font-size: 0.85em; opacity: 0.7;">main</span>
+        <div class="card-pane" style="display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div class="pane-header" style="color: var(--green);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+              Single File &bull; Full History
+            </div>
+            <div class="file-list" style="margin-bottom: 0.8cqw;">
+              <div class="file-item good">
+                <span>board.txt</span>
+                <span style="font-size: 0.85em; opacity: 0.7;">main</span>
+              </div>
             </div>
           </div>
-          <div style="margin-top: 1.2cqw; border-left: 2px dashed var(--border); padding-left: 1cqw; display: flex; flex-direction: column; gap: 0.6cqw; font-family: ui-monospace, monospace; font-size: clamp(11px, 1.1cqw, 15px); color: var(--text-muted);">
-            <div>&#9679; 31c0a &bull; Add reviewer edits to board.txt</div>
-            <div>&#9679; 9b2d8 &bull; Place X in center of board.txt</div>
+          <!-- Clean SVG Board Widget -->
+          <div style="display: flex; align-items: center; justify-content: center; flex: 1;">
+            <svg viewBox="0 0 156 160" width="130" height="135" fill="none">
+              <rect width="156" height="160" rx="8" fill="#0d1117" stroke="#30363d" stroke-width="1" />
+              <text x="78" y="18" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#c9d1d9">board.txt</text>
+              <g transform="translate(30, 26)">
+                <rect width="96" height="96" rx="4" fill="#161b22" stroke="#21262d" stroke-width="1"/>
+                <line x1="32" y1="2" x2="32" y2="94" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+                <line x1="64" y1="2" x2="64" y2="94" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+                <line x1="2" y1="32" x2="94" y2="32" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+                <line x1="2" y1="64" x2="94" y2="64" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              </g>
+              <text x="78" y="142" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10" fill="#8b949e">Initial empty board</text>
+            </svg>
+          </div>
+          <div style="border-left: 2px dashed var(--border); padding-left: 1cqw; font-family: ui-monospace, monospace; font-size: clamp(11px, 1.1cqw, 15px); color: var(--text-muted);">
             <div>&#9679; e4a10 &bull; Initialize empty board.txt</div>
           </div>
         </div>
@@ -99,91 +114,99 @@
     </div>
     <div class="slide-footer">
       <span>SCDA training week</span>
-      <span>3 / 13</span>
+      <span>3 / 24</span>
     </div>
   </div>
 
-  <!-- SLIDE 4: Case Scenario: Tic-Tac-Toe in an Imagined Land -->
+  <!-- SLIDE 4: Git vs GitHub Step 1 (Logos) -->
   <div class="slide" id="slide-4">
     <div class="slide-header">
-      <h2>Case Scenario: Tic-Tac-Toe in an Imagined Land</h2>
-      <span class="tag">SCDA training week</span>
+      <h2>Git vs GitHub</h2>
+      <span class="tag">Distinction</span>
     </div>
     <div class="slide-body">
       <div class="compare-grid">
-        <div class="compare-col" style="justify-content: center; text-align: left;">
-          <div style="font-size: clamp(16px, 2cqw, 28px); font-weight: 700; color: var(--accent); margin-bottom: 1cqw;">The Distant Collaborators</div>
-          <p style="font-size: clamp(13px, 1.4cqw, 20px); color: var(--text-muted); line-height: 1.5; margin-bottom: 1cqw;">
-            Two scientists in distant mountain valleys want to play Tic-Tac-Toe together by sharing a single text file named <code style="color: var(--text-main);">board.txt</code>.
-          </p>
-          <p style="font-size: clamp(13px, 1.4cqw, 20px); color: var(--text-muted); line-height: 1.5;">
-            Instead of emailing zip archives or renaming files, they use Git and GitHub to synchronize their moves securely and reliably.
-          </p>
-        </div>
-        <div class="compare-col" style="background: #0d1117; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;">
-          <div style="font-family: monospace; font-size: clamp(18px, 2.2cqw, 32px); color: var(--green); text-align: center; line-height: 1.6;">
-            X | . | .<br>
-            ---------<br>
-            . | O | .<br>
-            ---------<br>
-            . | . | X
+        <div class="compare-col">
+          <div class="brand-logo">
+            <svg viewBox="0 0 24 24">
+              <path fill="var(--git-orange)" d="M2.6 10.59L10.6 2.6a3.39 3.39 0 0 1 4.8 0l5.99 6a3.39 3.39 0 0 1 0 4.8l-6 6a3.39 3.39 0 0 1-4.8 0L2.6 15.4a3.4 3.4 0 0 1 0-4.81z"/>
+              <circle cx="9.5" cy="9.5" r="1.5" fill="#fff"/>
+              <circle cx="14.5" cy="14.5" r="1.5" fill="#fff"/>
+              <path stroke="#fff" stroke-width="1.5" d="M9.5 9.5v5m0 0a1.5 1.5 0 1 0 1.5 1.5M9.5 11l5 3.5"/>
+            </svg>
           </div>
-          <div style="font-size: clamp(11px, 1.2cqw, 16px); color: var(--text-muted); margin-top: 1.2cqw;">Tracked inside board.txt</div>
+          <div class="brand-title" style="color: var(--git-orange);">Git</div>
+          <div class="concept-pill ghost"></div>
+          <div class="concept-pill ghost"></div>
+        </div>
+        <div class="compare-col">
+          <div class="brand-logo">
+            <svg viewBox="0 0 24 24" fill="#ffffff">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+            </svg>
+          </div>
+          <div class="brand-title" style="color: #ffffff;">GitHub</div>
+          <div class="concept-pill ghost"></div>
+          <div class="concept-pill ghost"></div>
         </div>
       </div>
     </div>
     <div class="slide-footer">
       <span>SCDA training week</span>
-      <span>4 / 13</span>
+      <span>4 / 24</span>
     </div>
   </div>
 
-  <!-- SLIDE 5: Conceptual Turn Lifecycle -->
+  <!-- SLIDE 5: Git vs GitHub Step 2 -->
   <div class="slide" id="slide-5">
     <div class="slide-header">
-      <h2>Conceptual Turn Lifecycle</h2>
-      <span class="tag">SCDA training week</span>
+      <h2>Git vs GitHub</h2>
+      <span class="tag">Distinction</span>
     </div>
     <div class="slide-body">
-      <div class="practice-box">
-        <div class="practice-steps" style="grid-template-columns: repeat(4, 1fr);">
-          <div class="p-step">
-            <span>01 &bull; EDIT</span>
-            Modify board.txt in your editor to make your move.
+      <div class="compare-grid">
+        <div class="compare-col">
+          <div class="brand-logo">
+            <svg viewBox="0 0 24 24">
+              <path fill="var(--git-orange)" d="M2.6 10.59L10.6 2.6a3.39 3.39 0 0 1 4.8 0l5.99 6a3.39 3.39 0 0 1 0 4.8l-6 6a3.39 3.39 0 0 1-4.8 0L2.6 15.4a3.4 3.4 0 0 1 0-4.81z"/>
+              <circle cx="9.5" cy="9.5" r="1.5" fill="#fff"/>
+              <circle cx="14.5" cy="14.5" r="1.5" fill="#fff"/>
+              <path stroke="#fff" stroke-width="1.5" d="M9.5 9.5v5m0 0a1.5 1.5 0 1 0 1.5 1.5M9.5 11l5 3.5"/>
+            </svg>
           </div>
-          <div class="p-step">
-            <span>02 &bull; PACKAGE</span>
-            Stage your move using git add board.txt.
+          <div class="brand-title" style="color: var(--git-orange);">Git</div>
+          <div class="concept-pill">
+            <strong>Local Engine</strong>
+            Runs on your computer
           </div>
-          <div class="p-step">
-            <span>03 &bull; SAVE</span>
-            Commit your turn snapshot into git history.
-          </div>
-          <div class="p-step">
-            <span>04 &bull; SHARE</span>
-            Push to GitHub and let partner pull & repeat!
-          </div>
+          <div class="concept-pill ghost"></div>
         </div>
-        <div class="portal-link">
-          <div>
-            <div style="font-size: clamp(12px, 1.4cqw, 18px); color: var(--text-main); font-weight: 600;">The Collaboration Loop</div>
-            <div style="font-size: clamp(11px, 1.2cqw, 16px); color: var(--text-muted);">Every turn follows the exact same repeatable cycle of git commands.</div>
+        <div class="compare-col">
+          <div class="brand-logo">
+            <svg viewBox="0 0 24 24" fill="#ffffff">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+            </svg>
           </div>
-          <span style="font-size: clamp(12px, 1.3cqw, 18px); font-family: ui-monospace, monospace; color: var(--accent); font-weight: bold;">board.txt &rarr;</span>
+          <div class="brand-title" style="color: #ffffff;">GitHub</div>
+          <div class="concept-pill">
+            <strong>Collaborative Platform</strong>
+            Sharing, code review &amp; sync
+          </div>
+          <div class="concept-pill ghost"></div>
         </div>
       </div>
     </div>
     <div class="slide-footer">
       <span>SCDA training week</span>
-      <span>5 / 13</span>
+      <span>5 / 24</span>
     </div>
   </div>
 
-  <!-- SLIDE 6: Git vs GitHub: Connecting Concepts to Tools -->
+  <!-- SLIDE 6: Git vs GitHub Step 3 -->
   <div class="slide" id="slide-6">
     <div class="slide-header">
       <h2>Git vs GitHub</h2>
-      <span class="tag">SCDA training week</span>
+      <span class="tag">Distinction</span>
     </div>
     <div class="slide-body">
       <div class="compare-grid">
@@ -215,7 +238,7 @@
           <div class="brand-title" style="color: #ffffff;">GitHub</div>
           <div class="concept-pill">
             <strong>Collaborative Platform</strong>
-            Sharing, code review & sync
+            Sharing, code review &amp; sync
           </div>
           <div class="concept-pill">
             <strong>Cloud Hub</strong>
@@ -226,15 +249,956 @@
     </div>
     <div class="slide-footer">
       <span>SCDA training week</span>
-      <span>6 / 13</span>
+      <span>6 / 24</span>
     </div>
   </div>
 
-  <!-- SLIDE 7: Three Local Stages -->
+  <!-- SLIDE 7: Commits - Step 1 (Initial Board) -->
   <div class="slide" id="slide-7">
     <div class="slide-header">
+      <h2>Commits: Recording Moves</h2>
+      <span class="tag">Move 0 &bull; Initial State</span>
+    </div>
+    <div class="slide-body">
+      <div class="board-commits-grid">
+        <div class="board-pane">
+          <svg viewBox="0 0 156 170" fill="none">
+            <rect width="156" height="170" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1.5" />
+            <text x="78" y="20" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#c9d1d9">board.txt</text>
+            <g transform="translate(30, 28)">
+              <rect width="96" height="96" rx="4" fill="#0d1117" stroke="#21262d" stroke-width="1"/>
+              <line x1="32" y1="2" x2="32" y2="94" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <line x1="64" y1="2" x2="64" y2="94" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <line x1="2" y1="32" x2="94" y2="32" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <line x1="2" y1="64" x2="94" y2="64" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+            </g>
+            <text x="78" y="148" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">Move 0 &bull; Empty board</text>
+          </svg>
+        </div>
+        <div class="commit-pane">
+          <div class="commit-pane-header">
+            <span>Commit History</span>
+            <span style="color: var(--accent); font-family: ui-monospace, monospace;">main</span>
+          </div>
+          <div class="commit-feed">
+            <div class="commit-row active">
+              <span class="commit-hash">e4a10</span>
+              <span class="commit-dot">&#9679;</span>
+              <span class="commit-msg">Initialize empty board.txt</span>
+            </div>
+          </div>
+          <div class="commit-cue">
+            <strong>Move 0:</strong> Initial repository state. The single file <code>board.txt</code> is created and committed as our baseline.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>SCDA training week</span>
+      <span>7 / 24</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: Commits - Step 2 (Move 1 - Player X) -->
+  <div class="slide" id="slide-8">
+    <div class="slide-header">
+      <h2>Commits: Recording Moves</h2>
+      <span class="tag">Move 1 &bull; Player X</span>
+    </div>
+    <div class="slide-body">
+      <div class="board-commits-grid">
+        <div class="board-pane">
+          <svg viewBox="0 0 156 170" fill="none">
+            <rect width="156" height="170" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1.5" />
+            <text x="78" y="20" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#c9d1d9">board.txt</text>
+            <g transform="translate(30, 28)">
+              <rect width="96" height="96" rx="4" fill="#0d1117" stroke="#21262d" stroke-width="1"/>
+              <!-- Active Highlight Center (Row 1, Col 1) -->
+              <rect x="33" y="33" width="30" height="30" rx="3" fill="#388bfd26" stroke="#58a6ff" stroke-width="1"/>
+              <line x1="32" y1="2" x2="32" y2="94" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <line x1="64" y1="2" x2="64" y2="94" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <line x1="2" y1="32" x2="94" y2="32" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <line x1="2" y1="64" x2="94" y2="64" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <!-- Center X (active) -->
+              <path d="M 42 42 L 54 54 M 54 42 L 42 54" stroke="#58a6ff" stroke-width="2.5" stroke-linecap="round"/>
+            </g>
+            <text x="78" y="148" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">Move 1 &bull; Player X</text>
+          </svg>
+        </div>
+        <div class="commit-pane">
+          <div class="commit-pane-header">
+            <span>Commit History</span>
+            <span style="color: var(--accent); font-family: ui-monospace, monospace;">main</span>
+          </div>
+          <div class="commit-feed">
+            <div class="commit-row active">
+              <span class="commit-hash">9b2d8</span>
+              <span class="commit-dot" style="color: var(--accent);">&#9679;</span>
+              <span class="commit-msg">Player X: place X in center</span>
+            </div>
+            <div class="commit-row">
+              <span class="commit-hash">e4a10</span>
+              <span class="commit-dot">&#9679;</span>
+              <span class="commit-msg">Initialize empty board.txt</span>
+            </div>
+          </div>
+          <div class="commit-cue">
+            <strong>Move 1:</strong> Player X modifies <code>board.txt</code> and commits the change. A new snapshot is sealed into project history.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>SCDA training week</span>
+      <span>8 / 24</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 9: Commits - Step 3 (Move 2 - Player O) -->
+  <div class="slide" id="slide-9">
+    <div class="slide-header">
+      <h2>Commits: Recording Moves</h2>
+      <span class="tag">Move 2 &bull; Player O</span>
+    </div>
+    <div class="slide-body">
+      <div class="board-commits-grid">
+        <div class="board-pane">
+          <svg viewBox="0 0 156 170" fill="none">
+            <rect width="156" height="170" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1.5" />
+            <text x="78" y="20" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#c9d1d9">board.txt</text>
+            <g transform="translate(30, 28)">
+              <rect width="96" height="96" rx="4" fill="#0d1117" stroke="#21262d" stroke-width="1"/>
+              <!-- Active Highlight Top-Right (Row 0, Col 2) -->
+              <rect x="65" y="1" width="30" height="30" rx="3" fill="#bd561d26" stroke="#f0883e" stroke-width="1"/>
+              <line x1="32" y1="2" x2="32" y2="94" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <line x1="64" y1="2" x2="64" y2="94" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <line x1="2" y1="32" x2="94" y2="32" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <line x1="2" y1="64" x2="94" y2="64" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <!-- Center X -->
+              <path d="M 42 42 L 54 54 M 54 42 L 42 54" stroke="#f0f6fc" stroke-width="2.5" stroke-linecap="round"/>
+              <!-- Top-Right O (active) -->
+              <circle cx="80" cy="16" r="7" stroke="#f0883e" stroke-width="2.2" fill="none"/>
+            </g>
+            <text x="78" y="148" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">Move 2 &bull; Player O</text>
+          </svg>
+        </div>
+        <div class="commit-pane">
+          <div class="commit-pane-header">
+            <span>Commit History</span>
+            <span style="color: var(--accent); font-family: ui-monospace, monospace;">main</span>
+          </div>
+          <div class="commit-feed">
+            <div class="commit-row active">
+              <span class="commit-hash" style="color: var(--git-orange); background: rgba(240, 80, 50, 0.12);">31c0a</span>
+              <span class="commit-dot" style="color: var(--git-orange);">&#9679;</span>
+              <span class="commit-msg">Player O: place O in top-right</span>
+            </div>
+            <div class="commit-row">
+              <span class="commit-hash">9b2d8</span>
+              <span class="commit-dot">&#9679;</span>
+              <span class="commit-msg">Player X: place X in center</span>
+            </div>
+            <div class="commit-row">
+              <span class="commit-hash">e4a10</span>
+              <span class="commit-dot">&#9679;</span>
+              <span class="commit-msg">Initialize empty board.txt</span>
+            </div>
+          </div>
+          <div class="commit-cue">
+            <strong>Move 2:</strong> Player O pulls the latest move, marks an empty square, and commits. The timeline grows sequentially.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>SCDA training week</span>
+      <span>9 / 24</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 10: Commits - Step 4 (Move 3 - Player X) -->
+  <div class="slide" id="slide-10">
+    <div class="slide-header">
+      <h2>Commits: Recording Moves</h2>
+      <span class="tag">Move 3 &bull; Player X</span>
+    </div>
+    <div class="slide-body">
+      <div class="board-commits-grid">
+        <div class="board-pane">
+          <svg viewBox="0 0 156 170" fill="none">
+            <rect width="156" height="170" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1.5" />
+            <text x="78" y="20" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#c9d1d9">board.txt</text>
+            <g transform="translate(30, 28)">
+              <rect width="96" height="96" rx="4" fill="#0d1117" stroke="#21262d" stroke-width="1"/>
+              <!-- Active Highlight Top-Left (Row 0, Col 0) -->
+              <rect x="1" y="1" width="30" height="30" rx="3" fill="#388bfd26" stroke="#58a6ff" stroke-width="1"/>
+              <line x1="32" y1="2" x2="32" y2="94" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <line x1="64" y1="2" x2="64" y2="94" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <line x1="2" y1="32" x2="94" y2="32" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <line x1="2" y1="64" x2="94" y2="64" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <!-- Marks -->
+              <path d="M 10 10 L 22 22 M 22 10 L 10 22" stroke="#58a6ff" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="80" cy="16" r="7" stroke="#f0883e" stroke-width="2.2" fill="none"/>
+              <path d="M 42 42 L 54 54 M 54 42 L 42 54" stroke="#f0f6fc" stroke-width="2.5" stroke-linecap="round"/>
+            </g>
+            <text x="78" y="148" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">Move 3 &bull; Player X</text>
+          </svg>
+        </div>
+        <div class="commit-pane">
+          <div class="commit-pane-header">
+            <span>Commit History</span>
+            <span style="color: var(--accent); font-family: ui-monospace, monospace;">main</span>
+          </div>
+          <div class="commit-feed">
+            <div class="commit-row active">
+              <span class="commit-hash">f7e14</span>
+              <span class="commit-dot" style="color: var(--accent);">&#9679;</span>
+              <span class="commit-msg">Player X: place X in top-left</span>
+            </div>
+            <div class="commit-row">
+              <span class="commit-hash" style="color: var(--git-orange);">31c0a</span>
+              <span class="commit-dot">&#9679;</span>
+              <span class="commit-msg">Player O: place O in top-right</span>
+            </div>
+            <div class="commit-row">
+              <span class="commit-hash">9b2d8</span>
+              <span class="commit-dot">&#9679;</span>
+              <span class="commit-msg">Player X: place X in center</span>
+            </div>
+            <div class="commit-row">
+              <span class="commit-hash">e4a10</span>
+              <span class="commit-dot">&#9679;</span>
+              <span class="commit-msg">Initialize empty board.txt</span>
+            </div>
+          </div>
+          <div class="commit-cue">
+            <strong>Move 3:</strong> Every turn is atomic. Git guarantees you can always roll back or inspect any historical state of the board.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>SCDA training week</span>
+      <span>10 / 24</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 11: Commits - Step 5 (Move 4 - Player O) -->
+  <div class="slide" id="slide-11">
+    <div class="slide-header">
+      <h2>Commits: Recording Moves</h2>
+      <span class="tag">Move 4 &bull; Player O</span>
+    </div>
+    <div class="slide-body">
+      <div class="board-commits-grid">
+        <div class="board-pane">
+          <svg viewBox="0 0 156 170" fill="none">
+            <rect width="156" height="170" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1.5" />
+            <text x="78" y="20" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#c9d1d9">board.txt</text>
+            <g transform="translate(30, 28)">
+              <rect width="96" height="96" rx="4" fill="#0d1117" stroke="#21262d" stroke-width="1"/>
+              <!-- Active Highlight Bottom-Left (Row 2, Col 0) -->
+              <rect x="1" y="65" width="30" height="30" rx="3" fill="#bd561d26" stroke="#f0883e" stroke-width="1"/>
+              <line x1="32" y1="2" x2="32" y2="94" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <line x1="64" y1="2" x2="64" y2="94" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <line x1="2" y1="32" x2="94" y2="32" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <line x1="2" y1="64" x2="94" y2="64" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <!-- Marks -->
+              <path d="M 10 10 L 22 22 M 22 10 L 10 22" stroke="#f0f6fc" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="80" cy="16" r="7" stroke="#f0883e" stroke-width="2.2" fill="none"/>
+              <path d="M 42 42 L 54 54 M 54 42 L 42 54" stroke="#f0f6fc" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="16" cy="80" r="7" stroke="#f0883e" stroke-width="2.2" fill="none"/>
+            </g>
+            <text x="78" y="148" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">Move 4 &bull; Player O</text>
+          </svg>
+        </div>
+        <div class="commit-pane">
+          <div class="commit-pane-header">
+            <span>Commit History</span>
+            <span style="color: var(--accent); font-family: ui-monospace, monospace;">main</span>
+          </div>
+          <div class="commit-feed">
+            <div class="commit-row active">
+              <span class="commit-hash" style="color: var(--git-orange); background: rgba(240, 80, 50, 0.12);">a2d56</span>
+              <span class="commit-dot" style="color: var(--git-orange);">&#9679;</span>
+              <span class="commit-msg">Player O: place O in bottom-left</span>
+            </div>
+            <div class="commit-row">
+              <span class="commit-hash">f7e14</span>
+              <span class="commit-dot">&#9679;</span>
+              <span class="commit-msg">Player X: place X in top-left</span>
+            </div>
+            <div class="commit-row">
+              <span class="commit-hash" style="color: var(--git-orange);">31c0a</span>
+              <span class="commit-dot">&#9679;</span>
+              <span class="commit-msg">Player O: place O in top-right</span>
+            </div>
+            <div class="commit-row">
+              <span class="commit-hash">9b2d8</span>
+              <span class="commit-dot">&#9679;</span>
+              <span class="commit-msg">Player X: place X in center</span>
+            </div>
+            <div class="commit-row">
+              <span class="commit-hash">e4a10</span>
+              <span class="commit-dot">&#9679;</span>
+              <span class="commit-msg">Initialize empty board.txt</span>
+            </div>
+          </div>
+          <div class="commit-cue">
+            <strong>Move 4:</strong> Player O blocks the diagonal. Commit messages clearly indicate who moved and what changed.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>SCDA training week</span>
+      <span>11 / 24</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 12: Commits - Step 6 (Move 5 - Player X, matching template) -->
+  <div class="slide" id="slide-12">
+    <div class="slide-header">
+      <h2>Commits: Recording Moves</h2>
+      <span class="tag">Move 5 &bull; In Progress</span>
+    </div>
+    <div class="slide-body">
+      <div class="board-commits-grid">
+        <div class="board-pane">
+          <!-- Exactly matching template-spec/images/workflow.svg board styling -->
+          <svg viewBox="0 0 156 170" fill="none">
+            <rect width="156" height="170" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1.5" />
+            <text x="78" y="20" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#c9d1d9">board.txt</text>
+            <g transform="translate(30, 28)">
+              <rect width="96" height="96" rx="4" fill="#0d1117" stroke="#21262d" stroke-width="1"/>
+              <!-- Highlight Center Active X -->
+              <rect x="33" y="33" width="30" height="30" rx="3" fill="#388bfd26" stroke="#58a6ff" stroke-width="1"/>
+              <line x1="32" y1="2" x2="32" y2="94" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <line x1="64" y1="2" x2="64" y2="94" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <line x1="2" y1="32" x2="94" y2="32" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <line x1="2" y1="64" x2="94" y2="64" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <!-- Marks -->
+              <path d="M 10 10 L 22 22 M 22 10 L 10 22" stroke="#f0f6fc" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="48" cy="16" r="7" stroke="#f0883e" stroke-width="2.2" fill="none"/>
+              <path d="M 42 42 L 54 54 M 54 42 L 42 54" stroke="#58a6ff" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="80" cy="48" r="7" stroke="#f0883e" stroke-width="2.2" fill="none"/>
+              <circle cx="16" cy="80" r="7" stroke="#f0883e" stroke-width="2.2" fill="none"/>
+              <path d="M 74 74 L 86 86 M 86 74 L 74 86" stroke="#f0f6fc" stroke-width="2.5" stroke-linecap="round"/>
+            </g>
+            <text x="78" y="148" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">Move 5 in progress</text>
+          </svg>
+        </div>
+        <div class="commit-pane">
+          <div class="commit-pane-header">
+            <span>Commit History</span>
+            <span style="color: var(--accent); font-family: ui-monospace, monospace;">main</span>
+          </div>
+          <div class="commit-feed">
+            <div class="commit-row active">
+              <span class="commit-hash">5c8b1</span>
+              <span class="commit-dot" style="color: var(--accent);">&#9679;</span>
+              <span class="commit-msg">Player X: place X in bottom-right</span>
+            </div>
+            <div class="commit-row">
+              <span class="commit-hash" style="color: var(--git-orange);">a2d56</span>
+              <span class="commit-dot">&#9679;</span>
+              <span class="commit-msg">Player O: place O in bottom-left</span>
+            </div>
+            <div class="commit-row">
+              <span class="commit-hash">f7e14</span>
+              <span class="commit-dot">&#9679;</span>
+              <span class="commit-msg">Player X: place X in top-left</span>
+            </div>
+            <div class="commit-row">
+              <span class="commit-hash" style="color: var(--git-orange);">31c0a</span>
+              <span class="commit-dot">&#9679;</span>
+              <span class="commit-msg">Player O: place O in top-right</span>
+            </div>
+            <div class="commit-row">
+              <span class="commit-hash">9b2d8</span>
+              <span class="commit-dot">&#9679;</span>
+              <span class="commit-msg">Player X: place X in center</span>
+            </div>
+          </div>
+          <div class="commit-cue">
+            <strong>Full history preserved:</strong> A single file <code>board.txt</code> holds the entire evolving match without file clutter.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>SCDA training week</span>
+      <span>12 / 24</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 13: Turn Cycle Step 1 (PULL) -->
+  <div class="slide" id="slide-13">
+    <div class="slide-header">
+      <h2>The Turn Cycle: Step 1</h2>
+      <span class="tag">Fetch Partner Move</span>
+    </div>
+    <div class="slide-body">
+      <div class="svg-board">
+        <svg viewBox="0 0 800 240" fill="none">
+          <!-- Canvas Container -->
+          <rect width="800" height="240" rx="14" fill="#0d1117" stroke="#30363d" stroke-width="1.5" />
+          <!-- Header Bar -->
+          <g transform="translate(24, 20)">
+            <circle cx="4" cy="4" r="2.5" fill="#58a6ff"/>
+            <circle cx="4" cy="15" r="2.5" fill="#58a6ff"/>
+            <circle cx="13" cy="15" r="2.5" fill="#3fb950"/>
+            <path d="M 4 6.5 V 12.5 M 4 9 C 7 9 13 10 13 12.5" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            <text x="24" y="14" font-family="-apple-system, sans-serif" font-size="13" font-weight="700" fill="#ffffff" letter-spacing="0.5">GIT TIC-TAC-TOE</text>
+            <text x="752" y="14" text-anchor="end" font-family="-apple-system, sans-serif" font-size="11" fill="#8b949e">Two players &bull; One repository &bull; Alternating turns</text>
+          </g>
+          <line x1="24" y1="45" x2="776" y2="45" stroke="#21262d" stroke-width="1" />
+          <!-- Board on Left -->
+          <g transform="translate(24, 54)">
+            <rect width="156" height="170" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1" />
+            <text x="78" y="20" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#c9d1d9">board.txt</text>
+            <g transform="translate(30, 28)">
+              <rect width="96" height="96" rx="4" fill="#0d1117" stroke="#21262d" stroke-width="1"/>
+              <rect x="33" y="33" width="30" height="30" rx="3" fill="#388bfd26" stroke="#58a6ff" stroke-width="1"/>
+              <line x1="32" y1="2" x2="32" y2="94" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <line x1="64" y1="2" x2="64" y2="94" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <line x1="2" y1="32" x2="94" y2="32" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <line x1="2" y1="64" x2="94" y2="64" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <path d="M 10 10 L 22 22 M 22 10 L 10 22" stroke="#f0f6fc" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="48" cy="16" r="7" stroke="#f0883e" stroke-width="2.2" fill="none"/>
+              <path d="M 42 42 L 54 54 M 54 42 L 42 54" stroke="#58a6ff" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="80" cy="48" r="7" stroke="#f0883e" stroke-width="2.2" fill="none"/>
+              <circle cx="16" cy="80" r="7" stroke="#f0883e" stroke-width="2.2" fill="none"/>
+              <path d="M 74 74 L 86 86 M 86 74 L 74 86" stroke="#f0f6fc" stroke-width="2.5" stroke-linecap="round"/>
+            </g>
+            <text x="78" y="148" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">Move 5 in progress</text>
+          </g>
+          <!-- Card 1: PULL (ACTIVE) -->
+          <g transform="translate(196, 54)">
+            <rect width="100" height="126" rx="8" fill="#161b22" stroke="#58a6ff" stroke-width="2"/>
+            <circle cx="50" cy="22" r="11" fill="#1f6feb"/>
+            <text x="50" y="26" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#ffffff">1</text>
+            <text x="50" y="47" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#58a6ff">PULL</text>
+            <rect x="9" y="55" width="82" height="22" rx="4" fill="#0d1117" stroke="#388bfd"/>
+            <text x="50" y="70" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#58a6ff">git pull</text>
+            <text x="50" y="93" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#f0f6fc">Fetch partner's</text>
+            <text x="50" y="106" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#f0f6fc">latest move</text>
+          </g>
+          <!-- Arrow 1 -> 2 (dimmed) -->
+          <g opacity="0.3">
+            <line x1="300" y1="120" x2="312" y2="120" stroke="#484f58" stroke-width="2" stroke-linecap="round"/>
+            <polygon points="311,116 316,120 311,124" fill="#484f58"/>
+          </g>
+          <!-- Card 2: EDIT (upcoming) -->
+          <g transform="translate(317, 54)" opacity="0.35">
+            <rect width="100" height="126" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+            <circle cx="50" cy="22" r="11" fill="#bd561d"/>
+            <text x="50" y="26" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#ffffff">2</text>
+            <text x="50" y="47" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#f0f6fc">EDIT</text>
+            <rect x="9" y="55" width="82" height="22" rx="4" fill="#0d1117" stroke="#30363d"/>
+            <text x="50" y="70" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#f0883e">board.txt</text>
+            <text x="50" y="93" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">Mark [X] or [O]</text>
+            <text x="50" y="106" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">in empty square</text>
+          </g>
+          <!-- Arrow 2 -> 3 -->
+          <g opacity="0.3"><line x1="421" y1="120" x2="433" y2="120" stroke="#484f58" stroke-width="2" stroke-linecap="round"/><polygon points="432,116 437,120 432,124" fill="#484f58"/></g>
+          <!-- Card 3: STAGE (upcoming) -->
+          <g transform="translate(438, 54)" opacity="0.35">
+            <rect width="100" height="126" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+            <circle cx="50" cy="22" r="11" fill="#9e6a03"/>
+            <text x="50" y="26" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#ffffff">3</text>
+            <text x="50" y="47" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#f0f6fc">STAGE</text>
+            <rect x="9" y="55" width="82" height="22" rx="4" fill="#0d1117" stroke="#30363d"/>
+            <text x="50" y="70" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#d29922">git add</text>
+            <text x="50" y="93" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">Stage board.txt</text>
+            <text x="50" y="106" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">for snapshot</text>
+          </g>
+          <!-- Arrow 3 -> 4 -->
+          <g opacity="0.3"><line x1="542" y1="120" x2="554" y2="120" stroke="#484f58" stroke-width="2" stroke-linecap="round"/><polygon points="553,116 558,120 553,124" fill="#484f58"/></g>
+          <!-- Card 4: COMMIT (upcoming) -->
+          <g transform="translate(559, 54)" opacity="0.35">
+            <rect width="100" height="126" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+            <circle cx="50" cy="22" r="11" fill="#6e40c9"/>
+            <text x="50" y="26" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#ffffff">4</text>
+            <text x="50" y="47" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#f0f6fc">COMMIT</text>
+            <rect x="9" y="55" width="82" height="22" rx="4" fill="#0d1117" stroke="#30363d"/>
+            <text x="50" y="70" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#bc8cff">git commit</text>
+            <text x="50" y="93" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">Save move to</text>
+            <text x="50" y="106" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">project history</text>
+          </g>
+          <!-- Arrow 4 -> 5 -->
+          <g opacity="0.3"><line x1="663" y1="120" x2="675" y2="120" stroke="#484f58" stroke-width="2" stroke-linecap="round"/><polygon points="674,116 679,120 674,124" fill="#484f58"/></g>
+          <!-- Card 5: PUSH (upcoming) -->
+          <g transform="translate(680, 54)" opacity="0.35">
+            <rect width="100" height="126" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+            <circle cx="50" cy="22" r="11" fill="#238636"/>
+            <text x="50" y="26" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#ffffff">5</text>
+            <text x="50" y="47" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#f0f6fc">PUSH</text>
+            <rect x="9" y="55" width="82" height="22" rx="4" fill="#0d1117" stroke="#30363d"/>
+            <text x="50" y="70" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#3fb950">git push</text>
+            <text x="50" y="93" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">Publish move to</text>
+            <text x="50" y="106" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">shared repository</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>SCDA training week</span>
+      <span>13 / 24</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 14: Turn Cycle Step 2 (EDIT) -->
+  <div class="slide" id="slide-14">
+    <div class="slide-header">
+      <h2>The Turn Cycle: Step 2</h2>
+      <span class="tag">Take Your Turn</span>
+    </div>
+    <div class="slide-body">
+      <div class="svg-board">
+        <svg viewBox="0 0 800 240" fill="none">
+          <rect width="800" height="240" rx="14" fill="#0d1117" stroke="#30363d" stroke-width="1.5" />
+          <g transform="translate(24, 20)">
+            <circle cx="4" cy="4" r="2.5" fill="#58a6ff"/>
+            <circle cx="4" cy="15" r="2.5" fill="#58a6ff"/>
+            <circle cx="13" cy="15" r="2.5" fill="#3fb950"/>
+            <path d="M 4 6.5 V 12.5 M 4 9 C 7 9 13 10 13 12.5" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            <text x="24" y="14" font-family="-apple-system, sans-serif" font-size="13" font-weight="700" fill="#ffffff" letter-spacing="0.5">GIT TIC-TAC-TOE</text>
+            <text x="752" y="14" text-anchor="end" font-family="-apple-system, sans-serif" font-size="11" fill="#8b949e">Two players &bull; One repository &bull; Alternating turns</text>
+          </g>
+          <line x1="24" y1="45" x2="776" y2="45" stroke="#21262d" stroke-width="1" />
+          <!-- Board on Left -->
+          <g transform="translate(24, 54)">
+            <rect width="156" height="170" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1" />
+            <text x="78" y="20" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#c9d1d9">board.txt</text>
+            <g transform="translate(30, 28)">
+              <rect width="96" height="96" rx="4" fill="#0d1117" stroke="#21262d" stroke-width="1"/>
+              <rect x="33" y="33" width="30" height="30" rx="3" fill="#388bfd26" stroke="#58a6ff" stroke-width="1"/>
+              <line x1="32" y1="2" x2="32" y2="94" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <line x1="64" y1="2" x2="64" y2="94" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <line x1="2" y1="32" x2="94" y2="32" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <line x1="2" y1="64" x2="94" y2="64" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <path d="M 10 10 L 22 22 M 22 10 L 10 22" stroke="#f0f6fc" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="48" cy="16" r="7" stroke="#f0883e" stroke-width="2.2" fill="none"/>
+              <path d="M 42 42 L 54 54 M 54 42 L 42 54" stroke="#58a6ff" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="80" cy="48" r="7" stroke="#f0883e" stroke-width="2.2" fill="none"/>
+              <circle cx="16" cy="80" r="7" stroke="#f0883e" stroke-width="2.2" fill="none"/>
+              <path d="M 74 74 L 86 86 M 86 74 L 74 86" stroke="#f0f6fc" stroke-width="2.5" stroke-linecap="round"/>
+            </g>
+            <text x="78" y="148" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">Move 5 in progress</text>
+          </g>
+          <!-- Card 1: PULL (completed) -->
+          <g transform="translate(196, 54)">
+            <rect width="100" height="126" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+            <circle cx="50" cy="22" r="11" fill="#1f6feb"/>
+            <text x="50" y="26" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#ffffff">1</text>
+            <text x="50" y="47" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#f0f6fc">PULL</text>
+            <rect x="9" y="55" width="82" height="22" rx="4" fill="#0d1117" stroke="#30363d"/>
+            <text x="50" y="70" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#58a6ff">git pull</text>
+            <text x="50" y="93" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">Fetch partner's</text>
+            <text x="50" y="106" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">latest move</text>
+          </g>
+          <!-- Arrow 1 -> 2 (active) -->
+          <g><line x1="300" y1="120" x2="312" y2="120" stroke="#58a6ff" stroke-width="2" stroke-linecap="round"/><polygon points="311,116 316,120 311,124" fill="#58a6ff"/></g>
+          <!-- Card 2: EDIT (ACTIVE) -->
+          <g transform="translate(317, 54)">
+            <rect width="100" height="126" rx="8" fill="#161b22" stroke="#f0883e" stroke-width="2"/>
+            <circle cx="50" cy="22" r="11" fill="#bd561d"/>
+            <text x="50" y="26" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#ffffff">2</text>
+            <text x="50" y="47" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#f0883e">EDIT</text>
+            <rect x="9" y="55" width="82" height="22" rx="4" fill="#0d1117" stroke="#f0883e"/>
+            <text x="50" y="70" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#f0883e">board.txt</text>
+            <text x="50" y="93" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#f0f6fc">Mark [X] or [O]</text>
+            <text x="50" y="106" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#f0f6fc">in empty square</text>
+          </g>
+          <!-- Arrow 2 -> 3 (dimmed) -->
+          <g opacity="0.3"><line x1="421" y1="120" x2="433" y2="120" stroke="#484f58" stroke-width="2" stroke-linecap="round"/><polygon points="432,116 437,120 432,124" fill="#484f58"/></g>
+          <!-- Card 3: STAGE (upcoming) -->
+          <g transform="translate(438, 54)" opacity="0.35">
+            <rect width="100" height="126" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+            <circle cx="50" cy="22" r="11" fill="#9e6a03"/>
+            <text x="50" y="26" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#ffffff">3</text>
+            <text x="50" y="47" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#f0f6fc">STAGE</text>
+            <rect x="9" y="55" width="82" height="22" rx="4" fill="#0d1117" stroke="#30363d"/>
+            <text x="50" y="70" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#d29922">git add</text>
+            <text x="50" y="93" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">Stage board.txt</text>
+            <text x="50" y="106" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">for snapshot</text>
+          </g>
+          <!-- Arrow 3 -> 4 -->
+          <g opacity="0.3"><line x1="542" y1="120" x2="554" y2="120" stroke="#484f58" stroke-width="2" stroke-linecap="round"/><polygon points="553,116 558,120 553,124" fill="#484f58"/></g>
+          <!-- Card 4: COMMIT (upcoming) -->
+          <g transform="translate(559, 54)" opacity="0.35">
+            <rect width="100" height="126" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+            <circle cx="50" cy="22" r="11" fill="#6e40c9"/>
+            <text x="50" y="26" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#ffffff">4</text>
+            <text x="50" y="47" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#f0f6fc">COMMIT</text>
+            <rect x="9" y="55" width="82" height="22" rx="4" fill="#0d1117" stroke="#30363d"/>
+            <text x="50" y="70" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#bc8cff">git commit</text>
+            <text x="50" y="93" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">Save move to</text>
+            <text x="50" y="106" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">project history</text>
+          </g>
+          <!-- Arrow 4 -> 5 -->
+          <g opacity="0.3"><line x1="663" y1="120" x2="675" y2="120" stroke="#484f58" stroke-width="2" stroke-linecap="round"/><polygon points="674,116 679,120 674,124" fill="#484f58"/></g>
+          <!-- Card 5: PUSH (upcoming) -->
+          <g transform="translate(680, 54)" opacity="0.35">
+            <rect width="100" height="126" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+            <circle cx="50" cy="22" r="11" fill="#238636"/>
+            <text x="50" y="26" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#ffffff">5</text>
+            <text x="50" y="47" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#f0f6fc">PUSH</text>
+            <rect x="9" y="55" width="82" height="22" rx="4" fill="#0d1117" stroke="#30363d"/>
+            <text x="50" y="70" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#3fb950">git push</text>
+            <text x="50" y="93" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">Publish move to</text>
+            <text x="50" y="106" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">shared repository</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>SCDA training week</span>
+      <span>14 / 24</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 15: Turn Cycle Step 3 (STAGE) -->
+  <div class="slide" id="slide-15">
+    <div class="slide-header">
+      <h2>The Turn Cycle: Step 3</h2>
+      <span class="tag">Prepare Snapshot</span>
+    </div>
+    <div class="slide-body">
+      <div class="svg-board">
+        <svg viewBox="0 0 800 240" fill="none">
+          <rect width="800" height="240" rx="14" fill="#0d1117" stroke="#30363d" stroke-width="1.5" />
+          <g transform="translate(24, 20)">
+            <circle cx="4" cy="4" r="2.5" fill="#58a6ff"/>
+            <circle cx="4" cy="15" r="2.5" fill="#58a6ff"/>
+            <circle cx="13" cy="15" r="2.5" fill="#3fb950"/>
+            <path d="M 4 6.5 V 12.5 M 4 9 C 7 9 13 10 13 12.5" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            <text x="24" y="14" font-family="-apple-system, sans-serif" font-size="13" font-weight="700" fill="#ffffff" letter-spacing="0.5">GIT TIC-TAC-TOE</text>
+            <text x="752" y="14" text-anchor="end" font-family="-apple-system, sans-serif" font-size="11" fill="#8b949e">Two players &bull; One repository &bull; Alternating turns</text>
+          </g>
+          <line x1="24" y1="45" x2="776" y2="45" stroke="#21262d" stroke-width="1" />
+          <!-- Board on Left -->
+          <g transform="translate(24, 54)">
+            <rect width="156" height="170" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1" />
+            <text x="78" y="20" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#c9d1d9">board.txt</text>
+            <g transform="translate(30, 28)">
+              <rect width="96" height="96" rx="4" fill="#0d1117" stroke="#21262d" stroke-width="1"/>
+              <rect x="33" y="33" width="30" height="30" rx="3" fill="#388bfd26" stroke="#58a6ff" stroke-width="1"/>
+              <line x1="32" y1="2" x2="32" y2="94" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <line x1="64" y1="2" x2="64" y2="94" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <line x1="2" y1="32" x2="94" y2="32" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <line x1="2" y1="64" x2="94" y2="64" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <path d="M 10 10 L 22 22 M 22 10 L 10 22" stroke="#f0f6fc" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="48" cy="16" r="7" stroke="#f0883e" stroke-width="2.2" fill="none"/>
+              <path d="M 42 42 L 54 54 M 54 42 L 42 54" stroke="#58a6ff" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="80" cy="48" r="7" stroke="#f0883e" stroke-width="2.2" fill="none"/>
+              <circle cx="16" cy="80" r="7" stroke="#f0883e" stroke-width="2.2" fill="none"/>
+              <path d="M 74 74 L 86 86 M 86 74 L 74 86" stroke="#f0f6fc" stroke-width="2.5" stroke-linecap="round"/>
+            </g>
+            <text x="78" y="148" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">Move 5 in progress</text>
+          </g>
+          <!-- Card 1: PULL (completed) -->
+          <g transform="translate(196, 54)">
+            <rect width="100" height="126" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+            <circle cx="50" cy="22" r="11" fill="#1f6feb"/>
+            <text x="50" y="26" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#ffffff">1</text>
+            <text x="50" y="47" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#f0f6fc">PULL</text>
+            <rect x="9" y="55" width="82" height="22" rx="4" fill="#0d1117" stroke="#30363d"/>
+            <text x="50" y="70" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#58a6ff">git pull</text>
+            <text x="50" y="93" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">Fetch partner's</text>
+            <text x="50" y="106" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">latest move</text>
+          </g>
+          <g><line x1="300" y1="120" x2="312" y2="120" stroke="#484f58" stroke-width="2" stroke-linecap="round"/><polygon points="311,116 316,120 311,124" fill="#484f58"/></g>
+          <!-- Card 2: EDIT (completed) -->
+          <g transform="translate(317, 54)">
+            <rect width="100" height="126" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+            <circle cx="50" cy="22" r="11" fill="#bd561d"/>
+            <text x="50" y="26" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#ffffff">2</text>
+            <text x="50" y="47" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#f0f6fc">EDIT</text>
+            <rect x="9" y="55" width="82" height="22" rx="4" fill="#0d1117" stroke="#30363d"/>
+            <text x="50" y="70" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#f0883e">board.txt</text>
+            <text x="50" y="93" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">Mark [X] or [O]</text>
+            <text x="50" y="106" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">in empty square</text>
+          </g>
+          <!-- Arrow 2 -> 3 (active) -->
+          <g><line x1="421" y1="120" x2="433" y2="120" stroke="#d29922" stroke-width="2" stroke-linecap="round"/><polygon points="432,116 437,120 432,124" fill="#d29922"/></g>
+          <!-- Card 3: STAGE (ACTIVE) -->
+          <g transform="translate(438, 54)">
+            <rect width="100" height="126" rx="8" fill="#161b22" stroke="#d29922" stroke-width="2"/>
+            <circle cx="50" cy="22" r="11" fill="#9e6a03"/>
+            <text x="50" y="26" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#ffffff">3</text>
+            <text x="50" y="47" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#d29922">STAGE</text>
+            <rect x="9" y="55" width="82" height="22" rx="4" fill="#0d1117" stroke="#d29922"/>
+            <text x="50" y="70" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#d29922">git add</text>
+            <text x="50" y="93" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#f0f6fc">Stage board.txt</text>
+            <text x="50" y="106" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#f0f6fc">for snapshot</text>
+          </g>
+          <!-- Arrow 3 -> 4 (dimmed) -->
+          <g opacity="0.3"><line x1="542" y1="120" x2="554" y2="120" stroke="#484f58" stroke-width="2" stroke-linecap="round"/><polygon points="553,116 558,120 553,124" fill="#484f58"/></g>
+          <!-- Card 4: COMMIT (upcoming) -->
+          <g transform="translate(559, 54)" opacity="0.35">
+            <rect width="100" height="126" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+            <circle cx="50" cy="22" r="11" fill="#6e40c9"/>
+            <text x="50" y="26" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#ffffff">4</text>
+            <text x="50" y="47" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#f0f6fc">COMMIT</text>
+            <rect x="9" y="55" width="82" height="22" rx="4" fill="#0d1117" stroke="#30363d"/>
+            <text x="50" y="70" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#bc8cff">git commit</text>
+            <text x="50" y="93" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">Save move to</text>
+            <text x="50" y="106" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">project history</text>
+          </g>
+          <!-- Arrow 4 -> 5 -->
+          <g opacity="0.3"><line x1="663" y1="120" x2="675" y2="120" stroke="#484f58" stroke-width="2" stroke-linecap="round"/><polygon points="674,116 679,120 674,124" fill="#484f58"/></g>
+          <!-- Card 5: PUSH (upcoming) -->
+          <g transform="translate(680, 54)" opacity="0.35">
+            <rect width="100" height="126" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+            <circle cx="50" cy="22" r="11" fill="#238636"/>
+            <text x="50" y="26" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#ffffff">5</text>
+            <text x="50" y="47" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#f0f6fc">PUSH</text>
+            <rect x="9" y="55" width="82" height="22" rx="4" fill="#0d1117" stroke="#30363d"/>
+            <text x="50" y="70" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#3fb950">git push</text>
+            <text x="50" y="93" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">Publish move to</text>
+            <text x="50" y="106" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">shared repository</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>SCDA training week</span>
+      <span>15 / 24</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 16: Turn Cycle Step 4 (COMMIT) -->
+  <div class="slide" id="slide-16">
+    <div class="slide-header">
+      <h2>The Turn Cycle: Step 4</h2>
+      <span class="tag">Record to History</span>
+    </div>
+    <div class="slide-body">
+      <div class="svg-board">
+        <svg viewBox="0 0 800 240" fill="none">
+          <rect width="800" height="240" rx="14" fill="#0d1117" stroke="#30363d" stroke-width="1.5" />
+          <g transform="translate(24, 20)">
+            <circle cx="4" cy="4" r="2.5" fill="#58a6ff"/>
+            <circle cx="4" cy="15" r="2.5" fill="#58a6ff"/>
+            <circle cx="13" cy="15" r="2.5" fill="#3fb950"/>
+            <path d="M 4 6.5 V 12.5 M 4 9 C 7 9 13 10 13 12.5" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            <text x="24" y="14" font-family="-apple-system, sans-serif" font-size="13" font-weight="700" fill="#ffffff" letter-spacing="0.5">GIT TIC-TAC-TOE</text>
+            <text x="752" y="14" text-anchor="end" font-family="-apple-system, sans-serif" font-size="11" fill="#8b949e">Two players &bull; One repository &bull; Alternating turns</text>
+          </g>
+          <line x1="24" y1="45" x2="776" y2="45" stroke="#21262d" stroke-width="1" />
+          <!-- Board on Left -->
+          <g transform="translate(24, 54)">
+            <rect width="156" height="170" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1" />
+            <text x="78" y="20" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#c9d1d9">board.txt</text>
+            <g transform="translate(30, 28)">
+              <rect width="96" height="96" rx="4" fill="#0d1117" stroke="#21262d" stroke-width="1"/>
+              <rect x="33" y="33" width="30" height="30" rx="3" fill="#388bfd26" stroke="#58a6ff" stroke-width="1"/>
+              <line x1="32" y1="2" x2="32" y2="94" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <line x1="64" y1="2" x2="64" y2="94" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <line x1="2" y1="32" x2="94" y2="32" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <line x1="2" y1="64" x2="94" y2="64" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <path d="M 10 10 L 22 22 M 22 10 L 10 22" stroke="#f0f6fc" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="48" cy="16" r="7" stroke="#f0883e" stroke-width="2.2" fill="none"/>
+              <path d="M 42 42 L 54 54 M 54 42 L 42 54" stroke="#58a6ff" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="80" cy="48" r="7" stroke="#f0883e" stroke-width="2.2" fill="none"/>
+              <circle cx="16" cy="80" r="7" stroke="#f0883e" stroke-width="2.2" fill="none"/>
+              <path d="M 74 74 L 86 86 M 86 74 L 74 86" stroke="#f0f6fc" stroke-width="2.5" stroke-linecap="round"/>
+            </g>
+            <text x="78" y="148" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">Move 5 in progress</text>
+          </g>
+          <!-- Card 1: PULL (completed) -->
+          <g transform="translate(196, 54)">
+            <rect width="100" height="126" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+            <circle cx="50" cy="22" r="11" fill="#1f6feb"/>
+            <text x="50" y="26" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#ffffff">1</text>
+            <text x="50" y="47" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#f0f6fc">PULL</text>
+            <rect x="9" y="55" width="82" height="22" rx="4" fill="#0d1117" stroke="#30363d"/>
+            <text x="50" y="70" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#58a6ff">git pull</text>
+            <text x="50" y="93" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">Fetch partner's</text>
+            <text x="50" y="106" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">latest move</text>
+          </g>
+          <g><line x1="300" y1="120" x2="312" y2="120" stroke="#484f58" stroke-width="2" stroke-linecap="round"/><polygon points="311,116 316,120 311,124" fill="#484f58"/></g>
+          <!-- Card 2: EDIT (completed) -->
+          <g transform="translate(317, 54)">
+            <rect width="100" height="126" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+            <circle cx="50" cy="22" r="11" fill="#bd561d"/>
+            <text x="50" y="26" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#ffffff">2</text>
+            <text x="50" y="47" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#f0f6fc">EDIT</text>
+            <rect x="9" y="55" width="82" height="22" rx="4" fill="#0d1117" stroke="#30363d"/>
+            <text x="50" y="70" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#f0883e">board.txt</text>
+            <text x="50" y="93" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">Mark [X] or [O]</text>
+            <text x="50" y="106" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">in empty square</text>
+          </g>
+          <g><line x1="421" y1="120" x2="433" y2="120" stroke="#484f58" stroke-width="2" stroke-linecap="round"/><polygon points="432,116 437,120 432,124" fill="#484f58"/></g>
+          <!-- Card 3: STAGE (completed) -->
+          <g transform="translate(438, 54)">
+            <rect width="100" height="126" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+            <circle cx="50" cy="22" r="11" fill="#9e6a03"/>
+            <text x="50" y="26" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#ffffff">3</text>
+            <text x="50" y="47" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#f0f6fc">STAGE</text>
+            <rect x="9" y="55" width="82" height="22" rx="4" fill="#0d1117" stroke="#30363d"/>
+            <text x="50" y="70" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#d29922">git add</text>
+            <text x="50" y="93" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">Stage board.txt</text>
+            <text x="50" y="106" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">for snapshot</text>
+          </g>
+          <!-- Arrow 3 -> 4 (active) -->
+          <g><line x1="542" y1="120" x2="554" y2="120" stroke="#bc8cff" stroke-width="2" stroke-linecap="round"/><polygon points="553,116 558,120 553,124" fill="#bc8cff"/></g>
+          <!-- Card 4: COMMIT (ACTIVE) -->
+          <g transform="translate(559, 54)">
+            <rect width="100" height="126" rx="8" fill="#161b22" stroke="#bc8cff" stroke-width="2"/>
+            <circle cx="50" cy="22" r="11" fill="#6e40c9"/>
+            <text x="50" y="26" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#ffffff">4</text>
+            <text x="50" y="47" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#bc8cff">COMMIT</text>
+            <rect x="9" y="55" width="82" height="22" rx="4" fill="#0d1117" stroke="#bc8cff"/>
+            <text x="50" y="70" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#bc8cff">git commit</text>
+            <text x="50" y="93" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#f0f6fc">Save move to</text>
+            <text x="50" y="106" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#f0f6fc">project history</text>
+          </g>
+          <!-- Arrow 4 -> 5 (dimmed) -->
+          <g opacity="0.3"><line x1="663" y1="120" x2="675" y2="120" stroke="#484f58" stroke-width="2" stroke-linecap="round"/><polygon points="674,116 679,120 674,124" fill="#484f58"/></g>
+          <!-- Card 5: PUSH (upcoming) -->
+          <g transform="translate(680, 54)" opacity="0.35">
+            <rect width="100" height="126" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+            <circle cx="50" cy="22" r="11" fill="#238636"/>
+            <text x="50" y="26" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#ffffff">5</text>
+            <text x="50" y="47" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#f0f6fc">PUSH</text>
+            <rect x="9" y="55" width="82" height="22" rx="4" fill="#0d1117" stroke="#30363d"/>
+            <text x="50" y="70" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#3fb950">git push</text>
+            <text x="50" y="93" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">Publish move to</text>
+            <text x="50" y="106" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">shared repository</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>SCDA training week</span>
+      <span>16 / 24</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 17: Turn Cycle Step 5 (PUSH & The Repeat Loop) -->
+  <div class="slide" id="slide-17">
+    <div class="slide-header">
+      <h2>The Turn Cycle: Step 5</h2>
+      <span class="tag">Publish &amp; Repeat Loop</span>
+    </div>
+    <div class="slide-body">
+      <div class="svg-board">
+        <svg viewBox="0 0 800 240" fill="none">
+          <rect width="800" height="240" rx="14" fill="#0d1117" stroke="#30363d" stroke-width="1.5" />
+          <g transform="translate(24, 20)">
+            <circle cx="4" cy="4" r="2.5" fill="#58a6ff"/>
+            <circle cx="4" cy="15" r="2.5" fill="#58a6ff"/>
+            <circle cx="13" cy="15" r="2.5" fill="#3fb950"/>
+            <path d="M 4 6.5 V 12.5 M 4 9 C 7 9 13 10 13 12.5" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            <text x="24" y="14" font-family="-apple-system, sans-serif" font-size="13" font-weight="700" fill="#ffffff" letter-spacing="0.5">GIT TIC-TAC-TOE</text>
+            <text x="752" y="14" text-anchor="end" font-family="-apple-system, sans-serif" font-size="11" fill="#8b949e">Two players &bull; One repository &bull; Alternating turns</text>
+          </g>
+          <line x1="24" y1="45" x2="776" y2="45" stroke="#21262d" stroke-width="1" />
+          <!-- Board on Left -->
+          <g transform="translate(24, 54)">
+            <rect width="156" height="170" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1" />
+            <text x="78" y="20" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#c9d1d9">board.txt</text>
+            <g transform="translate(30, 28)">
+              <rect width="96" height="96" rx="4" fill="#0d1117" stroke="#21262d" stroke-width="1"/>
+              <rect x="33" y="33" width="30" height="30" rx="3" fill="#388bfd26" stroke="#58a6ff" stroke-width="1"/>
+              <line x1="32" y1="2" x2="32" y2="94" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <line x1="64" y1="2" x2="64" y2="94" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <line x1="2" y1="32" x2="94" y2="32" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <line x1="2" y1="64" x2="94" y2="64" stroke="#30363d" stroke-width="2" stroke-linecap="round"/>
+              <path d="M 10 10 L 22 22 M 22 10 L 10 22" stroke="#f0f6fc" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="48" cy="16" r="7" stroke="#f0883e" stroke-width="2.2" fill="none"/>
+              <path d="M 42 42 L 54 54 M 54 42 L 42 54" stroke="#58a6ff" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="80" cy="48" r="7" stroke="#f0883e" stroke-width="2.2" fill="none"/>
+              <circle cx="16" cy="80" r="7" stroke="#f0883e" stroke-width="2.2" fill="none"/>
+              <path d="M 74 74 L 86 86 M 86 74 L 74 86" stroke="#f0f6fc" stroke-width="2.5" stroke-linecap="round"/>
+            </g>
+            <text x="78" y="148" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">Move 5 in progress</text>
+          </g>
+          <!-- Card 1: PULL -->
+          <g transform="translate(196, 54)">
+            <rect width="100" height="126" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+            <circle cx="50" cy="22" r="11" fill="#1f6feb"/>
+            <text x="50" y="26" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#ffffff">1</text>
+            <text x="50" y="47" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#f0f6fc">PULL</text>
+            <rect x="9" y="55" width="82" height="22" rx="4" fill="#0d1117" stroke="#30363d"/>
+            <text x="50" y="70" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#58a6ff">git pull</text>
+            <text x="50" y="93" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">Fetch partner's</text>
+            <text x="50" y="106" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">latest move</text>
+          </g>
+          <g><line x1="300" y1="120" x2="312" y2="120" stroke="#484f58" stroke-width="2" stroke-linecap="round"/><polygon points="311,116 316,120 311,124" fill="#484f58"/></g>
+          <!-- Card 2: EDIT -->
+          <g transform="translate(317, 54)">
+            <rect width="100" height="126" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+            <circle cx="50" cy="22" r="11" fill="#bd561d"/>
+            <text x="50" y="26" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#ffffff">2</text>
+            <text x="50" y="47" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#f0f6fc">EDIT</text>
+            <rect x="9" y="55" width="82" height="22" rx="4" fill="#0d1117" stroke="#30363d"/>
+            <text x="50" y="70" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#f0883e">board.txt</text>
+            <text x="50" y="93" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">Mark [X] or [O]</text>
+            <text x="50" y="106" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">in empty square</text>
+          </g>
+          <g><line x1="421" y1="120" x2="433" y2="120" stroke="#484f58" stroke-width="2" stroke-linecap="round"/><polygon points="432,116 437,120 432,124" fill="#484f58"/></g>
+          <!-- Card 3: STAGE -->
+          <g transform="translate(438, 54)">
+            <rect width="100" height="126" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+            <circle cx="50" cy="22" r="11" fill="#9e6a03"/>
+            <text x="50" y="26" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#ffffff">3</text>
+            <text x="50" y="47" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#f0f6fc">STAGE</text>
+            <rect x="9" y="55" width="82" height="22" rx="4" fill="#0d1117" stroke="#30363d"/>
+            <text x="50" y="70" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#d29922">git add</text>
+            <text x="50" y="93" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">Stage board.txt</text>
+            <text x="50" y="106" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">for snapshot</text>
+          </g>
+          <g><line x1="542" y1="120" x2="554" y2="120" stroke="#484f58" stroke-width="2" stroke-linecap="round"/><polygon points="553,116 558,120 553,124" fill="#484f58"/></g>
+          <!-- Card 4: COMMIT -->
+          <g transform="translate(559, 54)">
+            <rect width="100" height="126" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+            <circle cx="50" cy="22" r="11" fill="#6e40c9"/>
+            <text x="50" y="26" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#ffffff">4</text>
+            <text x="50" y="47" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#f0f6fc">COMMIT</text>
+            <rect x="9" y="55" width="82" height="22" rx="4" fill="#0d1117" stroke="#30363d"/>
+            <text x="50" y="70" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#bc8cff">git commit</text>
+            <text x="50" y="93" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">Save move to</text>
+            <text x="50" y="106" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#8b949e">project history</text>
+          </g>
+          <!-- Arrow 4 -> 5 (active) -->
+          <g><line x1="663" y1="120" x2="675" y2="120" stroke="#3fb950" stroke-width="2" stroke-linecap="round"/><polygon points="674,116 679,120 674,124" fill="#3fb950"/></g>
+          <!-- Card 5: PUSH (ACTIVE) -->
+          <g transform="translate(680, 54)">
+            <rect width="100" height="126" rx="8" fill="#161b22" stroke="#3fb950" stroke-width="2"/>
+            <circle cx="50" cy="22" r="11" fill="#238636"/>
+            <text x="50" y="26" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#ffffff">5</text>
+            <text x="50" y="47" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#3fb950">PUSH</text>
+            <rect x="9" y="55" width="82" height="22" rx="4" fill="#0d1117" stroke="#3fb950"/>
+            <text x="50" y="70" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#3fb950">git push</text>
+            <text x="50" y="93" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#f0f6fc">Publish move to</text>
+            <text x="50" y="106" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="9.5" fill="#f0f6fc">shared repository</text>
+          </g>
+          <!-- Collaborative Loop Arrow -->
+          <path d="M 730 180 V 194 Q 730 204 718 204 H 258 Q 246 204 246 194 V 183" fill="none" stroke="#58a6ff" stroke-width="1.8" stroke-dasharray="4 3"/>
+          <polygon points="242,185 246,179 250,185" fill="#58a6ff"/>
+          <!-- Loop Label Pill -->
+          <g transform="translate(356, 193)">
+            <rect width="264" height="22" rx="11" fill="#161b22" stroke="#388bfd" stroke-width="1.2" />
+            <text x="132" y="15" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10" font-weight="600" fill="#58a6ff">&subarr;  Partner pulls your move &amp; takes their turn</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>SCDA training week</span>
+      <span>17 / 24</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 18: Three Local Stages - Step 1 -->
+  <div class="slide" id="slide-18">
+    <div class="slide-header">
       <h2>Three Local Stages</h2>
-      <span class="tag">SCDA training week</span>
+      <span class="tag">Working Directory</span>
     </div>
     <div class="slide-body">
       <div class="stages-diagram">
@@ -248,7 +1212,46 @@
               <line x1="9" y1="17" x2="13" y2="17" stroke="#ff7b72" stroke-width="2.5"/>
             </svg>
           </div>
-          <div class="stage-cue">Edit board.txt with your latest game move</div>
+          <div class="stage-cue">Edit <code>board.txt</code> with your latest move</div>
+          <div style="font-family: monospace; color: #ff7b72; font-size: clamp(11px, 1.2cqw, 16px);">[ Unstaged edits ]</div>
+        </div>
+        <div class="trans-arrow">
+          <div class="stage-cmd-box">git add</div>
+          <svg width="28" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+        <div class="stage-box ghost"></div>
+        <div class="trans-arrow">
+          <div class="stage-cmd-box">git commit</div>
+          <svg width="28" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+        <div class="stage-box ghost"></div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>SCDA training week</span>
+      <span>18 / 24</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 19: Three Local Stages - Step 2 -->
+  <div class="slide" id="slide-19">
+    <div class="slide-header">
+      <h2>Three Local Stages</h2>
+      <span class="tag">Staging Area</span>
+    </div>
+    <div class="slide-body">
+      <div class="stages-diagram">
+        <div class="stage-box">
+          <div class="stage-title">Working Directory</div>
+          <div class="stage-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="9" y1="13" x2="15" y2="13" stroke="#ff7b72" stroke-width="2.5"/>
+              <line x1="9" y1="17" x2="13" y2="17" stroke="#ff7b72" stroke-width="2.5"/>
+            </svg>
+          </div>
+          <div class="stage-cue">Edit <code>board.txt</code> with your latest move</div>
           <div style="font-family: monospace; color: var(--text-muted); font-size: clamp(11px, 1.2cqw, 16px);">[ Unstaged edits ]</div>
         </div>
         <div class="trans-arrow visible">
@@ -260,14 +1263,63 @@
           <div class="stage-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5">
               <rect x="3" y="3" width="18" height="18" rx="2"/>
-              <path d="M9 12l2 2 4-4" stroke="var(--green)" stroke-width="2.5"/>
+              <path d="M9 12l2 2 4-4" stroke="var(--accent)" stroke-width="2.5"/>
             </svg>
           </div>
-          <div class="stage-cue">Prepare board.txt for the snapshot</div>
-          <div style="font-family: monospace; color: var(--accent); font-size: clamp(11px, 1.2cqw, 16px);">Index ready</div>
+          <div class="stage-cue">Package <code>board.txt</code> ready for snapshot</div>
+          <div style="font-family: monospace; color: var(--accent); font-size: clamp(11px, 1.2cqw, 16px);">[ Staged / Index ]</div>
+        </div>
+        <div class="trans-arrow">
+          <div class="stage-cmd-box">git commit</div>
+          <svg width="28" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+        <div class="stage-box ghost"></div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>SCDA training week</span>
+      <span>19 / 24</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 20: Three Local Stages - Step 3 -->
+  <div class="slide" id="slide-20">
+    <div class="slide-header">
+      <h2>Three Local Stages</h2>
+      <span class="tag">Local Repository</span>
+    </div>
+    <div class="slide-body">
+      <div class="stages-diagram">
+        <div class="stage-box">
+          <div class="stage-title">Working Directory</div>
+          <div class="stage-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="9" y1="13" x2="15" y2="13" stroke="#ff7b72" stroke-width="2.5"/>
+              <line x1="9" y1="17" x2="13" y2="17" stroke="#ff7b72" stroke-width="2.5"/>
+            </svg>
+          </div>
+          <div class="stage-cue">Edit <code>board.txt</code> with your latest move</div>
+          <div style="font-family: monospace; color: var(--text-muted); font-size: clamp(11px, 1.2cqw, 16px);">[ Working Tree ]</div>
         </div>
         <div class="trans-arrow visible">
-          <div class="stage-cmd-box">git commit</div>
+          <div class="stage-cmd-box">git add</div>
+          <svg width="28" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+        <div class="stage-box">
+          <div class="stage-title">Staging Area</div>
+          <div class="stage-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <path d="M9 12l2 2 4-4" stroke="var(--accent)" stroke-width="2.5"/>
+            </svg>
+          </div>
+          <div class="stage-cue">Prepare <code>board.txt</code> for commit</div>
+          <div style="font-family: monospace; color: var(--accent); font-size: clamp(11px, 1.2cqw, 16px);">[ Staged ]</div>
+        </div>
+        <div class="trans-arrow visible">
+          <div class="stage-cmd-box" style="border-color: var(--green); box-shadow: 0 4px 14px rgba(63, 185, 80, 0.25);">git commit</div>
           <svg width="28" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </div>
         <div class="stage-box">
@@ -279,59 +1331,27 @@
             </svg>
           </div>
           <div class="stage-cue">Permanent snapshot sealed into .git history</div>
-          <div style="font-family: monospace; color: var(--green); font-size: clamp(11px, 1.2cqw, 16px);">Time machine</div>
+          <div style="font-family: monospace; color: var(--green); font-size: clamp(11px, 1.2cqw, 16px);">[ Committed ]</div>
         </div>
       </div>
     </div>
     <div class="slide-footer">
       <span>SCDA training week</span>
-      <span>7 / 13</span>
+      <span>20 / 24</span>
     </div>
   </div>
 
-  <!-- SLIDE 8: SVG Step 1 (Making & Saving a Turn) -->
-  <div class="slide" id="slide-8">
+  <!-- SLIDE 21: Remotes Step 1 (Push) -->
+  <div class="slide" id="slide-21">
     <div class="slide-header">
-      <h2>SVG Step 1: Making & Saving a Turn</h2>
-      <span class="tag">SCDA training week</span>
-    </div>
-    <div class="slide-body">
-      <div class="svg-board">
-        <svg viewBox="0 0 920 280">
-          <line x1="100" y1="180" x2="820" y2="180" stroke="#30363d" stroke-width="5" />
-          <line x1="100" y1="180" x2="340" y2="180" stroke="#58a6ff" stroke-width="5" />
-          <g transform="translate(180, 180)">
-            <circle r="18" fill="#161b22" stroke="#58a6ff" stroke-width="4" />
-            <text y="44" text-anchor="middle" fill="#f0f6fc" font-family="monospace" font-size="16" font-weight="bold">c1: init board.txt</text>
-          </g>
-          <g transform="translate(320, 180)">
-            <circle r="18" fill="#161b22" stroke="#58a6ff" stroke-width="4" />
-            <text y="44" text-anchor="middle" fill="#f0f6fc" font-family="monospace" font-size="16" font-weight="bold">c2: place X move</text>
-          </g>
-          <rect x="40" y="165" width="70" height="30" rx="6" fill="#1f293d" stroke="#58a6ff" stroke-width="1.5"/>
-          <text x="75" y="185" text-anchor="middle" fill="#58a6ff" font-family="monospace" font-size="14" font-weight="bold">main</text>
-        </svg>
-      </div>
-    </div>
-    <div class="slide-footer">
-      <span>SCDA training week</span>
-      <span>8 / 13</span>
-    </div>
-  </div>
-
-  <!-- SLIDE 9: SVG Step 2 (Publishing Your Turn) -->
-  <div class="slide" id="slide-9">
-    <div class="slide-header">
-      <h2>SVG Step 2: Publishing Your Turn</h2>
-      <span class="tag">SCDA training week</span>
+      <h2>Remotes: GitHub Sync</h2>
+      <span class="tag">Cloud Hub</span>
     </div>
     <div class="slide-body">
       <div class="svg-board">
         <svg viewBox="0 0 860 300">
           <defs>
-            <marker id="arr-blue-9" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-              <path d="M 0 1 L 10 5 L 0 9 z" fill="#58a6ff"/>
-            </marker>
+            <marker id="arr-blue-21" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 0 1 L 10 5 L 0 9 z" fill="#58a6ff"/></marker>
           </defs>
           <g transform="translate(430, 85)">
             <path d="M -85 10 C -105 -18, -65 -55, -25 -45 C -5 -75, 55 -75, 70 -45 C 110 -55, 125 -10, 95 18 C 115 42, 85 62, 55 58 L -65 58 C -95 58, -115 35, -85 10 Z" fill="#161b22" stroke="#ffffff" stroke-width="2.5"/>
@@ -343,9 +1363,9 @@
             <rect x="-14" y="30" width="28" height="12" fill="#30363d"/>
             <line x1="-35" y1="42" x2="35" y2="42" stroke="#30363d" stroke-width="3"/>
             <text y="-6" text-anchor="middle" fill="#58a6ff" font-size="16" font-weight="bold">Player X</text>
-            <text y="14" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="12">board.txt commit</text>
+            <text y="14" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="12">local repo</text>
           </g>
-          <path d="M 225 175 L 330 115" stroke="#58a6ff" stroke-width="3.5" marker-end="url(#arr-blue-9)" fill="none" />
+          <path d="M 225 175 L 330 115" stroke="#58a6ff" stroke-width="3.5" marker-end="url(#arr-blue-21)" fill="none" />
           <rect x="235" y="112" width="110" height="28" rx="6" fill="#000000" stroke="#58a6ff" stroke-width="1.5"/>
           <text x="290" y="131" text-anchor="middle" fill="#58a6ff" font-family="monospace" font-size="13" font-weight="bold">git push origin</text>
         </svg>
@@ -353,75 +1373,29 @@
     </div>
     <div class="slide-footer">
       <span>SCDA training week</span>
-      <span>9 / 13</span>
+      <span>21 / 24</span>
     </div>
   </div>
 
-  <!-- SLIDE 10: SVG Step 3 (Partner Syncing) -->
-  <div class="slide" id="slide-10">
+  <!-- SLIDE 22: Remotes Step 2 (Collaborative Loop) -->
+  <div class="slide" id="slide-22">
     <div class="slide-header">
-      <h2>SVG Step 3: Partner Syncing</h2>
-      <span class="tag">SCDA training week</span>
+      <h2>Remotes: Turn Exchange</h2>
+      <span class="tag">Collaborative Loop</span>
     </div>
     <div class="slide-body">
       <div class="svg-board">
         <svg viewBox="0 0 860 300">
           <defs>
-            <marker id="arr-blue-10" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 0 1 L 10 5 L 0 9 z" fill="#58a6ff"/></marker>
-            <marker id="arr-purple-10" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 0 1 L 10 5 L 0 9 z" fill="#bc8cff"/></marker>
-          </defs>
-          <g transform="translate(430, 85)">
-            <path d="M -85 10 C -105 -18, -65 -55, -25 -45 C -5 -75, 55 -75, 70 -45 C 110 -55, 125 -10, 95 18 C 115 42, 85 62, 55 58 L -65 58 C -95 58, -115 35, -85 10 Z" fill="#161b22" stroke="#ffffff" stroke-width="2.5"/>
-            <text y="-2" text-anchor="middle" fill="#ffffff" font-size="20" font-weight="bold">GitHub</text>
-            <text y="22" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="14">origin/main</text>
-          </g>
-          <g transform="translate(180, 225)">
-            <rect x="-65" y="-40" width="130" height="70" rx="6" fill="#161b22" stroke="#58a6ff" stroke-width="2.5"/>
-            <rect x="-14" y="30" width="28" height="12" fill="#30363d"/>
-            <line x1="-35" y1="42" x2="35" y2="42" stroke="#30363d" stroke-width="3"/>
-            <text y="-6" text-anchor="middle" fill="#58a6ff" font-size="16" font-weight="bold">Player X</text>
-            <text y="14" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="12">local repo</text>
-          </g>
-          <g transform="translate(680, 225)">
-            <rect x="-65" y="-40" width="130" height="70" rx="6" fill="#161b22" stroke="#bc8cff" stroke-width="2.5"/>
-            <rect x="-14" y="30" width="28" height="12" fill="#30363d"/>
-            <line x1="-35" y1="42" x2="35" y2="42" stroke="#30363d" stroke-width="3"/>
-            <text y="-6" text-anchor="middle" fill="#bc8cff" font-size="16" font-weight="bold">Player O</text>
-            <text y="14" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="12">local repo</text>
-          </g>
-          <path d="M 225 175 L 330 115" stroke="#58a6ff" stroke-width="3.5" marker-end="url(#arr-blue-10)" fill="none" />
-          <rect x="235" y="112" width="100" height="28" rx="6" fill="#000000" stroke="#58a6ff" stroke-width="1.5"/>
-          <text x="285" y="131" text-anchor="middle" fill="#58a6ff" font-family="monospace" font-size="13" font-weight="bold">git push</text>
-          <path d="M 530 115 L 635 175" stroke="#bc8cff" stroke-width="3.5" marker-end="url(#arr-purple-10)" fill="none" />
-          <rect x="535" y="112" width="100" height="28" rx="6" fill="#000000" stroke="#bc8cff" stroke-width="1.5"/>
-          <text x="585" y="131" text-anchor="middle" fill="#bc8cff" font-family="monospace" font-size="13" font-weight="bold">git pull</text>
-        </svg>
-      </div>
-    </div>
-    <div class="slide-footer">
-      <span>SCDA training week</span>
-      <span>10 / 13</span>
-    </div>
-  </div>
-
-  <!-- SLIDE 11: SVG Step 4 (The Collaboration Loop) -->
-  <div class="slide" id="slide-11">
-    <div class="slide-header">
-      <h2>SVG Step 4: The Collaboration Loop</h2>
-      <span class="tag">SCDA training week</span>
-    </div>
-    <div class="slide-body">
-      <div class="svg-board">
-        <svg viewBox="0 0 860 300">
-          <defs>
-            <marker id="arr-blue-11" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 0 1 L 10 5 L 0 9 z" fill="#58a6ff"/></marker>
-            <marker id="arr-purple-11" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 0 1 L 10 5 L 0 9 z" fill="#bc8cff"/></marker>
+            <marker id="arr-blue-22" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 0 1 L 10 5 L 0 9 z" fill="#58a6ff"/></marker>
+            <marker id="arr-orange-22" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 0 1 L 10 5 L 0 9 z" fill="#f0883e"/></marker>
           </defs>
           <g transform="translate(430, 85)">
             <path d="M -85 10 C -105 -18, -65 -55, -25 -45 C -5 -75, 55 -75, 70 -45 C 110 -55, 125 -10, 95 18 C 115 42, 85 62, 55 58 L -65 58 C -95 58, -115 35, -85 10 Z" fill="#161b22" stroke="#ffffff" stroke-width="2.5"/>
             <text y="-2" text-anchor="middle" fill="#ffffff" font-size="20" font-weight="bold">GitHub</text>
             <text y="22" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="14">remote: origin</text>
           </g>
+          <!-- Player X -->
           <g transform="translate(180, 225)">
             <rect x="-65" y="-40" width="130" height="70" rx="6" fill="#161b22" stroke="#58a6ff" stroke-width="2.5"/>
             <rect x="-14" y="30" width="28" height="12" fill="#30363d"/>
@@ -429,108 +1403,100 @@
             <text y="-6" text-anchor="middle" fill="#58a6ff" font-size="16" font-weight="bold">Player X</text>
             <text y="14" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="12">local repo</text>
           </g>
+          <!-- Player O -->
           <g transform="translate(680, 225)">
-            <rect x="-65" y="-40" width="130" height="70" rx="6" fill="#161b22" stroke="#bc8cff" stroke-width="2.5"/>
+            <rect x="-65" y="-40" width="130" height="70" rx="6" fill="#161b22" stroke="#f0883e" stroke-width="2.5"/>
             <rect x="-14" y="30" width="28" height="12" fill="#30363d"/>
             <line x1="-35" y1="42" x2="35" y2="42" stroke="#30363d" stroke-width="3"/>
-            <text y="-6" text-anchor="middle" fill="#bc8cff" font-size="16" font-weight="bold">Player O</text>
+            <text y="-6" text-anchor="middle" fill="#f0883e" font-size="16" font-weight="bold">Player O</text>
             <text y="14" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="12">local repo</text>
           </g>
-          <path d="M 225 175 L 330 115" stroke="#58a6ff" stroke-width="3.5" marker-end="url(#arr-blue-11)" fill="none" />
+          <!-- X Push -->
+          <path d="M 225 175 L 330 115" stroke="#58a6ff" stroke-width="3.5" marker-end="url(#arr-blue-22)" fill="none" />
           <rect x="235" y="112" width="90" height="28" rx="6" fill="#000000" stroke="#58a6ff" stroke-width="1.5"/>
           <text x="280" y="131" text-anchor="middle" fill="#58a6ff" font-family="monospace" font-size="13" font-weight="bold">git push</text>
-          <path d="M 355 135 L 250 195" stroke="#58a6ff" stroke-width="3.5" stroke-dasharray="5,5" marker-end="url(#arr-blue-11)" fill="none" />
+          <!-- X Pull -->
+          <path d="M 355 135 L 250 195" stroke="#58a6ff" stroke-width="3.5" stroke-dasharray="5,5" marker-end="url(#arr-blue-22)" fill="none" />
           <rect x="270" y="176" width="90" height="28" rx="6" fill="#000000" stroke="#58a6ff" stroke-width="1.5"/>
           <text x="315" y="195" text-anchor="middle" fill="#58a6ff" font-family="monospace" font-size="13" font-weight="bold">git pull</text>
-          <path d="M 530 115 L 635 175" stroke="#bc8cff" stroke-width="3.5" marker-end="url(#arr-purple-11)" fill="none" />
-          <rect x="535" y="112" width="90" height="28" rx="6" fill="#000000" stroke="#bc8cff" stroke-width="1.5"/>
-          <text x="580" y="131" text-anchor="middle" fill="#bc8cff" font-family="monospace" font-size="13" font-weight="bold">git pull</text>
-          <path d="M 610 195 L 505 135" stroke="#bc8cff" stroke-width="3.5" stroke-dasharray="5,5" marker-end="url(#arr-purple-11)" fill="none" />
-          <rect x="500" y="176" width="90" height="28" rx="6" fill="#000000" stroke="#bc8cff" stroke-width="1.5"/>
-          <text x="545" y="195" text-anchor="middle" fill="#bc8cff" font-family="monospace" font-size="13" font-weight="bold">git push</text>
+          <!-- O Pull -->
+          <path d="M 530 115 L 635 175" stroke="#f0883e" stroke-width="3.5" marker-end="url(#arr-orange-22)" fill="none" />
+          <rect x="535" y="112" width="90" height="28" rx="6" fill="#000000" stroke="#f0883e" stroke-width="1.5"/>
+          <text x="580" y="131" text-anchor="middle" fill="#f0883e" font-family="monospace" font-size="13" font-weight="bold">git pull</text>
+          <!-- O Push -->
+          <path d="M 610 195 L 505 135" stroke="#f0883e" stroke-width="3.5" stroke-dasharray="5,5" marker-end="url(#arr-orange-22)" fill="none" />
+          <rect x="500" y="176" width="90" height="28" rx="6" fill="#000000" stroke="#f0883e" stroke-width="1.5"/>
+          <text x="545" y="195" text-anchor="middle" fill="#f0883e" font-family="monospace" font-size="13" font-weight="bold">git push</text>
         </svg>
       </div>
     </div>
     <div class="slide-footer">
       <span>SCDA training week</span>
-      <span>11 / 13</span>
+      <span>22 / 24</span>
     </div>
   </div>
 
-  <!-- SLIDE 12: Collaborative Branches -->
-  <div class="slide" id="slide-12">
+  <!-- SLIDE 23: Team Rules -->
+  <div class="slide" id="slide-23">
     <div class="slide-header">
-      <h2>Collaborative Branches & Pull Requests</h2>
-      <span class="tag">SCDA training week</span>
+      <h2>Team Rules for Collaboration</h2>
+      <span class="tag">Best Practices</span>
     </div>
     <div class="slide-body">
-      <div class="svg-board">
-        <svg viewBox="0 0 920 280">
-          <line x1="100" y1="180" x2="820" y2="180" stroke="#58a6ff" stroke-width="5" />
-          <path d="M 320 180 C 380 180, 400 80, 480 80 L 640 80 C 720 80, 740 180, 800 180" fill="none" stroke="#bc8cff" stroke-width="4" stroke-dasharray="6,6" />
-          <g transform="translate(180, 180)">
-            <circle r="18" fill="#161b22" stroke="#58a6ff" stroke-width="4" />
-            <text y="44" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="14">init board.txt</text>
-          </g>
-          <g transform="translate(320, 180)">
-            <circle r="18" fill="#161b22" stroke="#58a6ff" stroke-width="4" />
-            <text y="44" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="14">move 1</text>
-          </g>
-          <g transform="translate(560, 180)">
-            <circle r="18" fill="#161b22" stroke="#58a6ff" stroke-width="4" />
-            <text y="44" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="14">move 3</text>
-          </g>
-          <g transform="translate(800, 180)">
-            <circle r="20" fill="#58a6ff" stroke="#ffffff" stroke-width="4" />
-            <text y="46" text-anchor="middle" fill="#58a6ff" font-family="monospace" font-size="15" font-weight="bold">merge PR</text>
-          </g>
-          <g transform="translate(480, 80)">
-            <circle r="18" fill="#161b22" stroke="#bc8cff" stroke-width="4" />
-            <text y="-26" text-anchor="middle" fill="#bc8cff" font-family="monospace" font-size="14" font-weight="bold">Player Branch</text>
-            <text y="42" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="14">move 2a</text>
-          </g>
-          <g transform="translate(640, 80)">
-            <circle r="18" fill="#161b22" stroke="#bc8cff" stroke-width="4" />
-            <text y="-26" text-anchor="middle" fill="#bc8cff" font-family="monospace" font-size="14" font-weight="bold">Review & Test</text>
-            <text y="42" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="14">move 2b</text>
-          </g>
-          <rect x="40" y="165" width="70" height="30" rx="6" fill="#1f293d" stroke="#58a6ff" stroke-width="1.5"/>
-          <text x="75" y="185" text-anchor="middle" fill="#58a6ff" font-family="monospace" font-size="14" font-weight="bold">main</text>
-          <rect x="360" y="65" width="90" height="30" rx="6" fill="#2d1f3d" stroke="#bc8cff" stroke-width="1.5"/>
-          <text x="405" y="85" text-anchor="middle" fill="#bc8cff" font-family="monospace" font-size="14" font-weight="bold">player-x</text>
-        </svg>
+      <div class="rules-grid">
+        <div class="rule-card">
+          <div class="rule-number">RULE 01</div>
+          <div class="rule-heading">Always Pull Before You Play</div>
+          <p style="margin-top: 1cqw; font-size: clamp(11px, 1.2cqw, 16px); color: var(--text-muted); line-height: 1.4;">
+            Run <code>git pull</code> before every turn to ensure your local <code>board.txt</code> reflects your partner's latest move.
+          </p>
+        </div>
+        <div class="rule-card">
+          <div class="rule-number">RULE 02</div>
+          <div class="rule-heading">One Atomic Move Per Commit</div>
+          <p style="margin-top: 1cqw; font-size: clamp(11px, 1.2cqw, 16px); color: var(--text-muted); line-height: 1.4;">
+            Stage and commit only your single turn. Keep commit messages descriptive: <code>place X center</code>.
+          </p>
+        </div>
+        <div class="rule-card">
+          <div class="rule-number">RULE 03</div>
+          <div class="rule-heading">Push Immediately to Unblock</div>
+          <p style="margin-top: 1cqw; font-size: clamp(11px, 1.2cqw, 16px); color: var(--text-muted); line-height: 1.4;">
+            Push right after committing so your partner can immediately pull and continue the game without sync delays.
+          </p>
+        </div>
       </div>
     </div>
     <div class="slide-footer">
       <span>SCDA training week</span>
-      <span>12 / 13</span>
+      <span>23 / 24</span>
     </div>
   </div>
 
-  <!-- SLIDE 13: Team Rules & Hands-on Workshop Practice -->
-  <div class="slide" id="slide-13">
+  <!-- SLIDE 24: Hands-on Workshop Practice -->
+  <div class="slide" id="slide-24">
     <div class="slide-header">
-      <h2>Team Rules & Hands-on Workshop Practice</h2>
-      <span class="tag">SCDA training week</span>
+      <h2>Hands-on Workshop Practice</h2>
+      <span class="tag">Live Pair Game</span>
     </div>
     <div class="slide-body">
       <div class="practice-box">
         <div class="practice-steps">
           <div class="p-step">
-            <span>RULE 01</span>
-            Pull before starting your turn to avoid conflicts on board.txt.
+            <span>STEP 01</span>
+            Pair up with a partner &amp; clone your shared repository.
           </div>
           <div class="p-step">
-            <span>RULE 02</span>
-            Make atomic, single-move commits to board.txt.
+            <span>STEP 02</span>
+            Register your game on the Game Wall via GitHub Issues.
           </div>
           <div class="p-step">
-            <span>RULE 03</span>
-            Use clear messages ("place X center of board.txt").
+            <span>STEP 03</span>
+            Follow the 5-step Turn Cycle for every move on <code>board.txt</code>.
           </div>
           <div class="p-step">
-            <span>PRACTICE</span>
-            Pair up with a partner & play Tic-Tac-Toe via Git!
+            <span>STEP 04</span>
+            Watch the Game Wall update live as you push your moves!
           </div>
         </div>
         <div class="portal-link">
@@ -544,7 +1510,7 @@
     </div>
     <div class="slide-footer">
       <span>SCDA training week</span>
-      <span>13 / 13</span>
+      <span>24 / 24</span>
     </div>
   </div>
 
