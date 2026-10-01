@@ -39,12 +39,8 @@
   <main class="guide-main">
     <div class="guide-container">
       <header class="guide-hero">
-        <h1>Pre-Session Setup Guide</h1>
+        <h1>Setup Guide</h1>
         <p class="lead">Complete these steps before attending the workshop to ensure your laptop has Git installed, configured, and authenticated with GitHub.</p>
-        <div class="callout-box tip">
-          <strong>No programming languages or complex toolchains required.</strong>
-          You do <em>not</em> need Python, Docker, or external package managers. All workshop activities use plain text files, the operating system terminal, and a basic text editor.
-        </div>
       </header>
 
       <!-- Quick Jump Navigation -->
@@ -58,7 +54,7 @@
 
       <!-- Step 1: GitHub Account & Privacy -->
       <section class="guide-section" id="step-github">
-        <h2>1. GitHub Account, 2FA &amp; Privacy</h2>
+        <h2>GitHub Account &amp; Privacy</h2>
         <p>GitHub hosts our shared pair repositories and coordinates collaboration.</p>
         
         <ol>
@@ -83,7 +79,7 @@
 
       <!-- Step 2: Install Git -->
       <section class="guide-section" id="step-install">
-        <h2>2. Install Git on Your Operating System</h2>
+        <h2>Install Git</h2>
         <p>Open your terminal application and verify if Git is already installed:</p>
 
         <div class="code-block-wrapper">
@@ -91,9 +87,20 @@
           <button class="copy-btn" title="Copy to clipboard" aria-label="Copy command to clipboard">📋 Copy</button>
         </div>
 
-        <p>If Git is already installed (any version 2.20+), you can proceed directly to Step 3. If not, follow your operating system below:</p>
+        <p>If Git is already installed (any version 2.20+), you can proceed directly to Step 3. If not, install Git via GitHub Desktop or your operating system below:</p>
 
-        <div class="role-grid">
+        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+          <div class="role-card" style="border: 2px solid var(--border-dark);">
+            <span class="role-badge" style="background-color: var(--primary);">Recommended Alternative</span>
+            <p><strong>GitHub Desktop</strong> (from <a href="https://desktop.github.com/" target="_blank" rel="noopener noreferrer">desktop.github.com</a>) is an official app for macOS and Windows that:</p>
+            <ul style="margin-top:0.25rem; margin-bottom:0.25rem;">
+              <li>Bundles Git automatically (no separate command-line installer needed).</li>
+              <li>Handles browser-based authentication seamlessly.</li>
+              <li>Provides an easy graphical interface for cloning, committing, and pushing.</li>
+            </ul>
+            <p><a href="https://desktop.github.com/" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="margin-top:0.25rem;">Download GitHub Desktop</a></p>
+          </div>
+
           <div class="role-card">
             <span class="role-badge">macOS</span>
             <p>Run the following command in Terminal (<code>Cmd + Space</code>, type <code>Terminal</code>):</p>
@@ -124,11 +131,11 @@
 
       <!-- Step 3: Authenticate & Configure -->
       <section class="guide-section" id="step-auth">
-        <h2>3. Authenticate &amp; Configure Git</h2>
+        <h2>Authenticate &amp; Configure</h2>
         <p>To push your game moves, your terminal must be authenticated with GitHub. Choose the method that best matches your workflow:</p>
 
         <details class="accordion" open>
-          <summary>Option A (Recommended): GitHub CLI (<code>gh auth login</code>)</summary>
+          <summary>Option 1: GitHub CLI (recommended)</summary>
           <div class="accordion-content">
             <p>The <strong>GitHub CLI (<code>gh</code>)</strong> is the fastest and most foolproof way to connect your terminal. It configures Git credentials, protocol, and browser sign-in in one command.</p>
             
@@ -157,7 +164,7 @@
         </details>
 
         <details class="accordion">
-          <summary>Option B: Visual Studio Code Integration</summary>
+          <summary>Option 2: Visual Studio Code</summary>
           <div class="accordion-content">
             <p>If you prefer an editor-based workflow, Visual Studio Code handles GitHub authentication automatically:</p>
             <ol>
@@ -170,14 +177,25 @@
         </details>
 
         <details class="accordion">
-          <summary>Option C: Direct Git Configuration (Manual)</summary>
+          <summary>Option 3: Terminal</summary>
           <div class="accordion-content">
             <p>Set your global commit author name and email. If you enabled email privacy in Step 1, use your private <code>noreply</code> address:</p>
 
+            <p>1. Set your Git author name (substitute your real name):</p>
             <div class="code-block-wrapper">
-              <pre><code>git config --global user.name "Firstname Lastname"
-git config --global user.email "username@users.noreply.github.com"
-git config --global init.defaultBranch main</code></pre>
+              <pre><code>git config --global user.name "Firstname Lastname"</code></pre>
+              <button class="copy-btn" title="Copy to clipboard" aria-label="Copy command to clipboard">📋 Copy</button>
+            </div>
+
+            <p>2. Set your Git author email (use your private <code>noreply</code> address from Step 1):</p>
+            <div class="code-block-wrapper">
+              <pre><code>git config --global user.email "username@users.noreply.github.com"</code></pre>
+              <button class="copy-btn" title="Copy to clipboard" aria-label="Copy command to clipboard">📋 Copy</button>
+            </div>
+
+            <p>3. Set your default branch name for new repositories to <code>main</code>:</p>
+            <div class="code-block-wrapper">
+              <pre><code>git config --global init.defaultBranch main</code></pre>
               <button class="copy-btn" title="Copy to clipboard" aria-label="Copy command to clipboard">📋 Copy</button>
             </div>
 
@@ -188,7 +206,7 @@ git config --global init.defaultBranch main</code></pre>
 
       <!-- Step 4: Verification -->
       <section class="guide-section" id="step-verify">
-        <h2>4. Pre-Flight Verification</h2>
+        <h2>Verification</h2>
         <p>Verify that your environment is fully prepared by running this one-line check in your terminal:</p>
 
         <div class="code-block-wrapper">
