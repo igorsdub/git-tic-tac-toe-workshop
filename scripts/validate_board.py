@@ -165,10 +165,10 @@ def validate_board(board_content: str) -> BoardValidationResult:
     if _is_missing_or_placeholder(player_o):
         warnings.append("Missing or placeholder 'Player O:' header; handle will be sourced from registration.")
 
-    # 2. Declared state
+    # 2. Declared state (optional)
     declared_state = _extract_header(board_content, r"^[ \t]*\*?\*?Stat(?:e|us)\*?\*?:\s*(.+)$")
     if not declared_state:
-        errors.append("Missing 'State:' or 'Status:' indicator line.")
+        warnings.append("Missing 'State:' or 'Status:' indicator line; state evaluated dynamically.")
 
     # 3. Grid parsing
     grid_lines = _extract_grid_lines(board_content)

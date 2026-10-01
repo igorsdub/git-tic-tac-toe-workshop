@@ -256,8 +256,8 @@ State: Ready for X
             any("Missing or placeholder 'Player O:' header" in w for w in res.warnings)
         )
 
-    def test_missing_state_header_is_invalid(self):
-        """Verifies that a missing State line remains a fatal validation error."""
+    def test_missing_state_header_is_valid_with_dynamic_evaluation(self):
+        """Verifies that a board without State line is valid with dynamically evaluated state."""
         content = """# Git Tic-Tac-Toe
 
 ```text
@@ -269,9 +269,32 @@ State: Ready for X
 ```
 """
         res = validate_board(content)
-        self.assertFalse(res.is_valid)
-        self.assertEqual(res.state, "Invalid board")
-        self.assertTrue(any("Missing 'State:' or 'Status:' indicator line" in err for err in res.errors))
+        self.assertTrue(res.is_valid)
+        self.assertEqual(res.state, "Ready for X")
+        self.assertTrue(any("Missing 'State:' or 'Status:' indicator line" in w for w in res.warnings))
+
+    def test_pure_raw_board_without_markdown_fences(self):
+        """Verifies that a pure 5-line text grid without headers or fences validates correctly."""
+        content = """ [ ] | [ ] | [ ]
+-----+-----+-----
+ [ ] | [ ] | [ ]
+-----+-----+-----
+ [ ] | [ ] | [ ]"""
+        res = validate_board(content)
+        self.assertTrue(res.is_valid)
+        self.assertEqual(res.state, "Ready for X")
+
+    def test_pure_raw_board_with_moves(self):
+        """Verifies that moves on a pure raw grid evaluate correctly."""
+        content = """ [X] | [ ] | [ ]
+-----+-----+-----
+ [ ] | [O] | [ ]
+-----+-----+-----
+ [ ] | [ ] | [ ]"""
+        res = validate_board(content)
+        self.assertTrue(res.is_valid)
+        self.assertEqual(res.state, "Waiting for X")
+        self.assertEqual(res.move_counts, {"X": 1, "O": 1})
 
 
 if __name__ == "__main__":
