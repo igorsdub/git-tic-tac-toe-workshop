@@ -1,5 +1,14 @@
 [
   {
+    "owner": "pmuskusv",
+    "repo": "TIC-TAC-TOE",
+    "repoUrl": "https://github.com/pmuskusv/TIC-TAC-TOE",
+    "playerX": "Pati",
+    "playerO": "Ami",
+    "workshopName": "SCDA Training Week",
+    "eventId": "SCDA Training Week"
+  },
+  {
     "owner": "oist",
     "repo": "git-tic-tac-toe",
     "repoUrl": "https://github.com/oist/git-tic-tac-toe",
