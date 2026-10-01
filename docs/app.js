@@ -18,6 +18,10 @@
     DEFAULT_BRANCHES: ['main', 'master'],
   };
 
+  const BOARD_REGISTRY_URL = `./board.json`;
+  const RAW_BOARD_REGISTRY_URL = `https://raw.githubusercontent.com/${CONFIG.REPO_OWNER}/${CONFIG.REPO_NAME}/main/docs/board.json`;
+  const STORAGE_KEY_REGISTRATIONS = 'ttt_gamewall_registrations';
+
   const ISSUES_API_URL = `https://api.github.com/repos/${CONFIG.REPO_OWNER}/${CONFIG.REPO_NAME}/issues?labels=game-registration&state=all&per_page=100`;
   const ALL_ISSUES_API_URL = `https://api.github.com/repos/${CONFIG.REPO_OWNER}/${CONFIG.REPO_NAME}/issues?state=all&per_page=100`;
 
@@ -603,6 +607,8 @@ State: Waiting for O
 
   /**
    * Fetches registration issues from GitHub API or falls back to mock data.
+  /**
+   * Fetches registration issues from board.json or GitHub API or falls back to cache/mock data.
    */
   async function loadGames() {
     setLoading(true);
@@ -614,69 +620,143 @@ State: Waiting for O
     }
 
     try {
-      const res = await fetch(ISSUES_API_URL);
+      let parsedRegistrations = null;
 
-      if (res.status === 403) {
-        // GitHub API rate-limited
-        showNotice(
-          'GitHub API rate limit reached. Displaying simulated workshop games.',
-          'notice-warning'
-        );
-        loadMockData();
-        setLoading(false);
-        return;
+      // 1. First attempt to fetch the board registry from BOARD_REGISTRY_URL and fallback to RAW_BOARD_REGISTRY_URL
+      try {
+        let registryRes = await fetch(`${BOARD_REGISTRY_URL}?t=${Date.now()}`);
+        if (!registryRes.ok) {
+          registryRes = await fetch(`${RAW_BOARD_REGISTRY_URL}?t=${Date.now()}`);
+        }
+        if (registryRes.ok) {
+          const items = await registryRes.json();
+          if (Array.isArray(items) && items.length > 0) {
+            parsedRegistrations = items.map((item) => ({
+              owner: item.owner,
+              repo: item.repo,
+              repoUrl: item.repoUrl || `https://github.com/${item.owner}/${item.repo}`,
+              playerX: item.playerX,
+              playerO: item.playerO,
+              workshopName: item.workshopName || 'SCDA Training Week',
+              eventId: item.eventId || item.workshopName || 'SCDA Training Week',
+            }));
+            try {
+              localStorage.setItem(STORAGE_KEY_REGISTRATIONS, JSON.stringify(parsedRegistrations));
+            } catch (e) {}
+          }
+        }
+      } catch (boardJsonErr) {
+        console.warn('board.json fetch error:', boardJsonErr);
       }
 
-      if (!res.ok) {
-        throw new Error(`GitHub API responded with status ${res.status}`);
-      }
-
-      let issues = await res.json();
-
-      // Defensive fallback: if no issues found with label 'game-registration',
-      // fetch issues without label filter and match issues with label OR '[Game Registration]' title prefix
-      if (!Array.isArray(issues) || issues.length === 0) {
+      // 2. If board.json is not found or empty, fallback to the existing GitHub issues API logic
+      if (!parsedRegistrations || parsedRegistrations.length === 0) {
+        let res;
         try {
-          const fallbackRes = await fetch(ALL_ISSUES_API_URL);
-          if (fallbackRes.ok) {
-            const allIssues = await fallbackRes.json();
-            if (Array.isArray(allIssues)) {
-              issues = allIssues.filter((issue) => {
-                const hasLabel = issue.labels && issue.labels.some((l) => l.name === 'game-registration');
-                const hasTitle = (issue.title || '').toLowerCase().includes('[game registration]');
-                return hasLabel || hasTitle;
-              });
+          res = await fetch(ISSUES_API_URL);
+        } catch (netErr) {
+          res = { status: 0, ok: false };
+        }
+
+        if (res.status === 403 || !res.ok) {
+          // GitHub API rate-limited or network error
+          let cached = null;
+          try {
+            const stored = localStorage.getItem(STORAGE_KEY_REGISTRATIONS);
+            if (stored) {
+              cached = JSON.parse(stored);
+            }
+          } catch (e) {}
+
+          if (!cached && state.allGames && state.allGames.length > 0) {
+            cached = state.allGames.map((g) => ({
+              owner: g.owner,
+              repo: g.repo,
+              repoUrl: g.repoUrl,
+              playerX: g.playerX,
+              playerO: g.playerO,
+              workshopName: g.workshopName,
+              eventId: g.eventId,
+            }));
+          }
+
+          if (Array.isArray(cached) && cached.length > 0) {
+            parsedRegistrations = cached;
+            showNotice(
+              res.status === 403 ? 'GitHub API rate limit reached. Using cached game registrations (live boards still updating from raw.githubusercontent.com).' : 'Offline or network issue connecting to GitHub. Using cached game registrations.',
+              'notice-warning'
+            );
+          } else {
+            showNotice(
+              res.status === 403 ? 'GitHub API rate limit reached. Displaying simulated workshop games.' : 'Offline or network issue connecting to GitHub. Displaying cached demo games.',
+              'notice-warning'
+            );
+            loadMockData();
+            setLoading(false);
+            return;
+          }
+        } else {
+          let issues = await res.json();
+
+          // Defensive fallback: if no issues found with label 'game-registration',
+          // fetch issues without label filter and match issues with label OR '[Game Registration]' title prefix
+          if (!Array.isArray(issues) || issues.length === 0) {
+            try {
+              const fallbackRes = await fetch(ALL_ISSUES_API_URL);
+              if (fallbackRes.ok) {
+                const allIssues = await fallbackRes.json();
+                if (Array.isArray(allIssues)) {
+                  issues = allIssues.filter((issue) => {
+                    const hasLabel = issue.labels && issue.labels.some((l) => l.name === 'game-registration');
+                    const hasTitle = (issue.title || '').toLowerCase().includes('[game registration]');
+                    return hasLabel || hasTitle;
+                  });
+                }
+              }
+            } catch (fallbackErr) {
+              console.warn('Fallback issue discovery error:', fallbackErr);
             }
           }
-        } catch (fallbackErr) {
-          console.warn('Fallback issue discovery error:', fallbackErr);
+
+          if (!Array.isArray(issues) || issues.length === 0) {
+            let cached = null;
+            try {
+              const stored = localStorage.getItem(STORAGE_KEY_REGISTRATIONS);
+              if (stored) cached = JSON.parse(stored);
+            } catch (e) {}
+            if (Array.isArray(cached) && cached.length > 0) {
+              parsedRegistrations = cached;
+            } else {
+              showNotice(
+                'No pair games registered yet. Showing demo games until pairs submit registration issues.',
+                'notice-info'
+              );
+              loadMockData();
+              setLoading(false);
+              return;
+            }
+          } else {
+            parsedRegistrations = [];
+            for (const issue of issues) {
+              const reg = parseRegistrationIssue(issue.body, issue.title);
+              if (reg) {
+                parsedRegistrations.push(reg);
+              }
+            }
+            if (parsedRegistrations.length > 0) {
+              try {
+                localStorage.setItem(STORAGE_KEY_REGISTRATIONS, JSON.stringify(parsedRegistrations));
+              } catch (e) {}
+            }
+          }
         }
       }
 
       hideNotice();
 
-      if (!Array.isArray(issues) || issues.length === 0) {
-        // No registration issues yet
+      if (!Array.isArray(parsedRegistrations) || parsedRegistrations.length === 0) {
         showNotice(
-          'No pair games registered yet. Showing demo games until pairs submit registration issues.',
-          'notice-info'
-        );
-        loadMockData();
-        setLoading(false);
-        return;
-      }
-
-      const parsedRegistrations = [];
-      for (const issue of issues) {
-        const reg = parseRegistrationIssue(issue.body, issue.title);
-        if (reg) {
-          parsedRegistrations.push(reg);
-        }
-      }
-
-      if (parsedRegistrations.length === 0) {
-        showNotice(
-          'No valid game repository URLs found in registered issues. Showing demo games.',
+          'No valid game repository URLs found. Showing demo games.',
           'notice-info'
         );
         loadMockData();
@@ -707,7 +787,7 @@ State: Waiting for O
           };
         } else {
           evaluation = evaluateBoardContent(content);
-          // Prefer handles from board, fallback to issue
+          // Prefer handles from board, fallback to issue/registry
           if (!evaluation.playerX && reg.playerX) evaluation.playerX = reg.playerX;
           if (!evaluation.playerO && reg.playerO) evaluation.playerO = reg.playerO;
         }
