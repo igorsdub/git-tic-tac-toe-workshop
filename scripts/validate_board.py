@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """validate_board.py
 
-Parses and validates tic-tac-toe markdown board files (`board.md`).
+Parses and validates tic-tac-toe board files (`board.txt`).
 Identifies player handles, verifies 3x3 grid dimensions and cell formatting,
 checks turn parity and winning conditions, and evaluates the canonical game state:
 - 'Ready for X'
@@ -152,7 +152,7 @@ def _is_missing_or_placeholder(handle: Optional[str]) -> bool:
 
 
 def validate_board(board_content: str) -> BoardValidationResult:
-    """Parses and validates a tic-tac-toe markdown board string."""
+    """Parses and validates a tic-tac-toe board string."""
     errors: List[str] = []
     warnings: List[str] = []
 
@@ -330,16 +330,16 @@ def validate_file(file_path: Path) -> BoardValidationResult:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Validate Git Tic-Tac-Toe board.md files.")
-    parser.add_argument("paths", nargs="*", type=Path, help="Path(s) to board.md files or directories")
+    parser = argparse.ArgumentParser(description="Validate Git Tic-Tac-Toe board.txt files.")
+    parser.add_argument("paths", nargs="*", type=Path, help="Path(s) to board.txt files or directories")
     parser.add_argument("--json", action="store_true", help="Output results in JSON format")
     parser.add_argument("--quiet", action="store_true", help="Suppress non-error output")
     args = parser.parse_args()
 
     target_files: List[Path] = []
     if not args.paths:
-        # Default to board.md in current directory if exists
-        default_file = Path("board.md")
+        # Default to board.txt in current directory if exists
+        default_file = Path("board.txt")
         if default_file.exists():
             target_files.append(default_file)
         else:
@@ -348,7 +348,7 @@ def main() -> int:
     else:
         for p in args.paths:
             if p.is_dir():
-                target_files.extend(sorted(p.glob("**/*.md")))
+                target_files.extend(sorted(f for f in p.glob("**/*") if f.is_file() and f.suffix in (".txt", ".md")))
             elif p.is_file():
                 target_files.append(p)
             else:

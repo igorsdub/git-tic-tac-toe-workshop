@@ -1,6 +1,6 @@
 """game_wall_parser.py
 
-Parsing utilities for GitHub issue registrations and board markdown
+Parsing utilities for GitHub issue registrations and board files
 used by the Git Tic-Tac-Toe Game Wall.
 """
 
