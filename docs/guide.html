@@ -41,28 +41,24 @@
       <header class="guide-hero">
         <h1>How to Play Git Tic-Tac-Toe</h1>
         <p class="lead">A hands-on paired collaboration game. You and your partner will play tic-tac-toe by committing and pushing moves to a shared GitHub repository.</p>
-        <div class="callout-box tip">
-          <strong>Need to configure Git or authenticate?</strong>
-          If your terminal isn't set up yet, visit the <a href="setup.html" style="text-decoration:underline; font-weight:600;">Pre-Session Setup Guide</a> first!
-        </div>
       </header>
 
       <!-- Quick Jump Navigation -->
       <nav class="jump-nav" aria-label="Quick jump to section">
         <span class="jump-nav-label">Jump to:</span>
-        <a href="#roles-setup" class="jump-pill">Roles &amp; Setup</a>
-        <a href="#turn-cycle" class="jump-pill">Turn Cycle</a>
-        <a href="#cheat-sheet" class="jump-pill">Git Cheat Sheet</a>
+        <a href="#roles-setup" class="jump-pill">Initial Setup</a>
+        <a href="#turn-cycle" class="jump-pill">The Turn Cycle</a>
+        <a href="#cheat-sheet" class="jump-pill">Git Quick Reference</a>
         <a href="#troubleshooting" class="jump-pill">Troubleshooting</a>
-        <a href="#rematch-extension" class="jump-pill">Branch Rematch</a>
+        <a href="#rematch-extension" class="jump-pill">Branch Rematch (Optional)</a>
       </nav>
 
-      <!-- Section 1: Pair Roles & Setup -->
+      <!-- Section 1: Initial Setup -->
       <section class="guide-section" id="roles-setup">
-        <h2>1. Pair Roles &amp; Initial Setup</h2>
+        <h2>Initial Setup</h2>
         <p>Pick who will be <strong>Player X</strong> (the opening mover) and who will be <strong>Player O</strong> (the collaborator):</p>
 
-        <div class="role-grid">
+        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
           <!-- Player X -->
           <div class="role-card">
             <span class="role-badge">Player X (Host / First Mover)</span>
@@ -123,7 +119,7 @@ cd &lt;repo-folder&gt;</code></pre>
 
       <!-- Section 2: The Turn Cycle -->
       <section class="guide-section" id="turn-cycle">
-        <h2>2. The Turn Cycle</h2>
+        <h2>The Turn Cycle</h2>
         <p>Every single turn follows these five steps in exact order. <strong>Never edit the board before pulling!</strong></p>
 
         <div class="turn-flow">
@@ -210,7 +206,7 @@ git add board.md</code></pre>
 
       <!-- Section 3: Git Quick Reference -->
       <section class="guide-section" id="cheat-sheet">
-        <h2>3. Git Quick Reference</h2>
+        <h2>Git Quick Reference</h2>
         <p>Keep these essential inspection commands handy throughout the game:</p>
 
         <div class="guide-table-wrap">
@@ -250,7 +246,7 @@ git add board.md</code></pre>
 
       <!-- Section 4: Troubleshooting -->
       <section class="guide-section" id="troubleshooting">
-        <h2>4. Troubleshooting &amp; Recovery</h2>
+        <h2>Troubleshooting</h2>
         <p>If something unexpected happens, expand the solutions below:</p>
 
         <details class="accordion">
@@ -302,9 +298,9 @@ git push origin main</code></pre>
         </details>
       </section>
 
-      <!-- Section 5: Branch Rematch Extension -->
+      <!-- Section 5: Branch Rematch (Optional) -->
       <section class="guide-section" id="rematch-extension">
-        <h2>5. Extension: Branch Rematch (Finished Early?)</h2>
+        <h2>Branch Rematch (Optional)</h2>
         <p>If you and your partner finish your 9-turn match before time is called, play a <strong>rematch on a branch</strong>! This keeps your first match safe on <code>main</code> while you play Game 2 in branch isolation:</p>
 
         <ol>
