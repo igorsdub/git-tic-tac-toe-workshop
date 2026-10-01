@@ -7,7 +7,7 @@ body:
     attributes:
       value: |
         ### 🎮 Register for the Big Screen Game Wall
-        Submit this quick form to display your paired match live on the classroom projector screen! Ensure your repository is **public** so the Game Wall can read your board.md. Only **one partner** needs to submit this form for your pair.
+        Submit this quick form to display your paired match live on the classroom projector screen! Ensure your repository is **public** so the Game Wall can read your board.txt. Only **one partner** needs to submit this form for your pair.
   - type: input
     id: repo_url
     attributes:

@@ -16,7 +16,7 @@ Pick who is **Player X** and who is **Player O**:
 
 | Role | Responsibilities | Setup Steps |
 |---|---|---|
-| **Player X** <br>*(Host / First Mover)* | • Owns the repository<br>• Makes opening move (`X`) | 1. Create the repository from template [igorsdub/tic-tac-toe-template](https://github.com/igorsdub/tic-tac-toe-template) (click **Use this template**).<br>2. Go to **Settings > Collaborators > Add people**.<br>3. Invite Player O by their GitHub username. |
+| **Player X** <br>*(Host / First Mover)* | • Owns the repository<br>• Makes opening move (`X`) | 1. Create the repository from template [igorsdub/git-tic-tac-toe-template](https://github.com/igorsdub/git-tic-tac-toe-template) (click **Use this template**).<br>2. Go to **Settings > Collaborators > Add people**.<br>3. Invite Player O by their GitHub username. |
 | **Player O** <br>*(Collaborator / Second Mover)* | • Collaborates on repository<br>• Makes second move (`O`) | 1. Accept the invitation (check email or GitHub notifications).<br>2. Open your terminal and clone the repository:<br>&nbsp;&nbsp;&nbsp;`git clone <repo-url>`<br>&nbsp;&nbsp;&nbsp;`cd <repo-folder>` |
 
 ---
@@ -28,7 +28,7 @@ Every turn follows five simple steps. **Never edit the board before pulling!**
 ```
 ┌───────────┐      ┌─────────────┐      ┌─────────────┐      ┌────────────┐      ┌────────────┐
 │ 1. PULL   │ ───> │ 2. EDIT     │ ───> │ 3. STAGE    │ ───> │ 4. COMMIT  │ ───> │ 5. PUSH    │
-│ git pull  │      │  board.md   │      │ git add ... │      │ git commit │      │  git push  │
+│ git pull  │      │  board.txt   │      │ git add ... │      │ git commit │      │  git push  │
 └───────────┘      └─────────────┘      └─────────────┘      └────────────┘      └────────────┘
 ```
 
@@ -38,15 +38,15 @@ Always pull before making your move so you have your partner's latest board:
 git pull origin main
 ```
 
-### Step 2: Make your move in `board.md`
-Open `board.md` in your text editor. Replace **one** empty square (`[ ]`) with your symbol (`[X]` or `[O]`) and update the `State:` line. Save the file.
+### Step 2: Make your move in `board.txt`
+Open `board.txt` in your text editor. Replace **one** empty square (`[ ]`) with your symbol (`[X]` or `[O]`) and update the `State:` line. Save the file.
 
 ### Step 3: Check and stage your change
 Verify what you modified and prepare it for saving:
 ```bash
 git status
 git diff
-git add board.md
+git add board.txt
 ```
 
 ### Step 4: Commit with a descriptive message
@@ -84,7 +84,7 @@ error: failed to push some refs...
 ```
 **Do not panic!** Git is simply telling you that your partner pushed a move that you don't have yet.
 1. Run `git pull origin main`.
-2. Inspect `board.md` to see the updated board.
+2. Inspect `board.txt` to see the updated board.
 3. Run `git push origin main`.
 
 ---
@@ -103,4 +103,4 @@ If you and your partner finish your game before time is called, play a **rematch
    git fetch origin
    git checkout rematch
    ```
-3. Reset `board.md` back to empty squares (`[ ]`), update `State: Ready for X` (swap roles if Player O wants to go first), commit as `"Start Rematch Game 2"`, push, and play!
+3. Reset `board.txt` back to empty squares (`[ ]`), update `State: Ready for X` (swap roles if Player O wants to go first), commit as `"Start Rematch Game 2"`, push, and play!

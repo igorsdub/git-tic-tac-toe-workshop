@@ -32,7 +32,7 @@ Conduct rehearsals in three progressive milestones prior to the workshop:
 - [ ] Game Wall ([docs/index.html](docs/index.html)) loaded in browser and verified with high-contrast monochrome design and theme toggle (🌙 / ☀️).
 
 #### C. Starter Template & Registrations
-- [ ] Template repository [igorsdub/tic-tac-toe-template](https://github.com/igorsdub/tic-tac-toe-template) verified public and accessible.
+- [ ] Template repository [igorsdub/git-tic-tac-toe-template](https://github.com/igorsdub/git-tic-tac-toe-template) verified public and accessible.
 - [ ] Registration issue form ([.github/ISSUE_TEMPLATE/register-game.yml](.github/ISSUE_TEMPLATE/register-game.yml)) accessible and accepting test issues.
 - [ ] Clean demo repository created for the live demonstration (or previous demo repo purged).
 
@@ -117,7 +117,7 @@ The live demonstration (Minutes 00:20 – 00:40) must be rehearsed end-to-end at
 ### Rehearsal Execution Steps
 
 #### Phase 1: Repository Instantiation (Player X)
-1. Lead Instructor navigates to [igorsdub/tic-tac-toe-template](https://github.com/igorsdub/tic-tac-toe-template).
+1. Lead Instructor navigates to [igorsdub/git-tic-tac-toe-template](https://github.com/igorsdub/git-tic-tac-toe-template).
 2. Clicks **Use this template** &rarr; **Create a new repository**.
 3. Names the repository: `git-ttt-demo-rehearsal`.
 4. Sets visibility to **Public** (required for the Game Wall).
@@ -138,7 +138,7 @@ The live demonstration (Minutes 00:20 – 00:40) must be rehearsed end-to-end at
    git clone https://github.com/<instructor-handle>/git-ttt-demo-rehearsal.git
    cd git-ttt-demo-rehearsal
    ```
-2. Inspects `board.md`.
+2. Inspects `board.txt`.
 3. Updates player handles in header:
    ```markdown
    Player X: @<instructor-handle>
@@ -157,14 +157,14 @@ The live demonstration (Minutes 00:20 – 00:40) must be rehearsed end-to-end at
    ```bash
    git status
    git diff
-   git add board.md
+   git add board.txt
    git commit -m "Move 1: X takes center square 5"
    git push origin main
    ```
 6. Confirms commit appears on GitHub remote.
 
 #### Phase 4: Move 2 (Player O)
-1. Co-player displays local un-updated `board.md`.
+1. Co-player displays local un-updated `board.txt`.
 2. Runs:
    ```bash
    git pull origin main
@@ -181,7 +181,7 @@ The live demonstration (Minutes 00:20 – 00:40) must be rehearsed end-to-end at
    ```
 6. Executes Git sequence:
    ```bash
-   git add board.md
+   git add board.txt
    git commit -m "Move 2: O claims top-left square 1"
    git push origin main
    ```

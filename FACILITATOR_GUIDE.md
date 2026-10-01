@@ -34,7 +34,7 @@ The goal is to provide a tactile, zero-fatigue introduction to collaborative ver
      ```
    - *Why this matters:* Attribution is central to collaboration. When learners review `git log` and the Game Wall later, their names must clearly appear next to their moves.
 4. **Zero Programming Dependencies**
-   - Learners do not need Python, Node.js, `uv`, Docker, or compilers. All edits take place in a plain text file (`board.md`) using any text editor of their choice (VS Code, Nano, Notepad, TextEdit).
+   - Learners do not need Python, Node.js, `uv`, Docker, or compilers. All edits take place in a plain text file (`board.txt`) using any text editor of their choice (VS Code, Nano, Notepad, TextEdit).
 
 ---
 
@@ -65,7 +65,7 @@ The goal is to provide a tactile, zero-fatigue introduction to collaborative ver
   - Your local folder is your personal clipboard.
   - GitHub is the central table in the middle of the room.
   - You cannot draw on your partner's clipboard directly. You must fetch the latest sheet from the central table (`git pull`), write your mark (`edit`), seal it in an envelope (`git commit`), and send it to the central table (`git push`).
-- **The File:** Introduce `board.md`. Explain that it is simply a markdown table representing the 3x3 grid.
+- **The File:** Introduce `board.txt`. Explain that it is simply a plain text table representing the 3x3 grid.
 - **The Sacred Rule of Paired Git:** *Always pull before you play.*
 
 ---
@@ -88,27 +88,27 @@ The live demo must feature the **Lead Facilitator (Player X)** and a **Prepared 
      ```
 2. **Move 1 (Player X):**
    - Player X runs `git status` (shows clean working tree).
-   - Player X edits `board.md`, placing `X` in square 5 (center).
+   - Player X edits `board.txt`, placing `X` in square 5 (center).
    - Player X runs:
      ```bash
      git status
      git diff
-     git add board.md
+     git add board.txt
      git commit -m "Move 1: X in center square 5"
      git push origin main
      ```
    - Refresh GitHub in the browser to show the commit.
 3. **Move 2 (Player O):**
-   - Player O shows their local `board.md` (still empty!).
+   - Player O shows their local `board.txt` (still empty!).
    - Player O runs:
      ```bash
      git pull origin main
      ```
    - Show that square 5 now has `X` locally.
-   - Player O edits `board.md`, placing `O` in square 1 (top-left).
+   - Player O edits `board.txt`, placing `O` in square 1 (top-left).
    - Player O commits and pushes:
      ```bash
-     git add board.md
+     git add board.txt
      git commit -m "Move 2: O takes top-left square 1"
      git push origin main
      ```
@@ -208,31 +208,31 @@ When an unexpected error occurs during the workshop, apply this 4-step facilitat
   2. If the edits were in different squares, Git will automatically merge.
   3. Run `git push origin main`.
 
-#### Error B: Merge Conflict in `board.md`
+#### Error B: Merge Conflict in `board.txt`
 - **Symptom:**
   ```text
-  CONFLICT (content): Merge conflict in board.md
+  CONFLICT (content): Merge conflict in board.txt
   Automatic merge failed; fix conflicts and then commit the result.
   ```
 - **Cause:** Both players edited the same square at the same time or made conflicting edits before pulling.
 - **Remedy:**
-  1. Open `board.md` in the editor.
+  1. Open `board.txt` in the editor.
   2. Show the conflict markers (`<<<<<<< HEAD`, `=======`, `>>>>>>>`).
   3. Explain: *"Git is asking humans to decide what the board should look like."*
   4. Edit the file to the agreed board state, delete the marker lines, save.
   5. Run:
      ```bash
-     git add board.md
+     git add board.txt
      git commit -m "Resolve move conflict between X and O"
      git push origin main
      ```
 
 #### Error C: Working Tree Dirty on Pull
 - **Symptom:** `error: Your local changes to the following files would be overwritten by merge...`
-- **Cause:** The learner edited `board.md` before pulling their partner's move.
+- **Cause:** The learner edited `board.txt` before pulling their partner's move.
 - **Remedy:**
   1. Check `git status` and `git diff`.
-  2. If the local change is their intended move, commit it locally (`git add board.md`, `git commit -m "..."`).
+  2. If the local change is their intended move, commit it locally (`git add board.txt`, `git commit -m "..."`).
   3. Pull with rebase or merge: `git pull --no-rebase origin main`.
   4. Push: `git push origin main`.
 

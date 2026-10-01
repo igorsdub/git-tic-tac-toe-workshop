@@ -82,7 +82,7 @@ Test your connection using one of these common methods:
 
 ## 2. Text Editor
 
-You will edit a markdown file called `board.md` during the game. Any plain text editor will work:
+You will edit a text file called `board.txt` during the game. Any plain text editor will work:
 - Visual Studio Code (recommended)
 - Notepad (Windows)
 - TextEdit (macOS, in Plain Text mode)
