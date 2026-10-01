@@ -1,5 +1,14 @@
 [
   {
+    "owner": "yuteis",
+    "repo": "git-tic-tac-toe",
+    "repoUrl": "https://github.com/yuteis/git-tic-tac-toe",
+    "playerX": "yutei",
+    "playerO": "Latentlin",
+    "workshopName": "SCDA Training Week",
+    "eventId": "SCDA Training Week"
+  },
+  {
     "owner": "pmuskusv",
     "repo": "TIC-TAC-TOE",
     "repoUrl": "https://github.com/pmuskusv/TIC-TAC-TOE",
