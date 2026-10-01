@@ -36,3 +36,7 @@ _Avoid_: Prerequisites, Installation guide
 **Turn cycle**:
 The five-step sequence of Git operations (pull, edit, stage, commit, push) each player follows to make a move.
 _Avoid_: Sacred turn cycle, Game loop, Play cycle
+
+**Branch rematch**:
+An extension activity where pairs create a new Git branch to play a second game, learning branch creation, switching, and merging.
+_Avoid_: Game 2, Rematch game, Feature branch game
