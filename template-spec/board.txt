@@ -1,12 +1,12 @@
 # Canonical Board Format Specification
 
-This document defines the official file format and parsing rules for `board.md` used across the Git Tic-Tac-Toe Workshop. The board serves as the single source of truth for pair games played in the workshop and monitored on the public Game Wall.
+This document defines the official file format and parsing rules for `board.txt` used across the Git Tic-Tac-Toe Workshop. The board serves as the single source of truth for pair games played in the workshop and monitored on the public Game Wall.
 
 ---
 
 ## 1. Specification Overview
 
-A valid `board.md` file consists of:
+A valid `board.txt` file consists of:
 1. **Board Grid (Required)**: 3x3 tic-tac-toe grid either as a pure 5-line raw text file or inside a fenced monospace code block.
 2. **Title Header (Optional)**: `# Git Tic-Tac-Toe` (optional, omitted in standard template).
 3. **Player Metadata (Optional)**: Optional declarations of Player X and Player O handles (Game Wall sources handles directly from issue registration per ADR 0001).
@@ -18,7 +18,7 @@ A valid `board.md` file consists of:
 ## 2. Format Requirements
 
 ### 2.1 Pure Raw Grid (Standard Template)
-In the starter template, `board.md` is simply the pure 5-line text grid without markdown fences or headers:
+In the starter template (`git-tic-tac-toe-template`), `board.txt` is simply the pure 5-line text grid without markdown fences or headers:
 ```text
  [ ] | [ ] | [ ]
 -----+-----+-----
@@ -36,7 +36,7 @@ Player O: @username_o
 - Must start with `Player X:` and `Player O:` if present (bold formatting `**Player X**:` is also accepted).
 - Usernames may be prefixed with `@` or written as plain GitHub handles.
 - Before players set their handles, placeholders such as `[GitHub Username]` or `[Player X Username]` are valid initial states.
-- **Decoupled Registration**: Player handles in `board.md` are optional metadata. The Game Wall sources player handles directly from the GitHub issue registration form (`register-game.yml`). If player headers are omitted or remain as placeholders, the board remains valid and handles are populated from registration.
+- **Decoupled Registration**: Player handles in `board.txt` are optional metadata. The Game Wall sources player handles directly from the GitHub issue registration form (`register-game.yml`). If player headers are omitted or remain as placeholders, the board remains valid and handles are populated from registration.
 
 ### 2.3 Status Line (Optional)
 The file may optionally contain a `State:` (or `Status:`) line:
