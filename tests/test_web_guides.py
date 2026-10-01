@@ -57,6 +57,38 @@ class TestWebGuides(unittest.TestCase):
                 self.assertNotIn('href="index.html"', nav_content)
                 self.assertIn('id="theme-toggle"', html)
 
+    def test_github_repo_link(self):
+        """All three pages must contain the GitHub repository link button with correct target, rel, aria-label, and title attributes."""
+        pages = [
+            ("index.html", self.index_html),
+            ("setup.html", self.setup_html),
+            ("guide.html", self.guide_html),
+        ]
+        repo_url = "https://github.com/igorsdub/git-tic-tac-toe-workshop"
+        for name, html in pages:
+            with self.subTest(page=name):
+                self.assertIn(f'href="{repo_url}"', html)
+                link_start = html.find(f'href="{repo_url}"')
+                tag_start = html.rfind('<a ', 0, link_start)
+                tag_end = html.find('>', link_start)
+                tag_content = html[tag_start:tag_end + 1]
+
+                self.assertIn('target="_blank"', tag_content)
+                self.assertIn('rel="noopener noreferrer"', tag_content)
+                self.assertIn('class="btn btn-icon"', tag_content)
+                self.assertIn('aria-label="View repository on GitHub"', tag_content)
+                self.assertIn('title="View repository on GitHub"', tag_content)
+
+                link_closing = html.find('</a>', tag_end)
+                link_body = html[tag_end:link_closing]
+                self.assertIn('class="github-icon"', link_body)
+                self.assertIn('<svg', link_body)
+
+                theme_toggle_pos = html.find('id="theme-toggle"')
+                self.assertGreater(tag_start, theme_toggle_pos)
+
+        self.assertIn('.btn-icon svg', self.styles_css)
+
     def test_quick_jump_navigation(self):
         """Guides must feature quick-jump navigation bars linking to page sections."""
         # Guide HTML quick jump

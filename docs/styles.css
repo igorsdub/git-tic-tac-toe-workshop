@@ -193,9 +193,17 @@ a:hover {
   color: var(--text-primary);
 }
 
+.btn-icon, .btn-icon:visited, a.btn-icon, a.btn-icon:visited {
+  color: var(--text-primary);
+}
+
 [data-theme="dark"] .btn-outline, [data-theme="dark"] .btn-outline:visited {
   color: #ffffff;
   border-color: #3f3f46;
+}
+
+[data-theme="dark"] .btn-icon, [data-theme="dark"] .btn-icon:visited, [data-theme="dark"] a.btn-icon, [data-theme="dark"] a.btn-icon:visited {
+  color: var(--text-primary);
 }
 
 [data-theme="dark"] .btn-outline:hover {
@@ -332,6 +340,11 @@ a:hover {
 
 .btn-icon:hover {
   background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.btn-icon svg {
+  display: block;
 }
 
 /* Main Container */
