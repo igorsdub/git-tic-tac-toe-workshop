@@ -6,28 +6,40 @@ A two-hour, beginner-friendly Git and GitHub workshop where pairs play tic-tac-t
 
 ## Workshop Documents & Guides
 
-- **[Facilitator Guide](FACILITATOR_GUIDE.md)**: Complete 2-hour timeline, live demonstration script with a prepared co-player, error recovery strategies, and research transfer discussion points.
-- **[Rehearsal & Operational Readiness Guide](REHEARSAL_GUIDE.md)**: Facilitator rehearsal protocol, operating system readiness matrix, contingency workflows, and timed checks (60+ min pair play guarantee).
-- **[Learner Guide (Web)](docs/guide.html)** / **[Markdown](LEARNER_GUIDE.md)**: Hands-on guide detailing roles (Player X and Player O), the 5-step turn workflow, helpful Git commands, and branch rematch extensions.
-- **[Pre-Session Setup Guide (Web)](docs/setup.html)** / **[Markdown](PRE_SESSION_CHECK.md)**: Preparation checklist verifying GitHub accounts, 2FA & email privacy, Git installation, and push authentication options.
-- **[Learner Starter Template](https://github.com/igorsdub/tic-tac-toe-template)**: Public GitHub template repository used by learners to instantiate their pair game (`board.md` and onboarding instructions).
-- **[Template & Board Specification](template-spec/README.md)**: Canonical specification of the 3x3 board format, player metadata headers, game state parity rules, and test samples.
-- **[Board Validation Script](scripts/validate_board.py)**: Python CLI and module to parse, validate, and evaluate game board files.
-- **[Game Wall](docs/index.html)**: Live interactive workshop display showing 3x3 boards, player avatars, turn states, and 30-second auto-refresh across registered games (hosted on GitHub Pages).
-- **[Game Wall Scalability & Load Simulation](docs/load_test_simulation.md)**: Technical analysis of Game Wall scalability under 10 and 20 concurrent pair repositories, rate limit budgeting, and error handling verification.
-- **[Game Registration Form](.github/ISSUE_TEMPLATE/register-game.yml)**: GitHub Issue Form for pairs to submit their repository URL and player handles for display on the Game Wall.
-- **[Terminology & Context](CONTEXT.md)**: Standard terminology used across the workshop and pair games (Pair game, Board, Move, Game wall, Workshop, Learner guide, Setup guide, Turn cycle).
+```text
+.
+├── .github/                  # GitHub Issue templates and CI workflows
+├── docs/                     # Game Wall web application and browser guides
+├── scripts/                  # Board validation and simulation utilities
+├── template-spec/            # Specification and tests for board.md format
+├── tests/                    # Automated Python unit and integration test suite
+├── CONTEXT.md                # Canonical domain glossary and terminology
+├── FACILITATOR_GUIDE.md      # Facilitator walkthrough, live demo script & recovery
+├── LEARNER_GUIDE.md          # In-session player roles and 5-step turn workflow
+├── PRE_SESSION_CHECK.md      # Pre-workshop Git & GitHub setup instructions
+├── README.md                 # Workshop overview, agenda, and quick reference
+└── REHEARSAL_GUIDE.md        # Facilitator rehearsal protocol and readiness checks
+```
+
+**Quick Links:**
+- **[Facilitator Guide](FACILITATOR_GUIDE.md)**: Facilitator walkthrough, live demo script, and error recovery.
+- **[Rehearsal & Readiness Guide](REHEARSAL_GUIDE.md)**: Rehearsal protocol, timing guarantees, and OS readiness matrix.
+- **[Learner Guide](LEARNER_GUIDE.md)** ([Web](docs/guide.html)): In-session player roles (Player X / Player O) and 5-step turn workflow.
+- **[Pre-Session Setup Guide](PRE_SESSION_CHECK.md)** ([Web](docs/setup.html)): Git installation, GitHub account configuration, and auth options.
+- **[Learner Starter Template](https://github.com/igorsdub/tic-tac-toe-template)**: Template repository used by pairs to instantiate games.
+- **[Game Wall](docs/index.html)**: Live interactive workshop dashboard visualising pair repositories.
+- **[Terminology & Glossary](CONTEXT.md)**: Canonical domain glossary and standard workshop concepts.
 
 ## Workshop Structure at a Glance
 
 | Time | Phase | Focus |
 |---|---|---|
-| **00:00 – 00:10** | **Pair Up & Setup** | Form pairs, assign roles (Player X / Player O), verify collaborator access. |
-| **00:10 – 00:20** | **Shared Board Mental Model** | Conceptual intro: local vs. remote, the shared board, the turn lifecycle. |
-| **00:20 – 00:40** | **Live Demonstration** | Facilitators demonstrate Moves 1 and 2 live on screen. |
-| **00:40 – 01:40** | **Paired Game Play** | Pairs play their 9-turn game; fast pairs begin branch rematch extension. |
-| **01:40 – 01:55** | **Game Wall & History Discussion** | Inspecting the Game Wall, analyzing `git log`, reviewing real-world logs. |
-| **01:55 – 02:00** | **Research & Work Transfer** | Connecting the game workflow to scientific collaboration and codebases. |
+| **00:00 – 00:15** | **Arrival, Opening Question & Experience Pairing** | Poll Git experience, pair beginners with experienced partners as Player X / Player O. |
+| **00:15 – 00:25** | **Presentation** | Mental model: local vs remote, staging, commits. |
+| **00:25 – 00:40** | **Live Demonstration** | Facilitator and co-player demonstrate Moves 1 & 2 live. |
+| **00:40 – 01:25** | **Paired Gameplay & Branch Rematch** | Hands-on 9-turn game; optional branch rematch. |
+| **01:25 – 01:40** | **Research Transfer & `git log` Discussion** | Inspect Game Wall, commit history review. |
+| **01:40 – 02:00** | **Buffer Time & Troubleshooting Catch-Up** | Flexible cushion for auth/merge recovery. |
 
 ## Game Wall & Pair Registration
 
