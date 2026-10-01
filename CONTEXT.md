@@ -17,6 +17,10 @@ One player's change to one empty square, saved as a commit and shared with the o
 The public workshop page that displays the current board and state of each registered pair game.
 _Avoid_: Leaderboard
 
+**Register game**:
+The action and GitHub issue form used to register a pair game onto the game wall.
+_Avoid_: Register pair game, Add game, Register match
+
 **Workshop**:
 One training session (e.g. SCDA Training Week) and the set of pair games registered for its game wall.
 _Avoid_: Event, Session, Cohort
