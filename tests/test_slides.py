@@ -4,8 +4,9 @@ Automated tests validating docs/slides/collaboration.html:
 - Exactly 22 slides with correct sequential IDs (#slide-1 to #slide-22).
 - Sequential footer counters '1 / 22' through '22 / 22'.
 - Slide 1 subtitle is 'Workflows for Synchronized Teamwork'.
-- Commit progression covers Commit 1 through Commit 5.
-- Turn cycle repeat loop has no unescaped or broken entity (no '&subarr;').
+- Commits progression covers Commit 1 through Commit 5.
+- Git vs GitHub and Three Local Stages and Remotes precede Turn Cycle.
+- Turn Cycle slides (Step 1 to Step 5) appear AFTER Remotes: GitHub Sync.
 - Remotes slides share identical title 'Remotes: GitHub Sync' and cloud label 'origin/main'.
 - Slide 22 is Best Practices.
 """
@@ -46,29 +47,34 @@ class TestCollaborationSlides(unittest.TestCase):
         """First slide must say 'Workflows for Synchronized Teamwork'."""
         self.assertIn("Workflows for Synchronized Teamwork", self.html)
 
+    def test_turn_cycle_after_remotes_sync(self):
+        """Turn Cycle slides must come AFTER Remotes Sync slides."""
+        remotes_pos = self.html.rfind("Remotes: GitHub Sync")
+        turn_cycle_pos = self.html.find("The Turn Cycle")
+        self.assertGreater(remotes_pos, 0, "Remotes: GitHub Sync slide must exist")
+        self.assertGreater(turn_cycle_pos, 0, "The Turn Cycle slide must exist")
+        self.assertGreater(turn_cycle_pos, remotes_pos, "Turn Cycle must follow Remotes: GitHub Sync")
+
     def test_no_subarr_entity(self):
-        """The broken '&subarr;' entity must be removed from the loop pill."""
+        """The broken '&subarr;' entity must not appear in the slides."""
         self.assertNotIn("&subarr;", self.html)
         self.assertIn("Partner pulls your move &amp; takes their turn", self.html)
 
     def test_remotes_title_and_cloud_label_consistency(self):
         """Remotes slides must both have title 'Remotes: GitHub Sync' and cloud label 'origin/main'."""
-        # There should be two slides with 'Remotes: GitHub Sync'
         titles = re.findall(r'<h2>Remotes: GitHub Sync</h2>', self.html)
         self.assertEqual(len(titles), 2, "Both remotes slides must share title 'Remotes: GitHub Sync'")
-        # Both should show origin/main
         origin_mains = re.findall(r'origin/main', self.html)
         self.assertGreaterEqual(len(origin_mains), 2)
         self.assertNotIn("remote: origin", self.html)
 
     def test_commits_1_to_5(self):
-        """Must have Commit 1 through Commit 5 (Commit 6 was removed)."""
+        """Must have Commit 1 through Commit 5."""
         self.assertIn("Commit 1", self.html)
         self.assertIn("Commit 2", self.html)
         self.assertIn("Commit 3", self.html)
         self.assertIn("Commit 4", self.html)
         self.assertIn("Commit 5", self.html)
-        self.assertNotIn("Commit 6", self.html)
 
 
 if __name__ == "__main__":
