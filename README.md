@@ -1,5 +1,7 @@
 # Git Tic-Tac-Toe Workshop
 
+![Git Tic-Tac-Toe Collaborative Workflow](docs/images/workflow.svg)
+
 A two-hour, beginner-friendly Git and GitHub workshop where pairs play tic-tac-toe by making small commits to a shared repository. The aim is for both learners to publish a move and receive their partner's move with `git pull`.
 
 ## Workshop Documents & Guides
