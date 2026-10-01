@@ -1,0 +1,44 @@
+name: Sync Registrations to Board JSON
+
+on:
+  issues:
+    types: [opened, edited, labeled, closed, reopened]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Set up Python 3
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Sync board.json from issues
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python3 scripts/sync_board_registry.py
+
+      - name: Commit and push if board.json changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git status
+          git diff docs/board.json
+          if git diff --quiet docs/board.json; then
+            echo "No changes to docs/board.json"
+          else
+            git add docs/board.json
+            git commit -m "chore(registry): sync registrations from GitHub issues to docs/board.json [skip ci]"
+            git push
+          fi
