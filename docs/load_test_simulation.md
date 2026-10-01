@@ -35,7 +35,7 @@ The Game Wall splits network requests into two distinct channels:
            │               └── Purpose: Discover registered pair repository URLs & handles
            │
            └─► (Concurrent) Raw User Content (raw.githubusercontent.com)
-                           GET /{owner}/{repo}/{branch}/board.md?t={timestamp}
+                           GET /{owner}/{repo}/{branch}/board.txt?t={timestamp}
                            └── Purpose: Fetch live board text for each pair
 ```
 
@@ -96,8 +96,8 @@ The Game Wall is engineered with defensive parsing to guarantee that invalid or 
 
 | Error Scenario | Root Cause | HTTP / Parser Diagnostic | Visual Indicator on Wall | Automatic Recovery Action |
 |---|---|---|---|---|
-| **Repository 404** | Typo in registered repo URL, private repo, or deleted repo | HTTP 404 on `raw.githubusercontent.com` for both `main` and `master` | Red status pill: `Invalid board`<br>Error details: `"Could not fetch board.md on main or master branches."` | Card renders empty grid with error banner; does not halt other cards. |
-| **Missing `board.md`** | File was deleted, renamed (e.g. `Board.md`), or placed in subfolder | HTTP 404 on `board.md` | Red status pill: `Invalid board`<br>Error badge displayed | Facilitator alerts pair to check root directory filename. |
+| **Repository 404** | Typo in registered repo URL, private repo, or deleted repo | HTTP 404 on `raw.githubusercontent.com` for both `main` and `master` | Red status pill: `Invalid board`<br>Error details: `"Could not fetch board.txt on main or master branches."` | Card renders empty grid with error banner; does not halt other cards. |
+| **Missing `board.txt`** | File was deleted, renamed (e.g. `Board.txt`), or placed in subfolder | HTTP 404 on `board.txt` | Red status pill: `Invalid board`<br>Error badge displayed | Facilitator alerts pair to check root directory filename. |
 | **Malformed Markdown Grid** | Learner accidentally deleted markdown pipes (`\|`) or code fence | Parser fails regex `/```(?:text)?\s*([\s\S]*?)```/i` or detects column count $\ne 3$ | Red status pill: `Invalid board`<br>Diagnostic text detailing offending line | Displays last known valid grid or empty placeholders. |
 | **Unbalanced Turn Parity** | Player moved twice in a row, or Player O played before Player X | $O > X$ or $X > O + 1$ detected by `evaluateBoardContent` | Red status pill: `Invalid board`<br>Error: `"Invalid parity: Player X has N moves..."` | Card highlights parity mismatch in diagnostics modal. |
 | **Conflicting Double Win** | Erroneous edit created 3-in-a-row for both `X` and `O` | Both win vectors return truthy coordinates | Red status pill: `Invalid board`<br>Error: `"Both Player X and Player O have winning lines."` | Winning line glow disabled; error reported. |

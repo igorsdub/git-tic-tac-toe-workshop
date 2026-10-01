@@ -39,7 +39,7 @@
     <rect width="156" height="170" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1" />
 
     <!-- File Tab Header -->
-    <text x="78" y="20" text-anchor="middle" class="board-label">board.md</text>
+    <text x="78" y="20" text-anchor="middle" class="board-label">board.txt</text>
 
     <!-- 3x3 Grid (96x96 px) -->
     <g transform="translate(30, 28)">
@@ -101,7 +101,7 @@
     <text x="50" y="26" text-anchor="middle" class="step-num">2</text>
     <text x="50" y="47" text-anchor="middle" class="card-title">EDIT</text>
     <rect x="9" y="55" width="82" height="22" rx="4" fill="#0d1117" stroke="#30363d"/>
-    <text x="50" y="70" text-anchor="middle" class="code-txt" fill="#f0883e">board.md</text>
+    <text x="50" y="70" text-anchor="middle" class="code-txt" fill="#f0883e">board.txt</text>
     <text x="50" y="93" text-anchor="middle" class="card-desc">Mark [X] or [O]</text>
     <text x="50" y="106" text-anchor="middle" class="card-desc">and update state</text>
   </g>
@@ -120,7 +120,7 @@
     <text x="50" y="47" text-anchor="middle" class="card-title">STAGE</text>
     <rect x="9" y="55" width="82" height="22" rx="4" fill="#0d1117" stroke="#30363d"/>
     <text x="50" y="70" text-anchor="middle" class="code-txt" fill="#d29922">git add</text>
-    <text x="50" y="93" text-anchor="middle" class="card-desc">Stage board.md</text>
+    <text x="50" y="93" text-anchor="middle" class="card-desc">Stage board.txt</text>
     <text x="50" y="106" text-anchor="middle" class="card-desc">for snapshot</text>
   </g>
 

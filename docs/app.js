@@ -1,7 +1,7 @@
 /**
  * Git Tic-Tac-Toe Workshop - Game Wall Application
  * 
- * Discovers pair game registration issues from GitHub, fetches raw board.md
+ * Discovers pair game registration issues from GitHub, fetches raw board.txt
  * files, parses and validates board states, and renders responsive cards
  * on a public workshop game wall with auto-refresh every 30 seconds.
  */
@@ -578,11 +578,11 @@ State: Waiting for O
   // ==========================================
 
   /**
-   * Attempts to fetch raw board.md from branches: 'main', then 'master'.
+   * Attempts to fetch raw board.txt from branches: 'main', then 'master'.
    */
   async function fetchRawBoard(owner, repo) {
     for (const branch of CONFIG.DEFAULT_BRANCHES) {
-      const url = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/board.md?t=${Date.now()}`;
+      const url = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/board.txt?t=${Date.now()}`;
       try {
         const res = await fetch(url);
         if (res.ok) {
@@ -596,7 +596,7 @@ State: Waiting for O
     return {
       content: null,
       branch: null,
-      error: 'Could not fetch board.md on main or master branches.',
+      error: 'Could not fetch board.txt on main or master branches.',
     };
   }
 

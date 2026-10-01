@@ -77,7 +77,7 @@
               <li>
                 Create the repository from the starter template:
                 <div style="margin-top:0.35rem;">
-                  <a href="https://github.com/igorsdub/tic-tac-toe-template" target="_blank" rel="noopener noreferrer" class="btn btn-outline">
+                  <a href="https://github.com/igorsdub/git-tic-tac-toe-template" target="_blank" rel="noopener noreferrer" class="btn btn-outline">
                     Open Starter Template &rarr;
                   </a>
                 </div>
@@ -154,11 +154,11 @@ cd &lt;repo-folder&gt;</code></pre>
             <div class="step-header">
               <div class="step-title-wrap">
                 <span class="step-number">2</span>
-                <span class="step-title">EDIT board.md</span>
+                <span class="step-title">EDIT board.txt</span>
               </div>
               <span class="step-rule">Change exactly one square</span>
             </div>
-            <p>Open <code>board.md</code> in your text editor. Replace <strong>one</strong> empty square (<code>[ ]</code>) with your mark (<code>[X]</code> or <code>[O]</code>), update the <code>State:</code> line (e.g. <code>State: Waiting for O</code>), and save the file.</p>
+            <p>Open <code>board.txt</code> in your text editor. Replace <strong>one</strong> empty square (<code>[ ]</code>) with your mark (<code>[X]</code> or <code>[O]</code>), update the <code>State:</code> line (e.g. <code>State: Waiting for O</code>), and save the file.</p>
           </div>
 
           <!-- Step 3 -->
@@ -174,7 +174,7 @@ cd &lt;repo-folder&gt;</code></pre>
             <div class="code-block-wrapper">
               <pre><code>git status
 git diff
-git add board.md</code></pre>
+git add board.txt</code></pre>
               <button class="copy-btn" title="Copy to clipboard" aria-label="Copy command to clipboard">📋 Copy</button>
             </div>
           </div>
@@ -266,26 +266,26 @@ git add board.md</code></pre>
             <p><strong>Solution:</strong></p>
             <ol>
               <li>Run <code>git pull origin main</code> to fetch your partner's commit.</li>
-              <li>Inspect <code>board.md</code> to confirm the board looks right.</li>
+              <li>Inspect <code>board.txt</code> to confirm the board looks right.</li>
               <li>Run <code>git push origin main</code>.</li>
             </ol>
           </div>
         </details>
 
         <details class="accordion">
-          <summary>Merge Conflict in <code>board.md</code></summary>
+          <summary>Merge Conflict in <code>board.txt</code></summary>
           <div class="accordion-content">
-            <p><strong>Why this happened:</strong> Both of you edited the same lines in <code>board.md</code> at the same time.</p>
+            <p><strong>Why this happened:</strong> Both of you edited the same lines in <code>board.txt</code> at the same time.</p>
             <p><strong>Solution:</strong></p>
             <ol>
-              <li>Open <code>board.md</code> in your editor.</li>
+              <li>Open <code>board.txt</code> in your editor.</li>
               <li>Look for the conflict markers: <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code>, <code>=======</code>, and <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>.</li>
               <li>Delete the markers and resolve the board so that both moves are accurately represented and <code>State:</code> is valid.</li>
               <li>Save the file.</li>
               <li>Stage and commit the resolution:
                 <div class="code-block-wrapper">
-                  <pre><code>git add board.md
-git commit -m "Resolve merge conflict in board.md"
+                  <pre><code>git add board.txt
+git commit -m "Resolve merge conflict in board.txt"
 git push origin main</code></pre>
                   <button class="copy-btn" title="Copy to clipboard" aria-label="Copy command to clipboard">📋 Copy</button>
                 </div>
@@ -300,7 +300,7 @@ git push origin main</code></pre>
             <p><strong>Do not panic and never force push (<code>git push -f</code>)!</strong></p>
             <p>In Git collaboration, the cleanest fix is simply another commit:</p>
             <ol>
-              <li>Edit <code>board.md</code> to fix the square or state.</li>
+              <li>Edit <code>board.txt</code> to fix the square or state.</li>
               <li>Stage and commit: <code>git commit -am "Fix: correct square 4"</code></li>
               <li>Push to GitHub: <code>git push origin main</code></li>
             </ol>
@@ -331,7 +331,7 @@ git checkout rematch</code></pre>
             </div>
           </li>
           <li>
-            Reset <code>board.md</code> back to empty squares (<code>[ ]</code>), update <code>State: Ready for X</code> (or swap roles if Player O wants to go first), commit as <code>"Start Rematch Game 2"</code>, push, and play!
+            Reset <code>board.txt</code> back to empty squares (<code>[ ]</code>), update <code>State: Ready for X</code> (or swap roles if Player O wants to go first), commit as <code>"Start Rematch Game 2"</code>, push, and play!
           </li>
         </ol>
       </section>
