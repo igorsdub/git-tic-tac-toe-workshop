@@ -132,7 +132,7 @@ class TestWebGuides(unittest.TestCase):
         self.assertIn("Player X", self.guide_html)
         self.assertIn("Player O", self.guide_html)
         self.assertIn("git pull origin main", self.guide_html)
-        self.assertIn("git add board.md", self.guide_html)
+        self.assertIn("git add board.txt", self.guide_html)
         self.assertIn("git push origin main", self.guide_html)
         self.assertIn("git log --oneline", self.guide_html)
         self.assertIn("rematch", self.guide_html)

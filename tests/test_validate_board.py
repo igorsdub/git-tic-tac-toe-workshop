@@ -297,6 +297,25 @@ State: Ready for X
         self.assertEqual(res.state, "Waiting for X")
         self.assertEqual(res.move_counts, {"X": 1, "O": 1})
 
+    def test_default_cli_board_txt(self):
+        """Verifies CLI defaults to board.txt in the current directory."""
+        from validate_board import main
+        import tempfile
+        import os
+        from unittest.mock import patch
+
+        orig_cwd = os.getcwd()
+        with tempfile.TemporaryDirectory() as tmpdir:
+            try:
+                os.chdir(tmpdir)
+                board_path = Path(tmpdir) / "board.txt"
+                board_path.write_text(" [ ] | [ ] | [ ]\n-----+-----+-----\n [ ] | [ ] | [ ]\n-----+-----+-----\n [ ] | [ ] | [ ]\n")
+                with patch("sys.argv", ["validate_board.py", "--quiet"]):
+                    code = main()
+                    self.assertEqual(code, 0)
+            finally:
+                os.chdir(orig_cwd)
+
 
 if __name__ == "__main__":
     unittest.main()

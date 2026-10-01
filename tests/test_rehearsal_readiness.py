@@ -31,7 +31,7 @@ class TestMarkdownDocumentationReadiness(unittest.TestCase):
         "CONTEXT.md",
         "docs/load_test_simulation.md",
         "template-spec/README.md",
-        "template-spec/board.md",
+        "template-spec/board.txt",
     ]
 
     def test_expected_documentation_files_exist(self):
@@ -159,7 +159,7 @@ class TestRehearsalGuideContents(unittest.TestCase):
 
     def test_live_demo_rehearsal_protocol(self):
         """Verify live demonstration script covers template instantiation and two published moves."""
-        self.assertIn("igorsdub/tic-tac-toe-template", self.content)
+        self.assertIn("igorsdub/git-tic-tac-toe-template", self.content)
         self.assertIn("Move 1", self.content)
         self.assertIn("Move 2", self.content)
         self.assertIn("git push", self.content)
