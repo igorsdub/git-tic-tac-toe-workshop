@@ -6,18 +6,28 @@ This document defines the official file format and parsing rules for `board.md` 
 
 ## 1. Specification Overview
 
-A valid `board.md` file consists of the following sections:
-1. **Title Header**: Top-level heading `# Git Tic-Tac-Toe` (or `# Tic-Tac-Toe`).
-2. **Player Metadata (Optional)**: Optional declarations of Player X and Player O GitHub usernames. (The Game Wall sources handles directly from the GitHub issue registration form.)
-3. **Game State**: Current status indicator line (`State:` or `Status:`).
-4. **Board Grid**: Fenced monospace block representing the 3x3 tic-tac-toe grid.
-5. **Instructions**: Learner reference for the 5-step turn cycle.
+A valid `board.md` file consists of:
+1. **Board Grid (Required)**: 3x3 tic-tac-toe grid either as a pure 5-line raw text file or inside a fenced monospace code block.
+2. **Title Header (Optional)**: `# Git Tic-Tac-Toe` (optional, omitted in standard template).
+3. **Player Metadata (Optional)**: Optional declarations of Player X and Player O handles (Game Wall sources handles directly from issue registration per ADR 0001).
+4. **Game State (Optional)**: Optional status indicator line (`State:` or `Status:`). The canonical game state is evaluated dynamically from the grid.
+5. **Instructions (Optional)**: Historical turn cycle reference; standard instructions are hosted in `README.md`.
 
 ---
 
 ## 2. Format Requirements
 
-### 2.1 Player Metadata (Optional)
+### 2.1 Pure Raw Grid (Standard Template)
+In the starter template, `board.md` is simply the pure 5-line text grid without markdown fences or headers:
+```text
+ [ ] | [ ] | [ ]
+-----+-----+-----
+ [ ] | [ ] | [ ]
+-----+-----+-----
+ [ ] | [ ] | [ ]
+```
+
+### 2.2 Player Metadata (Optional)
 The file may optionally contain two lines identifying each player:
 ```markdown
 Player X: @username_x
@@ -28,12 +38,12 @@ Player O: @username_o
 - Before players set their handles, placeholders such as `[GitHub Username]` or `[Player X Username]` are valid initial states.
 - **Decoupled Registration**: Player handles in `board.md` are optional metadata. The Game Wall sources player handles directly from the GitHub issue registration form (`register-game.yml`). If player headers are omitted or remain as placeholders, the board remains valid and handles are populated from registration.
 
-### 2.2 Status Line
-The file must contain a `State:` (or `Status:`) line:
+### 2.3 Status Line (Optional)
+The file may optionally contain a `State:` (or `Status:`) line:
 ```markdown
 State: <state_value>
 ```
-Valid evaluated state values:
+If omitted, the state is evaluated dynamically by the validator and Game Wall from grid marks and move parity. Valid evaluated state values:
 - `Ready for X`: Initial state before Move 1 (0 moves on board).
 - `Waiting for O`: Player X has played; Player O's turn to move.
 - `Waiting for X`: Player O has played; Player X's turn to move.

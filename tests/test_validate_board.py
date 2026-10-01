@@ -34,6 +34,7 @@ class TestBoardValidator(unittest.TestCase):
             "09_malformed_bad_char.md": ("Invalid board", False),
             "10_malformed_dimensions.md": ("Invalid board", False),
             "11_malformed_missing_headers.md": ("Ready for X", True),
+            "12_pure_raw_board.md": ("Ready for X", True),
         }
 
         for filename, (expected_state, expected_valid) in expected.items():

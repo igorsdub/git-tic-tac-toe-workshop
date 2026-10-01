@@ -8,7 +8,7 @@ Terms for the paired tic-tac-toe activity and its shared event display.
 A tic-tac-toe game played by two learners through one shared GitHub repository. Each learner makes moves from their own local copy.
 
 **Board**:
-The text file whose current version records the pair game's squares and turn state.
+The text file (`board.md`) whose current version records the pair game's 3x3 squares. Game state is evaluated dynamically from the grid marks.
 
 **Move**:
 One player's change to one empty square, saved as a commit and shared with the other player.
