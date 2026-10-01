@@ -50,6 +50,10 @@ def main() -> None:
         title = issue.get("title", "")
         body = issue.get("body", "")
 
+        is_registration = "game-registration" in labels or "[game registration]" in title.lower()
+        if not is_registration:
+            continue
+
         parsed = parse_registration_issue(body, title)
         if parsed.get("is_valid") and parsed.get("owner") and parsed.get("repo"):
             owner = parsed["owner"]

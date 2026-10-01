@@ -7,14 +7,5 @@
     "playerO": "igorsdub",
     "workshopName": "SCDA Training Week",
     "eventId": "SCDA Training Week"
-  },
-  {
-    "owner": "igorsdub",
-    "repo": "git-tic-tac-toe-workshop",
-    "repoUrl": "https://github.com/igorsdub/git-tic-tac-toe-workshop",
-    "playerX": null,
-    "playerO": null,
-    "workshopName": "Default Event",
-    "eventId": "Default Event"
   }
 ]
