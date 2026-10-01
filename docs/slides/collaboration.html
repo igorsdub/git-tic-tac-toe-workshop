@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Git and GitHub Collaboration — SCDA training week</title>
+<link rel="stylesheet" href="css/slides.css">
+</head>
+<body>
+
+<div class="slide-stage" id="stage" onclick="handleStageClick(event)">
+
+  <!-- SLIDE 1: Title -->
+  <div class="slide active" id="slide-1">
+    <div class="title-content">
+      <div class="title-meta">SCDA TRAINING WEEK</div>
+      <h1 class="title-main">Git and GitHub Collaboration</h1>
+      <p class="title-sub">Workflows for Tic-Tac-Toe & Scientific Teamwork</p>
+    </div>
+    <div class="slide-footer">
+      <span>SCDA training week</span>
+      <span>1 / 13</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: The Problem: File Sprawl -->
+  <div class="slide" id="slide-2">
+    <div class="slide-header">
+      <h2>The Problem: File Sprawl</h2>
+      <span class="tag">SCDA training week</span>
+    </div>
+    <div class="slide-body">
+      <div class="horror-grid">
+        <div class="card-pane">
+          <div class="pane-header" style="color: #ff7b72;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            Ad-hoc File Naming
+          </div>
+          <div class="file-list">
+            <div class="file-item danger">board.txt</div>
+            <div class="file-item danger">board_v2.txt</div>
+            <div class="file-item danger">board_final.txt</div>
+            <div class="file-item danger">board_final_really_FINAL.txt</div>
+            <div class="file-item danger">board_v3_reviewer_OCT14.txt</div>
+          </div>
+        </div>
+        <div style="font-size: clamp(20px, 2.5cqw, 36px); color: #30363d; text-align: center;">&rarr;</div>
+        <div class="card-pane empty-slot">
+          <span>[ Next: Version Control ]</span>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>SCDA training week</span>
+      <span>2 / 13</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: The Solution: Single File & Full History -->
+  <div class="slide" id="slide-3">
+    <div class="slide-header">
+      <h2>The Solution: Single File & Full History</h2>
+      <span class="tag">SCDA training week</span>
+    </div>
+    <div class="slide-body">
+      <div class="horror-grid">
+        <div class="card-pane">
+          <div class="pane-header" style="color: #ff7b72;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            Ad-hoc File Naming
+          </div>
+          <div class="file-list">
+            <div class="file-item danger">board.txt</div>
+            <div class="file-item danger">board_v2.txt</div>
+            <div class="file-item danger">board_final.txt</div>
+            <div class="file-item danger">board_final_really_FINAL.txt</div>
+            <div class="file-item danger">board_v3_reviewer_OCT14.txt</div>
+          </div>
+        </div>
+        <div style="font-size: clamp(20px, 2.5cqw, 36px); color: var(--text-muted); text-align: center;">&rarr;</div>
+        <div class="card-pane">
+          <div class="pane-header" style="color: var(--green);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+            Single File &bull; Full History
+          </div>
+          <div class="file-list">
+            <div class="file-item good">
+              <span>board.txt</span>
+              <span style="font-size: 0.85em; opacity: 0.7;">main</span>
+            </div>
+          </div>
+          <div style="margin-top: 1.2cqw; border-left: 2px dashed var(--border); padding-left: 1cqw; display: flex; flex-direction: column; gap: 0.6cqw; font-family: ui-monospace, monospace; font-size: clamp(11px, 1.1cqw, 15px); color: var(--text-muted);">
+            <div>&#9679; 31c0a &bull; Add reviewer edits to board.txt</div>
+            <div>&#9679; 9b2d8 &bull; Place X in center of board.txt</div>
+            <div>&#9679; e4a10 &bull; Initialize empty board.txt</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>SCDA training week</span>
+      <span>3 / 13</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: Case Scenario: Tic-Tac-Toe in an Imagined Land -->
+  <div class="slide" id="slide-4">
+    <div class="slide-header">
+      <h2>Case Scenario: Tic-Tac-Toe in an Imagined Land</h2>
+      <span class="tag">SCDA training week</span>
+    </div>
+    <div class="slide-body">
+      <div class="compare-grid">
+        <div class="compare-col" style="justify-content: center; text-align: left;">
+          <div style="font-size: clamp(16px, 2cqw, 28px); font-weight: 700; color: var(--accent); margin-bottom: 1cqw;">The Distant Collaborators</div>
+          <p style="font-size: clamp(13px, 1.4cqw, 20px); color: var(--text-muted); line-height: 1.5; margin-bottom: 1cqw;">
+            Two scientists in distant mountain valleys want to play Tic-Tac-Toe together by sharing a single text file named <code style="color: var(--text-main);">board.txt</code>.
+          </p>
+          <p style="font-size: clamp(13px, 1.4cqw, 20px); color: var(--text-muted); line-height: 1.5;">
+            Instead of emailing zip archives or renaming files, they use Git and GitHub to synchronize their moves securely and reliably.
+          </p>
+        </div>
+        <div class="compare-col" style="background: #0d1117; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;">
+          <div style="font-family: monospace; font-size: clamp(18px, 2.2cqw, 32px); color: var(--green); text-align: center; line-height: 1.6;">
+            X | . | .<br>
+            ---------<br>
+            . | O | .<br>
+            ---------<br>
+            . | . | X
+          </div>
+          <div style="font-size: clamp(11px, 1.2cqw, 16px); color: var(--text-muted); margin-top: 1.2cqw;">Tracked inside board.txt</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>SCDA training week</span>
+      <span>4 / 13</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: Conceptual Turn Lifecycle -->
+  <div class="slide" id="slide-5">
+    <div class="slide-header">
+      <h2>Conceptual Turn Lifecycle</h2>
+      <span class="tag">SCDA training week</span>
+    </div>
+    <div class="slide-body">
+      <div class="practice-box">
+        <div class="practice-steps" style="grid-template-columns: repeat(4, 1fr);">
+          <div class="p-step">
+            <span>01 &bull; EDIT</span>
+            Modify board.txt in your editor to make your move.
+          </div>
+          <div class="p-step">
+            <span>02 &bull; PACKAGE</span>
+            Stage your move using git add board.txt.
+          </div>
+          <div class="p-step">
+            <span>03 &bull; SAVE</span>
+            Commit your turn snapshot into git history.
+          </div>
+          <div class="p-step">
+            <span>04 &bull; SHARE</span>
+            Push to GitHub and let partner pull & repeat!
+          </div>
+        </div>
+        <div class="portal-link">
+          <div>
+            <div style="font-size: clamp(12px, 1.4cqw, 18px); color: var(--text-main); font-weight: 600;">The Collaboration Loop</div>
+            <div style="font-size: clamp(11px, 1.2cqw, 16px); color: var(--text-muted);">Every turn follows the exact same repeatable cycle of git commands.</div>
+          </div>
+          <span style="font-size: clamp(12px, 1.3cqw, 18px); font-family: ui-monospace, monospace; color: var(--accent); font-weight: bold;">board.txt &rarr;</span>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>SCDA training week</span>
+      <span>5 / 13</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: Git vs GitHub: Connecting Concepts to Tools -->
+  <div class="slide" id="slide-6">
+    <div class="slide-header">
+      <h2>Git vs GitHub</h2>
+      <span class="tag">SCDA training week</span>
+    </div>
+    <div class="slide-body">
+      <div class="compare-grid">
+        <div class="compare-col">
+          <div class="brand-logo">
+            <svg viewBox="0 0 24 24">
+              <path fill="var(--git-orange)" d="M2.6 10.59L10.6 2.6a3.39 3.39 0 0 1 4.8 0l5.99 6a3.39 3.39 0 0 1 0 4.8l-6 6a3.39 3.39 0 0 1-4.8 0L2.6 15.4a3.4 3.4 0 0 1 0-4.81z"/>
+              <circle cx="9.5" cy="9.5" r="1.5" fill="#fff"/>
+              <circle cx="14.5" cy="14.5" r="1.5" fill="#fff"/>
+              <path stroke="#fff" stroke-width="1.5" d="M9.5 9.5v5m0 0a1.5 1.5 0 1 0 1.5 1.5M9.5 11l5 3.5"/>
+            </svg>
+          </div>
+          <div class="brand-title" style="color: var(--git-orange);">Git</div>
+          <div class="concept-pill">
+            <strong>Local Engine</strong>
+            Runs on your computer
+          </div>
+          <div class="concept-pill">
+            <strong>Offline Tracking</strong>
+            Project history without internet
+          </div>
+        </div>
+        <div class="compare-col">
+          <div class="brand-logo">
+            <svg viewBox="0 0 24 24" fill="#ffffff">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+            </svg>
+          </div>
+          <div class="brand-title" style="color: #ffffff;">GitHub</div>
+          <div class="concept-pill">
+            <strong>Collaborative Platform</strong>
+            Sharing, code review & sync
+          </div>
+          <div class="concept-pill">
+            <strong>Cloud Hub</strong>
+            Central remote repository
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>SCDA training week</span>
+      <span>6 / 13</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: Three Local Stages -->
+  <div class="slide" id="slide-7">
+    <div class="slide-header">
+      <h2>Three Local Stages</h2>
+      <span class="tag">SCDA training week</span>
+    </div>
+    <div class="slide-body">
+      <div class="stages-diagram">
+        <div class="stage-box">
+          <div class="stage-title">Working Directory</div>
+          <div class="stage-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="9" y1="13" x2="15" y2="13" stroke="#ff7b72" stroke-width="2.5"/>
+              <line x1="9" y1="17" x2="13" y2="17" stroke="#ff7b72" stroke-width="2.5"/>
+            </svg>
+          </div>
+          <div class="stage-cue">Edit board.txt with your latest game move</div>
+          <div style="font-family: monospace; color: var(--text-muted); font-size: clamp(11px, 1.2cqw, 16px);">[ Unstaged edits ]</div>
+        </div>
+        <div class="trans-arrow visible">
+          <div class="stage-cmd-box">git add</div>
+          <svg width="28" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+        <div class="stage-box">
+          <div class="stage-title">Staging Area</div>
+          <div class="stage-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <path d="M9 12l2 2 4-4" stroke="var(--green)" stroke-width="2.5"/>
+            </svg>
+          </div>
+          <div class="stage-cue">Prepare board.txt for the snapshot</div>
+          <div style="font-family: monospace; color: var(--accent); font-size: clamp(11px, 1.2cqw, 16px);">Index ready</div>
+        </div>
+        <div class="trans-arrow visible">
+          <div class="stage-cmd-box">git commit</div>
+          <svg width="28" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+        <div class="stage-box">
+          <div class="stage-title">Local Repository</div>
+          <div class="stage-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.5">
+              <circle cx="12" cy="12" r="9"/>
+              <circle cx="12" cy="12" r="4" fill="var(--green)"/>
+            </svg>
+          </div>
+          <div class="stage-cue">Permanent snapshot sealed into .git history</div>
+          <div style="font-family: monospace; color: var(--green); font-size: clamp(11px, 1.2cqw, 16px);">Time machine</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>SCDA training week</span>
+      <span>7 / 13</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: SVG Step 1 (Making & Saving a Turn) -->
+  <div class="slide" id="slide-8">
+    <div class="slide-header">
+      <h2>SVG Step 1: Making & Saving a Turn</h2>
+      <span class="tag">SCDA training week</span>
+    </div>
+    <div class="slide-body">
+      <div class="svg-board">
+        <svg viewBox="0 0 920 280">
+          <line x1="100" y1="180" x2="820" y2="180" stroke="#30363d" stroke-width="5" />
+          <line x1="100" y1="180" x2="340" y2="180" stroke="#58a6ff" stroke-width="5" />
+          <g transform="translate(180, 180)">
+            <circle r="18" fill="#161b22" stroke="#58a6ff" stroke-width="4" />
+            <text y="44" text-anchor="middle" fill="#f0f6fc" font-family="monospace" font-size="16" font-weight="bold">c1: init board.txt</text>
+          </g>
+          <g transform="translate(320, 180)">
+            <circle r="18" fill="#161b22" stroke="#58a6ff" stroke-width="4" />
+            <text y="44" text-anchor="middle" fill="#f0f6fc" font-family="monospace" font-size="16" font-weight="bold">c2: place X move</text>
+          </g>
+          <rect x="40" y="165" width="70" height="30" rx="6" fill="#1f293d" stroke="#58a6ff" stroke-width="1.5"/>
+          <text x="75" y="185" text-anchor="middle" fill="#58a6ff" font-family="monospace" font-size="14" font-weight="bold">main</text>
+        </svg>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>SCDA training week</span>
+      <span>8 / 13</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 9: SVG Step 2 (Publishing Your Turn) -->
+  <div class="slide" id="slide-9">
+    <div class="slide-header">
+      <h2>SVG Step 2: Publishing Your Turn</h2>
+      <span class="tag">SCDA training week</span>
+    </div>
+    <div class="slide-body">
+      <div class="svg-board">
+        <svg viewBox="0 0 860 300">
+          <defs>
+            <marker id="arr-blue-9" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M 0 1 L 10 5 L 0 9 z" fill="#58a6ff"/>
+            </marker>
+          </defs>
+          <g transform="translate(430, 85)">
+            <path d="M -85 10 C -105 -18, -65 -55, -25 -45 C -5 -75, 55 -75, 70 -45 C 110 -55, 125 -10, 95 18 C 115 42, 85 62, 55 58 L -65 58 C -95 58, -115 35, -85 10 Z" fill="#161b22" stroke="#ffffff" stroke-width="2.5"/>
+            <text y="-2" text-anchor="middle" fill="#ffffff" font-size="20" font-weight="bold">GitHub</text>
+            <text y="22" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="14">origin/main</text>
+          </g>
+          <g transform="translate(180, 225)">
+            <rect x="-65" y="-40" width="130" height="70" rx="6" fill="#161b22" stroke="#58a6ff" stroke-width="2.5"/>
+            <rect x="-14" y="30" width="28" height="12" fill="#30363d"/>
+            <line x1="-35" y1="42" x2="35" y2="42" stroke="#30363d" stroke-width="3"/>
+            <text y="-6" text-anchor="middle" fill="#58a6ff" font-size="16" font-weight="bold">Player X</text>
+            <text y="14" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="12">board.txt commit</text>
+          </g>
+          <path d="M 225 175 L 330 115" stroke="#58a6ff" stroke-width="3.5" marker-end="url(#arr-blue-9)" fill="none" />
+          <rect x="235" y="112" width="110" height="28" rx="6" fill="#000000" stroke="#58a6ff" stroke-width="1.5"/>
+          <text x="290" y="131" text-anchor="middle" fill="#58a6ff" font-family="monospace" font-size="13" font-weight="bold">git push origin</text>
+        </svg>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>SCDA training week</span>
+      <span>9 / 13</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 10: SVG Step 3 (Partner Syncing) -->
+  <div class="slide" id="slide-10">
+    <div class="slide-header">
+      <h2>SVG Step 3: Partner Syncing</h2>
+      <span class="tag">SCDA training week</span>
+    </div>
+    <div class="slide-body">
+      <div class="svg-board">
+        <svg viewBox="0 0 860 300">
+          <defs>
+            <marker id="arr-blue-10" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 0 1 L 10 5 L 0 9 z" fill="#58a6ff"/></marker>
+            <marker id="arr-purple-10" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 0 1 L 10 5 L 0 9 z" fill="#bc8cff"/></marker>
+          </defs>
+          <g transform="translate(430, 85)">
+            <path d="M -85 10 C -105 -18, -65 -55, -25 -45 C -5 -75, 55 -75, 70 -45 C 110 -55, 125 -10, 95 18 C 115 42, 85 62, 55 58 L -65 58 C -95 58, -115 35, -85 10 Z" fill="#161b22" stroke="#ffffff" stroke-width="2.5"/>
+            <text y="-2" text-anchor="middle" fill="#ffffff" font-size="20" font-weight="bold">GitHub</text>
+            <text y="22" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="14">origin/main</text>
+          </g>
+          <g transform="translate(180, 225)">
+            <rect x="-65" y="-40" width="130" height="70" rx="6" fill="#161b22" stroke="#58a6ff" stroke-width="2.5"/>
+            <rect x="-14" y="30" width="28" height="12" fill="#30363d"/>
+            <line x1="-35" y1="42" x2="35" y2="42" stroke="#30363d" stroke-width="3"/>
+            <text y="-6" text-anchor="middle" fill="#58a6ff" font-size="16" font-weight="bold">Player X</text>
+            <text y="14" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="12">local repo</text>
+          </g>
+          <g transform="translate(680, 225)">
+            <rect x="-65" y="-40" width="130" height="70" rx="6" fill="#161b22" stroke="#bc8cff" stroke-width="2.5"/>
+            <rect x="-14" y="30" width="28" height="12" fill="#30363d"/>
+            <line x1="-35" y1="42" x2="35" y2="42" stroke="#30363d" stroke-width="3"/>
+            <text y="-6" text-anchor="middle" fill="#bc8cff" font-size="16" font-weight="bold">Player O</text>
+            <text y="14" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="12">local repo</text>
+          </g>
+          <path d="M 225 175 L 330 115" stroke="#58a6ff" stroke-width="3.5" marker-end="url(#arr-blue-10)" fill="none" />
+          <rect x="235" y="112" width="100" height="28" rx="6" fill="#000000" stroke="#58a6ff" stroke-width="1.5"/>
+          <text x="285" y="131" text-anchor="middle" fill="#58a6ff" font-family="monospace" font-size="13" font-weight="bold">git push</text>
+          <path d="M 530 115 L 635 175" stroke="#bc8cff" stroke-width="3.5" marker-end="url(#arr-purple-10)" fill="none" />
+          <rect x="535" y="112" width="100" height="28" rx="6" fill="#000000" stroke="#bc8cff" stroke-width="1.5"/>
+          <text x="585" y="131" text-anchor="middle" fill="#bc8cff" font-family="monospace" font-size="13" font-weight="bold">git pull</text>
+        </svg>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>SCDA training week</span>
+      <span>10 / 13</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 11: SVG Step 4 (The Collaboration Loop) -->
+  <div class="slide" id="slide-11">
+    <div class="slide-header">
+      <h2>SVG Step 4: The Collaboration Loop</h2>
+      <span class="tag">SCDA training week</span>
+    </div>
+    <div class="slide-body">
+      <div class="svg-board">
+        <svg viewBox="0 0 860 300">
+          <defs>
+            <marker id="arr-blue-11" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 0 1 L 10 5 L 0 9 z" fill="#58a6ff"/></marker>
+            <marker id="arr-purple-11" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 0 1 L 10 5 L 0 9 z" fill="#bc8cff"/></marker>
+          </defs>
+          <g transform="translate(430, 85)">
+            <path d="M -85 10 C -105 -18, -65 -55, -25 -45 C -5 -75, 55 -75, 70 -45 C 110 -55, 125 -10, 95 18 C 115 42, 85 62, 55 58 L -65 58 C -95 58, -115 35, -85 10 Z" fill="#161b22" stroke="#ffffff" stroke-width="2.5"/>
+            <text y="-2" text-anchor="middle" fill="#ffffff" font-size="20" font-weight="bold">GitHub</text>
+            <text y="22" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="14">remote: origin</text>
+          </g>
+          <g transform="translate(180, 225)">
+            <rect x="-65" y="-40" width="130" height="70" rx="6" fill="#161b22" stroke="#58a6ff" stroke-width="2.5"/>
+            <rect x="-14" y="30" width="28" height="12" fill="#30363d"/>
+            <line x1="-35" y1="42" x2="35" y2="42" stroke="#30363d" stroke-width="3"/>
+            <text y="-6" text-anchor="middle" fill="#58a6ff" font-size="16" font-weight="bold">Player X</text>
+            <text y="14" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="12">local repo</text>
+          </g>
+          <g transform="translate(680, 225)">
+            <rect x="-65" y="-40" width="130" height="70" rx="6" fill="#161b22" stroke="#bc8cff" stroke-width="2.5"/>
+            <rect x="-14" y="30" width="28" height="12" fill="#30363d"/>
+            <line x1="-35" y1="42" x2="35" y2="42" stroke="#30363d" stroke-width="3"/>
+            <text y="-6" text-anchor="middle" fill="#bc8cff" font-size="16" font-weight="bold">Player O</text>
+            <text y="14" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="12">local repo</text>
+          </g>
+          <path d="M 225 175 L 330 115" stroke="#58a6ff" stroke-width="3.5" marker-end="url(#arr-blue-11)" fill="none" />
+          <rect x="235" y="112" width="90" height="28" rx="6" fill="#000000" stroke="#58a6ff" stroke-width="1.5"/>
+          <text x="280" y="131" text-anchor="middle" fill="#58a6ff" font-family="monospace" font-size="13" font-weight="bold">git push</text>
+          <path d="M 355 135 L 250 195" stroke="#58a6ff" stroke-width="3.5" stroke-dasharray="5,5" marker-end="url(#arr-blue-11)" fill="none" />
+          <rect x="270" y="176" width="90" height="28" rx="6" fill="#000000" stroke="#58a6ff" stroke-width="1.5"/>
+          <text x="315" y="195" text-anchor="middle" fill="#58a6ff" font-family="monospace" font-size="13" font-weight="bold">git pull</text>
+          <path d="M 530 115 L 635 175" stroke="#bc8cff" stroke-width="3.5" marker-end="url(#arr-purple-11)" fill="none" />
+          <rect x="535" y="112" width="90" height="28" rx="6" fill="#000000" stroke="#bc8cff" stroke-width="1.5"/>
+          <text x="580" y="131" text-anchor="middle" fill="#bc8cff" font-family="monospace" font-size="13" font-weight="bold">git pull</text>
+          <path d="M 610 195 L 505 135" stroke="#bc8cff" stroke-width="3.5" stroke-dasharray="5,5" marker-end="url(#arr-purple-11)" fill="none" />
+          <rect x="500" y="176" width="90" height="28" rx="6" fill="#000000" stroke="#bc8cff" stroke-width="1.5"/>
+          <text x="545" y="195" text-anchor="middle" fill="#bc8cff" font-family="monospace" font-size="13" font-weight="bold">git push</text>
+        </svg>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>SCDA training week</span>
+      <span>11 / 13</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 12: Collaborative Branches -->
+  <div class="slide" id="slide-12">
+    <div class="slide-header">
+      <h2>Collaborative Branches & Pull Requests</h2>
+      <span class="tag">SCDA training week</span>
+    </div>
+    <div class="slide-body">
+      <div class="svg-board">
+        <svg viewBox="0 0 920 280">
+          <line x1="100" y1="180" x2="820" y2="180" stroke="#58a6ff" stroke-width="5" />
+          <path d="M 320 180 C 380 180, 400 80, 480 80 L 640 80 C 720 80, 740 180, 800 180" fill="none" stroke="#bc8cff" stroke-width="4" stroke-dasharray="6,6" />
+          <g transform="translate(180, 180)">
+            <circle r="18" fill="#161b22" stroke="#58a6ff" stroke-width="4" />
+            <text y="44" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="14">init board.txt</text>
+          </g>
+          <g transform="translate(320, 180)">
+            <circle r="18" fill="#161b22" stroke="#58a6ff" stroke-width="4" />
+            <text y="44" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="14">move 1</text>
+          </g>
+          <g transform="translate(560, 180)">
+            <circle r="18" fill="#161b22" stroke="#58a6ff" stroke-width="4" />
+            <text y="44" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="14">move 3</text>
+          </g>
+          <g transform="translate(800, 180)">
+            <circle r="20" fill="#58a6ff" stroke="#ffffff" stroke-width="4" />
+            <text y="46" text-anchor="middle" fill="#58a6ff" font-family="monospace" font-size="15" font-weight="bold">merge PR</text>
+          </g>
+          <g transform="translate(480, 80)">
+            <circle r="18" fill="#161b22" stroke="#bc8cff" stroke-width="4" />
+            <text y="-26" text-anchor="middle" fill="#bc8cff" font-family="monospace" font-size="14" font-weight="bold">Player Branch</text>
+            <text y="42" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="14">move 2a</text>
+          </g>
+          <g transform="translate(640, 80)">
+            <circle r="18" fill="#161b22" stroke="#bc8cff" stroke-width="4" />
+            <text y="-26" text-anchor="middle" fill="#bc8cff" font-family="monospace" font-size="14" font-weight="bold">Review & Test</text>
+            <text y="42" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="14">move 2b</text>
+          </g>
+          <rect x="40" y="165" width="70" height="30" rx="6" fill="#1f293d" stroke="#58a6ff" stroke-width="1.5"/>
+          <text x="75" y="185" text-anchor="middle" fill="#58a6ff" font-family="monospace" font-size="14" font-weight="bold">main</text>
+          <rect x="360" y="65" width="90" height="30" rx="6" fill="#2d1f3d" stroke="#bc8cff" stroke-width="1.5"/>
+          <text x="405" y="85" text-anchor="middle" fill="#bc8cff" font-family="monospace" font-size="14" font-weight="bold">player-x</text>
+        </svg>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>SCDA training week</span>
+      <span>12 / 13</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 13: Team Rules & Hands-on Workshop Practice -->
+  <div class="slide" id="slide-13">
+    <div class="slide-header">
+      <h2>Team Rules & Hands-on Workshop Practice</h2>
+      <span class="tag">SCDA training week</span>
+    </div>
+    <div class="slide-body">
+      <div class="practice-box">
+        <div class="practice-steps">
+          <div class="p-step">
+            <span>RULE 01</span>
+            Pull before starting your turn to avoid conflicts on board.txt.
+          </div>
+          <div class="p-step">
+            <span>RULE 02</span>
+            Make atomic, single-move commits to board.txt.
+          </div>
+          <div class="p-step">
+            <span>RULE 03</span>
+            Use clear messages ("place X center of board.txt").
+          </div>
+          <div class="p-step">
+            <span>PRACTICE</span>
+            Pair up with a partner & play Tic-Tac-Toe via Git!
+          </div>
+        </div>
+        <div class="portal-link">
+          <div>
+            <div style="font-size: clamp(11px, 1.2cqw, 16px); color: var(--text-muted); margin-bottom: 0.3cqw;">SCDA Training Week Workshop Repo:</div>
+            <div class="portal-url">git-tic-tac-toe-workshop</div>
+          </div>
+          <span style="font-size: clamp(12px, 1.3cqw, 18px); font-family: ui-monospace, monospace; color: var(--accent); font-weight: bold;">Let's Play! &rarr;</span>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>SCDA training week</span>
+      <span>13 / 13</span>
+    </div>
+  </div>
+
+</div>
+
+<script src="js/slides.js"></script>
+</body>
+</html>
