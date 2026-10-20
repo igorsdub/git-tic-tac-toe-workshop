@@ -1,0 +1,154 @@
+/* Pure data helpers for the branch-aware Game Wall and its board-history view. */
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  if (root) root.MatchData = api;
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  const MATCH_BRANCH_PATTERN = /^match-\d{2,}$/;
+  const TERMINAL_STATES = new Set(['X won', 'O won', 'Draw']);
+
+  function normalizeMatch(item) {
+    const owner = item.owner || '';
+    const repo = item.repo || '';
+    const branch = item.branch || '';
+    const errors = Array.isArray(item.errors) ? item.errors.filter(Boolean).map(String) : [];
+    const validIdentity = Boolean(owner && repo && MATCH_BRANCH_PATTERN.test(branch));
+    const isValid = validIdentity && item.boardValid === true && item.status !== 'error';
+
+    if (!owner || !repo) errors.push('Registration does not identify a public repository.');
+    if (!branch) {
+      errors.push('This registration has no match branch. Re-register it with a numbered match branch such as match-01.');
+    } else if (!MATCH_BRANCH_PATTERN.test(branch)) {
+      errors.push(`Branch “${branch}” is not a numbered match branch (match-01, match-02, …).`);
+    }
+    if (item.boardValid !== true && errors.length === 0) {
+      errors.push('This registry record has no validated board. Sync the branch registry before displaying this match.');
+    }
+
+    const state = isValid ? item.state : 'Error';
+    const status = isValid
+      ? (item.status === 'completed' && TERMINAL_STATES.has(state) ? 'completed' : 'in_progress')
+      : 'error';
+
+    return {
+      ...item,
+      owner,
+      repo,
+      branch,
+      repoUrl: item.repoUrl || (owner && repo ? `https://github.com/${owner}/${repo}` : '#'),
+      matchKey: item.matchKey || (owner && repo && branch ? `${owner}/${repo}#${branch}` : `invalid-${item.issueNumber || 'registration'}`),
+      state,
+      status,
+      outcome: status === 'completed' ? state : null,
+      isValid,
+      grid: isValid && Array.isArray(item.board) ? item.board : null,
+      errors: [...new Set(errors)],
+      historyUrl: owner && repo && MATCH_BRANCH_PATTERN.test(branch)
+        ? `https://github.com/${owner}/${repo}/commits/${encodeURIComponent(branch)}/BOARD.txt`
+        : null,
+    };
+  }
+
+  function groupMatches(matches) {
+    const groups = [
+      { id: 'in_progress', title: 'In progress', matches: [] },
+      { id: 'x_won', title: 'X wins', matches: [] },
+      { id: 'o_won', title: 'O wins', matches: [] },
+      { id: 'draw', title: 'Draws', matches: [] },
+      { id: 'error', title: 'Needs attention', matches: [] },
+    ];
+    const destinations = Object.fromEntries(groups.map((group) => [group.id, group.matches]));
+
+    for (const match of matches) {
+      if (match.status === 'error' || !match.isValid) destinations.error.push(match);
+      else if (match.state === 'X won') destinations.x_won.push(match);
+      else if (match.state === 'O won') destinations.o_won.push(match);
+      else if (match.state === 'Draw') destinations.draw.push(match);
+      else destinations.in_progress.push(match);
+    }
+    return groups.filter((group) => group.matches.length > 0);
+  }
+
+  function historyApiUrl(match) {
+    if (!match.owner || !match.repo || !MATCH_BRANCH_PATTERN.test(match.branch || '')) {
+      throw new Error('A valid repository and numbered match branch are required to load history.');
+    }
+    return `https://api.github.com/repos/${encodeURIComponent(match.owner)}/${encodeURIComponent(match.repo)}/commits?sha=${encodeURIComponent(match.branch)}&path=BOARD.txt&per_page=100`;
+  }
+
+  async function fetchMatchHistory(match, fetcher, validateBoard) {
+    const historyUrl = match.historyUrl || `https://github.com/${match.owner}/${match.repo}/commits/${encodeURIComponent(match.branch || '')}/BOARD.txt`;
+    const commits = [];
+    const errors = [];
+    try {
+      for (let page = 1; ; page++) {
+        const url = `${historyApiUrl(match)}&page=${page}`;
+        const response = await fetcher(url, { headers: { Accept: 'application/vnd.github+json' } });
+        if (!response.ok) {
+          const reason = response.status === 403
+            ? 'GitHub API access is rate limited or unavailable (HTTP 403).'
+            : `GitHub could not load history page ${page} (HTTP ${response.status}).`;
+          if (page === 1) return { entries: [], errors: [reason], historyUrl };
+          errors.push(`${reason} Earlier commits are shown; open GitHub history for the complete timeline.`);
+          break;
+        }
+        const pageCommits = await response.json();
+        if (!Array.isArray(pageCommits)) {
+          const reason = `GitHub returned an invalid commit-history response on page ${page}.`;
+          if (page === 1) return { entries: [], errors: [reason], historyUrl };
+          errors.push(`${reason} Earlier commits are shown; open GitHub history for the complete timeline.`);
+          break;
+        }
+        commits.push(...pageCommits);
+        if (pageCommits.length < 100) break;
+      }
+    } catch (error) {
+      if (commits.length === 0) return { entries: [], errors: [`Could not load GitHub commit history: ${error.message}`], historyUrl };
+      errors.push(`Could not load the next history page: ${error.message}. Earlier commits are shown; open GitHub history for the complete timeline.`);
+    }
+
+    const entries = [];
+    for (const commit of commits.slice().reverse()) {
+      const sha = commit && commit.sha;
+      if (!sha) {
+        errors.push('A history item had no commit identifier and was skipped.');
+        continue;
+      }
+      const boardUrl = `https://raw.githubusercontent.com/${encodeURIComponent(match.owner)}/${encodeURIComponent(match.repo)}/${encodeURIComponent(sha)}/BOARD.txt`;
+      try {
+        const response = await fetcher(boardUrl);
+        if (!response.ok) {
+          errors.push(`Commit ${sha.slice(0, 7)} has no readable BOARD.txt (HTTP ${response.status}) and was skipped.`);
+          continue;
+        }
+        const evaluation = validateBoard(await response.text());
+        if (!evaluation.isValid) {
+          const detail = (evaluation.errors || []).join(' ');
+          errors.push(`Commit ${sha.slice(0, 7)} contains an invalid board and was skipped${detail ? `: ${detail}` : '.'}`);
+          continue;
+        }
+        entries.push({
+          sha,
+          shortSha: sha.slice(0, 7),
+          message: commit.commit && commit.commit.message ? commit.commit.message.split('\n')[0] : 'Board update',
+          date: commit.commit && commit.commit.author ? commit.commit.author.date : null,
+          commitUrl: commit.html_url || `https://github.com/${match.owner}/${match.repo}/commit/${sha}`,
+          state: evaluation.state,
+          grid: evaluation.grid,
+          winningCells: evaluation.winningCells || null,
+        });
+      } catch (error) {
+        errors.push(`Could not read commit ${sha.slice(0, 7)}: ${error.message}`);
+      }
+    }
+    if (commits.length > 0 && entries.length === 0 && errors.length === 0) {
+      errors.push('No valid committed BOARD.txt states were found on this match branch.');
+    }
+    if (commits.length === 0) errors.push('No committed BOARD.txt history was found on this match branch.');
+    return { entries, errors, historyUrl };
+  }
+
+  return { MATCH_BRANCH_PATTERN, normalizeMatch, groupMatches, historyApiUrl, fetchMatchHistory };
+});
