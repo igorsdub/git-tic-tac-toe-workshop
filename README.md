@@ -14,6 +14,7 @@ A two-hour, beginner-friendly Git and GitHub workshop where pairs play tic-tac-t
 ├── template-spec/            # Specification and tests for board.txt format
 ├── tests/                    # Automated Python unit and integration test suite
 ├── CONTEXT.md                # Canonical domain glossary and terminology
+├── WORKSHOP_DESIGN_HANDOFF.md # Current match and agent workshop design (implementation pending)
 ├── FACILITATOR_GUIDE.md      # Facilitator walkthrough, live demo script & recovery
 ├── LEARNER_GUIDE.md          # In-session player roles and 5-step turn workflow
 ├── PRE_SESSION_CHECK.md      # Pre-workshop Git & GitHub setup instructions
@@ -22,6 +23,7 @@ A two-hour, beginner-friendly Git and GitHub workshop where pairs play tic-tac-t
 ```
 
 **Quick Links:**
+- **[Current Workshop Design Handoff](WORKSHOP_DESIGN_HANDOFF.md)**: Current match, environment, and agent-assisted rematch design; implementation is pending.
 - **[Facilitator Guide](FACILITATOR_GUIDE.md)**: Facilitator walkthrough, live demo script, and error recovery.
 - **[Rehearsal & Readiness Guide](REHEARSAL_GUIDE.md)**: Rehearsal protocol, timing guarantees, and OS readiness matrix.
 - **[Learner Guide](LEARNER_GUIDE.md)** ([Web](docs/guide.html)): In-session player roles (Player X / Player O) and 5-step turn workflow.
@@ -29,6 +31,8 @@ A two-hour, beginner-friendly Git and GitHub workshop where pairs play tic-tac-t
 - **[Learner Starter Template](https://github.com/igorsdub/git-tic-tac-toe-template)**: Template repository used by pairs to instantiate games.
 - **[Game Wall](docs/index.html)**: Live interactive workshop dashboard visualising pair repositories.
 - **[Terminology & Glossary](CONTEXT.md)**: Canonical domain glossary and standard workshop concepts.
+
+**Design status:** The handoff records current design decisions, not deployed behavior. The existing guides below describe the repository as it works today until implementation is separately authorized and completed.
 
 ## Workshop Structure at a Glance
 

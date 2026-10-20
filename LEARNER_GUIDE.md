@@ -1,5 +1,7 @@
 # Git Tic-Tac-Toe: Learner Handout
 
+> **Design status (2026-10-20):** These instructions describe the current lowercase `board.txt` activity. The [current design handoff](WORKSHOP_DESIGN_HANDOFF.md) documents a planned workflow and is not implemented yet.
+
 > [!TIP]
 > **Interactive Web Version Available!**
 > Prefer an interactive guide with 1-click terminal copy buttons, quick section jumps, and dark mode?

@@ -1,5 +1,7 @@
 # Workshop Rehearsal Guide & Operational Readiness
 
+> **Design status (2026-10-20):** This checklist covers current materials. The [current design handoff](WORKSHOP_DESIGN_HANDOFF.md) describes a planned match-branch and agent-assisted rematch workflow that is not implemented yet.
+
 This document provides facilitators and instructional teams with a comprehensive operational rehearsal protocol, operating system validation matrix, timing guarantees, and contingency workflows for the **Git Tic-Tac-Toe Workshop**.
 
 A successful workshop relies on smooth technical setup, tight time management, and a seamless live demonstration. Completing this rehearsal protocol ensures the facilitator team is fully prepared before learners arrive.

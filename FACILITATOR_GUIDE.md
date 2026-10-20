@@ -1,5 +1,7 @@
 # Facilitator Guide: Paired Git Tic-Tac-Toe Workshop
 
+> **Design status (2026-10-20):** This guide describes current materials. The [current design handoff](WORKSHOP_DESIGN_HANDOFF.md) describes a planned match-branch and agent-assisted rematch workflow that is not implemented yet.
+
 This guide provides comprehensive instructions for running the two-hour **Git Tic-Tac-Toe Workshop**. In this workshop, pairs of learners play a game of tic-tac-toe by committing and pushing moves to a shared GitHub repository.
 
 The goal is to provide a tactile, zero-fatigue introduction to collaborative version control: making commits, pushing to a remote, pulling changes from a collaborator, and reading project history—without needing programming languages, package managers, or complex build tools.
