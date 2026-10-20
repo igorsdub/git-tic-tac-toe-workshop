@@ -38,7 +38,9 @@ The confirmed working agenda totals 120 minutes; website implementation remains 
 - 30 minutes: manual match.
 - 10 minutes: Copilot demonstration.
 - 25 minutes: agent-assisted rematch.
-- 15 minutes: review history, research applications, and wrap up.
+- 15 minutes: instructor demonstration of dashboard/history replay, research applications, and wrap up.
+
+In the final segment, the instructor demonstrates a dashboard that shows public matches by outcome (win or draw) and lets viewers inspect committed board states from public repository histories as a “time machine.” This history replay is a demonstration, not a participant exercise. Exploring an alternative history by branching from an earlier move is an optional instructor extension if time allows; it is not part of the required learner workflow. Dashboard implementation remains separately scoped and is not authorized by this handoff.
 
 ## Repository, board, and registration model
 
@@ -50,7 +52,7 @@ A registration issue identifies a match. Any instructional or progress issue is 
 
 ## Agent use and active participation
 
-For the initial agent-assisted moves, participants choose a legal move and tell the agent what to change. Later, they may optionally ask the agent to choose an individual move. This optional mode is limited to an individual move; the workshop does not ask participants to build a game from scratch or create a continuously playing unattended bot.
+In the agent-assisted rematch, learners choose a legal move and ask Copilot to make the corresponding board edit they already practiced manually. Later, they may optionally ask the agent to choose an individual legal move. This optional mode is limited to an individual move; the workshop does not ask participants to build a game from scratch or create a continuously playing unattended bot.
 
 Collaborative Git is a core workshop outcome. Everyone completes the manual Git workflow first; the Copilot agent-assisted rematch builds on that experience. Before publishing an agent-assisted change, participants inspect the diff, check that the move is legal, and review the Git state. Learners remain responsible for reviewing the agent's edit and committing it. Both participants must actively edit and complete Git steps themselves: commit, push, pull the partner's change, and check the resulting board and history. The exercise should give each person a turn as the active editor and make the navigator's review work explicit.
 
