@@ -25,9 +25,9 @@
           <a href="guide.html" class="btn btn-outline nav-btn">📖 How to Play</a>
           <a href="setup.html" class="btn btn-outline nav-btn">🛠️ Setup</a>
         </nav>
-        <a href="https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml" 
+        <a id="register-link" href="https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml"
            target="_blank" rel="noopener noreferrer" class="btn btn-primary register-btn">
-          ➕ Register Game
+          ➕ Register Repository
         </a>
         <button id="theme-toggle" class="btn btn-icon" title="Toggle dark/light theme" aria-label="Toggle theme">
           🌙
@@ -55,6 +55,12 @@
     </div>
 
     <!-- Top Filter & Status Bar -->
+    <section class="workshop-picker" aria-label="Workshop selection">
+      <label for="workshop-select">Workshop</label>
+      <select id="workshop-select" aria-describedby="workshop-status"></select>
+      <span id="workshop-status" class="visually-hidden">Choose a workshop to view its matches.</span>
+    </section>
+
     <section class="toolbar-section" aria-label="Game Filters and Status">
       <div class="filter-tabs" role="tablist">
         <button class="filter-tab active" data-filter="all" aria-pressed="true">All <span id="count-all" class="tab-count">0</span></button>
@@ -84,9 +90,9 @@
         <div class="empty-icon">🎲</div>
         <h2>No games found</h2>
         <p id="empty-message">No pair games match the selected filters.</p>
-        <a href="https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml"
+        <a id="empty-register-link" href="https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml"
            target="_blank" rel="noopener noreferrer" class="btn btn-primary register-btn">
-          Register the first game!
+          Register a repository
         </a>
       </div>
 
@@ -96,7 +102,7 @@
 
   <footer class="wall-footer">
     <div class="footer-container">
-      <span>Workshop: <strong>SCDA Training Week</strong> &bull; Git Tic-Tac-Toe Workshop</span>
+      <span>Workshop: <strong id="current-workshop-name">Loading workshops…</strong> &bull; Git Tic-Tac-Toe Workshop</span>
       <button id="toggle-data-mode-btn" class="footer-btn">Switch to Demo Data</button>
     </div>
   </footer>

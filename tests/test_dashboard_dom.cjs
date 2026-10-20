@@ -25,14 +25,23 @@ test('live refresh and history replay preserve the open panel, selected state, a
     let boardContent = '# Git Tic-Tac-Toe\\nState: Waiting for X\\n\\n [ ] | [ ] | [ ]\\n-----+-----+-----\\n [ ] | [ ] | [ ]\\n-----+-----+-----\\n [ ] | [ ] | [ ]';
     const winningBoard = '# Git Tic-Tac-Toe\\nState: X won\\n\\n [X] | [X] | [X]\\n-----+-----+-----\\n [O] | [O] | [ ]\\n-----+-----+-----\\n [ ] | [ ] | [ ]';
     const historyBoard = '# Git Tic-Tac-Toe\\nState: Waiting for O\\n\\n [X] | [ ] | [ ]\\n-----+-----+-----\\n [ ] | [ ] | [ ]\\n-----+-----+-----\\n [ ] | [ ] | [ ]';
-    const record = { owner: 'pair', repo: 'dom-fixture', repoUrl: 'https://github.com/pair/dom-fixture', branch: 'match-01', matchKey: 'pair/dom-fixture#match-01', playerX: 'alice', playerO: 'bob', status: 'in_progress', state: 'Ready for X', boardValid: true, board: [[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']], errors: [] };
+    const catalog = { defaultWorkshopId: 'workshop-a', workshops: [
+      { id: 'workshop-a', name: 'Workshop A', status: 'active', registrationUrl: 'https://github.com/example/issues/new?workshop_id=workshop-a' },
+      { id: 'workshop-old', name: 'Workshop Old', status: 'archived', registrationUrl: 'https://github.com/example/issues/new?workshop_id=workshop-old' },
+    ] };
+    let record = { owner: 'pair', repo: 'dom-fixture', repoUrl: 'https://github.com/pair/dom-fixture', workshopId: 'workshop-a', branch: 'match-01', matchKey: 'pair/dom-fixture#match-01', playerX: 'alice', playerO: 'bob', status: 'in_progress', state: 'Ready for X', boardValid: true, board: [[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']], errors: [] };
+    let records = [record];
+    let boardFetchFails = false;
     const commit = { sha: 'a'.repeat(40), html_url: 'https://github.com/pair/dom-fixture/commit/a', commit: { message: 'first move', author: { date: '2026-10-20T00:00:00Z' } } };
     window.fetch = async (input) => {
       const url = String(input);
-      if (url.includes('board.json')) return new Response(JSON.stringify([record]), { status: 200, headers: { 'Content-Type': 'application/json' } });
+      if (url.includes('workshops.json')) return new Response(JSON.stringify(catalog), { status: 200, headers: { 'Content-Type': 'application/json' } });
+      if (url.includes('board.json')) {
+        if (boardFetchFails) return new Response('', { status: 503 });
+        return new Response(JSON.stringify(records), { status: 200, headers: { 'Content-Type': 'application/json' } });
+      }
       if (url.includes('/commits?')) return new Response(JSON.stringify([commit]), { status: 200, headers: { 'Content-Type': 'application/json' } });
       if (url.includes('/a'.repeat(4))) return new Response(historyBoard, { status: 200 });
-      if (url.includes('raw.githubusercontent.com/pair/dom-fixture/match-01/BOARD.txt')) return new Response(boardContent, { status: 200 });
       if (url.includes(commit.sha)) return new Response(historyBoard, { status: 200 });
       return new Response('', { status: 404 });
     };
@@ -49,7 +58,7 @@ test('live refresh and history replay preserve the open panel, selected state, a
       slider.value = '0';
       slider.dispatchEvent(new Event('input', { bubbles: true }));
       const stableDuringInput = slider === details.querySelector('input[type="range"]') && document.activeElement === slider;
-      boardContent = winningBoard;
+      record = { ...record, status: 'completed', state: 'X won', outcome: 'X won', board: [['X', 'X', 'X'], ['O', 'O', ' '], [' ', ' ', ' ']] };
       await window.__poll();
       const stableDuringPoll = slider === details.querySelector('input[type="range"]') && document.activeElement === slider;
       slider.blur();
@@ -57,7 +66,27 @@ test('live refresh and history replay preserve the open panel, selected state, a
       const reopened = document.querySelector('.history-details');
       const preserved = reopened.open && reopened.querySelector('[data-history-panel]').dataset.historyIndex === '0';
       const liveOutcome = document.querySelector('.status-badge').textContent.includes('X won');
-      document.body.dataset.fixtureResult = stableDuringInput && stableDuringPoll && preserved && liveOutcome ? 'PASS' : 'FAIL';
+      const select = document.getElementById('workshop-select');
+      const ordering = Array.from(select.children).map((node) => node.tagName === 'OPTGROUP' ? node.label : node.value);
+      select.value = 'workshop-old';
+      select.dispatchEvent(new Event('change', { bubbles: true }));
+      const archivedIsEmpty = document.querySelectorAll('.game-card').length === 0 && document.getElementById('count-all').textContent === '0';
+      const stableUrl = new URL(location.href).searchParams.get('workshop') === 'workshop-old';
+      const registrationLink = document.getElementById('register-link').href.endsWith('workshop-old');
+      select.value = 'workshop-a';
+      select.dispatchEvent(new Event('change', { bubbles: true }));
+      records = [];
+      await window.__poll();
+      const removedAfterSuccessfulSnapshot = document.querySelectorAll('.game-card').length === 0;
+      records = [record];
+      await window.__poll();
+      boardFetchFails = true;
+      await window.__poll();
+      const retainedAfterFailure = document.querySelectorAll('.game-card').length === 1;
+      const passed = stableDuringInput && stableDuringPoll && preserved && liveOutcome
+        && ordering[0] === 'workshop-a' && ordering[1] === 'Archived workshops'
+        && archivedIsEmpty && stableUrl && registrationLink && removedAfterSuccessfulSnapshot && retainedAfterFailure;
+      document.body.dataset.fixtureResult = passed ? 'PASS' : 'FAIL';
     };
     setTimeout(() => window.__testRun(), 150);
   </script>`;
