@@ -19,8 +19,9 @@ This note records resolved domain decisions and questions that remain open for t
 - A repository belongs to only one workshop. Registering the same repository with another workshop is rejected. The intended workflow for a new workshop is to make a fresh copy of the template.
 - Repeating registration of the same repository for the same workshop updates the existing registration, including its two player handles; it does not create another dashboard entry.
 - For valid registration issues for the same repository and workshop, the most recently created issue supplies the player handles. Participants submit the form again to correct handles; editing an older issue does not outrank a newer one.
+- Migrate the five legacy entries labeled `SCDA Training Week` to workshop ID `2026-10-01-scda`. Keep the unclassified `Default Event` entry out of workshop dashboards pending review, and preserve it rather than deleting it.
 
 ## Open
 
 - The exact issue-form field name for the workshop ID is an implementation choice. Existing learner and delivery documentation describes repository, numbered branch, and player-handle fields for individual match registrations; that predates the resolved repository-level registration model.
-- How existing registrations are handled during migration remains open.
+- The five legacy SCDA records contain repository and player fields but no branch fields; which matching branches currently exist in those repositories has not been established for migration.
