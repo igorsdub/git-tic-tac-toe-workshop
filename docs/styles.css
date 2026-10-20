@@ -678,6 +678,16 @@ a:hover {
   letter-spacing: 0.02em;
 }
 
+.card-refresh-status {
+  margin: 0.75rem 0 0;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid var(--status-draw-border);
+  border-radius: var(--radius-sm);
+  background: var(--status-draw-bg);
+  color: var(--status-draw-text);
+  font-size: 0.88rem;
+}
+
 .card-branch {
   color: var(--text-secondary);
   font-family: var(--font-mono);

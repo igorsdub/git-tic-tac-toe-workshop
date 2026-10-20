@@ -103,16 +103,39 @@ test('live refresh and history replay preserve the open panel, selected state, a
       records = [oldRecord];
       await window.__poll();
       const removedAfterSuccessfulSnapshot = document.querySelectorAll('.game-card').length === 0;
+      const emptyStateIsHonest = document.getElementById('empty-message').textContent.includes('Registered repositories appear here');
       records = [record];
       await window.__poll();
       boardFetchFails = true;
       await window.__poll();
       const retainedAfterFailure = document.querySelectorAll('.game-card').length === 1;
+      boardFetchFails = false;
+      const staleActive = { ...record, refreshStatus: 'stale', repositoryRefreshError: 'Branch listing unavailable.' };
+      const staleArchived = { ...oldRecord, refreshStatus: 'stale', boardRefreshError: 'BOARD fetch timed out.' };
+      records = [staleActive, staleArchived];
+      await window.__poll();
+      const activeStaleNotice = document.getElementById('notice-message').textContent.includes('1 match is showing the last known board');
+      const activeStaleCard = document.querySelector('.card-refresh-status')?.textContent.includes('Branch listing unavailable.')
+        && document.querySelector('.card-refresh-status')?.textContent.includes('Showing last known board')
+        && document.querySelector('.status-badge')?.textContent.includes('Last known: X won')
+        && document.querySelector('[role="grid"]')?.getAttribute('aria-label').includes('Last known board');
+      select.value = 'workshop-old';
+      select.dispatchEvent(new Event('change', { bubbles: true }));
+      const archivedStaleNotice = document.getElementById('notice-message').textContent.includes('1 match is showing the last known board');
+      const archivedStaleCard = document.querySelector('.card-refresh-status')?.textContent.includes('BOARD fetch timed out.')
+        && !document.querySelector('.card-refresh-status')?.textContent.includes('Branch listing unavailable.');
+      const freshActive = { ...record, refreshStatus: 'fresh' };
+      const freshArchived = { ...oldRecord, refreshStatus: 'fresh' };
+      records = [freshActive, freshArchived];
+      await window.__poll();
+      const freshClearsStaleNotice = document.getElementById('notice-banner').classList.contains('hidden')
+        && document.querySelectorAll('.card-refresh-status').length === 0;
       const passed = defaultWorkshopSelected && directQuerySelected && unknownQueryFallsBack && bareUrlUsesDefault
         && stableDuringInput && stableDuringPoll && preserved && liveOutcome
         && ordering[0] === 'workshop-a' && ordering[1] === 'Archived workshops'
         && archivedIsIsolated && archiveNoticeCleared && stableUrl && registrationLink
-        && removedAfterSuccessfulSnapshot && retainedAfterFailure;
+        && removedAfterSuccessfulSnapshot && emptyStateIsHonest && retainedAfterFailure
+        && activeStaleNotice && activeStaleCard && archivedStaleNotice && archivedStaleCard && freshClearsStaleNotice;
       document.body.dataset.fixtureResult = passed ? 'PASS' : 'FAIL';
     };
     setTimeout(() => window.__testRun(), 150);

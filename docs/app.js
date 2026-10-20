@@ -659,11 +659,19 @@ State: Waiting for O
       return;
     }
     const games = workshopGames();
+    const staleCount = games.filter((match) => match.refreshStatus === 'stale').length;
     const errorCount = games.filter((match) => match.status === 'error').length;
-    if (errorCount > 0) {
-      showNotice(`${errorCount} registered ${errorCount === 1 ? 'match needs' : 'matches need'} attention. Open an Issues card for the reason.`, 'notice-warning');
+    if (staleCount > 0 || errorCount > 0) {
+      const messages = [];
+      if (staleCount > 0) {
+        messages.push(`${staleCount} ${staleCount === 1 ? 'match is' : 'matches are'} showing the last known board after a refresh failure. See marked cards for details.`);
+      }
+      if (errorCount > 0) {
+        messages.push(`${errorCount} registered ${errorCount === 1 ? 'match needs' : 'matches need'} attention. Open an Issues card for the reason.`);
+      }
+      showNotice(messages.join(' '), 'notice-warning');
     } else if (games.length === 0) {
-      showNotice('No matching branches have been discovered for this workshop yet. Create a branch whose name begins with “match”.', 'notice-info');
+      showNotice('No matching branches have been discovered for this workshop yet. Registered repositories appear here after a branch whose name begins with “match” is discovered.', 'notice-info');
     } else {
       hideNotice();
     }
@@ -822,8 +830,9 @@ State: Waiting for O
       `;
     }
 
+    const boardLabel = game.refreshStatus === 'stale' ? 'Last known board' : 'Current board';
     const boardHtml = game.isValid && game.grid
-      ? `<div class="card-board-wrapper"><div class="board-grid-table" role="grid" aria-label="Current board for ${escapeHtml(game.branch)}">${cellsHtml}</div></div>`
+      ? `<div class="card-board-wrapper"><div class="board-grid-table" role="grid" aria-label="${boardLabel} for ${escapeHtml(game.branch)}">${cellsHtml}</div></div>`
       : '<div class="board-unavailable">No validated board is available for this match.</div>';
     const historyUrl = game.historyUrl;
     const historyState = MATCH_DATA.historyButtonState(state.historyByMatch[game.matchKey]);
@@ -834,6 +843,10 @@ State: Waiting for O
           <button class="btn btn-sm btn-outline history-load-button" type="button" data-history-action="load" data-history-loaded="${historyState.loaded}" data-match-key="${escapeHtml(game.matchKey)}">${historyState.label}</button>
           <div class="history-panel" data-history-panel="${escapeHtml(game.matchKey)}" aria-live="polite"></div>
         </details>`
+      : '';
+    const refreshErrors = [game.repositoryRefreshError, game.boardRefreshError].filter(Boolean);
+    const refreshStatusHtml = game.refreshStatus === 'stale'
+      ? `<p class="card-refresh-status" role="status"><strong>Showing last known board.</strong> Refresh failed: ${refreshErrors.map(escapeHtml).join(' ') || 'The latest repository refresh did not complete.'}</p>`
       : '';
 
     return `
@@ -847,9 +860,11 @@ State: Waiting for O
             ${game.branch ? `<a class="card-branch" href="${escapeHtml(game.repoUrl)}/tree/${encodeURIComponent(game.branch)}" target="_blank" rel="noopener noreferrer">Branch: ${escapeHtml(game.branch)}</a>` : '<span class="card-branch">No match branch registered</span>'}
           </div>
           <span class="status-badge ${badgeClass}">
-            <span>${statusIcon}</span> ${escapeHtml(game.state)}
+            <span>${statusIcon}</span> ${game.refreshStatus === 'stale' ? 'Last known: ' : ''}${escapeHtml(game.state)}
           </span>
         </div>
+
+        ${refreshStatusHtml}
 
         <div class="card-players">
           <div class="player-info player-x">
@@ -1051,7 +1066,7 @@ State: Waiting for O
       DOM.gameGrid.innerHTML = '';
       DOM.emptyState.classList.remove('hidden');
       if (currentGames.length === 0) {
-        DOM.emptyMessage.textContent = 'No matching branches have been found for this workshop yet. A registered repository appears here after a branch beginning with “match” is discovered.';
+        DOM.emptyMessage.textContent = 'No matching branches have been found for this workshop yet. Registered repositories appear here after a branch whose name begins with “match” is discovered.';
       } else {
         DOM.emptyMessage.textContent = 'No games match the selected filter.';
       }
