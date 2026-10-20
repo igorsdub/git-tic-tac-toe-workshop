@@ -4,26 +4,31 @@ Terms for the paired tic-tac-toe activity and its shared event display.
 
 ## Language
 
-**Pair game**:
-A tic-tac-toe game played by two learners through one shared GitHub repository. Each learner makes moves from their own local copy.
+**Game**:
+The collaborative tic-tac-toe activity in general. Use *match* for one play-through.
+
+**Match**:
+One play-through of tic-tac-toe between a pair. Each match is registered separately; a pair may play more than one match during a workshop.
 
 **Board**:
-The uppercase `BOARD.txt` file whose current version records a pair game's 3×3 squares. The canonical format uses three rows of single-space-separated `.`, `X`, and `O` cells. Game state is evaluated dynamically from the grid marks.
+The uppercase `BOARD.txt` file whose current version records a match's 3×3 squares. The canonical format uses three rows of single-space-separated `.`, `X`, and `O` cells. Game state is evaluated dynamically from the grid marks.
 
 **Move**:
 One player's change to one empty square, saved as a commit and shared with the other player.
 
 **Game wall**:
-The public workshop page that displays the current board and state of each registered pair game.
+The public workshop page that displays the current board and state of each registered match.
 _Avoid_: Leaderboard
 
-**Register game**:
-The action and GitHub issue form used to register a pair game onto the game wall.
-_Avoid_: Register pair game, Add game, Register match
+**Register match**:
+The action used to add one match to the game wall.
+_Avoid_: Register game, Add game
 
 **Workshop**:
-One training session (e.g. SCDA Training Week) and the set of pair games registered for its game wall.
-_Avoid_: Event, Session, Cohort
+A particular scheduled delivery of the training and the matches registered for it.
+
+**Workshop ID**:
+A stable identifier for one workshop, written as `YYYY-MM-DD-short-lowercase-identifier`. Once registrations exist for a workshop, its ID remains unchanged. Its display name is separate from its ID.
 
 **Learner guide**:
 The in-session web page (`docs/guide.html`) explaining pair roles, the turn cycle, and Git commands for playing the game.
@@ -38,5 +43,5 @@ The five-step sequence of Git operations (pull, edit, stage, commit, push) each 
 _Avoid_: Sacred turn cycle, Game loop, Play cycle
 
 **Branch rematch**:
-An extension activity where pairs create a new Git branch to play a second game, learning branch creation, switching, and merging.
+An extension activity where pairs create a new Git branch to play a second match, learning branch creation, switching, and merging.
 _Avoid_: Game 2, Rematch game, Feature branch game
