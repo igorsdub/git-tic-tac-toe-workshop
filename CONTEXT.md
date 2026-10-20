@@ -8,7 +8,7 @@ Terms for the paired tic-tac-toe activity and its shared event display.
 The collaborative tic-tac-toe activity in general. Use *match* for one play-through.
 
 **Match**:
-One play-through of tic-tac-toe between a pair. Each match is registered separately; a pair may play more than one match during a workshop.
+One play-through of tic-tac-toe between a pair, represented by a repository branch whose name starts with the literal lowercase prefix `match`. Each matching branch appears as a separate Game Wall entry; its full branch name identifies the match.
 
 **Board**:
 The uppercase `BOARD.txt` file whose current version records a match's 3×3 squares. The canonical format uses three rows of single-space-separated `.`, `X`, and `O` cells. Game state is evaluated dynamically from the grid marks.
@@ -17,12 +17,12 @@ The uppercase `BOARD.txt` file whose current version records a match's 3×3 squa
 One player's change to one empty square, saved as a commit and shared with the other player.
 
 **Game wall**:
-The public workshop page that displays the current board and state of each registered match.
+The public workshop page that displays the current board and state of each discovered match branch for the selected workshop.
 _Avoid_: Leaderboard
 
-**Register match**:
-The action used to add one match to the game wall.
-_Avoid_: Register game, Add game
+**Register repository**:
+The action used to connect a pair's repository to one workshop and provide both player GitHub handles. A pair registers once per workshop; matching branches are discovered automatically.
+_Avoid_: Register every match branch
 
 **Workshop**:
 A particular scheduled delivery of the training and the matches registered for it.
@@ -43,5 +43,5 @@ The five-step sequence of Git operations (pull, edit, stage, commit, push) each 
 _Avoid_: Sacred turn cycle, Game loop, Play cycle
 
 **Branch rematch**:
-An extension activity where pairs create a new Git branch to play a second match, learning branch creation, switching, and merging.
+An extension activity where pairs create a new Git branch whose name starts with `match` to play another match. The branch is discovered automatically for the workshop.
 _Avoid_: Game 2, Rematch game, Feature branch game

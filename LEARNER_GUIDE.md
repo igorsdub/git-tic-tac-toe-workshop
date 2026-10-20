@@ -1,6 +1,6 @@
 # Git Tic-Tac-Toe: Learner Guide
 
-> **Workshop readiness:** The starter template and branch-aware Game Wall are published. The Game Wall currently has six older records without numbered match branches; they appear as needing attention until re-registered. For each match, register the pair repository, numbered branch, and both player handles using the [game registration form](https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml). Your facilitator will confirm the live match before play begins.
+> **Workshop registration:** Your pair registers its shared repository once for this workshop and enters both player GitHub handles in the [SCDA Training Week registration form](https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&workshop_id=2026-10-01-scda). A successful registration comment confirms the repository/workshop link. The Game Wall shows a card after a successful refresh finds a branch whose name starts with lowercase `match`.
 
 In this workshop, you and a partner collaborate in one shared public GitHub repository. You will play one match by hand, then use Copilot to make a board edit you already know how to make. You remain responsible for reviewing and publishing every change.
 
@@ -8,9 +8,9 @@ Each person works in their own GitHub Codespace, opened in the browser-based VS 
 
 ## Before play
 
-Before the session, each of you creates a public repository from the starter template, opens it in your own Codespace, and completes the Ask readiness check. Keep both prepared repositories and Codespaces. At the session, choose one repository for your pair, invite your partner, and each open that repository in a separate Codespace. Match setup uses numbered branches from `main`: the first match is `match-01`. Keep match branches separate; do not merge them back into `main`.
+Before the session, each of you creates a public repository from the starter template, opens it in your own Codespace, and completes the Ask readiness check. Keep both prepared repositories and Codespaces. At the session, choose one repository for your pair, invite your partner, and each open that repository in a separate Codespace. Start each match branch from `main`; `match-01` is a clear example. Any branch beginning with the exact lowercase text `match` qualifies, including `match01`, `match-01`, `match02`, and `match-test`. Keep match branches separate; do not merge them back into `main`.
 
-The public issue form and Game Wall support separate match branches. Register every match branch separately; do not assume the older branchless records represent a live match.
+Register the repository once for this workshop; do not submit a separate registration for each branch. Each qualifying branch becomes its own Game Wall card, with the full branch name shown as its label. The dashboard reads `BOARD.txt` from that exact branch. A repository belongs to one workshop only; use a fresh copy of the template when participating in another workshop. If you need to correct player handles, submit the form again for the same repository and workshop. Archived workshops remain viewable and accept updates to already registered repositories, including handles, but they do not accept new repositories.
 
 ## Manual match: make and share a move
 
@@ -46,4 +46,4 @@ Ask your partner or facilitator to look at the board and Source Control with you
 
 ## Closing demonstration
 
-The instructor will review repository history and connect the workflow to research files. The published Game Wall groups registered matches by result and replays valid committed board states. Existing branchless records cannot be replayed until re-registered; for those, the instructor can use GitHub commit history. Exploring an alternative history from an earlier branch point is an optional instructor extension, not a learner task.
+The instructor will review repository history and connect the workflow to research files. The published Game Wall shows one entry per discovered match branch and replays valid committed board states. If a registration has no matching branch yet, its successful registration comment confirms acceptance; its card appears after a later successful refresh discovers a matching branch. Exploring an alternative history from an earlier branch point is an optional instructor extension, not a learner task.
