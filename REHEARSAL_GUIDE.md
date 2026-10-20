@@ -1,6 +1,6 @@
 # Workshop Rehearsal Guide
 
-> The agenda and workflow are agreed. This checklist separates what can be rehearsed now from the starter and dashboard changes that remain dependencies.
+> **Current status:** Tasks 2–4 are implemented in local branches but are not published. The live starter is still on the old lowercase `board.txt` contract, and the live Game Wall has not deployed branch-aware registration or replay. The complete two-account rehearsal is blocked; see [recorded evidence](docs/rehearsal-evidence-2026-10-20.md) before treating this checklist as passed.
 
 ## Rehearse the participant path
 
@@ -16,19 +16,21 @@ Official product guidance: [create a Codespace from a template](https://docs.git
 
 ## Verify dependencies before promising the full flow
 
-The live starter template’s `main` branch currently contains lowercase `board.txt` with only a raw 3×3 grid. The agreed match workflow uses uppercase `BOARD.txt` with initialized game state. A separate template update is required before participants can follow that board format as written. Verify the live template contents after that work is completed.
+The local starter-template branch now defines initialized uppercase `BOARD.txt` and numbered branches from clean `main`. The live starter’s `main` still has lowercase `board.txt`; the local template commit has not been pushed. Verify the live template after publication before participants follow the board instructions as written.
 
-The current registration form has repository and player fields but no branch field. The registry deduplicates by repository, and the dashboard fetches the root lowercase `board.txt` from `main` or `master`. It cannot display multiple match branches or replay their committed states. Do not register each match as though branch-aware display is supported. The planned outcome grouping and history time machine require separate dashboard and registration work.
+Local registration, registry, and dashboard code now support repository-plus-branch identities, exact uppercase `BOARD.txt` retrieval, outcome groups, and history replay. The live issue template, registry, and published dashboard have not received these changes. Do not promise that the public Game Wall will display each pair branch until publication is confirmed.
 
-Before using the planned dashboard demo, confirm that the separate implementation supports the intended public repositories, outcomes, and commit history. If it is not ready, use a public repository’s GitHub commit history for the instructor demonstration and describe dashboard support as pending. The dashboard demonstration remains instructor-led; participants do not do a replay exercise.
+Before using the dashboard demo, verify the deployed site against a public match branch and its committed history. The latest observed Pages workflow succeeded for `origin/main` before the local implementation. Until deployment and that live check, use a public repository’s GitHub commit history for the instructor demonstration. The dashboard demonstration remains instructor-led; participants do not do a replay exercise.
 
 ## Room and facilitation readiness
 
 - [ ] Check venue Wi-Fi and projector, then open the workshop pages in a browser.
 - [ ] Prepare two facilitator accounts and a clean public test repository.
-- [ ] Send setup instructions and the short [bilingual instructor-preparation survey](SURVEY.md). It covers everyday tools, file-versioning habits, collaboration, AI coding-assistant use, and an optional open-ended question; it has no tutorial-completion or setup-readiness questions.
+- [ ] Send setup instructions. The [bilingual instructor-preparation survey draft](SURVEY.md) covers everyday tools, file-versioning habits, collaboration, AI coding-assistant use, and an optional open-ended question; it has no tutorial-completion or setup-readiness questions. Its Google Form is unpublished and not accepting responses; distribute it only after publication and approval.
 - [ ] Brief helpers on the 120-minute schedule, the protected 25-minute Copilot rematch, and the recovery steps below.
 - [ ] Keep the [facilitator guide](FACILITATOR_GUIDE.md), [learner guide](LEARNER_GUIDE.md), and [pre-session checklist](PRE_SESSION_CHECK.md) available.
+
+Do not mark this rehearsal complete based on account settings or local tests. The current evidence and unresolved access requirements are in [the rehearsal record](docs/rehearsal-evidence-2026-10-20.md).
 
 ## Support and recovery
 

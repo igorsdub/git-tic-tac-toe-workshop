@@ -5,11 +5,14 @@ This two-hour workshop teaches collaborative Git through a paired tic-tac-toe ga
 ## Workshop documents
 
 - [Current design handoff](WORKSHOP_DESIGN_HANDOFF.md)
+- [Local delivery status and blockers](docs/delivery-status-2026-10-20.md)
 - [Learner guide](LEARNER_GUIDE.md) and [web guide](docs/guide.html)
 - [Facilitator guide](FACILITATOR_GUIDE.md)
 - [Pre-session setup and rehearsal](PRE_SESSION_CHECK.md) and [web setup guide](docs/setup.html)
 - [Facilitator rehearsal guide](REHEARSAL_GUIDE.md)
 - [Advance survey draft](SURVEY.md)
+- [Unpublished instructor survey preview](https://docs.google.com/forms/d/1N2-9HYEtIvWLp11hEa2d9NeS1vXBWiUy7xRycXJNW6c/preview) (not accepting responses; not distributed)
+- [Game Wall](docs/index.html) and [setup page](docs/setup.html)
 - [Glossary](CONTEXT.md)
 
 ## Working 120-minute agenda
@@ -34,8 +37,6 @@ The manual match teaches the whole workflow. In the rematch, learners choose a l
 
 Before the workshop, each learner rehearses in a temporary Codespace opened directly from the existing starter template. They ask Copilot Chat, “What does this repository do?”, confirm its response, leave the editor, and delete the Codespace. They do not publish, commit, or push during this rehearsal. Codespaces access and Copilot access are separate, so the facilitator should verify Copilot access and Agent mode independently. See the [setup guide](PRE_SESSION_CHECK.md).
 
-## Delivery dependencies
+## Delivery status
 
-These documents describe the approved workflow; the related runtime features are still pending. The live external starter repository's `main` branch currently contains lowercase `board.txt` with only a raw 3×3 grid. The designed match workflow expects uppercase `BOARD.txt` with the initialized no-moves state. The template needs a separate update before learners can follow the board instructions as written.
-
-The existing registration form records a repository and both players, but has no branch field. The registration pipeline deduplicates by repository, and the current [Game Wall](docs/index.html) reads root `board.txt` from `main` or `master`. It cannot display separately registered match branches or replay their histories. Branch-aware registration and the dashboard/history redesign are separately scoped. Until those updates are delivered, facilitators must not tell pairs that match branches will appear as separate dashboard entries. The planned final-segment dashboard demonstration depends on that separate work.
+The starter contract, branch-aware registration, and Game Wall are implemented in this local feature branch. They have not been pushed or deployed. The live starter's `main` still has lowercase `board.txt` and no uppercase `BOARD.txt`; the published issue template and Game Wall likewise do not include this branch's registration and display changes. Check the [delivery status](docs/delivery-status-2026-10-20.md) before using the participant flow or promising a live dashboard. Until publication and a real facilitator rehearsal, the instructor should use GitHub commit history as the dashboard fallback.

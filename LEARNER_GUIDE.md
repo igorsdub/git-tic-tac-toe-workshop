@@ -1,6 +1,6 @@
 # Git Tic-Tac-Toe: Learner Guide
 
-> **Workshop readiness:** This guide describes the approved match workflow. The live starter currently uses lowercase `board.txt`, while the planned match workflow uses uppercase `BOARD.txt`. The public Game Wall also cannot yet register or display separate match branches. Your facilitator will confirm that the required updates are ready before play begins.
+> **Workshop readiness:** This guide describes the approved match workflow. The uppercase `BOARD.txt` starter contract and branch-aware Game Wall are implemented in local feature branches, but have not been published. The live starter still uses lowercase `board.txt`, and the public Game Wall does not yet reflect the local changes. Your facilitator will confirm the live setup before play begins.
 
 In this workshop, you and a partner collaborate in one shared public GitHub repository. You will play one match by hand, then use Copilot to make a board edit you already know how to make. You remain responsible for reviewing and publishing every change.
 
@@ -10,7 +10,7 @@ Each person works in their own GitHub Codespace, opened in the browser-based VS 
 
 Your facilitator will guide your pair through creating one shared repository from the starter template and inviting both partners. Each of you then opens that pair repository in your own Codespace. Match setup uses numbered branches from `main`: the first match is `match-01`. Keep match branches separate; do not merge them back into `main`.
 
-The match registration form and Game Wall do not yet support separate match branches. Follow the facilitator's instructions for any registration during the workshop; do not assume the current Game Wall will show every match separately.
+The local registration and Game Wall code supports separate match branches. The public issue form and deployed Game Wall do not yet include those changes. Follow the facilitator's directions for registration and do not assume live matches will appear separately until publication is confirmed.
 
 ## Manual match: make and share a move
 
@@ -38,7 +38,7 @@ You choose a legal move and ask Copilot to make that board edit. For example: â€
 
 Copilot makes the board edit; you make the decisions and complete the Git workflow. Later, you may ask Copilot to choose an individual legal move, but that is optional.
 
-If Copilot is unavailable to you, continue with the manual workflow during the rematch and follow the instructor's Copilot demonstration.
+If Copilot is unavailable to you, complete the rematch manually and follow the instructor's Copilot demonstration.
 
 ## If something goes wrong
 
@@ -50,4 +50,4 @@ There is no staged conflict exercise. Conflicts are handled only if they arise d
 
 ## Closing demonstration
 
-The instructor will review repository history and connect the workflow to research files. A dashboard that groups public matches by result and replays committed board states is a planned instructor demonstration; its implementation is separate from this guide. The current Game Wall does not yet support match branches or history replay. Exploring an alternative history from an earlier branch point is an optional instructor extension, not a learner task.
+The instructor will review repository history and connect the workflow to research files. The local Game Wall implementation groups public matches by result and replays valid committed board states, but the published site does not include it yet. If the update is not deployed, the instructor can use GitHub commit history. Exploring an alternative history from an earlier branch point is an optional instructor extension, not a learner task.

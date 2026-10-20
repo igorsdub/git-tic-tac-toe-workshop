@@ -10,6 +10,6 @@ Please try this once before the session, using the existing [tic-tac-toe starter
 2. In the VS Code web editor, open Copilot Chat and ask: **“What does this repository do?”** Confirm that Copilot responds.
 3. Close the editor, then delete the Codespace from the [GitHub Codespaces dashboard](https://github.com/codespaces).
 
-Do not commit or push anything during this rehearsal. Codespaces and Copilot access are separate; if Copilot Chat or agent editing is unavailable, note that for the facilitator. The instructor will help with access during the session. The short survey is for instructor preparation and does not ask whether you completed this rehearsal.
+Do not commit or push anything during this rehearsal. Codespaces and Copilot access are separate; if Copilot Chat or agent editing is unavailable, note that for the facilitator. The instructor will help with access during the session. The five-question survey draft is for instructor preparation and does not ask whether you completed this rehearsal. Its Google Form is currently unpublished and is not accepting responses; no survey action is required until the instructor distributes an approved form.
 
 For current GitHub instructions, see [creating a Codespace from a template](https://docs.github.com/en/codespaces/developing-in-a-codespace/creating-a-codespace-from-a-template). For help with Copilot in VS Code, see [chat with Copilot in your IDE](https://docs.github.com/en/copilot/how-tos/copilot-in-your-ide/chat-with-copilot/chat-in-ide).

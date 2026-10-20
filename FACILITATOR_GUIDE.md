@@ -1,6 +1,6 @@
 # Facilitator Guide: Git Tic-Tac-Toe Workshop
 
-> **Design status (2026-10-20):** This guide describes the agreed 120-minute workshop. The starter template and Game Wall still need separate updates before they support the designed board and match-branch workflow; see [the design handoff](WORKSHOP_DESIGN_HANDOFF.md) and [rehearsal checklist](REHEARSAL_GUIDE.md).
+> **Delivery status (2026-10-20):** The starter, registration pipeline, and Game Wall changes exist in local feature branches but are not published. The live starter still lacks uppercase `BOARD.txt`, and the published Game Wall has not deployed branch-aware display. The two-account rehearsal is blocked; see [the delivery record](docs/delivery-status-2026-10-20.md) and [rehearsal evidence](docs/rehearsal-evidence-2026-10-20.md).
 
 ## Purpose and outcomes
 
@@ -24,7 +24,7 @@ At minute 80, transition the room together even if a manual match is unfinished.
 
 ## Before participants arrive
 
-Use the [rehearsal guide](REHEARSAL_GUIDE.md) to verify the starter, Codespaces, Copilot access, pair collaboration, Source Control pull/push, and the current dashboard contract. Send the [pre-session checklist](PRE_SESSION_CHECK.md) with setup instructions and the [short survey](SURVEY.md). The survey is for instructor preparation; do not add identity, tutorial-completion, or setup-readiness questions.
+Use the [rehearsal guide](REHEARSAL_GUIDE.md) to verify the live starter, Codespaces, Copilot access, pair collaboration, Source Control pull/push, and deployed dashboard. Send the [pre-session checklist](PRE_SESSION_CHECK.md) with setup instructions. The survey form is currently an unpublished instructor draft and is not accepting responses; distribute it only after it is published and approved. It is for instructor preparation; do not add identity, tutorial-completion, or setup-readiness questions.
 
 Participants rehearse directly in a Codespace opened from the existing starter template. They ask Copilot Chat “What does this repository do?”, confirm a response, then delete the Codespace. They should not commit or push in advance. The pair repository is created together during the session.
 
@@ -46,7 +46,7 @@ Create a fresh rematch branch from the agreed baseline. Repeat the same Source C
 
 ### History demonstration and wrap-up (105–120)
 
-The instructor demonstrates the planned dashboard view of public matches grouped by outcome and replays committed board states as a time machine. This is an instructor demonstration, not a participant exercise. The current dashboard does not yet group matches by outcome or read match branches: it currently reads the root `board.txt` from `main`/`master`, while the registration form and registry identify repositories without a branch. Do not imply that each pair branch will appear separately. Complete the demonstration only after the separate dashboard work is ready; otherwise use public GitHub commit history to illustrate the idea and clearly mark dashboard support as pending.
+The local Game Wall implementation groups public matches by outcome and replays committed board states as a time machine. This is an instructor demonstration, not a participant exercise. The currently published dashboard still reads root `board.txt` from `main`/`master`; the branch-aware registration and dashboard changes have not been deployed. Do not imply that each pair branch will appear separately on the live site. Until a live deployment and public match check are confirmed, use GitHub commit history to illustrate the idea.
 
 Connect the workflow to research files, analysis code, and shared manuscripts. Ask what becomes easier when changes have clear authorship, messages, and reviewable history.
 
