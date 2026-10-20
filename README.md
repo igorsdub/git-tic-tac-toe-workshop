@@ -15,6 +15,16 @@ This two-hour workshop teaches collaborative Git through a paired tic-tac-toe ga
 - [Game Wall](docs/index.html) and [setup page](docs/setup.html)
 - [Glossary](CONTEXT.md)
 
+## Workshop links
+
+The main Game Wall opens the organizer-designated default workshop, SCDA Training Week. Use a workshop-specific link to open its dashboard or prefilled registration form directly.
+
+| Workshop | Dashboard | Register a pair repository |
+|---|---|---|
+| SCDA Training Week (2026-10-01) | [Game Wall](https://igorsdub.github.io/git-tic-tac-toe-workshop/?workshop=2026-10-01-scda) | [Registration form](https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&workshop_id=2026-10-01-scda) |
+| Sokedai (2026-11-06) | [Game Wall](https://igorsdub.github.io/git-tic-tac-toe-workshop/?workshop=2026-11-06-sokedai) | [Registration form](https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&workshop_id=2026-11-06-sokedai) |
+| Riken (2026-11-10) | [Game Wall](https://igorsdub.github.io/git-tic-tac-toe-workshop/?workshop=2026-11-10-riken) | [Registration form](https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&workshop_id=2026-11-10-riken) |
+
 ## Repository map
 
 - [`template/`](template/README.md) is the local reference for the learner starter repository: its current `BOARD.txt`, editing conventions, and canonical empty-board example. Publish changes to the separate template repository explicitly.
