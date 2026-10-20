@@ -27,7 +27,7 @@ The activity moves from manual Git play to a timed agent-assisted rematch:
 
 1. Start `match-01` from `main`, register it, then play manually in the shared pair repository.
 2. Pairs that finish early may play an optional extra manual match before the timed transition. Use the next numbered match branch from `main` and register it.
-3. At the announced transition, start the agent-assisted rematch on the next numbered branch from `main` and register it. If the optional match was skipped, this is `match-02`; otherwise it is the next number.
+3. At the scheduled transition, every pair starts the agent-assisted rematch, even if its manual match is unfinished. Leave any unfinished match on its branch, then start and register a fresh rematch on the next numbered branch from `main`. If the optional match was skipped, this is `match-02`; otherwise it is the next number. This protects the Copilot practice slot.
 4. Keep completed match branches for review. Do not merge them back into `main`.
 
 The confirmed working agenda totals 120 minutes; website implementation remains pending:
