@@ -1,6 +1,6 @@
 # Workshop Rehearsal Guide
 
-> **Current status:** Tasks 2–4 are implemented in local branches but are not published. The live starter is still on the old lowercase `board.txt` contract, and the live Game Wall has not deployed branch-aware registration or replay. The complete two-account rehearsal is blocked; see [recorded evidence](docs/rehearsal-evidence-2026-10-20.md) before treating this checklist as passed.
+> **Current status:** Tasks 2–4 are implemented in local branches but are not published. The live starter is still on the old lowercase `board.txt` contract, and the live Game Wall has not deployed branch-aware registration or replay. The complete two-account rehearsal is blocked; see the [original rehearsal evidence](docs/rehearsal-evidence-2026-10-20.md) and [compact-board addendum](docs/rehearsal-evidence-compact-board-2026-10-20.md) before treating this checklist as passed.
 
 ## Rehearse the participant path
 

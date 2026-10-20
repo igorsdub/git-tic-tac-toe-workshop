@@ -25,6 +25,7 @@ class TestDocumentationReadiness(unittest.TestCase):
         "docs/guide.html",
         "docs/delivery-status-2026-10-20.md",
         "docs/rehearsal-evidence-2026-10-20.md",
+        "docs/rehearsal-evidence-compact-board-2026-10-20.md",
         "template-spec/README.md",
         "template-spec/BOARD.txt",
     ]
