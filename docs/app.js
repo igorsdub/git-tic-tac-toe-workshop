@@ -1,9 +1,8 @@
 /**
  * Git Tic-Tac-Toe Workshop - Game Wall Application
  * 
- * Discovers pair game registration issues from GitHub, fetches raw board.txt
- * files, parses and validates board states, and renders responsive cards
- * on a public workshop game wall with auto-refresh every 30 seconds.
+ * Reads branch-specific match records, renders outcomes and errors, and offers
+ * an instructor replay of committed BOARD.txt states from GitHub history.
  */
 
 (function () {
@@ -15,15 +14,11 @@
     REPO_NAME: 'git-tic-tac-toe-workshop',
     REFRESH_INTERVAL_SEC: 30,
     STORAGE_KEY_THEME: 'ttt_gamewall_theme',
-    DEFAULT_BRANCHES: ['main', 'master'],
   };
 
   const BOARD_REGISTRY_URL = `./board.json`;
   const RAW_BOARD_REGISTRY_URL = `https://raw.githubusercontent.com/${CONFIG.REPO_OWNER}/${CONFIG.REPO_NAME}/main/docs/board.json`;
-  const STORAGE_KEY_REGISTRATIONS = 'ttt_gamewall_registrations';
-
-  const ISSUES_API_URL = `https://api.github.com/repos/${CONFIG.REPO_OWNER}/${CONFIG.REPO_NAME}/issues?labels=game-registration&state=all&per_page=100`;
-  const ALL_ISSUES_API_URL = `https://api.github.com/repos/${CONFIG.REPO_OWNER}/${CONFIG.REPO_NAME}/issues?state=all&per_page=100`;
+  const MATCH_DATA = window.MatchData;
 
   // --- Fallback / Mock Data for Offline & Demo Modes ---
   const MOCK_GAMES = [
@@ -213,6 +208,8 @@ State: Waiting for O
     isLoading: false,
     lastUpdated: null,
     timerId: null,
+    historyByMatch: {},
+    pendingRender: false,
   };
 
   // --- DOM Elements ---
@@ -346,6 +343,12 @@ State: Waiting for O
     return /^[ \t\+\-\|\=]+$/.test(s) && s.includes('-');
   }
 
+  function extractCompactGridLines(text) {
+    const codeBlockMatch = text.match(/```(?:text)?\s*\n([\s\S]*?)\n```/);
+    const gridText = codeBlockMatch ? codeBlockMatch[1] : text;
+    return gridText.split(/\r?\n/).filter((line) => line.trim().length > 0);
+  }
+
   /**
    * Parses an individual cell: returns 'X', 'O', or ' '
    */
@@ -437,7 +440,10 @@ State: Waiting for O
     const gridText = codeBlockMatch ? codeBlockMatch[1] : content;
 
     const rawLines = gridText.split(/\r?\n/);
-    const candidateLines = rawLines.filter(line => line.includes('|') && !isDividerLine(line));
+    const legacyLines = rawLines.filter(line => line.includes('|') && !isDividerLine(line));
+    const compactLines = extractCompactGridLines(gridText);
+    const compactFormat = legacyLines.length === 0;
+    const candidateLines = legacyLines.length > 0 ? legacyLines : compactLines;
 
     let parsedGrid = [
       [' ', ' ', ' '],
@@ -450,7 +456,16 @@ State: Waiting for O
     } else {
       parsedGrid = [];
       for (let r = 0; r < 3; r++) {
-        let line = candidateLines[r].trim();
+        const rawLine = candidateLines[r];
+        let line = rawLine.trim();
+        if (compactFormat) {
+          if (!/^[.XO](?: [XO.]){2}$/.test(rawLine)) {
+            errors.push(`Row ${r + 1} must contain three cells separated by single spaces.`);
+            continue;
+          }
+          parsedGrid.push(rawLine.split(' ').map((cell) => (cell === '.' ? ' ' : cell)));
+          continue;
+        }
         if (line.startsWith('|') && line.endsWith('|')) {
           line = line.slice(1, -1);
         }
@@ -582,34 +597,7 @@ State: Waiting for O
   // 2. Data Fetching
   // ==========================================
 
-  /**
-   * Attempts to fetch raw board.txt from branches: 'main', then 'master'.
-   */
-  async function fetchRawBoard(owner, repo) {
-    for (const branch of CONFIG.DEFAULT_BRANCHES) {
-      const url = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/board.txt?t=${Date.now()}`;
-      try {
-        const res = await fetch(url);
-        if (res.ok) {
-          const text = await res.text();
-          return { content: text, branch, error: null };
-        }
-      } catch (e) {
-        // Continue to fallback branch
-      }
-    }
-    return {
-      content: null,
-      branch: null,
-      error: 'Could not fetch board.txt on main or master branches.',
-    };
-  }
-
-  /**
-   * Fetches registration issues from GitHub API or falls back to mock data.
-  /**
-   * Fetches registration issues from board.json or GitHub API or falls back to cache/mock data.
-   */
+  /** Load only the branch-aware registry; old issue formats are shown as errors by normalizeMatch. */
   async function loadGames() {
     setLoading(true);
 
@@ -620,198 +608,35 @@ State: Waiting for O
     }
 
     try {
-      let parsedRegistrations = null;
+      let response = await fetch(`${BOARD_REGISTRY_URL}?t=${Date.now()}`);
+      if (!response.ok) response = await fetch(`${RAW_BOARD_REGISTRY_URL}?t=${Date.now()}`);
+      if (!response.ok) throw new Error(`Match registry unavailable (HTTP ${response.status}).`);
+      const records = await response.json();
+      if (!Array.isArray(records)) throw new Error('The match registry did not contain a list of records.');
 
-      // 1. First attempt to fetch the board registry from BOARD_REGISTRY_URL and fallback to RAW_BOARD_REGISTRY_URL
-      try {
-        let registryRes = await fetch(`${BOARD_REGISTRY_URL}?t=${Date.now()}`);
-        if (!registryRes.ok) {
-          registryRes = await fetch(`${RAW_BOARD_REGISTRY_URL}?t=${Date.now()}`);
-        }
-        if (registryRes.ok) {
-          const items = await registryRes.json();
-          if (Array.isArray(items) && items.length > 0) {
-            parsedRegistrations = items.map((item) => ({
-              owner: item.owner,
-              repo: item.repo,
-              repoUrl: item.repoUrl || `https://github.com/${item.owner}/${item.repo}`,
-              playerX: item.playerX,
-              playerO: item.playerO,
-              workshopName: item.workshopName || 'SCDA Training Week',
-              eventId: item.eventId || item.workshopName || 'SCDA Training Week',
-            }));
-            try {
-              localStorage.setItem(STORAGE_KEY_REGISTRATIONS, JSON.stringify(parsedRegistrations));
-            } catch (e) {}
-          }
-        }
-      } catch (boardJsonErr) {
-        console.warn('board.json fetch error:', boardJsonErr);
-      }
-
-      // 2. If board.json is not found or empty, fallback to the existing GitHub issues API logic
-      if (!parsedRegistrations || parsedRegistrations.length === 0) {
-        let res;
-        try {
-          res = await fetch(ISSUES_API_URL);
-        } catch (netErr) {
-          res = { status: 0, ok: false };
-        }
-
-        if (res.status === 403 || !res.ok) {
-          // GitHub API rate-limited or network error
-          let cached = null;
-          try {
-            const stored = localStorage.getItem(STORAGE_KEY_REGISTRATIONS);
-            if (stored) {
-              cached = JSON.parse(stored);
-            }
-          } catch (e) {}
-
-          if (!cached && state.allGames && state.allGames.length > 0) {
-            cached = state.allGames.map((g) => ({
-              owner: g.owner,
-              repo: g.repo,
-              repoUrl: g.repoUrl,
-              playerX: g.playerX,
-              playerO: g.playerO,
-              workshopName: g.workshopName,
-              eventId: g.eventId,
-            }));
-          }
-
-          if (Array.isArray(cached) && cached.length > 0) {
-            parsedRegistrations = cached;
-            showNotice(
-              res.status === 403 ? 'GitHub API rate limit reached. Using cached game registrations (live boards still updating from raw.githubusercontent.com).' : 'Offline or network issue connecting to GitHub. Using cached game registrations.',
-              'notice-warning'
-            );
-          } else {
-            showNotice(
-              res.status === 403 ? 'GitHub API rate limit reached. Displaying simulated workshop games.' : 'Offline or network issue connecting to GitHub. Displaying cached demo games.',
-              'notice-warning'
-            );
-            loadMockData();
-            setLoading(false);
-            return;
-          }
-        } else {
-          let issues = await res.json();
-
-          // Defensive fallback: if no issues found with label 'game-registration',
-          // fetch issues without label filter and match issues with label OR '[Game Registration]' title prefix
-          if (!Array.isArray(issues) || issues.length === 0) {
-            try {
-              const fallbackRes = await fetch(ALL_ISSUES_API_URL);
-              if (fallbackRes.ok) {
-                const allIssues = await fallbackRes.json();
-                if (Array.isArray(allIssues)) {
-                  issues = allIssues.filter((issue) => {
-                    const hasLabel = issue.labels && issue.labels.some((l) => l.name === 'game-registration');
-                    const hasTitle = (issue.title || '').toLowerCase().includes('[game registration]');
-                    return hasLabel || hasTitle;
-                  });
-                }
-              }
-            } catch (fallbackErr) {
-              console.warn('Fallback issue discovery error:', fallbackErr);
-            }
-          }
-
-          if (!Array.isArray(issues) || issues.length === 0) {
-            let cached = null;
-            try {
-              const stored = localStorage.getItem(STORAGE_KEY_REGISTRATIONS);
-              if (stored) cached = JSON.parse(stored);
-            } catch (e) {}
-            if (Array.isArray(cached) && cached.length > 0) {
-              parsedRegistrations = cached;
-            } else {
-              showNotice(
-                'No pair games registered yet. Showing demo games until pairs submit registration issues.',
-                'notice-info'
-              );
-              loadMockData();
-              setLoading(false);
-              return;
-            }
-          } else {
-            parsedRegistrations = [];
-            for (const issue of issues) {
-              const reg = parseRegistrationIssue(issue.body, issue.title);
-              if (reg) {
-                parsedRegistrations.push(reg);
-              }
-            }
-            if (parsedRegistrations.length > 0) {
-              try {
-                localStorage.setItem(STORAGE_KEY_REGISTRATIONS, JSON.stringify(parsedRegistrations));
-              } catch (e) {}
-            }
-          }
-        }
-      }
-
-      hideNotice();
-
-      if (!Array.isArray(parsedRegistrations) || parsedRegistrations.length === 0) {
-        showNotice(
-          'No valid game repository URLs found. Showing demo games.',
-          'notice-info'
-        );
-        loadMockData();
-        setLoading(false);
-        return;
-      }
-
-      // Fetch boards concurrently
-      const gamePromises = parsedRegistrations.map(async (reg) => {
-        const { content, error } = await fetchRawBoard(reg.owner, reg.repo);
-        let evaluation;
-        if (error) {
-          evaluation = {
-            isValid: false,
-            state: 'Invalid board',
-            declaredState: null,
-            playerX: reg.playerX,
-            playerO: reg.playerO,
-            grid: [
-              [' ', ' ', ' '],
-              [' ', ' ', ' '],
-              [' ', ' ', ' '],
-            ],
-            moveCounts: { X: 0, O: 0 },
-            winningCells: null,
-            errors: [error],
-            warnings: [],
-          };
-        } else {
-          evaluation = evaluateBoardContent(content);
-          // Prefer handles from board, fallback to issue/registry
-          if (!evaluation.playerX && reg.playerX) evaluation.playerX = reg.playerX;
-          if (!evaluation.playerO && reg.playerO) evaluation.playerO = reg.playerO;
-        }
-
-        return {
-          owner: reg.owner,
-          repo: reg.repo,
-          repoUrl: reg.repoUrl,
-          eventId: reg.eventId,
-          workshopName: reg.workshopName || reg.eventId || 'SCDA Training Week',
-          ...evaluation,
-        };
-      });
-
-      state.allGames = await Promise.all(gamePromises);
+      const registered = records.map((record) => MATCH_DATA.normalizeMatch(record));
+      state.allGames = await Promise.all(registered.map((match) =>
+        MATCH_DATA.canRefreshMatchBoard(match)
+          ? MATCH_DATA.refreshMatchBoard(match, fetch, evaluateBoardContent)
+          : match,
+      ));
       state.lastUpdated = new Date();
+      const errorCount = state.allGames.filter((match) => match.status === 'error').length;
+      if (errorCount > 0) {
+        showNotice(`${errorCount} registered ${errorCount === 1 ? 'match needs' : 'matches need'} attention. Open an Issues card for the reason.`, 'notice-warning');
+      } else {
+        hideNotice();
+      }
+      if (state.allGames.length === 0) {
+        showNotice('No matches are registered yet. Use Register Game to add a numbered match branch.', 'notice-info');
+      }
       render();
     } catch (err) {
       console.warn('Network or API failure fetching live games:', err);
-      showNotice(
-        'Offline or network issue connecting to GitHub. Displaying cached demo games.',
-        'notice-warning'
-      );
-      loadMockData();
+      state.allGames = [];
+      state.lastUpdated = new Date();
+      showNotice(`${err.message} Open a pair repository’s GitHub commit history if you need to inspect a match.`, 'notice-warning');
+      render();
     } finally {
       setLoading(false);
     }
@@ -827,8 +652,15 @@ State: Waiting for O
         owner: mock.owner,
         repo: mock.repo,
         repoUrl: mock.repoUrl,
+        branch: 'match-01',
+        matchKey: `${mock.owner}/${mock.repo}#match-01`,
         eventId: mock.eventId,
         workshopName: mock.workshopName || mock.eventId || 'SCDA Training Week',
+        status: evaluation.isValid && ['X won', 'O won', 'Draw'].includes(evaluation.state) ? 'completed' : (evaluation.isValid ? 'in_progress' : 'error'),
+        boardValid: evaluation.isValid,
+        board: evaluation.grid,
+        isValid: evaluation.isValid,
+        errors: evaluation.errors,
         ...evaluation,
       };
     });
@@ -903,7 +735,7 @@ State: Waiting for O
         const winClass = isWin ? 'cell-winning' : '';
 
         cellsHtml += `
-          <div class="board-cell ${markClass} ${winClass}" data-row="${r}" data-col="${c}">
+          <div class="board-cell ${markClass} ${winClass}" role="gridcell" aria-label="Row ${r + 1}, column ${c + 1}: ${mark === ' ' ? 'empty' : mark}" data-row="${r}" data-col="${c}">
             ${mark !== ' ' ? mark : ''}
           </div>
         `;
@@ -923,14 +755,29 @@ State: Waiting for O
       `;
     }
 
+    const boardHtml = game.isValid && game.grid
+      ? `<div class="card-board-wrapper"><div class="board-grid-table" role="grid" aria-label="Current board for ${escapeHtml(game.branch)}">${cellsHtml}</div></div>`
+      : '<div class="board-unavailable">No validated board is available for this match.</div>';
+    const historyUrl = game.historyUrl;
+    const historyState = MATCH_DATA.historyButtonState(state.historyByMatch[game.matchKey]);
+    const historyHtml = historyUrl
+      ? `<details class="history-details" data-history-for="${escapeHtml(game.matchKey)}">
+          <summary>Replay committed board history</summary>
+          <p class="history-help">History is ordered from the branch’s first committed board to its latest. If replay cannot load, use <a href="${escapeHtml(historyUrl)}" target="_blank" rel="noopener noreferrer">GitHub commit history</a>.</p>
+          <button class="btn btn-sm btn-outline history-load-button" type="button" data-history-action="load" data-history-loaded="${historyState.loaded}" data-match-key="${escapeHtml(game.matchKey)}">${historyState.label}</button>
+          <div class="history-panel" data-history-panel="${escapeHtml(game.matchKey)}" aria-live="polite"></div>
+        </details>`
+      : '';
+
     return `
-      <article class="game-card" data-repo="${escapeHtml(game.repo)}">
+      <article class="game-card" data-match-key="${escapeHtml(game.matchKey)}">
         <div class="card-header">
           <div class="card-repo">
             <a href="${escapeHtml(game.repoUrl)}" target="_blank" rel="noopener noreferrer" class="repo-link" title="${escapeHtml(game.repoUrl)}">
               📦 ${escapeHtml(game.owner)}/${escapeHtml(game.repo)}
             </a>
             <span class="card-workshop">${escapeHtml(game.workshopName || game.eventId || 'SCDA Training Week')}</span>
+            ${game.branch ? `<a class="card-branch" href="${escapeHtml(game.repoUrl)}/tree/${encodeURIComponent(game.branch)}" target="_blank" rel="noopener noreferrer">Branch: ${escapeHtml(game.branch)}</a>` : '<span class="card-branch">No match branch registered</span>'}
           </div>
           <span class="status-badge ${badgeClass}">
             <span>${statusIcon}</span> ${escapeHtml(game.state)}
@@ -961,15 +808,102 @@ State: Waiting for O
           </div>
         </div>
 
-        <div class="card-board-wrapper">
-          <div class="board-grid-table" aria-label="Tic-Tac-Toe Board">
-            ${cellsHtml}
-          </div>
-        </div>
+        ${boardHtml}
 
         ${errorsHtml}
+        ${historyHtml}
       </article>
     `;
+  }
+
+  function renderHistoryPanel(match, history, index = 0) {
+    const panel = DOM.gameGrid.querySelector(`[data-history-panel="${CSS.escape(match.matchKey)}"]`);
+    if (!panel) return;
+    const historyLink = history.historyUrl
+      ? `<a href="${escapeHtml(history.historyUrl)}" target="_blank" rel="noopener noreferrer">Open this branch’s GitHub commit history</a>`
+      : '';
+    const errorsHtml = history.errors.length
+      ? `<div class="history-errors" role="alert"><strong>Some history could not be replayed.</strong><ul>${history.errors.map((error) => `<li>${escapeHtml(error)}</li>`).join('')}</ul>${historyLink}</div>`
+      : '';
+    if (history.entries.length === 0) {
+      panel.replaceChildren();
+      panel.innerHTML = `${errorsHtml || '<p>No valid committed board states were found.</p>'}`;
+      return;
+    }
+
+    const safeIndex = Math.max(0, Math.min(index, history.entries.length - 1));
+    const entry = history.entries[safeIndex];
+    let cellsHtml = '';
+    for (let row = 0; row < 3; row++) {
+      for (let column = 0; column < 3; column++) {
+        const mark = entry.grid[row][column];
+        const winning = isCellWinning(entry.winningCells, row, column);
+        const markClass = mark === 'X' ? 'cell-x' : mark === 'O' ? 'cell-o' : 'cell-empty';
+        cellsHtml += `<div class="board-cell ${markClass} ${winning ? 'cell-winning' : ''}" role="gridcell" aria-label="Row ${row + 1}, column ${column + 1}: ${mark === ' ' ? 'empty' : mark}">${mark === ' ' ? '' : mark}</div>`;
+      }
+    }
+    const date = entry.date ? new Date(entry.date).toLocaleString() : 'Date unavailable';
+    const content = `
+      <div class="history-controls">
+        <button class="btn btn-sm btn-outline" type="button" data-history-action="step" data-direction="previous" data-match-key="${escapeHtml(match.matchKey)}" ${safeIndex === 0 ? 'disabled' : ''}>Previous</button>
+        <label><span>Board ${safeIndex + 1} of ${history.entries.length}</span>
+          <input type="range" min="0" max="${history.entries.length - 1}" value="${safeIndex}" aria-label="Select committed board state" data-history-action="select" data-match-key="${escapeHtml(match.matchKey)}">
+        </label>
+        <button class="btn btn-sm btn-outline" type="button" data-history-action="step" data-direction="next" data-match-key="${escapeHtml(match.matchKey)}" ${safeIndex === history.entries.length - 1 ? 'disabled' : ''}>Next</button>
+      </div>
+      <div class="history-state"><strong>${escapeHtml(entry.state)}</strong><span>${escapeHtml(date)}</span></div>
+      <p class="history-commit"><a href="${escapeHtml(entry.commitUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(entry.shortSha)} · ${escapeHtml(entry.message)}</a></p>
+      <div class="board-grid-table history-board" role="grid" aria-label="Committed board ${safeIndex + 1}: ${escapeHtml(entry.state)}">${cellsHtml}</div>
+      ${errorsHtml}
+    `;
+    const next = document.createElement('div');
+    next.innerHTML = content;
+    const nextControls = next.querySelector('.history-controls');
+    const existingControls = panel.querySelector('.history-controls');
+    if (existingControls) {
+      const currentButtons = existingControls.querySelectorAll('button');
+      const nextButtons = nextControls.querySelectorAll('button');
+      currentButtons.forEach((button, buttonIndex) => { button.disabled = nextButtons[buttonIndex].disabled; });
+      existingControls.querySelector('label span').textContent = nextControls.querySelector('label span').textContent;
+      const currentSlider = existingControls.querySelector('input[type="range"]');
+      const nextSlider = nextControls.querySelector('input[type="range"]');
+      currentSlider.min = nextSlider.min;
+      currentSlider.max = nextSlider.max;
+      currentSlider.value = nextSlider.value;
+      nextControls.remove();
+      Array.from(panel.children).filter((child) => child !== existingControls).forEach((child) => child.remove());
+      panel.append(...Array.from(next.childNodes));
+    } else {
+      panel.replaceChildren(...Array.from(next.childNodes));
+    }
+    panel.dataset.historyIndex = String(safeIndex);
+  }
+
+  async function loadMatchHistory(match, button, force = false) {
+    const cached = state.historyByMatch[match.matchKey];
+    if (cached && !force && cached.entries.length > 0) {
+      const panel = DOM.gameGrid.querySelector(`[data-history-panel="${CSS.escape(match.matchKey)}"]`);
+      const index = Number(panel && panel.dataset.historyIndex || 0);
+      renderHistoryPanel(match, cached, index);
+      return;
+    }
+    const priorIndex = Number(DOM.gameGrid.querySelector(`[data-history-panel="${CSS.escape(match.matchKey)}"]`)?.dataset.historyIndex || 0);
+    button.disabled = true;
+    button.textContent = 'Loading history…';
+    const panel = DOM.gameGrid.querySelector(`[data-history-panel="${CSS.escape(match.matchKey)}"]`);
+    if (panel) panel.innerHTML = '<p>Loading committed board states from GitHub…</p>';
+    let result;
+    try {
+      result = await MATCH_DATA.fetchMatchHistory(match, fetch, evaluateBoardContent);
+    } catch (error) {
+      result = { entries: [], errors: [`Could not load GitHub history: ${error.message}`], historyUrl: match.historyUrl };
+    }
+    state.historyByMatch[match.matchKey] = result;
+    button.disabled = false;
+    const buttonState = MATCH_DATA.historyButtonState(result);
+    button.textContent = buttonState.label;
+    button.dataset.historyLoaded = String(buttonState.loaded);
+    renderHistoryPanel(match, result, priorIndex);
   }
 
   function escapeHtml(str) {
@@ -989,11 +923,11 @@ State: Waiting for O
     let countErrors = 0;
 
     for (const g of allGames) {
-      if (!g.isValid || g.state === 'Invalid board') {
+      if (g.status === 'error' || !g.isValid) {
         countErrors++;
-      } else if (g.state === 'X won' || g.state === 'O won' || g.state === 'Draw') {
+      } else if (g.status === 'completed') {
         countFinished++;
-      } else if (g.state === 'Waiting for X' || g.state === 'Waiting for O' || g.state === 'Ready for X') {
+      } else if (g.status === 'in_progress') {
         countPending++;
       }
     }
@@ -1011,19 +945,24 @@ State: Waiting for O
   function filterGames() {
     return state.allGames.filter((g) => {
       if (state.currentFilter === 'pending') {
-        return g.isValid && (g.state === 'Waiting for X' || g.state === 'Waiting for O' || g.state === 'Ready for X');
+        return g.status === 'in_progress' && g.isValid;
       }
       if (state.currentFilter === 'finished') {
-        return g.isValid && (g.state === 'X won' || g.state === 'O won' || g.state === 'Draw');
+        return g.status === 'completed' && g.isValid;
       }
       if (state.currentFilter === 'errors') {
-        return !g.isValid || g.state === 'Invalid board';
+        return g.status === 'error' || !g.isValid;
       }
       return true; // 'all'
     });
   }
 
   function render() {
+    const openHistory = new Set(Array.from(DOM.gameGrid.querySelectorAll('details[data-history-for][open]')).map((node) => node.dataset.historyFor));
+    const historyIndices = new Map(Array.from(DOM.gameGrid.querySelectorAll('[data-history-panel][data-history-index]')).map((node) => [node.dataset.historyPanel, Number(node.dataset.historyIndex)]));
+    const focusedAction = document.activeElement && DOM.gameGrid.contains(document.activeElement)
+      ? { action: document.activeElement.dataset.historyAction, matchKey: document.activeElement.dataset.matchKey, value: document.activeElement.value }
+      : null;
     updateTabCounts(state.allGames);
 
     const filtered = filterGames();
@@ -1031,6 +970,14 @@ State: Waiting for O
     if (state.lastUpdated && DOM.lastUpdated) {
       DOM.lastUpdated.textContent = `Updated ${formatTime(state.lastUpdated)}`;
     }
+
+    if (focusedAction) {
+      // Keep the active replay control in the DOM while polling, especially
+      // during pointer or keyboard interaction with the range input.
+      state.pendingRender = true;
+      return;
+    }
+    state.pendingRender = false;
 
     if (filtered.length === 0) {
       DOM.gameGrid.innerHTML = '';
@@ -1042,7 +989,27 @@ State: Waiting for O
       }
     } else {
       DOM.emptyState.classList.add('hidden');
-      DOM.gameGrid.innerHTML = filtered.map(renderCard).join('');
+      const groups = MATCH_DATA.groupMatches(filtered);
+      DOM.gameGrid.innerHTML = groups.map((group) => `
+        <section class="outcome-group" aria-labelledby="group-${group.id}">
+          <div class="outcome-heading"><h2 id="group-${group.id}">${group.title}</h2><span>${group.matches.length}</span></div>
+          <div class="outcome-cards">${group.matches.map(renderCard).join('')}</div>
+        </section>
+      `).join('');
+      for (const matchKey of openHistory) {
+        const details = Array.from(DOM.gameGrid.querySelectorAll('details[data-history-for]')).find((node) => node.dataset.historyFor === matchKey);
+        if (details) details.open = true;
+        const match = state.allGames.find((item) => item.matchKey === matchKey);
+        const history = state.historyByMatch[matchKey];
+        if (match && history) renderHistoryPanel(match, history, historyIndices.get(matchKey) || 0);
+      }
+      if (focusedAction && focusedAction.action) {
+        const target = Array.from(DOM.gameGrid.querySelectorAll('[data-history-action]')).find((node) => node.dataset.historyAction === focusedAction.action && node.dataset.matchKey === focusedAction.matchKey);
+        if (target) {
+          if (focusedAction.value !== undefined && target.type === 'range') target.value = focusedAction.value;
+          target.focus();
+        }
+      }
     }
   }
 
@@ -1124,12 +1091,47 @@ State: Waiting for O
         tabs.forEach((t) => {
           if (t === tab) {
             t.classList.add('active');
+            t.setAttribute('aria-pressed', 'true');
           } else {
             t.classList.remove('active');
+            t.setAttribute('aria-pressed', 'false');
           }
         });
         render();
       });
+    });
+
+    DOM.gameGrid.addEventListener('click', async (event) => {
+      const target = event.target.closest('[data-history-action]');
+      if (!target || target.dataset.historyAction === 'select') return;
+      const match = state.allGames.find((item) => item.matchKey === target.dataset.matchKey);
+      if (!match) return;
+      if (target.dataset.historyAction === 'load') {
+        await loadMatchHistory(match, target, target.dataset.historyLoaded === 'true');
+        return;
+      }
+      if (target.dataset.historyAction === 'step') {
+        const history = state.historyByMatch[match.matchKey];
+        if (!history) return;
+        const panel = DOM.gameGrid.querySelector(`[data-history-panel="${CSS.escape(match.matchKey)}"]`);
+        const current = Number(panel && panel.dataset.historyIndex || 0);
+        const next = current + (target.dataset.direction === 'next' ? 1 : -1);
+        renderHistoryPanel(match, history, next);
+      }
+    });
+
+    DOM.gameGrid.addEventListener('input', (event) => {
+      const target = event.target.closest('[data-history-action="select"]');
+      if (!target) return;
+      const match = state.allGames.find((item) => item.matchKey === target.dataset.matchKey);
+      const history = state.historyByMatch[target.dataset.matchKey];
+      if (match && history) renderHistoryPanel(match, history, Number(target.value));
+    });
+
+    DOM.gameGrid.addEventListener('focusout', () => {
+      window.setTimeout(() => {
+        if (state.pendingRender && !DOM.gameGrid.contains(document.activeElement)) render();
+      }, 0);
     });
 
     // Toggle between live and demo mode

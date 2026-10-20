@@ -92,6 +92,17 @@ def _extract_grid_lines(text: str) -> List[str]:
     return grid_lines
 
 
+def _extract_compact_grid_lines(text: str) -> List[str]:
+    """Return every nonblank raw row; compact mode validates the complete board."""
+    code_blocks = re.findall(r"```(?:text)?\s*\n([\s\S]*?)\n```", text, re.MULTILINE)
+    search_areas = code_blocks if code_blocks else [text]
+    for area in search_areas:
+        rows = [line for line in area.splitlines() if line.strip()]
+        if rows:
+            return rows
+    return []
+
+
 def _parse_cell(raw_cell: str) -> Tuple[Optional[str], Optional[str]]:
     """Returns (mark, error_message).
 
@@ -171,7 +182,10 @@ def validate_board(board_content: str) -> BoardValidationResult:
         warnings.append("Missing 'State:' or 'Status:' indicator line; state evaluated dynamically.")
 
     # 3. Grid parsing
-    grid_lines = _extract_grid_lines(board_content)
+    legacy_grid_lines = _extract_grid_lines(board_content)
+    compact_grid_lines = _extract_compact_grid_lines(board_content)
+    compact_format = not legacy_grid_lines
+    grid_lines = legacy_grid_lines if legacy_grid_lines else compact_grid_lines
     if len(grid_lines) != 3:
         errors.append(f"Grid must contain exactly 3 rows; found {len(grid_lines)}.")
         return BoardValidationResult(
@@ -189,6 +203,13 @@ def validate_board(board_content: str) -> BoardValidationResult:
     grid: List[List[str]] = []
     for row_idx, line in enumerate(grid_lines):
         clean_line = line.strip()
+        if compact_format:
+            if not re.fullmatch(r"[.XO](?: [XO.]){2}", line):
+                errors.append(f"Row {row_idx + 1} must contain three cells separated by single spaces: '{clean_line}'.")
+                continue
+            row = [" " if cell == "." else cell for cell in line.split(" ")]
+            grid.append(row)
+            continue
         # Handle optional outer boundary pipes: e.g. | [ ] | [ ] | [ ] |
         if clean_line.startswith("|") and clean_line.endswith("|"):
             raw_cells = [c for c in clean_line[1:-1].split("|")]

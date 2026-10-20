@@ -8,6 +8,9 @@ from __future__ import annotations
 
 import re
 from typing import Any, Dict, Optional, Tuple
+from urllib.error import HTTPError, URLError
+from urllib.parse import quote
+from urllib.request import urlopen
 
 from validate_board import validate_board, BoardValidationResult
 
@@ -40,9 +43,9 @@ def extract_repo_info(url_or_text: str) -> Tuple[Optional[str], Optional[str], O
 
 
 def parse_registration_issue(body: str, title: str = "") -> Dict[str, Any]:
-    """Parses a game-registration issue body and title.
+    """Parses and validates a branch-specific game registration issue.
 
-    Supports both GitHub Issue Form markdown output:
+    Supports GitHub Issue Form markdown output:
     ### Repository URL
     https://github.com/owner/repo
 
@@ -51,6 +54,9 @@ def parse_registration_issue(body: str, title: str = "") -> Dict[str, Any]:
 
     ### Player O Handle
     @bob
+
+    ### Match branch
+    match-01
 
     ### Event ID / Session Name
     Session-1
@@ -61,6 +67,7 @@ def parse_registration_issue(body: str, title: str = "") -> Dict[str, Any]:
         "repo_url": None,
         "owner": None,
         "repo": None,
+        "branch": None,
         "player_x": None,
         "player_o": None,
         "event_id": "Default Event",
@@ -97,7 +104,15 @@ def parse_registration_issue(body: str, title: str = "") -> Dict[str, Any]:
     result["repo"] = repo
     result["repo_url"] = clean_url
 
-    # 2. Extract Player X
+    # 2. Extract required match branch and both participants.
+    branch_match = re.search(
+        r"###\s*Match\s*Branch\s*\n+([^\n#]+)", body, re.IGNORECASE
+    )
+    if branch_match:
+        branch = branch_match.group(1).strip()
+        if branch and branch != "_No response_":
+            result["branch"] = branch
+
     x_match = re.search(
         r"###\s*Player\s*X(?:\s*Handle)?\s*\n+([^\n#]+)",
         body,
@@ -133,7 +148,20 @@ def parse_registration_issue(body: str, title: str = "") -> Dict[str, Any]:
             result["event_id"] = event_val
             result["workshop_name"] = event_val
 
-    result["is_valid"] = True
+    errors = []
+    if not result["branch"]:
+        errors.append(
+            "Missing match branch; this registration predates match-branch support. "
+            "Submit a new registration for a numbered match branch."
+        )
+    elif not re.fullmatch(r"match-\d{2,}", result["branch"]):
+        errors.append("Match branch must use the numbered format match-NN (for example, match-01).")
+    if not result["player_x"]:
+        errors.append("Missing Player X handle.")
+    if not result["player_o"]:
+        errors.append("Missing Player O handle.")
+    result["is_valid"] = not errors
+    result["error"] = "; ".join(errors) or None
     return result
 
 
@@ -154,3 +182,47 @@ def evaluate_game_board(board_content: str) -> Dict[str, Any]:
         "errors": validation.errors,
         "warnings": validation.warnings,
     }
+
+
+def fetch_registered_board(owner: str, repo: str, branch: str, timeout: int = 15) -> str:
+    """Fetch exactly ``BOARD.txt`` from the registered branch of a public repo.
+
+    No default-branch, legacy filename, or alternate-ref fallback is attempted.
+    """
+    if not re.fullmatch(r"match-\d{2,}", branch):
+        raise ValueError("Match branch must use the numbered format match-NN (for example, match-01).")
+    url = (
+        "https://raw.githubusercontent.com/"
+        f"{quote(owner, safe='')}/{quote(repo, safe='')}/"
+        f"{quote(branch, safe='')}/BOARD.txt"
+    )
+    try:
+        with urlopen(url, timeout=timeout) as response:
+            return response.read().decode("utf-8")
+    except HTTPError as error:
+        if error.code == 404:
+            detail = "the branch or BOARD.txt is missing, or the repository is private"
+        else:
+            detail = f"GitHub returned HTTP {error.code}"
+        raise RuntimeError(f"Could not read BOARD.txt from branch '{branch}': {detail}.") from error
+    except (URLError, TimeoutError, UnicodeDecodeError) as error:
+        raise RuntimeError(f"Could not read BOARD.txt from branch '{branch}': {error}.") from error
+
+
+def evaluate_registered_board(owner: str, repo: str, branch: str) -> Dict[str, Any]:
+    """Fetch and validate a registered branch board, returning explicit errors."""
+    try:
+        content = fetch_registered_board(owner, repo, branch)
+    except (RuntimeError, ValueError) as error:
+        return {"is_valid": False, "status": "error", "state": "Error", "errors": [str(error)]}
+
+    evaluation = evaluate_game_board(content)
+    if not evaluation["is_valid"]:
+        return {
+            **evaluation,
+            "status": "error",
+            "errors": [f"Invalid BOARD.txt: {error}" for error in evaluation["errors"]],
+        }
+    state = evaluation["state"]
+    completed = state in {"X won", "O won", "Draw"}
+    return {**evaluation, "status": "completed" if completed else "in_progress", "errors": []}

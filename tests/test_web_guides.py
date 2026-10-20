@@ -1,166 +1,86 @@
-"""test_web_guides.py
-
-Automated tests validating the static HTML web guides:
-- docs/setup.html (Setup Guide)
-- docs/guide.html (In-Session Learner Guide)
-- docs/guide-utils.js (Theme sync and copy utility)
-- docs/styles.css (Jump navigation and guide styles)
-- Shared navbar links in docs/index.html, docs/setup.html, docs/guide.html
-- Markdown banners in LEARNER_GUIDE.md and PRE_SESSION_CHECK.md
-"""
+"""Static checks for the public Codespaces, Source Control, and instructor guides."""
 
 from __future__ import annotations
 
+import re
 import unittest
 from pathlib import Path
-
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DOCS_DIR = REPO_ROOT / "docs"
 
 
 class TestWebGuides(unittest.TestCase):
-    """Test suite ensuring completeness and structural validity of docs/ web guides."""
-
     def setUp(self):
-        self.index_html = (DOCS_DIR / "index.html").read_text(encoding="utf-8")
-        self.setup_html = (DOCS_DIR / "setup.html").read_text(encoding="utf-8")
-        self.guide_html = (DOCS_DIR / "guide.html").read_text(encoding="utf-8")
-        self.guide_utils_js = (DOCS_DIR / "guide-utils.js").read_text(encoding="utf-8")
-        self.styles_css = (DOCS_DIR / "styles.css").read_text(encoding="utf-8")
-        self.learner_guide_md = (REPO_ROOT / "LEARNER_GUIDE.md").read_text(encoding="utf-8")
-        self.pre_session_check_md = (REPO_ROOT / "PRE_SESSION_CHECK.md").read_text(encoding="utf-8")
+        self.index = (DOCS_DIR / "index.html").read_text(encoding="utf-8")
+        self.setup = (DOCS_DIR / "setup.html").read_text(encoding="utf-8")
+        self.guide = (DOCS_DIR / "guide.html").read_text(encoding="utf-8")
+        self.utils = (DOCS_DIR / "guide-utils.js").read_text(encoding="utf-8")
+        self.styles = (DOCS_DIR / "styles.css").read_text(encoding="utf-8")
 
-    def test_files_exist(self):
-        self.assertTrue((DOCS_DIR / "setup.html").is_file())
-        self.assertTrue((DOCS_DIR / "guide.html").is_file())
-        self.assertTrue((DOCS_DIR / "guide-utils.js").is_file())
-        self.assertTrue((DOCS_DIR / "styles.css").is_file())
-        self.assertTrue((REPO_ROOT / "LEARNER_GUIDE.md").is_file())
-        self.assertTrue((REPO_ROOT / "PRE_SESSION_CHECK.md").is_file())
+    def test_guide_assets_exist(self):
+        for path in (DOCS_DIR / "setup.html", DOCS_DIR / "guide.html", DOCS_DIR / "guide-utils.js", DOCS_DIR / "styles.css"):
+            self.assertTrue(path.is_file(), str(path))
 
-    def test_shared_navigation_links(self):
-        """All three pages must contain shared navigation links (setup.html, guide.html) inside .nav-links without index.html inside nav-links."""
-        pages = [
-            ("index.html", self.index_html),
-            ("setup.html", self.setup_html),
-            ("guide.html", self.guide_html),
-        ]
-        for name, html in pages:
-            with self.subTest(page=name):
-                self.assertIn('class="nav-links"', html)
-                nav_start = html.find('class="nav-links"')
-                nav_end = html.find('</nav>', nav_start)
-                nav_content = html[nav_start:nav_end]
-                self.assertIn('href="setup.html"', nav_content)
-                self.assertIn('href="guide.html"', nav_content)
-                self.assertNotIn('href="index.html"', nav_content)
-                self.assertIn('id="theme-toggle"', html)
-
-    def test_github_repo_link(self):
-        """All three pages must contain the GitHub repository link button with correct target, rel, aria-label, and title attributes."""
-        pages = [
-            ("index.html", self.index_html),
-            ("setup.html", self.setup_html),
-            ("guide.html", self.guide_html),
-        ]
+    def test_shared_navigation_and_repository_link(self):
         repo_url = "https://github.com/igorsdub/git-tic-tac-toe-workshop"
-        for name, html in pages:
+        for name, html in (("wall", self.index), ("setup", self.setup), ("learner", self.guide)):
             with self.subTest(page=name):
-                self.assertIn(f'href="{repo_url}"', html)
-                link_start = html.find(f'href="{repo_url}"')
-                tag_start = html.rfind('<a ', 0, link_start)
-                tag_end = html.find('>', link_start)
-                tag_content = html[tag_start:tag_end + 1]
+                nav_start = html.index('class="nav-links"')
+                nav_end = html.index("</nav>", nav_start)
+                nav = html[nav_start:nav_end]
+                self.assertIn('href="setup.html"', nav)
+                self.assertIn('href="guide.html"', nav)
+                self.assertIn('id="theme-toggle"', html)
+        self.assertIn(f'href="{repo_url}"', self.index)
+        self.assertIn('aria-label="View repository on GitHub"', self.index)
 
-                self.assertIn('target="_blank"', tag_content)
-                self.assertIn('rel="noopener noreferrer"', tag_content)
-                self.assertIn('class="btn btn-icon"', tag_content)
-                self.assertIn('aria-label="View repository on GitHub"', tag_content)
-                self.assertIn('title="View repository on GitHub"', tag_content)
+    def test_quick_jump_links_target_real_guide_sections(self):
+        for name, html, expected in (
+            ("learner", self.guide, ("setup", "turn", "rematch", "recovery")),
+            ("setup", self.setup, ("rehearsal", "access", "survey")),
+        ):
+            with self.subTest(page=name):
+                nav = html[html.index('class="jump-nav"'):]
+                section_ids = set(re.findall(r'<section[^>]+id="([^"]+)"', html))
+                for anchor in expected:
+                    self.assertIn(f'href="#{anchor}"', nav)
+                    self.assertIn(anchor, section_ids)
+        self.assertIn(".jump-nav", self.styles)
+        self.assertIn(".jump-pill", self.styles)
 
-                link_closing = html.find('</a>', tag_end)
-                link_body = html[tag_end:link_closing]
-                self.assertIn('class="github-icon"', link_body)
-                self.assertIn('<svg', link_body)
+    def test_setup_preflight_and_separate_copilot_access(self):
+        for requirement in (
+            "Use this template → Create a new repository",
+            "Make the repository public",
+            "Keep the public repository and Codespace",
+            "separate Codespaces",
+            "select <strong>Ask</strong>",
+            "What does this repository do?",
+            "No board edit is required",
+            "Codespaces and Copilot access are separate",
+            "manual rematch path",
+        ):
+            self.assertIn(requirement, self.setup)
 
-                theme_toggle_pos = html.find('id="theme-toggle"')
-                self.assertGreater(tag_start, theme_toggle_pos)
+    def test_survey_is_not_presented_as_ready_for_learners(self):
+        survey = self.setup[self.setup.index('id="survey"'):]
+        self.assertIn("unpublished draft", survey)
+        self.assertIn("not accepting responses", survey)
+        self.assertIn("no survey action is required", survey)
 
-        self.assertIn('.btn-icon svg', self.styles_css)
+    def test_learner_match_uses_the_approved_source_control_contract(self):
+        for requirement in ("Source Control", "BOARD.txt", "match-01", "clean <code>main</code>", "Stage <code>BOARD.txt</code>", "rematch manually"):
+            self.assertIn(requirement, self.guide)
+        self.assertIn("Place X in the center of the board", self.guide)
+        self.assertIn("GitHub commit history", self.guide)
+        self.assertIn("instructor demonstration, not a participant exercise", self.guide)
 
-    def test_quick_jump_navigation(self):
-        """Guides must feature quick-jump navigation bars linking to page sections."""
-        # Guide HTML quick jump
-        self.assertIn('class="jump-nav"', self.guide_html)
-        self.assertIn('class="jump-pill"', self.guide_html)
-        for anchor in ['#roles-setup', '#turn-cycle', '#cheat-sheet', '#troubleshooting', '#rematch-extension']:
-            self.assertIn(f'href="{anchor}"', self.guide_html)
-
-        # Setup HTML quick jump
-        self.assertIn('class="jump-nav"', self.setup_html)
-        self.assertIn('class="jump-pill"', self.setup_html)
-        for anchor in ['#step-github', '#step-install', '#step-auth', '#step-verify']:
-            self.assertIn(f'href="{anchor}"', self.setup_html)
-
-        # Stylesheet rules for jump navigation
-        self.assertIn('.jump-nav', self.styles_css)
-        self.assertIn('.jump-pill', self.styles_css)
-
-    def test_setup_guide_content(self):
-        """Setup guide must contain Setup Guide title, section titles, GitHub account, OS Git install, gh auth login, and email privacy."""
-        self.assertIn("Setup Guide", self.setup_html)
-        self.assertIn("GitHub Account & Privacy", self.setup_html)
-        self.assertIn("Install Git", self.setup_html)
-        self.assertIn("Authenticate & Configure", self.setup_html)
-        self.assertIn("Verification", self.setup_html)
-        self.assertIn("Keep my email addresses private", self.setup_html)
-        self.assertIn("noreply.github.com", self.setup_html)
-        self.assertIn("gh auth login", self.setup_html)
-        self.assertIn("xcode-select --install", self.setup_html)
-        self.assertIn("git-scm.com/download/win", self.setup_html)
-        self.assertIn("guide-utils.js", self.setup_html)
-
-    def test_learner_guide_content(self):
-        """Learner guide must contain section titles, Player X/O roles, 5-step turn cycle, commands, and branch rematch."""
-        self.assertIn("How to Play Git Tic-Tac-Toe", self.guide_html)
-        self.assertIn("Initial Setup", self.guide_html)
-        self.assertIn("The Turn Cycle", self.guide_html)
-        self.assertIn("Git Quick Reference", self.guide_html)
-        self.assertIn("Troubleshooting", self.guide_html)
-        self.assertIn("Branch Rematch (Optional)", self.guide_html)
-        self.assertIn("Player X", self.guide_html)
-        self.assertIn("Player O", self.guide_html)
-        self.assertIn("git pull origin main", self.guide_html)
-        self.assertIn("git add board.txt", self.guide_html)
-        self.assertIn("git push origin main", self.guide_html)
-        self.assertIn("git log --oneline", self.guide_html)
-        self.assertIn("rematch", self.guide_html)
-        self.assertIn("guide-utils.js", self.guide_html)
-
-    def test_copy_buttons_and_accessibility(self):
-        """Both guides must feature copy buttons with accessibility aria-labels, accounting for 3 separate git config blocks."""
-        self.assertEqual(self.setup_html.count('class="copy-btn"'), 8)
-        self.assertEqual(self.guide_html.count('class="copy-btn"'), 9)
-        self.assertIn('aria-label="Copy command to clipboard"', self.setup_html)
-        self.assertIn('aria-label="Copy command to clipboard"', self.guide_html)
-
-    def test_guide_utils_logic(self):
-        """guide-utils.js must implement theme sync, clipboard copy, and fallback."""
-        self.assertIn("ttt_gamewall_theme", self.guide_utils_js)
-        self.assertIn("navigator.clipboard.writeText", self.guide_utils_js)
-        self.assertIn("execCommand", self.guide_utils_js)
-        self.assertIn("Copy command to clipboard", self.guide_utils_js)
-
-    def test_markdown_interactive_banners(self):
-        """Markdown guides must include top banners linking to interactive web guides."""
-        self.assertIn("docs/guide.html", self.learner_guide_md)
-        self.assertIn("docs/setup.html", self.learner_guide_md)
-        self.assertIn("1-click", self.learner_guide_md)
-
-        self.assertIn("docs/setup.html", self.pre_session_check_md)
-        self.assertIn("docs/guide.html", self.pre_session_check_md)
-        self.assertIn("1-click", self.pre_session_check_md)
+    def test_guide_utility_keeps_theme_and_copy_fallback(self):
+        self.assertIn("ttt_gamewall_theme", self.utils)
+        self.assertIn("navigator.clipboard.writeText", self.utils)
+        self.assertIn("execCommand", self.utils)
+        self.assertIn("Copy command to clipboard", self.utils)
 
 
 if __name__ == "__main__":

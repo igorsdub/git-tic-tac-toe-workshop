@@ -1,61 +1,49 @@
 # Git Tic-Tac-Toe Workshop
 
-![Git Tic-Tac-Toe Collaborative Workflow](docs/images/workflow.svg)
+This two-hour workshop teaches collaborative Git through a paired tic-tac-toe game. Learners make and review commits together, then repeat the board-edit workflow with Copilot making the edit they previously made by hand.
 
-A two-hour, beginner-friendly Git and GitHub workshop where pairs play tic-tac-toe by making small commits to a shared repository. The aim is for both learners to publish a move and receive their partner's move with `git pull`.
+## Workshop documents
 
-## Workshop Documents & Guides
+- [Current design handoff](WORKSHOP_DESIGN_HANDOFF.md)
+- [Local delivery status and blockers](docs/delivery-status-2026-10-20.md)
+- [Learner guide](LEARNER_GUIDE.md) and [web guide](docs/guide.html)
+- [Facilitator guide](FACILITATOR_GUIDE.md)
+- [Pre-session setup and rehearsal](PRE_SESSION_CHECK.md) and [web setup guide](docs/setup.html)
+- [Facilitator rehearsal guide](REHEARSAL_GUIDE.md)
+- [Advance survey draft](SURVEY.md)
+- [Unpublished instructor survey preview](https://docs.google.com/forms/d/1N2-9HYEtIvWLp11hEa2d9NeS1vXBWiUy7xRycXJNW6c/preview) (not accepting responses; not distributed)
+- [Game Wall](docs/index.html) and [setup page](docs/setup.html)
+- [Glossary](CONTEXT.md)
 
-```text
-.
-├── .github/                  # GitHub Issue templates and CI workflows
-├── docs/                     # Game Wall web application and browser guides
-├── scripts/                  # Board validation and simulation utilities
-├── template-spec/            # Specification and tests for board.txt format
-├── tests/                    # Automated Python unit and integration test suite
-├── CONTEXT.md                # Canonical domain glossary and terminology
-├── FACILITATOR_GUIDE.md      # Facilitator walkthrough, live demo script & recovery
-├── LEARNER_GUIDE.md          # In-session player roles and 5-step turn workflow
-├── PRE_SESSION_CHECK.md      # Pre-workshop Git & GitHub setup instructions
-├── README.md                 # Workshop overview, agenda, and quick reference
-└── REHEARSAL_GUIDE.md        # Facilitator rehearsal protocol and readiness checks
-```
+## Repository map
 
-**Quick Links:**
-- **[Facilitator Guide](FACILITATOR_GUIDE.md)**: Facilitator walkthrough, live demo script, and error recovery.
-- **[Rehearsal & Readiness Guide](REHEARSAL_GUIDE.md)**: Rehearsal protocol, timing guarantees, and OS readiness matrix.
-- **[Learner Guide](LEARNER_GUIDE.md)** ([Web](docs/guide.html)): In-session player roles (Player X / Player O) and 5-step turn workflow.
-- **[Pre-Session Setup Guide](PRE_SESSION_CHECK.md)** ([Web](docs/setup.html)): Git installation, GitHub account configuration, and auth options.
-- **[Learner Starter Template](https://github.com/igorsdub/git-tic-tac-toe-template)**: Template repository used by pairs to instantiate games.
-- **[Game Wall](docs/index.html)**: Live interactive workshop dashboard visualising pair repositories.
-- **[Terminology & Glossary](CONTEXT.md)**: Canonical domain glossary and standard workshop concepts.
+- [`template/`](template/README.md) is the local reference for the learner starter repository: its current `BOARD.txt`, editing conventions, and canonical empty-board example. Publish changes to the separate template repository explicitly.
+- [`scripts/`](scripts/) contains board validation, registration parsing, and registry synchronization.
+- [`tests/`](tests/) covers the workshop guides, parser, dashboard, and slides. `tests/fixtures/legacy-board/` preserves older board formats as compatibility fixtures.
+- [`docs/`](docs/) contains the Pages site and instructor Game Wall. The separate [`docs/slides/`](docs/slides/) directory contains the workshop presentation.
 
-## Workshop Structure at a Glance
+## Working 120-minute agenda
 
-| Time | Phase | Focus |
-|---|---|---|
-| **00:00 – 00:15** | **Arrival, Opening Question & Experience Pairing** | Poll Git experience, pair beginners with experienced partners as Player X / Player O. |
-| **00:15 – 00:25** | **Presentation** | Mental model: local vs remote, staging, commits. |
-| **00:25 – 00:40** | **Live Demonstration** | Facilitator and co-player demonstrate Moves 1 & 2 live. |
-| **00:40 – 01:25** | **Paired Gameplay & Branch Rematch** | Hands-on 9-turn game; optional branch rematch. |
-| **01:25 – 01:40** | **Research Transfer & `git log` Discussion** | Inspect Game Wall, commit history review. |
-| **01:40 – 02:00** | **Buffer Time & Troubleshooting Catch-Up** | Flexible cushion for auth/merge recovery. |
+| Minutes | Activity |
+|---|---|
+| 0–10 | Arrival and setup troubleshooting |
+| 10–25 | Git/GitHub mental model and facilitator demonstration |
+| 25–40 | Form pairs, choose one prepared public repository, invite the partner, and open separate Codespaces |
+| 40–70 | Manual match |
+| 70–80 | Copilot demonstration |
+| 80–105 | Agent-assisted rematch |
+| 105–120 | Instructor dashboard/history demonstration, research applications, and wrap-up |
 
-## Game Wall & Pair Registration
+At minute 80, every pair starts a fresh agent-assisted rematch, even if the manual match is unfinished. Keep the unfinished match on its branch. A pair that finishes early may play one optional additional manual match before the scheduled transition.
 
-The workshop features a shared public [Game Wall](docs/index.html) designed for GitHub Pages that visualizes all active and completed pair games in real time.
+## Environment and Git workflow
 
-- **Register a Game**: Pairs register their repository URL and handles using the [Pair Game Registration Form](.github/ISSUE_TEMPLATE/register-game.yml).
-- **Live Board Tracking**: The Game Wall queries issues labeled `game-registration`, fetches raw `board.txt` files from learners' repositories, validates canonical state and turn parity, and renders responsive cards with player avatars and visual 3x3 boards.
-- **Facilitator Projection**: Features a high-contrast monochrome design optimized for classroom projectors and displays, dark/light theme toggle, simplified filter tabs (All, Pending, Finished), and auto-refreshes every 30 seconds without full-page reloads.
-- **Load Simulation & Rate Limits**: See [Game Wall Scalability & Load Simulation](docs/load_test_simulation.md) for rate-limit budget calculations (60 unauthenticated requests/hr) and performance verification under 10–20 concurrent pair repositories.
+Each learner uses their own Codespace in the browser-based VS Code editor. Each pair works in one shared public GitHub repository. Learners use VS Code's Source Control view to review diffs, stage, commit, pull, and push; the terminal is not the teaching path.
 
-## Learner Template & Board Format
+The canonical board is three rows of three cells, such as `. . .`; a move replaces one `.` with `X` or `O`. The manual match teaches the whole workflow. In the rematch demonstration, learners ask Copilot “Place X in the center of the board” for X's first move, inspect the diff, then stage, commit, and sync the change themselves. O players and later turns name their chosen square.
 
-The paired game activity relies on the public GitHub template repository [igorsdub/git-tic-tac-toe-template](https://github.com/igorsdub/git-tic-tac-toe-template).
+Before the workshop, each learner creates a public repository from the starter template, opens it in their own Codespace, selects Ask, and asks exactly “What does this repository do?” The facilitator checks that the response correctly describes the game and how `BOARD.txt` records moves. Learners retain their repositories and Codespaces; at the session each pair chooses one prepared repository and opens it in separate Codespaces. See the [setup guide](PRE_SESSION_CHECK.md).
 
-- **Starter Repository**: Pairs click **Use this template** to spawn their game repository with no manual board setup required.
-- **Board File (`board.txt`)**: A structured representation of the 3x3 grid with Player X/O handles and state indicators (`Ready for X`, `Waiting for O`, `Waiting for X`, `X won`, `O won`, `Draw`).
-- **Validation**: Run `python3 scripts/validate_board.py <path/to/board.txt>` to verify file structure, check turn parity, and evaluate the game state. See [template-spec/](template-spec/) for full specifications and test samples.
+## Delivery status
 
-The workshop design and implementation tasks are tracked in GitHub issues.
+The starter contract, branch-aware registration, and Game Wall are implemented in this local feature branch. They have not been pushed or deployed. The live starter's `main` still has lowercase `board.txt` and no uppercase `BOARD.txt`; the published issue template and Game Wall likewise do not include this branch's registration and display changes. Check the [delivery status](docs/delivery-status-2026-10-20.md) before using the participant flow or promising a live dashboard. Until publication and a real facilitator rehearsal, the instructor should use GitHub commit history as the dashboard fallback.

@@ -18,6 +18,7 @@ from game_wall_parser import (  # type: ignore
     extract_repo_info,
     parse_registration_issue,
     evaluate_game_board,
+    evaluate_registered_board,
 )
 
 
@@ -28,6 +29,10 @@ class TestIssueRegistrationParsing(unittest.TestCase):
         body = """### Repository URL
 
 https://github.com/learner-pair-1/tic-tac-toe-game
+
+### Match branch
+
+match-01
 
 ### Player X Handle
 
@@ -51,22 +56,25 @@ Workshop-2026-Fall
         self.assertEqual(res["event_id"], "Workshop-2026-Fall")
         self.assertIsNone(res["error"])
 
-    def test_git_suffix_and_trailing_slash(self):
+    def test_legacy_registration_is_invalid_without_branch_and_players(self):
         body = "### Repository URL\n\nhttps://github.com/org-name/repo-name.git/\n"
         res = parse_registration_issue(body)
-        self.assertTrue(res["is_valid"])
+        self.assertFalse(res["is_valid"])
         self.assertEqual(res["owner"], "org-name")
         self.assertEqual(res["repo"], "repo-name")
         self.assertEqual(res["repo_url"], "https://github.com/org-name/repo-name")
+        self.assertIsNone(res["branch"])
+        self.assertIn("predates match-branch support", res["error"])
         self.assertEqual(res["event_id"], "Default Event")
 
     def test_markdown_link_in_body(self):
         body = "Our repo is [Pair Repo](https://github.com/coder-x/git-ttt) for the game."
         res = parse_registration_issue(body)
-        self.assertTrue(res["is_valid"])
+        self.assertFalse(res["is_valid"])
         self.assertEqual(res["owner"], "coder-x")
         self.assertEqual(res["repo"], "git-ttt")
         self.assertEqual(res["repo_url"], "https://github.com/coder-x/git-ttt")
+        self.assertIn("Missing match branch", res["error"])
 
     def test_no_response_placeholders(self):
         body = """### Repository URL
@@ -86,17 +94,22 @@ _No response_
 _No response_
 """
         res = parse_registration_issue(body)
-        self.assertTrue(res["is_valid"])
+        self.assertFalse(res["is_valid"])
         self.assertEqual(res["owner"], "solo")
         self.assertEqual(res["repo"], "game")
         self.assertIsNone(res["player_x"])
         self.assertIsNone(res["player_o"])
+        self.assertIn("Missing match branch", res["error"])
         self.assertEqual(res["event_id"], "Default Event")
 
     def test_workshop_name_field(self):
         body = """### Repository URL
 
 https://github.com/pair-org/pair-repo
+
+### Match branch
+
+match-02
 
 ### Player X Handle
 
@@ -122,16 +135,65 @@ SCDA Training Week
     def test_repo_in_title_fallback(self):
         title = "[Game]: https://github.com/partner1/partner2-ttt"
         res = parse_registration_issue("", title=title)
-        self.assertTrue(res["is_valid"])
+        self.assertFalse(res["is_valid"])
         self.assertEqual(res["owner"], "partner1")
         self.assertEqual(res["repo"], "partner2-ttt")
+        self.assertIn("Missing match branch", res["error"])
 
     def test_game_registration_in_title_fallback(self):
         title = "[Game Registration]: https://github.com/partner1/partner2-ttt"
         res = parse_registration_issue("", title=title)
-        self.assertTrue(res["is_valid"])
+        self.assertFalse(res["is_valid"])
         self.assertEqual(res["owner"], "partner1")
         self.assertEqual(res["repo"], "partner2-ttt")
+        self.assertIn("Missing Player X handle", res["error"])
+
+    def test_branch_must_use_numbered_match_name(self):
+        body = """### Repository URL
+
+https://github.com/pair/repo
+
+### Match branch
+
+main
+
+### Player X Handle
+
+alice
+
+### Player O Handle
+
+bob
+"""
+        result = parse_registration_issue(body)
+        self.assertFalse(result["is_valid"])
+        self.assertIn("numbered format match-NN", result["error"])
+
+    def test_two_branches_are_parsed_as_separate_match_identity(self):
+        def body(branch):
+            return f"""### Repository URL
+
+https://github.com/pair/repo
+
+### Match branch
+
+{branch}
+
+### Player X Handle
+
+alice
+
+### Player O Handle
+
+bob
+"""
+
+        first = parse_registration_issue(body("match-01"))
+        second = parse_registration_issue(body("match-02"))
+        self.assertTrue(first["is_valid"])
+        self.assertTrue(second["is_valid"])
+        self.assertEqual((first["owner"], first["repo"], first["branch"]), ("pair", "repo", "match-01"))
+        self.assertNotEqual(first["branch"], second["branch"])
 
     def test_invalid_issue_body(self):
         body = "Just saying hello! No repository url here."
@@ -347,6 +409,72 @@ State: Ready for X
         res = evaluate_game_board(board)
         self.assertFalse(res["is_valid"])
         self.assertEqual(res["state"], "Invalid board")
+
+    def test_registered_board_is_unfinished(self):
+        from unittest.mock import patch
+
+        raw = """ [ ] | [ ] | [ ]
+-----+-----+-----
+ [ ] | [ ] | [ ]
+-----+-----+-----
+ [ ] | [ ] | [ ]"""
+        with patch("game_wall_parser.fetch_registered_board", return_value=raw) as fetch:
+            result = evaluate_registered_board("pair", "repo", "match-01")
+        fetch.assert_called_once_with("pair", "repo", "match-01")
+        self.assertTrue(result["is_valid"])
+        self.assertEqual(result["status"], "in_progress")
+        self.assertEqual(result["state"], "Ready for X")
+
+    def test_registered_completed_board_remains_completed(self):
+        from unittest.mock import patch
+
+        won = """ [X] | [X] | [X]
+-----+-----+-----
+ [O] | [O] | [ ]
+-----+-----+-----
+ [ ] | [ ] | [ ]"""
+        with patch("game_wall_parser.fetch_registered_board", return_value=won):
+            result = evaluate_registered_board("pair", "repo", "match-01")
+        self.assertEqual(result["status"], "completed")
+        self.assertEqual(result["state"], "X won")
+
+    def test_registered_invalid_board_is_explicit_error(self):
+        from unittest.mock import patch
+
+        with patch("game_wall_parser.fetch_registered_board", return_value="not a board"):
+            result = evaluate_registered_board("pair", "repo", "match-01")
+        self.assertEqual(result["status"], "error")
+        self.assertFalse(result["is_valid"])
+        self.assertTrue(any(error.startswith("Invalid BOARD.txt:") for error in result["errors"]))
+
+    def test_registered_missing_branch_is_explicit_error(self):
+        from unittest.mock import patch
+
+        with patch("game_wall_parser.fetch_registered_board", side_effect=RuntimeError("Could not read BOARD.txt")):
+            result = evaluate_registered_board("pair", "repo", "match-01")
+        self.assertEqual(result["status"], "error")
+        self.assertIn("Could not read BOARD.txt", result["errors"][0])
+
+    def test_registered_board_fetch_uses_exact_uppercase_path_and_branch(self):
+        from io import BytesIO
+        from unittest.mock import patch
+        from game_wall_parser import fetch_registered_board
+
+        with patch("game_wall_parser.urlopen", return_value=BytesIO(b"board")) as open_url:
+            self.assertEqual(fetch_registered_board("pair", "repo", "match-01"), "board")
+        self.assertEqual(
+            open_url.call_args.args[0],
+            "https://raw.githubusercontent.com/pair/repo/match-01/BOARD.txt",
+        )
+
+    def test_registered_board_fetch_rejects_default_branch_without_network(self):
+        from unittest.mock import patch
+        from game_wall_parser import fetch_registered_board
+
+        with patch("game_wall_parser.urlopen") as open_url:
+            with self.assertRaisesRegex(ValueError, "numbered format match-NN"):
+                fetch_registered_board("pair", "repo", "main")
+        open_url.assert_not_called()
 
 
 if __name__ == "__main__":

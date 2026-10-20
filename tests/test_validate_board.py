@@ -18,10 +18,10 @@ from validate_board import validate_board, validate_file  # type: ignore
 
 class TestBoardValidator(unittest.TestCase):
     def setUp(self):
-        self.samples_dir = Path(__file__).resolve().parent.parent / "template-spec" / "samples"
+        self.samples_dir = Path(__file__).resolve().parent / "fixtures" / "legacy-board"
 
     def test_sample_files(self):
-        """Verifies each sample file in template-spec/samples/ evaluates to its expected state."""
+        """Verifies historical board fixtures retain their parser outcomes."""
         expected = {
             "01_new_game.md": ("Ready for X", True),
             "02_waiting_for_o.md": ("Waiting for O", True),
@@ -34,7 +34,6 @@ class TestBoardValidator(unittest.TestCase):
             "09_malformed_bad_char.md": ("Invalid board", False),
             "10_malformed_dimensions.md": ("Invalid board", False),
             "11_malformed_missing_headers.md": ("Ready for X", True),
-            "12_pure_raw_board.md": ("Ready for X", True),
         }
 
         for filename, (expected_state, expected_valid) in expected.items():
@@ -51,6 +50,15 @@ class TestBoardValidator(unittest.TestCase):
                 expected_valid,
                 f"File {filename}: expected is_valid={expected_valid}, got {res.is_valid}",
             )
+
+    def test_template_starter_and_compact_examples(self):
+        repo_root = Path(__file__).resolve().parent.parent
+        board_path = repo_root / "template" / "BOARD.txt"
+        self.assertEqual(board_path.read_text(encoding="utf-8"), ". . .\n. . .\n. . .\n")
+
+        result = validate_file(repo_root / "template" / "samples" / "empty.md")
+        self.assertTrue(result.is_valid, result.errors)
+        self.assertEqual(result.state, "Ready for X")
 
     def test_handles_extraction(self):
         content = """# Git Tic-Tac-Toe
@@ -296,6 +304,35 @@ State: Ready for X
         self.assertTrue(res.is_valid)
         self.assertEqual(res.state, "Waiting for X")
         self.assertEqual(res.move_counts, {"X": 1, "O": 1})
+
+    def test_compact_board_and_one_move_keep_normalized_grid(self):
+        res = validate_board(". . .\n. X .\n. . O\n")
+        self.assertTrue(res.is_valid, res.errors)
+        self.assertEqual(res.grid, [[" ", " ", " "], [" ", "X", " "], [" ", " ", "O"]])
+        self.assertEqual(res.state, "Waiting for X")
+
+    def test_malformed_compact_board_is_rejected(self):
+        for content in (
+            ".  . .\n. . .\n. . .\n",
+            ". .\n. . .\n. . .\n",
+            ". . ?\n. . .\n. . .\n",
+            ". . .\n. . .\n. . .\n. . .\n",
+            ". . .\n. . .\n. . .\nX X\n",
+            ". . .\n. . .\n. . .\nX X X X X\n",
+            ". . .\n. . .\nXX\n",
+            " . . .\n. . .\n. . .\n",
+            ". . . \n. . .\n. . .\n",
+        ):
+            with self.subTest(content=content):
+                result = validate_board(content)
+                self.assertFalse(result.is_valid)
+                self.assertEqual(result.state, "Invalid board")
+
+    def test_legacy_pipe_rows_without_padding_spaces_remain_valid(self):
+        result = validate_board("X | O|X\nO|X|O\nX|O |X\n")
+        self.assertTrue(result.is_valid, result.errors)
+        self.assertEqual(result.state, "X won")
+        self.assertEqual(result.grid[0], ["X", "O", "X"])
 
     def test_default_cli_board_txt(self):
         """Verifies CLI defaults to board.txt in the current directory."""

@@ -6,14 +6,22 @@ body:
   - type: markdown
     attributes:
       value: |
-        ### 🎮 Register for the Big Screen Game Wall
-        Submit this quick form to display your paired match live on the classroom projector screen! Ensure your repository is **public** so the Game Wall can read your board.txt. Only **one partner** needs to submit this form for your pair.
+        ### Register a match
+        Submit one registration for each match branch in your pair's public repository. The Game Wall reads the case-sensitive `BOARD.txt` file from the branch you enter. Keep the match branch on its own; do not merge it into `main`.
   - type: input
     id: repo_url
     attributes:
       label: Repository URL
       description: Full URL to your pair's public GitHub repository.
       placeholder: https://github.com/username/repository
+    validations:
+      required: true
+  - type: input
+    id: match_branch
+    attributes:
+      label: Match branch
+      description: Numbered match branch created from the clean main branch (for example, match-01).
+      placeholder: match-01
     validations:
       required: true
   - type: input

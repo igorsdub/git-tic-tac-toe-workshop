@@ -57,10 +57,10 @@
     <!-- Top Filter & Status Bar -->
     <section class="toolbar-section" aria-label="Game Filters and Status">
       <div class="filter-tabs" role="tablist">
-        <button class="filter-tab active" data-filter="all">All <span id="count-all" class="tab-count">0</span></button>
-        <button class="filter-tab" data-filter="pending">Pending <span id="count-pending" class="tab-count">0</span></button>
-        <button class="filter-tab" data-filter="finished">Finished <span id="count-finished" class="tab-count">0</span></button>
-        <button class="filter-tab" data-filter="errors" id="tab-errors" style="display:none;">Issues <span id="count-errors" class="tab-count">0</span></button>
+        <button class="filter-tab active" data-filter="all" aria-pressed="true">All <span id="count-all" class="tab-count">0</span></button>
+        <button class="filter-tab" data-filter="pending" aria-pressed="false">In progress <span id="count-pending" class="tab-count">0</span></button>
+        <button class="filter-tab" data-filter="finished" aria-pressed="false">Completed <span id="count-finished" class="tab-count">0</span></button>
+        <button class="filter-tab" data-filter="errors" id="tab-errors" aria-pressed="false" style="display:none;">Issues <span id="count-errors" class="tab-count">0</span></button>
       </div>
 
       <div class="status-indicator">
@@ -69,11 +69,15 @@
       </div>
     </section>
 
+    <aside class="history-note" aria-label="Instructor history demonstration">
+      <strong>Instructor demonstration:</strong> open a match card’s history replay to step through valid committed board states. If GitHub history access is unavailable, use the linked commit history on that pair repository.
+    </aside>
+
     <!-- Game Card Grid -->
     <section class="grid-section" aria-label="Game Wall Boards">
       <div id="loading-indicator" class="loading-state hidden">
         <div class="spinner"></div>
-        <p>Loading registered games and parsing board states...</p>
+        <p>Loading registered matches and board states...</p>
       </div>
 
       <div id="empty-state" class="empty-state hidden">
@@ -97,6 +101,7 @@
     </div>
   </footer>
 
+  <script src="match-data.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
