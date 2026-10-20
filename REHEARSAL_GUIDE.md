@@ -26,7 +26,7 @@ Before using the planned dashboard demo, confirm that the separate implementatio
 
 - [ ] Check venue Wi-Fi and projector, then open the workshop pages in a browser.
 - [ ] Prepare two facilitator accounts and a clean public test repository.
-- [ ] Send setup instructions and the short [instructor-preparation survey](SURVEY.md). The survey asks only about versioning habits, Git experience, AI coding assistant experience, and everyday tools; it has no tutorial completion or readiness checklist.
+- [ ] Send setup instructions and the short [bilingual instructor-preparation survey](SURVEY.md). It covers everyday tools, file-versioning habits, collaboration, AI coding-assistant use, and an optional open-ended question; it has no tutorial-completion or setup-readiness questions.
 - [ ] Brief helpers on the 120-minute schedule, the protected 25-minute Copilot rematch, and the recovery steps below.
 - [ ] Keep the [facilitator guide](FACILITATOR_GUIDE.md), [learner guide](LEARNER_GUIDE.md), and [pre-session checklist](PRE_SESSION_CHECK.md) available.
 
