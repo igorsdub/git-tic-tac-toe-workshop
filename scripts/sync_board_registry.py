@@ -6,7 +6,6 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
-from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Callable
 
@@ -76,6 +75,7 @@ def build_registration_state(
             and not parsed.get("workshop_id")
             and current
             and current.get("workshopId") == "2026-10-01-scda"
+            and current.get("migrationSource") == "SCDA Training Week legacy entry"
             and parsed.get("legacy_workshop_name") in {None, _display_name(catalog, "2026-10-01-scda")}
         ):
             message = "Accepted as a legacy SCDA registration; this repository was migrated to workshop 2026-10-01-scda."
@@ -160,6 +160,8 @@ def _record_from_board(
         "boardValid": bool(board.get("is_valid")),
         "board": board.get("grid"),
         "errors": board.get("errors", []),
+        "failureKind": board.get("failureKind"),
+        "refreshStatus": "fresh" if board.get("failureKind") != "transport" else "error",
     }
 
 
@@ -180,7 +182,7 @@ def build_match_snapshot(
             branches = branch_lister(owner, repo)
         except Exception as error:  # transient failure must not be interpreted as deletion
             retained = [
-                dict(item, repositoryRefreshError=str(error))
+                dict(item, refreshStatus="stale", repositoryRefreshError=str(error))
                 for item in previous
                 if item.get("owner", "").casefold() == owner.casefold()
                 and item.get("repo", "").casefold() == repo.casefold()
@@ -198,14 +200,15 @@ def build_match_snapshot(
             try:
                 board = board_evaluator(owner, repo, branch)
             except Exception as error:
-                board = {"is_valid": False, "status": "error", "state": "Error", "errors": [str(error)]}
+                board = {"is_valid": False, "status": "error", "state": "Error",
+                         "failureKind": "transport", "errors": [str(error)]}
             record = _record_from_board(registration, branch, board, workshop_name)
-            if not board.get("is_valid") and key in prior_by_key:
+            if board.get("failureKind") == "transport" and key in prior_by_key:
                 old = dict(prior_by_key[key])
                 old.update({"workshopId": registration["workshopId"], "workshopName": workshop_name,
                             "repoUrl": registration["repoUrl"], "playerX": registration["playerX"],
                             "playerO": registration["playerO"], "branch": branch,
-                            "boardRefreshError": "; ".join(board.get("errors", []))})
+                            "refreshStatus": "stale", "boardRefreshError": "; ".join(board.get("errors", []))})
                 record = old
             snapshot.append(record)
 
@@ -217,13 +220,15 @@ def build_match_snapshot(
 def list_repository_branches(owner: str, repo: str) -> list[str]:
     """Use GitHub CLI pagination; a nonzero exit means the listing was incomplete."""
     output = subprocess.check_output(
-        ["gh", "api", "--paginate", "--jq", ".[] | .name", f"repos/{owner}/{repo}/branches?per_page=100"],
+        ["gh", "api", "--paginate", "--jq", ".[] | .name | @json", f"repos/{owner}/{repo}/branches?per_page=100"],
         text=True,
     )
-    # jq emits one branch name per line. Reject malformed output so callers retain
-    # the last-known cards rather than accidentally interpreting it as deletion.
-    names = [line.strip().strip('"') for line in output.splitlines() if line.strip()]
-    if any(not name for name in names):
+    # JSON-lines preserve unusual but valid branch characters, including quotes.
+    try:
+        names = [json.loads(line) for line in output.splitlines() if line.strip()]
+    except json.JSONDecodeError as error:
+        raise RuntimeError("GitHub returned an invalid branch listing.") from error
+    if any(not isinstance(name, str) or not name for name in names):
         raise RuntimeError("GitHub returned an invalid branch listing.")
     return names
 
@@ -237,7 +242,7 @@ def fetch_registration_issues() -> list[dict[str, Any]]:
 def update_issue_feedback(issue_number: int, message: str) -> None:
     """Create or update one marked bot comment for an issue, idempotently."""
     body = f"{FEEDBACK_MARKER}\n{message}"
-    command = ["gh", "api", "--paginate", "--jq", ".[] | select(.body | contains(\"game-wall-registration-feedback\")) | [.id, .body] | @json",
+    command = ["gh", "api", "--paginate", "--jq", ".[] | select(.user.login == \"github-actions[bot]\" and (.body | contains(\"game-wall-registration-feedback\"))) | [.id, .body] | @json",
                f"repos/{REPOSITORY}/issues/{issue_number}/comments?per_page=100"]
     output = subprocess.check_output(command, text=True)
     comments = [json.loads(line) for line in output.splitlines() if line.strip()]
@@ -274,14 +279,12 @@ def main() -> None:
 
     previous = _read_json(ROOT_DIR / "docs" / "board.json", [])
     snapshot, repository_status = build_match_snapshot(registrations, previous, catalog, list_repository_branches)
-    refreshed_at = datetime.now(timezone.utc).isoformat(timespec="seconds")
     for issue_number, message in feedback.items():
         update_issue_feedback(issue_number, message)
 
-    _write_json(registration_path, {"registrations": registrations, "refreshedAt": refreshed_at})
+    _write_json(registration_path, {"registrations": registrations})
     _write_json(ROOT_DIR / "docs" / "board.json", snapshot)
     _write_json(ROOT_DIR / "docs" / "registry-status.json", {
-        "generatedAt": refreshed_at,
         "repositories": repository_status,
     })
     errors = sum(item["status"] == "error" for item in repository_status)

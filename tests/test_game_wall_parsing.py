@@ -366,6 +366,7 @@ State: Ready for X
             result = evaluate_registered_board("pair", "repo", "match-01")
         self.assertEqual(result["status"], "error")
         self.assertFalse(result["is_valid"])
+        self.assertEqual(result["failureKind"], "invalid_board")
         self.assertTrue(any(error.startswith("Invalid BOARD.txt:") for error in result["errors"]))
 
     def test_registered_missing_branch_is_explicit_error(self):
@@ -374,6 +375,7 @@ State: Ready for X
         with patch("game_wall_parser.fetch_registered_board", side_effect=RuntimeError("Could not read BOARD.txt")):
             result = evaluate_registered_board("pair", "repo", "match-01")
         self.assertEqual(result["status"], "error")
+        self.assertEqual(result["failureKind"], "transport")
         self.assertIn("Could not read BOARD.txt", result["errors"][0])
 
     def test_registered_board_fetch_uses_exact_uppercase_path_and_branch(self):
@@ -393,7 +395,7 @@ State: Ready for X
         from game_wall_parser import fetch_registered_board
 
         with patch("game_wall_parser.urlopen") as open_url:
-            with self.assertRaisesRegex(ValueError, "numbered format match-NN"):
+            with self.assertRaisesRegex(ValueError, "literal lowercase prefix 'match'"):
                 fetch_registered_board("pair", "repo", "main")
         open_url.assert_not_called()
 

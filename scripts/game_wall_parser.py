@@ -204,16 +204,31 @@ def evaluate_registered_board(owner: str, repo: str, branch: str) -> Dict[str, A
     """Fetch and validate a registered branch board, returning explicit errors."""
     try:
         content = fetch_registered_board(owner, repo, branch)
-    except (RuntimeError, ValueError) as error:
-        return {"is_valid": False, "status": "error", "state": "Error", "errors": [str(error)]}
+    except RuntimeError as error:
+        return {
+            "is_valid": False,
+            "status": "error",
+            "state": "Error",
+            "failureKind": "transport",
+            "errors": [str(error)],
+        }
+    except ValueError as error:
+        return {
+            "is_valid": False,
+            "status": "error",
+            "state": "Error",
+            "failureKind": "invalid_branch",
+            "errors": [str(error)],
+        }
 
     evaluation = evaluate_game_board(content)
     if not evaluation["is_valid"]:
         return {
             **evaluation,
             "status": "error",
+            "failureKind": "invalid_board",
             "errors": [f"Invalid BOARD.txt: {error}" for error in evaluation["errors"]],
         }
     state = evaluation["state"]
     completed = state in {"X won", "O won", "Draw"}
-    return {**evaluation, "status": "completed" if completed else "in_progress", "errors": []}
+    return {**evaluation, "status": "completed" if completed else "in_progress", "failureKind": None, "errors": []}
