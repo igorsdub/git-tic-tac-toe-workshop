@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 import subprocess
 import sys
@@ -265,7 +266,7 @@ def _write_json(path: Path, content: Any) -> None:
     path.write_text(json.dumps(content, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
-def main() -> None:
+def main(*, update_feedback: bool = True) -> None:
     catalog = load_workshop_catalog()
     issues = fetch_registration_issues()
     registration_path = ROOT_DIR / "docs" / "registrations.json"
@@ -279,8 +280,9 @@ def main() -> None:
 
     previous = _read_json(ROOT_DIR / "docs" / "board.json", [])
     snapshot, repository_status = build_match_snapshot(registrations, previous, catalog, list_repository_branches)
-    for issue_number, message in feedback.items():
-        update_issue_feedback(issue_number, message)
+    if update_feedback:
+        for issue_number, message in feedback.items():
+            update_issue_feedback(issue_number, message)
 
     _write_json(registration_path, {"registrations": registrations})
     _write_json(ROOT_DIR / "docs" / "board.json", snapshot)
@@ -292,4 +294,10 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--skip-feedback",
+        action="store_true",
+        help="recompute snapshots without editing registration feedback comments",
+    )
+    main(update_feedback=not parser.parse_args().skip_feedback)
