@@ -2,7 +2,7 @@
 
 ## Decision
 
-The implementation is ready for review on the local feature branch, but it is not participant-ready on GitHub. No commit was pushed or merged. Task 5 is blocked and no complete manual/Copilot facilitator rehearsal has been performed.
+The implementation is ready for review on the local feature branch, but it is not participant-ready on GitHub. No commit was pushed or merged. Task 5 has partial one-account evidence in [the rehearsal record](rehearsal-evidence-2026-10-20.md): the Source Control workflow was exercised in a disposable private repository, but the manual game history failed because the final commit combined two turns; two-user collaboration remains unverified, Copilot made three wrong-row edits that were discarded, and the direct-starter prompt returned no response.
 
 ## Local changes and checks
 
@@ -10,7 +10,7 @@ The workshop branch is `codex/agent-assisted-workshop-plan`. At reconciliation, 
 
 The separate template checkout has local commits `de2c535` (initialized uppercase `BOARD.txt` and numbered branch contract) and `c0bf24d` (fetch the published branch in a partner’s already-open Codespace). They are not pushed. The working source in both checkouts is therefore ahead of what learners can reach.
 
-Final independent checks passed: all 69 Python tests and 11 Node tests passed; one Chromium DOM integration test was skipped because the host’s Chrome headless smoke launch aborts (`SIGABRT`) while the Mac is locked. Four syntax checks and `git diff --check` for both repositories also passed. The complete two-account rehearsal is not represented by these tests.
+Final independent checks passed: all 69 Python tests and 11 Node tests passed; one Chromium DOM integration test was skipped because the host’s Chrome headless smoke launch aborts (`SIGABRT`) while the Mac is locked. Four syntax checks and `git diff --check` for both repositories also passed. The one-account Source Control workflow is not represented by these tests; the valid per-turn game sequence and two-account rehearsal remain unverified.
 
 ## Live service checks
 
@@ -18,23 +18,17 @@ Final independent checks passed: all 69 Python tests and 11 Node tests passed; o
 - The [published workshop site](https://igorsdub.github.io/git-tic-tac-toe-workshop/) returns HTTP 200. The latest successful `pages-build-deployment` run observed was [run 36817375985](https://github.com/igorsdub/git-tic-tac-toe-workshop/actions/runs/36817375985), for `origin/main` commit `c907b0e5d8ed8f4e4e69afcf5e7dc50231b2246a`, completed on 2026-10-01. It predates this local implementation. My unauthenticated request to `GET https://api.github.com/repos/igorsdub/git-tic-tac-toe-workshop/pages` returned HTTP 404. A separate scout observation reported the Pages status as built; these are distinct observations, and neither is evidence that Pages is disabled. The successful workflow and served URL remain direct evidence of a published build.
 - The Google Form was created and previewed, but remains unpublished and is not accepting responses. It was not distributed. The [preview link](https://docs.google.com/forms/d/1N2-9HYEtIvWLp11hEa2d9NeS1vXBWiUy7xRycXJNW6c/preview) is identified as an instructor draft, not a learner action.
 
-## Rehearsal blockers
+## Rehearsal status
 
-The recorded browser reconnaissance found one signed-in GitHub account and one existing Codespace. No second account or pair repository was available. The existing Codespace was left unopened. Therefore:
+A one-account adaptation was performed in a private disposable repository using the local updated board contract. VS Code Source Control was exercised on `match-01`, but the final commit added O and X moves together, so the per-turn game sequence failed. Copilot Agent mode was available on `match-02`, but three wrong-row edits were rejected and the workspace restored to clean state. A direct live-starter preflight Codespace showed the old lowercase `board.txt`; the prompt received no answer because Copilot required sign-in. The rehearsal Codespace was stopped, and the no-commit preflight Codespace was stopped and deleted. The pre-existing `automatic-goggles-jr9x47pwr4ghvq5` Codespace was untouched. See [detailed rehearsal evidence](rehearsal-evidence-2026-10-20.md).
 
-- the two-account/two-Codespace Source Control flow was not run;
-- neither the manual match nor Copilot-assisted rematch was run;
-- account settings did not establish that Copilot Agent can edit a board in Codespaces;
-- the direct starter preflight prompt and subsequent Codespace deletion were not run;
-- the no-Copilot fallback was documented but not exercised with a participant.
-
-The advance setup instructions still call for opening the starter directly in a Codespace, asking “What does this repository do?”, then deleting the Codespace without committing or pushing. Do not mark that check complete until it is actually performed. See [the detailed rehearsal evidence](rehearsal-evidence-2026-10-20.md).
+The adapted run does not establish a second account's collaborator access or pull/fetch behavior. The starter prompt-and-response check is still outstanding, and the live starter remains unchanged. The fallback for learners without usable Copilot remains manual rematch plus instructor demonstration.
 
 ## Next steps before delivery
 
 1. Publish the template feature branch into the actual starter repository’s default branch and verify the initialized `BOARD.txt` remotely.
 2. Publish the workshop implementation and verify that the Pages deployment contains it; confirm a live match registration and board/history request before demonstrating the Game Wall.
-3. Complete and record the two-account/two-Codespace manual and Copilot-assisted flows, and separately perform the direct starter preflight without committing or pushing.
+3. Verify the partner flow with a second GitHub account and Codespace; repeat the direct starter preflight after Copilot sign-in is available, without committing or pushing.
 4. Publish and distribute the survey only after the instructor approves it.
 
 These steps are outside this local reconciliation. No external change or publication was made.
