@@ -51,11 +51,13 @@ class TestWebGuides(unittest.TestCase):
 
     def test_setup_preflight_and_separate_copilot_access(self):
         for requirement in (
-            "existing tic-tac-toe starter template",
-            "Open in a codespace",
+            "Use this template → Create a new repository",
+            "Make the repository public",
+            "Keep the public repository and Codespace",
+            "separate Codespaces",
+            "select <strong>Ask</strong>",
             "What does this repository do?",
-            "delete the Codespace",
-            "Do not commit or push",
+            "No board edit is required",
             "Codespaces and Copilot access are separate",
             "manual rematch path",
         ):
@@ -70,7 +72,7 @@ class TestWebGuides(unittest.TestCase):
     def test_learner_match_uses_the_approved_source_control_contract(self):
         for requirement in ("Source Control", "BOARD.txt", "match-01", "clean <code>main</code>", "Stage <code>BOARD.txt</code>", "rematch manually"):
             self.assertIn(requirement, self.guide)
-        self.assertIn("follow the instructor’s agent demonstration", self.guide)
+        self.assertIn("Place X in the center of the board", self.guide)
         self.assertIn("GitHub commit history", self.guide)
         self.assertIn("instructor demonstration, not a participant exercise", self.guide)
 

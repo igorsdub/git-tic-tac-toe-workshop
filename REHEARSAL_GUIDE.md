@@ -4,10 +4,10 @@
 
 ## Rehearse the participant path
 
-- [ ] Open the existing [starter template](https://github.com/igorsdub/git-tic-tac-toe-template) directly in a Codespace using **Use this template → Open in a codespace**. The advance participant rehearsal uses this template directly; do not make a personal template copy or pair repository.
-- [ ] In the VS Code web editor, ask Copilot Chat **“What does this repository do?”** and confirm a response. Separately verify that Copilot agent editing is available for the rematch. Codespaces and Copilot access are separate.
-- [ ] Leave the editor and delete the rehearsal Codespace from the GitHub Codespaces dashboard. Do not commit or push.
-- [ ] During a facilitator-only test, create one public pair repository from the starter, add a second account as collaborator, and open that same repository in two Codespaces.
+- [ ] For each participant account, create a public repository from the [starter template](https://github.com/igorsdub/git-tic-tac-toe-template) using **Use this template → Create a new repository**.
+- [ ] Open each new repository in that participant's own Codespace. In Copilot Chat, select **Ask**, then ask exactly: **“What does this repository do?”** Readiness passes when the response correctly explains the shared tic-tac-toe purpose and how `BOARD.txt` records moves. No board edit is required.
+- [ ] Retain every prepared public repository and Codespace. Verify that the pair can choose one repository, invite the partner, and open it in two separate Codespaces.
+- [ ] Separately verify that Copilot agent editing is available for the rematch. Codespaces and Copilot access are separate.
 - [ ] In both Codespaces, verify the entire manual turn through VS Code Source Control: pull, edit the board, inspect the diff, stage, commit, push, and pull the partner’s move.
 - [ ] Create a rematch branch and repeat with one learner-selected move edited by Copilot. Verify that the learner can inspect the diff and complete stage, commit, pull, and push.
 - [ ] Verify participants can continue manually if Copilot is unavailable. The scheduled transition to the rematch happens on time even if the first game is unfinished; leave that game on its branch.
@@ -36,4 +36,4 @@ Do not mark this rehearsal complete based on account settings or local tests. Th
 
 For an inaccessible or invalid match, pause both players, preserve the repository and branches, and have a facilitator inspect the state with them. Do not discard changes or reset history as a first response.
 
-For a push rejection, pull through Source Control and inspect the incoming changes before pushing. For a naturally occurring conflict, partners and a facilitator should compare the intended board edits, resolve them in VS Code’s merge editor, inspect the final diff, and complete the Source Control merge. Do not create a deliberate conflict for practice.
+For a push rejection, pull through Source Control and inspect the incoming changes before pushing. For a naturally occurring conflict, partners and a facilitator should compare the intended board edits, resolve them in VS Code’s merge editor, inspect the final diff, and complete the Source Control merge. No conflict exercise is part of rehearsal.

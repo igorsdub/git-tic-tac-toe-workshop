@@ -343,6 +343,17 @@ State: Waiting for O
     return /^[ \t\+\-\|\=]+$/.test(s) && s.includes('-');
   }
 
+  function extractCompactGridLines(text) {
+    const codeBlockMatch = text.match(/```(?:text)?\s*\n([\s\S]*?)\n```/);
+    const gridText = codeBlockMatch ? codeBlockMatch[1] : text;
+    const candidates = gridText.split(/\r?\n/).filter((line) => {
+      const cells = line.trim().split(/\s+/);
+      return !line.includes('|') && cells.length >= 1 && cells.length <= 4 && cells.every((cell) => cell.length === 1);
+    });
+    const hasBoardMark = candidates.some((line) => line.trim().split(/\s+/).some((cell) => ['.', 'X', 'O'].includes(cell)));
+    return candidates.length >= 3 || hasBoardMark ? candidates : [];
+  }
+
   /**
    * Parses an individual cell: returns 'X', 'O', or ' '
    */
@@ -434,7 +445,10 @@ State: Waiting for O
     const gridText = codeBlockMatch ? codeBlockMatch[1] : content;
 
     const rawLines = gridText.split(/\r?\n/);
-    const candidateLines = rawLines.filter(line => line.includes('|') && !isDividerLine(line));
+    const legacyLines = rawLines.filter(line => line.includes('|') && !isDividerLine(line));
+    const compactLines = extractCompactGridLines(gridText);
+    const compactFormat = legacyLines.length === 0 && compactLines.length > 0;
+    const candidateLines = legacyLines.length > 0 ? legacyLines : compactLines;
 
     let parsedGrid = [
       [' ', ' ', ' '],
@@ -448,6 +462,14 @@ State: Waiting for O
       parsedGrid = [];
       for (let r = 0; r < 3; r++) {
         let line = candidateLines[r].trim();
+        if (compactFormat) {
+          if (!/^[.XO](?: [XO.]){2}$/.test(line)) {
+            errors.push(`Row ${r + 1} must contain three cells separated by single spaces.`);
+            continue;
+          }
+          parsedGrid.push(line.split(' ').map((cell) => (cell === '.' ? ' ' : cell)));
+          continue;
+        }
         if (line.startsWith('|') && line.endsWith('|')) {
           line = line.slice(1, -1);
         }

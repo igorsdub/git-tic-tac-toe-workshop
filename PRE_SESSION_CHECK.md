@@ -4,12 +4,13 @@ This workshop uses GitHub Codespaces and the Visual Studio Code web interface. Y
 
 ## One short rehearsal
 
-Please try this once before the session, using the existing [tic-tac-toe starter template](https://github.com/igorsdub/git-tic-tac-toe-template):
+Please prepare once before the session, using the [tic-tac-toe starter template](https://github.com/igorsdub/git-tic-tac-toe-template):
 
-1. Open the template repository and choose **Use this template → Open in a codespace**. This opens a temporary Codespace based directly on the starter; do not create a personal template copy or a pair repository.
-2. In the VS Code web editor, open Copilot Chat and ask: **“What does this repository do?”** Confirm that Copilot responds.
-3. Close the editor, then delete the Codespace from the [GitHub Codespaces dashboard](https://github.com/codespaces).
+1. Choose **Use this template → Create a new repository**. Make your repository public and keep it under your own account.
+2. Open your new repository in your own Codespace.
+3. In Copilot Chat, select **Ask** and ask exactly: **“What does this repository do?”** Readiness passes when the answer correctly explains the shared tic-tac-toe purpose and how `BOARD.txt` records moves.
+4. Keep your public repository and Codespace. At the session, your pair chooses one prepared repository, its owner invites the partner, and both people open that repository in separate Codespaces.
 
-Do not commit or push anything during this rehearsal. Codespaces and Copilot access are separate; if Copilot Chat or agent editing is unavailable, note that for the facilitator. The instructor will help with access during the session. The five-question survey draft is for instructor preparation and does not ask whether you completed this rehearsal. Its Google Form is currently unpublished and is not accepting responses; no survey action is required until the instructor distributes an approved form.
+No board edit is required during this check. Codespaces and Copilot access are separate; if Copilot Chat or Ask is unavailable, note that for the facilitator. The instructor will help with access during the session. The five-question survey draft is for instructor preparation and does not ask whether you completed this preparation. Its Google Form is currently unpublished and is not accepting responses; no survey action is required until the instructor distributes an approved form.
 
 For current GitHub instructions, see [creating a Codespace from a template](https://docs.github.com/en/codespaces/developing-in-a-codespace/creating-a-codespace-from-a-template). For help with Copilot in VS Code, see [chat with Copilot in your IDE](https://docs.github.com/en/copilot/how-tos/copilot-in-your-ide/chat-with-copilot/chat-in-ide).

@@ -92,6 +92,22 @@ def _extract_grid_lines(text: str) -> List[str]:
     return grid_lines
 
 
+def _extract_compact_grid_lines(text: str) -> List[str]:
+    """Find compact rows such as ``. . .`` without confusing prose for a board."""
+    code_blocks = re.findall(r"```(?:text)?\s*\n([\s\S]*?)\n```", text, re.MULTILINE)
+    search_areas = code_blocks if code_blocks else [text]
+    for area in search_areas:
+        area_candidates: List[str] = []
+        for line in area.splitlines():
+            cells = line.strip().split()
+            if "|" not in line and 1 <= len(cells) <= 4 and all(len(cell) == 1 for cell in cells):
+                area_candidates.append(line)
+        has_board_mark = any(cell in {".", "X", "O"} for line in area_candidates for cell in line.strip().split())
+        if len(area_candidates) >= 3 or has_board_mark:
+            return area_candidates
+    return []
+
+
 def _parse_cell(raw_cell: str) -> Tuple[Optional[str], Optional[str]]:
     """Returns (mark, error_message).
 
@@ -171,7 +187,10 @@ def validate_board(board_content: str) -> BoardValidationResult:
         warnings.append("Missing 'State:' or 'Status:' indicator line; state evaluated dynamically.")
 
     # 3. Grid parsing
-    grid_lines = _extract_grid_lines(board_content)
+    legacy_grid_lines = _extract_grid_lines(board_content)
+    compact_grid_lines = _extract_compact_grid_lines(board_content)
+    compact_format = not legacy_grid_lines and bool(compact_grid_lines)
+    grid_lines = legacy_grid_lines if legacy_grid_lines else compact_grid_lines
     if len(grid_lines) != 3:
         errors.append(f"Grid must contain exactly 3 rows; found {len(grid_lines)}.")
         return BoardValidationResult(
@@ -189,6 +208,13 @@ def validate_board(board_content: str) -> BoardValidationResult:
     grid: List[List[str]] = []
     for row_idx, line in enumerate(grid_lines):
         clean_line = line.strip()
+        if compact_format:
+            if not re.fullmatch(r"[.XO](?: [XO.]){2}", clean_line):
+                errors.append(f"Row {row_idx + 1} must contain three cells separated by single spaces: '{clean_line}'.")
+                continue
+            row = [" " if cell == "." else cell for cell in clean_line.split(" ")]
+            grid.append(row)
+            continue
         # Handle optional outer boundary pipes: e.g. | [ ] | [ ] | [ ] |
         if clean_line.startswith("|") and clean_line.endswith("|"):
             raw_cells = [c for c in clean_line[1:-1].split("|")]

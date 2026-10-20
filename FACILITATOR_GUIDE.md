@@ -14,7 +14,7 @@ Use Codespaces with the VS Code web interface throughout. Teach GitHub’s Sourc
 |---|---|
 | 0–10 | Arrival and small setup/troubleshooting buffer |
 | 10–25 | Git/GitHub mental model and instructor demonstration |
-| 25–40 | Form pairs, create shared public repositories, open individual Codespaces |
+| 25–40 | Form pairs, choose prepared public repositories, invite partners, open separate Codespaces |
 | 40–70 | Manual match: make numbered moves using VS Code Source Control |
 | 70–80 | Copilot demonstration: delegate one board edit and inspect the diff |
 | 80–105 | Agent-assisted rematch: learner chooses move; Copilot edits; learner reviews and completes Git workflow |
@@ -26,7 +26,7 @@ At minute 80, transition the room together even if a manual match is unfinished.
 
 Use the [rehearsal guide](REHEARSAL_GUIDE.md) to verify the live starter, Codespaces, Copilot access, pair collaboration, Source Control pull/push, and deployed dashboard. Send the [pre-session checklist](PRE_SESSION_CHECK.md) with setup instructions. The survey form is currently an unpublished instructor draft and is not accepting responses; distribute it only after it is published and approved. It is for instructor preparation; do not add identity, tutorial-completion, or setup-readiness questions.
 
-Participants rehearse directly in a Codespace opened from the existing starter template. They ask Copilot Chat “What does this repository do?”, confirm a response, then delete the Codespace. They should not commit or push in advance. The pair repository is created together during the session.
+Before the session, each participant creates a public repository from the template, opens that repository in their own Codespace, selects Ask, and asks exactly “What does this repository do?” Readiness passes when the response correctly describes the shared tic-tac-toe purpose and how `BOARD.txt` records moves. Participants retain their repositories and Codespaces. During pair setup, each pair chooses one prepared repository, invites the partner, and opens that repository in separate Codespaces. No board edit is required during preparation.
 
 ## Facilitation
 
@@ -36,11 +36,11 @@ Use the shared-board analogy: each learner’s Codespace is their own working co
 
 ### Pair setup and manual match (25–70)
 
-Each pair creates one public repository from the workshop starter and adds the partner as a collaborator. Each learner opens that same repository in their own Codespace. Assign X and O, then play numbered moves in order. On every turn: pull the latest partner change in Source Control, edit one square, inspect the diff, stage the board, commit with a clear numbered message, and push. The next player pulls before editing. Keep the first full manual workflow as the shared foundation for Copilot practice.
+Each pair chooses one prepared public repository and adds the partner as a collaborator. Each learner opens that same repository in their own Codespace. Assign X and O, then play numbered moves in order. The canonical `BOARD.txt` has three rows of three single-space-separated cells (`.`, `X`, or `O`); a move replaces one `.`. On every turn: pull the latest partner change in Source Control, edit one square, inspect the diff, stage the board, commit with a clear numbered message, and sync the change. The next player pulls before editing. Keep the first full manual workflow as the shared foundation for Copilot practice.
 
 ### Copilot demonstration and rematch (70–105)
 
-Show a short edit: the learner decides a legal move and asks Copilot Chat to update only the board file. The learner inspects the diff, checks that the chosen move is the only intended change, then stages, commits, and pushes through Source Control. Copilot choosing a legal move is an optional later extension, not the core activity.
+Demonstrate the accepted first-move example with the exact learner request: “Place X in the center of the board.” For an O move or a later turn, learners name the square they chose. They inspect the diff, then stage, commit, and sync the change through Source Control. Copilot choosing a legal move is an optional later extension, not the core activity.
 
 Create a fresh rematch branch from the agreed baseline. Repeat the same Source Control workflow; only the board edit is delegated. If a participant cannot use Copilot, they can complete the rematch manually and follow the instructor’s agent demonstration. Keep the protected Copilot practice time by moving everyone together at the scheduled transition.
 
@@ -50,10 +50,10 @@ The local Game Wall implementation groups public matches by outcome and replays 
 
 Connect the workflow to research files, analysis code, and shared manuscripts. Ask what becomes easier when changes have clear authorship, messages, and reviewable history.
 
-## Recovery and support
+## Optional facilitator appendix: recovery
 
-Pause an invalid, inaccessible, or unexpectedly changed match. Ask the pair to stop editing, read the Source Control state together, and call a facilitator. Preserve all branches and commits; do not use destructive resets or discard changes as a first response.
+Keep this reference for support when a participant asks for help. First inspect the exact changed files and commits with the participant, and preserve changes belonging to other people.
 
-If a push is rejected, pull the partner’s published change in Source Control, inspect the result, then push again. If VS Code reports a merge conflict, keep the conflict state intact and work with the partner and facilitator: compare both intended edits, resolve the board together, inspect the resulting diff, and complete the merge action offered by Source Control. GitHub’s [merge-conflict guide for VS Code](https://code.visualstudio.com/docs/sourcecontrol/merge-conflicts) explains the editor controls. No conflict is deliberately created as a workshop exercise.
+An unwanted local change that has not been shared can be undone after confirming which edit belongs to the participant. A pushed change is part of shared history; correct it with a new commit that restores the intended board state. Preserve other participants’ changes in either case. If a push is rejected or a conflict appears naturally, inspect incoming work with the pair, resolve the board together, review the diff, and complete the offered Source Control action. GitHub’s [merge-conflict guide for VS Code](https://code.visualstudio.com/docs/sourcecontrol/merge-conflicts) explains the editor controls.
 
 If Copilot is unavailable, continue with the manual rematch and let the learner observe the instructor demonstration. Codespaces access does not itself guarantee Copilot access; check both during rehearsal and help learners with account or organization settings without delaying the pair’s Git work.

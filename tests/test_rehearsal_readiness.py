@@ -88,16 +88,27 @@ class TestApprovedWorkshopPath(unittest.TestCase):
             self.assertIn(block, facilitator)
         self.assertIn("At minute 80", facilitator)
 
-    def test_direct_codespace_preflight_and_separate_copilot_access(self):
+    def test_public_repository_preflight_and_separate_copilot_access(self):
         preflight = (REPO_ROOT / "PRE_SESSION_CHECK.md").read_text(encoding="utf-8")
         for requirement in (
-            "Open in a codespace",
+            "Use this template → Create a new repository",
+            "Make your repository public",
+            "Keep your public repository and Codespace",
+            "separate Codespaces",
+            "select **Ask**",
             "What does this repository do?",
-            "delete the Codespace",
-            "Do not commit or push",
+            "No board edit is required",
             "Codespaces and Copilot access are separate",
         ):
             self.assertIn(requirement, preflight)
+
+    def test_compact_board_contract_and_agent_prompt_are_current(self):
+        board = (REPO_ROOT / "template-spec/BOARD.txt").read_text(encoding="utf-8")
+        learner = (REPO_ROOT / "LEARNER_GUIDE.md").read_text(encoding="utf-8")
+        self.assertIn("exactly three rows of three cells", board)
+        self.assertIn("replaces one `.`", board)
+        self.assertIn("Place X in the center of the board", learner)
+        self.assertIn("Sync the change", learner)
 
     def test_learner_match_uses_board_and_source_control_contract(self):
         learner = (REPO_ROOT / "LEARNER_GUIDE.md").read_text(encoding="utf-8")
@@ -119,10 +130,10 @@ class TestApprovedWorkshopPath(unittest.TestCase):
 
     def test_rehearsal_record_marks_unrun_acceptance_and_draft_survey(self):
         evidence = (REPO_ROOT / "docs/rehearsal-evidence-2026-10-20.md").read_text(encoding="utf-8")
-        self.assertIn("blocked and not yet completed", evidence)
-        self.assertIn("Manual match", evidence)
-        self.assertIn("Not run", evidence)
-        self.assertIn("not accepting responses", evidence)
+        self.assertIn("Failed game sequence", evidence)
+        self.assertIn("Source Control manual match", evidence)
+        self.assertIn("not verified", evidence)
+        self.assertIn("Not accepting responses", evidence)
         self.assertIn("not distributed", evidence)
 
 

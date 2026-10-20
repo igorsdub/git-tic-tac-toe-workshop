@@ -297,6 +297,31 @@ State: Ready for X
         self.assertEqual(res.state, "Waiting for X")
         self.assertEqual(res.move_counts, {"X": 1, "O": 1})
 
+    def test_compact_board_and_one_move_keep_normalized_grid(self):
+        res = validate_board(". . .\n. X .\n. . O\n")
+        self.assertTrue(res.is_valid, res.errors)
+        self.assertEqual(res.grid, [[" ", " ", " "], [" ", "X", " "], [" ", " ", "O"]])
+        self.assertEqual(res.state, "Waiting for X")
+
+    def test_malformed_compact_board_is_rejected(self):
+        for content in (
+            ".  . .\n. . .\n. . .\n",
+            ". .\n. . .\n. . .\n",
+            ". . ?\n. . .\n. . .\n",
+            ". . .\n. . .\n. . .\n. . .\n",
+            ". . .\n. . .\n. . .\nX X\n",
+        ):
+            with self.subTest(content=content):
+                result = validate_board(content)
+                self.assertFalse(result.is_valid)
+                self.assertEqual(result.state, "Invalid board")
+
+    def test_legacy_pipe_rows_without_padding_spaces_remain_valid(self):
+        result = validate_board("X | O|X\nO|X|O\nX|O |X\n")
+        self.assertTrue(result.is_valid, result.errors)
+        self.assertEqual(result.state, "X won")
+        self.assertEqual(result.grid[0], ["X", "O", "X"])
+
     def test_default_cli_board_txt(self):
         """Verifies CLI defaults to board.txt in the current directory."""
         from validate_board import main

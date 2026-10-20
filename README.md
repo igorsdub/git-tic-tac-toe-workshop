@@ -21,7 +21,7 @@ This two-hour workshop teaches collaborative Git through a paired tic-tac-toe ga
 |---|---|
 | 0–10 | Arrival and setup troubleshooting |
 | 10–25 | Git/GitHub mental model and facilitator demonstration |
-| 25–40 | Form pairs, create one shared repository, and open each learner's Codespace |
+| 25–40 | Form pairs, choose one prepared public repository, invite the partner, and open separate Codespaces |
 | 40–70 | Manual match |
 | 70–80 | Copilot demonstration |
 | 80–105 | Agent-assisted rematch |
@@ -33,9 +33,9 @@ At minute 80, every pair starts a fresh agent-assisted rematch, even if the manu
 
 Each learner uses their own Codespace in the browser-based VS Code editor. Each pair works in one shared public GitHub repository. Learners use VS Code's Source Control view to review diffs, stage, commit, pull, and push; the terminal is not the teaching path.
 
-The manual match teaches the whole workflow. In the rematch, learners choose a legal move and ask Copilot to edit the board; they inspect the diff, confirm the move is legal, and personally stage, commit, pull, and push. No deliberate merge-conflict exercise is included. The facilitator provides recovery help if a conflict occurs naturally.
+The canonical board is three rows of three cells, such as `. . .`; a move replaces one `.` with `X` or `O`. The manual match teaches the whole workflow. In the rematch demonstration, learners ask Copilot “Place X in the center of the board” for X's first move, inspect the diff, then stage, commit, and sync the change themselves. O players and later turns name their chosen square.
 
-Before the workshop, each learner rehearses in a temporary Codespace opened directly from the existing starter template. They ask Copilot Chat, “What does this repository do?”, confirm its response, leave the editor, and delete the Codespace. They do not publish, commit, or push during this rehearsal. Codespaces access and Copilot access are separate, so the facilitator should verify Copilot access and Agent mode independently. See the [setup guide](PRE_SESSION_CHECK.md).
+Before the workshop, each learner creates a public repository from the starter template, opens it in their own Codespace, selects Ask, and asks exactly “What does this repository do?” The facilitator checks that the response correctly describes the game and how `BOARD.txt` records moves. Learners retain their repositories and Codespaces; at the session each pair chooses one prepared repository and opens it in separate Codespaces. See the [setup guide](PRE_SESSION_CHECK.md).
 
 ## Delivery status
 
