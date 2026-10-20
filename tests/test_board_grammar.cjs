@@ -35,7 +35,16 @@ test('browser board evaluator accepts compact rows and returns the normalized gr
 
 test('browser board evaluator rejects malformed compact spacing and cell marks', () => {
   const evaluate = loadBoardEvaluator();
-  for (const board of ['.  . .\n. . .\n. . .', '. .\n. . .\n. . .', '. . ?\n. . .\n. . .', '. . .\n. . .\n. . .\nX X']) {
+  for (const board of [
+    '.  . .\n. . .\n. . .',
+    '. .\n. . .\n. . .',
+    '. . ?\n. . .\n. . .',
+    '. . .\n. . .\n. . .\nX X',
+    '. . .\n. . .\n. . .\nX X X X X',
+    '. . .\n. . .\nXX',
+    ' . . .\n. . .\n. . .',
+    '. . . \n. . .\n. . .',
+  ]) {
     const result = evaluate(board);
     assert.equal(result.isValid, false, board);
     assert.equal(result.state, 'Invalid board', board);

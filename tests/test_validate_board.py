@@ -310,6 +310,10 @@ State: Ready for X
             ". . ?\n. . .\n. . .\n",
             ". . .\n. . .\n. . .\n. . .\n",
             ". . .\n. . .\n. . .\nX X\n",
+            ". . .\n. . .\n. . .\nX X X X X\n",
+            ". . .\n. . .\nXX\n",
+            " . . .\n. . .\n. . .\n",
+            ". . . \n. . .\n. . .\n",
         ):
             with self.subTest(content=content):
                 result = validate_board(content)
