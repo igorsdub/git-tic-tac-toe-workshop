@@ -78,6 +78,20 @@
     return `https://api.github.com/repos/${encodeURIComponent(match.owner)}/${encodeURIComponent(match.repo)}/commits?sha=${encodeURIComponent(match.branch)}&path=BOARD.txt&per_page=100`;
   }
 
+  function canRefreshMatchBoard(match) {
+    return Boolean(
+      match.owner && match.repo && MATCH_BRANCH_PATTERN.test(match.branch || '')
+      && String(match.playerX || '').trim() && String(match.playerO || '').trim(),
+    );
+  }
+
+  function historyButtonState(history) {
+    if (history && Array.isArray(history.entries) && history.entries.length > 0) {
+      return { label: 'Refresh history', loaded: true };
+    }
+    return { label: history ? 'Retry history' : 'Load history', loaded: false };
+  }
+
   function boardUrl(match) {
     if (!match.owner || !match.repo || !MATCH_BRANCH_PATTERN.test(match.branch || '')) {
       throw new Error('A valid repository and numbered match branch are required to load the current board.');
@@ -186,5 +200,5 @@
     return { entries, errors, historyUrl };
   }
 
-  return { MATCH_BRANCH_PATTERN, normalizeMatch, groupMatches, boardUrl, refreshMatchBoard, historyApiUrl, fetchMatchHistory };
+  return { MATCH_BRANCH_PATTERN, normalizeMatch, groupMatches, canRefreshMatchBoard, historyButtonState, boardUrl, refreshMatchBoard, historyApiUrl, fetchMatchHistory };
 });

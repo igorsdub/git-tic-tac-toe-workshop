@@ -32,6 +32,25 @@ test('does not offer replay for a malformed branch registration', () => {
   assert.throws(() => MatchData.historyApiUrl(result), /numbered match branch/);
 });
 
+test('keeps a valid registration refreshable when its last board read failed', async () => {
+  const failedSnapshot = match({ status: 'error', state: 'Error', boardValid: false, board: null, errors: ['BOARD.txt was unavailable'] });
+  assert.equal(MatchData.canRefreshMatchBoard(failedSnapshot), true);
+  const recovered = await MatchData.refreshMatchBoard(failedSnapshot, async () => ({
+    ok: true,
+    text: async () => 'winning board',
+  }), () => ({ isValid: true, state: 'X won', grid: [['X', 'X', 'X'], ['O', 'O', ' '], [' ', ' ', ' ']] }));
+  assert.equal(recovered.status, 'completed');
+  assert.equal(recovered.state, 'X won');
+  assert.deepEqual(recovered.errors, []);
+  assert.equal(MatchData.canRefreshMatchBoard(MatchData.normalizeMatch({ owner: 'pair', repo: 'game' })), false);
+});
+
+test('rebuilds a refreshed-history action from cached entries after rerender', () => {
+  assert.deepEqual(MatchData.historyButtonState({ entries: [{ sha: 'abc' }], errors: [] }), { label: 'Refresh history', loaded: true });
+  assert.deepEqual(MatchData.historyButtonState({ entries: [], errors: ['API unavailable'] }), { label: 'Retry history', loaded: false });
+  assert.deepEqual(MatchData.historyButtonState(undefined), { label: 'Load history', loaded: false });
+});
+
 test('keeps matches distinct by registered branch and groups current outcomes', () => {
   const matches = [
     match({ branch: 'match-01' }),

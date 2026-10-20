@@ -598,9 +598,9 @@ State: Waiting for O
 
       const registered = records.map((record) => MATCH_DATA.normalizeMatch(record));
       state.allGames = await Promise.all(registered.map((match) =>
-        match.status === 'error'
-          ? match
-          : MATCH_DATA.refreshMatchBoard(match, fetch, evaluateBoardContent),
+        MATCH_DATA.canRefreshMatchBoard(match)
+          ? MATCH_DATA.refreshMatchBoard(match, fetch, evaluateBoardContent)
+          : match,
       ));
       state.lastUpdated = new Date();
       const errorCount = state.allGames.filter((match) => match.status === 'error').length;
@@ -741,11 +741,12 @@ State: Waiting for O
       ? `<div class="card-board-wrapper"><div class="board-grid-table" role="grid" aria-label="Current board for ${escapeHtml(game.branch)}">${cellsHtml}</div></div>`
       : '<div class="board-unavailable">No validated board is available for this match.</div>';
     const historyUrl = game.historyUrl;
+    const historyState = MATCH_DATA.historyButtonState(state.historyByMatch[game.matchKey]);
     const historyHtml = historyUrl
       ? `<details class="history-details" data-history-for="${escapeHtml(game.matchKey)}">
           <summary>Replay committed board history</summary>
           <p class="history-help">History is ordered from the branch’s first committed board to its latest. If replay cannot load, use <a href="${escapeHtml(historyUrl)}" target="_blank" rel="noopener noreferrer">GitHub commit history</a>.</p>
-          <button class="btn btn-sm btn-outline history-load-button" type="button" data-history-action="load" data-match-key="${escapeHtml(game.matchKey)}">Load history</button>
+          <button class="btn btn-sm btn-outline history-load-button" type="button" data-history-action="load" data-history-loaded="${historyState.loaded}" data-match-key="${escapeHtml(game.matchKey)}">${historyState.label}</button>
           <div class="history-panel" data-history-panel="${escapeHtml(game.matchKey)}" aria-live="polite"></div>
         </details>`
       : '';
@@ -881,8 +882,9 @@ State: Waiting for O
     }
     state.historyByMatch[match.matchKey] = result;
     button.disabled = false;
-    button.textContent = result.entries.length > 0 ? 'Refresh history' : 'Retry history';
-    button.dataset.historyLoaded = result.entries.length > 0 ? 'true' : 'false';
+    const buttonState = MATCH_DATA.historyButtonState(result);
+    button.textContent = buttonState.label;
+    button.dataset.historyLoaded = String(buttonState.loaded);
     renderHistoryPanel(match, result, priorIndex);
   }
 
