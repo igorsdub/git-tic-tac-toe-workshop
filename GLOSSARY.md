@@ -4,7 +4,7 @@
 
 **Workshop ID**: A stable identifier for one workshop, written as `YYYY-MM-DD-short-lowercase-identifier`. Once registrations exist for a workshop, its ID remains unchanged. Its display name is separate from its ID.
 
-**Registration**: A connection between a repository and a workshop, with two player GitHub handles supplied for avatars. The dashboard watches the registered repository.
+**Registration**: A connection between a repository and a workshop, with two player GitHub handles supplied for avatars. The dashboard watches the registered repository. Repeating registration for the same repository and workshop updates the existing registration and its handles rather than creating another dashboard entry.
 
 **Repository**: The GitHub repository connected to one workshop by a registration. A repository belongs to only one workshop; its branches are the source from which the dashboard discovers matches.
 
