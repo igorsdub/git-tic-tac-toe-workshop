@@ -24,7 +24,7 @@ At minute 80, transition the room together even if a manual match is unfinished.
 
 ## Before participants arrive
 
-Use the [rehearsal guide](REHEARSAL_GUIDE.md) to verify the starter, Codespaces, Copilot access, pair collaboration, Source Control pull/push, and the current dashboard contract. Send the [pre-session checklist](PRE_SESSION_CHECK.md) with setup instructions and the [four-question survey](SURVEY.md). The survey is for instructor preparation; do not add identity, tutorial-completion, or setup-readiness questions.
+Use the [rehearsal guide](REHEARSAL_GUIDE.md) to verify the starter, Codespaces, Copilot access, pair collaboration, Source Control pull/push, and the current dashboard contract. Send the [pre-session checklist](PRE_SESSION_CHECK.md) with setup instructions and the [short survey](SURVEY.md). The survey is for instructor preparation; do not add identity, tutorial-completion, or setup-readiness questions.
 
 Participants rehearse directly in a Codespace opened from the existing starter template. They ask Copilot Chat “What does this repository do?”, confirm a response, then delete the Codespace. They should not commit or push in advance. The pair repository is created together during the session.
 
