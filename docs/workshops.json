@@ -1,0 +1,11 @@
+{
+  "defaultWorkshopId": "2026-10-01-scda",
+  "workshops": [
+    {
+      "id": "2026-10-01-scda",
+      "name": "SCDA Training Week",
+      "status": "active",
+      "registrationUrl": "https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&workshop_id=2026-10-01-scda"
+    }
+  ]
+}

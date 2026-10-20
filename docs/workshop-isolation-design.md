@@ -25,6 +25,7 @@ The concrete delivery sequence is in [the implementation plan](workshop-isolatio
 - A repository belongs to only one workshop. Registering the same repository with another workshop is rejected. The intended workflow for a new workshop is to make a fresh copy of the template.
 - Repeating registration of the same repository for the same workshop updates the existing registration, including its two player handles; it does not create another dashboard entry.
 - For valid registration issues for the same repository and workshop, the most recently created issue supplies the player handles. Participants submit the form again to correct handles; editing an older issue does not outrank a newer one.
+- When valid issues first claim an unregistered repository for different workshops, the earliest-created valid issue establishes ownership. If creation timestamps tie, process by ascending issue number; later claims for another workshop are rejected. For repeated valid issues within the owning workshop, process in ascending creation time and issue number so the latest issue supplies the handles.
 - Every registration issue receives an automated comment stating whether it was accepted or rejected and why. Rejection examples include a missing or unknown workshop ID and a repository already assigned to another workshop.
 - Migrate the five legacy entries labeled `SCDA Training Week` to workshop ID `2026-10-01-scda`. Keep the unclassified `Default Event` entry out of workshop dashboards pending review, and preserve it rather than deleting it.
 
