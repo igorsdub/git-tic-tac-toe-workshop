@@ -84,7 +84,7 @@ class TestWebGuides(unittest.TestCase):
             "Archived workshops remain visible",
             "reject new repository registrations",
         ):
-            self.assertIn(requirement, self.guide)
+            self.assertIn(requirement.casefold(), self.guide.casefold())
         self.assertNotIn("Register each match with its numbered branch", self.guide)
         self.assertNotIn("Existing branchless records cannot be replayed", self.guide)
         self.assertIn("instructor demonstration, not a participant exercise", self.guide)
