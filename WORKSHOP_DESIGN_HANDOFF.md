@@ -56,9 +56,9 @@ In the agent-assisted rematch, learners choose a legal move and ask Copilot to m
 
 Collaborative Git is a core workshop outcome. Use the VS Code web UI inside Codespaces for the full workflow in both the manual match and agent-assisted rematch: edit the board in the editor, then use Source Control to review diffs, stage, commit, pull, and push. Terminal Git is not the primary teaching path. The Copilot rematch delegates only the board edit; learners choose the move, inspect the diff, check legality and Git state, and personally complete the Git steps. Both participants actively edit, commit, push, pull the partner's change, and check the resulting board and history. The exercise should give each person a turn as the active editor and make the navigator's review work explicit.
 
-## Tentative conflict-practice activity
+## Naturally occurring merge conflicts
 
-A separate conflict-practice branch between manual play and the agent-assisted rematch is under consideration. A proposed direction is a deterministic setup that produces conflict markers, lets participants understand the intended result, and then uses agent assistance. Whether to include the activity and its exact setup and resolution steps remain open. The current facilitator guide says not to stage synthetic errors; reconcile that guidance only if this activity is approved.
+Do not include a deliberate merge-conflict exercise or synthetic conflict in the required activities. Provide recovery instructions for merge conflicts that arise naturally during pair work.
 
 ## Current repository behavior and implementation gap
 
@@ -74,7 +74,7 @@ A later, separately authorized implementation plan should cover the template and
 
 ## Open design decisions
 
-- Board validation rules and facilitator recovery for an invalid or inaccessible registered branch.
-- Whether conflict practice is included and its exact deterministic sequence.
+- How to handle an invalid or inaccessible registered board during the workshop.
+- Exact recovery instructions for merge conflicts that arise naturally during pair work.
 - How instructional steps and automated checks are delivered, separately from match registration.
 - How to support the optional agent-chosen individual move while retaining participant review and active Git practice.
