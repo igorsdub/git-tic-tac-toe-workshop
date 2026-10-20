@@ -2,7 +2,7 @@
 
 ## Decision
 
-The implementation is ready for review on the local feature branch, but it is not participant-ready on GitHub. No commit was pushed or merged. Task 5 has partial one-account evidence in [the rehearsal record](rehearsal-evidence-2026-10-20.md): the Source Control workflow was exercised in a disposable private repository, but the manual game history failed because the final commit combined two turns; two-user collaboration remains unverified, Copilot made three wrong-row edits that were discarded, and the direct-starter prompt returned no response.
+The workshop and template implementation is ready for review on the local feature branch, but it is not participant-ready on GitHub. No workshop or template implementation commits were pushed or merged; disposable rehearsal changes are recorded separately. Task 5 has partial one-account evidence in [the rehearsal record](rehearsal-evidence-2026-10-20.md): the Source Control workflow was exercised in a disposable private repository, but the manual game history failed because the final commit combined two turns; two-user collaboration remains unverified, Copilot made three wrong-row edits that were discarded, and the direct-starter prompt returned no response.
 
 ## Local changes and checks
 
@@ -31,4 +31,4 @@ The adapted run does not establish a second account's collaborator access or pul
 3. Verify the partner flow with a second GitHub account and Codespace; repeat the direct starter preflight after Copilot sign-in is available, without committing or pushing.
 4. Publish and distribute the survey only after the instructor approves it.
 
-These steps are outside this local reconciliation. No external change or publication was made.
+These steps are outside this local reconciliation. No workshop or template implementation was published; the private disposable rehearsal repository and its match branch are described in the rehearsal record.
