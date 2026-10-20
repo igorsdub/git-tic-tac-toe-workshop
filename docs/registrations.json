@@ -2,6 +2,17 @@
   "registrations": [
     {
       "workshopId": "2026-10-01-scda",
+      "owner": "igorsdub",
+      "repo": "workshop-dashboard-verification-20261020",
+      "repoUrl": "https://github.com/igorsdub/workshop-dashboard-verification-20261020",
+      "playerX": "igorsdub",
+      "playerO": "igorsdub",
+      "issueNumber": 24,
+      "issueUrl": "https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/24",
+      "createdAt": "2026-10-20T11:05:47Z"
+    },
+    {
+      "workshopId": "2026-10-01-scda",
       "owner": "nanetteraczka1",
       "repo": "tictactoe",
       "repoUrl": "https://github.com/nanetteraczka1/tictactoe",
