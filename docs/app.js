@@ -209,6 +209,7 @@ State: Waiting for O
     lastUpdated: null,
     timerId: null,
     historyByMatch: {},
+    pendingRender: false,
   };
 
   // --- DOM Elements ---
@@ -595,7 +596,12 @@ State: Waiting for O
       const records = await response.json();
       if (!Array.isArray(records)) throw new Error('The match registry did not contain a list of records.');
 
-      state.allGames = records.map((record) => MATCH_DATA.normalizeMatch(record));
+      const registered = records.map((record) => MATCH_DATA.normalizeMatch(record));
+      state.allGames = await Promise.all(registered.map((match) =>
+        match.status === 'error'
+          ? match
+          : MATCH_DATA.refreshMatchBoard(match, fetch, evaluateBoardContent),
+      ));
       state.lastUpdated = new Date();
       const errorCount = state.allGames.filter((match) => match.status === 'error').length;
       if (errorCount > 0) {
@@ -801,6 +807,7 @@ State: Waiting for O
       ? `<div class="history-errors" role="alert"><strong>Some history could not be replayed.</strong><ul>${history.errors.map((error) => `<li>${escapeHtml(error)}</li>`).join('')}</ul>${historyLink}</div>`
       : '';
     if (history.entries.length === 0) {
+      panel.replaceChildren();
       panel.innerHTML = `${errorsHtml || '<p>No valid committed board states were found.</p>'}`;
       return;
     }
@@ -817,10 +824,10 @@ State: Waiting for O
       }
     }
     const date = entry.date ? new Date(entry.date).toLocaleString() : 'Date unavailable';
-    panel.innerHTML = `
+    const content = `
       <div class="history-controls">
         <button class="btn btn-sm btn-outline" type="button" data-history-action="step" data-direction="previous" data-match-key="${escapeHtml(match.matchKey)}" ${safeIndex === 0 ? 'disabled' : ''}>Previous</button>
-        <label>Board ${safeIndex + 1} of ${history.entries.length}
+        <label><span>Board ${safeIndex + 1} of ${history.entries.length}</span>
           <input type="range" min="0" max="${history.entries.length - 1}" value="${safeIndex}" aria-label="Select committed board state" data-history-action="select" data-match-key="${escapeHtml(match.matchKey)}">
         </label>
         <button class="btn btn-sm btn-outline" type="button" data-history-action="step" data-direction="next" data-match-key="${escapeHtml(match.matchKey)}" ${safeIndex === history.entries.length - 1 ? 'disabled' : ''}>Next</button>
@@ -830,24 +837,53 @@ State: Waiting for O
       <div class="board-grid-table history-board" role="grid" aria-label="Committed board ${safeIndex + 1}: ${escapeHtml(entry.state)}">${cellsHtml}</div>
       ${errorsHtml}
     `;
+    const next = document.createElement('div');
+    next.innerHTML = content;
+    const nextControls = next.querySelector('.history-controls');
+    const existingControls = panel.querySelector('.history-controls');
+    if (existingControls) {
+      const currentButtons = existingControls.querySelectorAll('button');
+      const nextButtons = nextControls.querySelectorAll('button');
+      currentButtons.forEach((button, buttonIndex) => { button.disabled = nextButtons[buttonIndex].disabled; });
+      existingControls.querySelector('label span').textContent = nextControls.querySelector('label span').textContent;
+      const currentSlider = existingControls.querySelector('input[type="range"]');
+      const nextSlider = nextControls.querySelector('input[type="range"]');
+      currentSlider.min = nextSlider.min;
+      currentSlider.max = nextSlider.max;
+      currentSlider.value = nextSlider.value;
+      nextControls.remove();
+      Array.from(panel.children).filter((child) => child !== existingControls).forEach((child) => child.remove());
+      panel.append(...Array.from(next.childNodes));
+    } else {
+      panel.replaceChildren(...Array.from(next.childNodes));
+    }
     panel.dataset.historyIndex = String(safeIndex);
   }
 
-  async function loadMatchHistory(match, button) {
+  async function loadMatchHistory(match, button, force = false) {
     const cached = state.historyByMatch[match.matchKey];
-    if (cached) {
-      renderHistoryPanel(match, cached);
+    if (cached && !force && cached.entries.length > 0) {
+      const panel = DOM.gameGrid.querySelector(`[data-history-panel="${CSS.escape(match.matchKey)}"]`);
+      const index = Number(panel && panel.dataset.historyIndex || 0);
+      renderHistoryPanel(match, cached, index);
       return;
     }
+    const priorIndex = Number(DOM.gameGrid.querySelector(`[data-history-panel="${CSS.escape(match.matchKey)}"]`)?.dataset.historyIndex || 0);
     button.disabled = true;
     button.textContent = 'Loading history…';
     const panel = DOM.gameGrid.querySelector(`[data-history-panel="${CSS.escape(match.matchKey)}"]`);
     if (panel) panel.innerHTML = '<p>Loading committed board states from GitHub…</p>';
-    const result = await MATCH_DATA.fetchMatchHistory(match, fetch, evaluateBoardContent);
+    let result;
+    try {
+      result = await MATCH_DATA.fetchMatchHistory(match, fetch, evaluateBoardContent);
+    } catch (error) {
+      result = { entries: [], errors: [`Could not load GitHub history: ${error.message}`], historyUrl: match.historyUrl };
+    }
     state.historyByMatch[match.matchKey] = result;
     button.disabled = false;
-    button.textContent = 'Reload history';
-    renderHistoryPanel(match, result);
+    button.textContent = result.entries.length > 0 ? 'Refresh history' : 'Retry history';
+    button.dataset.historyLoaded = result.entries.length > 0 ? 'true' : 'false';
+    renderHistoryPanel(match, result, priorIndex);
   }
 
   function escapeHtml(str) {
@@ -902,6 +938,11 @@ State: Waiting for O
   }
 
   function render() {
+    const openHistory = new Set(Array.from(DOM.gameGrid.querySelectorAll('details[data-history-for][open]')).map((node) => node.dataset.historyFor));
+    const historyIndices = new Map(Array.from(DOM.gameGrid.querySelectorAll('[data-history-panel][data-history-index]')).map((node) => [node.dataset.historyPanel, Number(node.dataset.historyIndex)]));
+    const focusedAction = document.activeElement && DOM.gameGrid.contains(document.activeElement)
+      ? { action: document.activeElement.dataset.historyAction, matchKey: document.activeElement.dataset.matchKey, value: document.activeElement.value }
+      : null;
     updateTabCounts(state.allGames);
 
     const filtered = filterGames();
@@ -909,6 +950,14 @@ State: Waiting for O
     if (state.lastUpdated && DOM.lastUpdated) {
       DOM.lastUpdated.textContent = `Updated ${formatTime(state.lastUpdated)}`;
     }
+
+    if (focusedAction) {
+      // Keep the active replay control in the DOM while polling, especially
+      // during pointer or keyboard interaction with the range input.
+      state.pendingRender = true;
+      return;
+    }
+    state.pendingRender = false;
 
     if (filtered.length === 0) {
       DOM.gameGrid.innerHTML = '';
@@ -927,6 +976,20 @@ State: Waiting for O
           <div class="outcome-cards">${group.matches.map(renderCard).join('')}</div>
         </section>
       `).join('');
+      for (const matchKey of openHistory) {
+        const details = Array.from(DOM.gameGrid.querySelectorAll('details[data-history-for]')).find((node) => node.dataset.historyFor === matchKey);
+        if (details) details.open = true;
+        const match = state.allGames.find((item) => item.matchKey === matchKey);
+        const history = state.historyByMatch[matchKey];
+        if (match && history) renderHistoryPanel(match, history, historyIndices.get(matchKey) || 0);
+      }
+      if (focusedAction && focusedAction.action) {
+        const target = Array.from(DOM.gameGrid.querySelectorAll('[data-history-action]')).find((node) => node.dataset.historyAction === focusedAction.action && node.dataset.matchKey === focusedAction.matchKey);
+        if (target) {
+          if (focusedAction.value !== undefined && target.type === 'range') target.value = focusedAction.value;
+          target.focus();
+        }
+      }
     }
   }
 
@@ -1024,7 +1087,7 @@ State: Waiting for O
       const match = state.allGames.find((item) => item.matchKey === target.dataset.matchKey);
       if (!match) return;
       if (target.dataset.historyAction === 'load') {
-        await loadMatchHistory(match, target);
+        await loadMatchHistory(match, target, target.dataset.historyLoaded === 'true');
         return;
       }
       if (target.dataset.historyAction === 'step') {
@@ -1043,6 +1106,12 @@ State: Waiting for O
       const match = state.allGames.find((item) => item.matchKey === target.dataset.matchKey);
       const history = state.historyByMatch[target.dataset.matchKey];
       if (match && history) renderHistoryPanel(match, history, Number(target.value));
+    });
+
+    DOM.gameGrid.addEventListener('focusout', () => {
+      window.setTimeout(() => {
+        if (state.pendingRender && !DOM.gameGrid.contains(document.activeElement)) render();
+      }, 0);
     });
 
     // Toggle between live and demo mode

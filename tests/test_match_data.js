@@ -55,6 +55,30 @@ test('history API is scoped to the registered branch and uppercase board filenam
   assert.throws(() => MatchData.historyApiUrl(match({ branch: 'main' })), /numbered match branch/);
 });
 
+test('refreshes the current board from its exact branch and recomputes the outcome', async () => {
+  const current = match({ state: 'Waiting for O', status: 'in_progress' });
+  const calls = [];
+  const result = await MatchData.refreshMatchBoard(current, async (url) => {
+    calls.push(url);
+    return { ok: true, text: async () => 'winning board' };
+  }, () => ({ isValid: true, state: 'X won', grid: [['X', 'X', 'X'], [' ', ' ', ' '], [' ', ' ', ' ']], winningCells: [[0, 0], [0, 1], [0, 2]] }));
+
+  assert.deepEqual(calls, ['https://raw.githubusercontent.com/pair/research-game/match-01/BOARD.txt']);
+  assert.equal(result.state, 'X won');
+  assert.equal(result.status, 'completed');
+  assert.equal(result.outcome, 'X won');
+  assert.deepEqual(MatchData.groupMatches([result]).map((group) => group.id), ['x_won']);
+});
+
+test('turns inaccessible or invalid current branch boards into explicit errors', async () => {
+  const inaccessible = await MatchData.refreshMatchBoard(match(), async () => ({ ok: false, status: 404 }), () => ({}));
+  assert.equal(inaccessible.status, 'error');
+  assert.match(inaccessible.errors[0], /match-01.*404/);
+  const invalid = await MatchData.refreshMatchBoard(match(), async () => ({ ok: true, text: async () => 'bad board' }), () => ({ isValid: false, errors: ['impossible move count'] }));
+  assert.equal(invalid.status, 'error');
+  assert.match(invalid.errors[0], /impossible move count/);
+});
+
 test('replays valid board snapshots oldest-first and reports invalid commits', async () => {
   const newer = { sha: 'b'.repeat(40), commit: { message: 'second move', author: { date: '2026-10-20T02:00:00Z' } }, html_url: 'https://github.com/pair/research-game/commit/new' };
   const older = { sha: 'a'.repeat(40), commit: { message: 'first move', author: { date: '2026-10-20T01:00:00Z' } }, html_url: 'https://github.com/pair/research-game/commit/old' };
@@ -108,5 +132,5 @@ test('paginates full commit-history pages and reports a later-page API failure',
   );
   assert.equal(calls.filter((url) => url.includes('/commits?')).length, 2);
   assert.equal(result.entries.length, 100);
-  assert.match(result.errors[0], /complete timeline/i);
+  assert.match(result.errors[0], /older history may be missing.*complete timeline/i);
 });

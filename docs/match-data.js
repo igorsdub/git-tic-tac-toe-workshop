@@ -78,6 +78,42 @@
     return `https://api.github.com/repos/${encodeURIComponent(match.owner)}/${encodeURIComponent(match.repo)}/commits?sha=${encodeURIComponent(match.branch)}&path=BOARD.txt&per_page=100`;
   }
 
+  function boardUrl(match) {
+    if (!match.owner || !match.repo || !MATCH_BRANCH_PATTERN.test(match.branch || '')) {
+      throw new Error('A valid repository and numbered match branch are required to load the current board.');
+    }
+    return `https://raw.githubusercontent.com/${encodeURIComponent(match.owner)}/${encodeURIComponent(match.repo)}/${encodeURIComponent(match.branch)}/BOARD.txt`;
+  }
+
+  async function refreshMatchBoard(match, fetcher, validateBoard) {
+    try {
+      const response = await fetcher(boardUrl(match));
+      if (!response.ok) {
+        const message = `Could not load BOARD.txt from ${match.branch} (HTTP ${response.status}).`;
+        return { ...match, state: 'Error', status: 'error', outcome: null, isValid: false, grid: null, errors: [message], boardValid: false };
+      }
+      const evaluation = validateBoard(await response.text());
+      if (!evaluation.isValid) {
+        return { ...match, state: 'Error', status: 'error', outcome: null, isValid: false, grid: null, errors: (evaluation.errors || ['The branch board is invalid.']).map((error) => `Invalid BOARD.txt on ${match.branch}: ${error}`), boardValid: false };
+      }
+      const completed = ['X won', 'O won', 'Draw'].includes(evaluation.state);
+      return {
+        ...match,
+        state: evaluation.state,
+        status: completed ? 'completed' : 'in_progress',
+        outcome: completed ? evaluation.state : null,
+        isValid: true,
+        grid: evaluation.grid,
+        board: evaluation.grid,
+        boardValid: true,
+        winningCells: evaluation.winningCells || null,
+        errors: [],
+      };
+    } catch (error) {
+      return { ...match, state: 'Error', status: 'error', outcome: null, isValid: false, grid: null, errors: [`Could not load BOARD.txt from ${match.branch}: ${error.message}`], boardValid: false };
+    }
+  }
+
   async function fetchMatchHistory(match, fetcher, validateBoard) {
     const historyUrl = match.historyUrl || `https://github.com/${match.owner}/${match.repo}/commits/${encodeURIComponent(match.branch || '')}/BOARD.txt`;
     const commits = [];
@@ -91,14 +127,14 @@
             ? 'GitHub API access is rate limited or unavailable (HTTP 403).'
             : `GitHub could not load history page ${page} (HTTP ${response.status}).`;
           if (page === 1) return { entries: [], errors: [reason], historyUrl };
-          errors.push(`${reason} Earlier commits are shown; open GitHub history for the complete timeline.`);
+          errors.push(`${reason} Available commits are shown; older history may be missing. Open GitHub history for the complete timeline.`);
           break;
         }
         const pageCommits = await response.json();
         if (!Array.isArray(pageCommits)) {
           const reason = `GitHub returned an invalid commit-history response on page ${page}.`;
           if (page === 1) return { entries: [], errors: [reason], historyUrl };
-          errors.push(`${reason} Earlier commits are shown; open GitHub history for the complete timeline.`);
+          errors.push(`${reason} Available commits are shown; older history may be missing. Open GitHub history for the complete timeline.`);
           break;
         }
         commits.push(...pageCommits);
@@ -106,7 +142,7 @@
       }
     } catch (error) {
       if (commits.length === 0) return { entries: [], errors: [`Could not load GitHub commit history: ${error.message}`], historyUrl };
-      errors.push(`Could not load the next history page: ${error.message}. Earlier commits are shown; open GitHub history for the complete timeline.`);
+      errors.push(`Could not load the next history page: ${error.message}. Available commits are shown; older history may be missing. Open GitHub history for the complete timeline.`);
     }
 
     const entries = [];
@@ -150,5 +186,5 @@
     return { entries, errors, historyUrl };
   }
 
-  return { MATCH_BRANCH_PATTERN, normalizeMatch, groupMatches, historyApiUrl, fetchMatchHistory };
+  return { MATCH_BRANCH_PATTERN, normalizeMatch, groupMatches, boardUrl, refreshMatchBoard, historyApiUrl, fetchMatchHistory };
 });
