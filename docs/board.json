@@ -44,42 +44,6 @@
     "repoUrl": "https://github.com/igorsdub/workshop-dashboard-verification-20261020",
     "playerX": "igorsdub",
     "playerO": "igorsdub",
-    "branch": "match-02",
-    "matchKey": "igorsdub/workshop-dashboard-verification-20261020#match-02",
-    "status": "in_progress",
-    "state": "Waiting for X",
-    "outcome": null,
-    "boardValid": true,
-    "board": [
-      [
-        "X",
-        " ",
-        " "
-      ],
-      [
-        " ",
-        " ",
-        " "
-      ],
-      [
-        " ",
-        " ",
-        "O"
-      ]
-    ],
-    "errors": [],
-    "failureKind": null,
-    "refreshStatus": "fresh"
-  },
-  {
-    "workshopId": "2026-10-01-scda",
-    "workshopName": "SCDA Training Week",
-    "eventId": "2026-10-01-scda",
-    "owner": "igorsdub",
-    "repo": "workshop-dashboard-verification-20261020",
-    "repoUrl": "https://github.com/igorsdub/workshop-dashboard-verification-20261020",
-    "playerX": "igorsdub",
-    "playerO": "igorsdub",
     "branch": "match03",
     "matchKey": "igorsdub/workshop-dashboard-verification-20261020#match03",
     "status": "in_progress",
