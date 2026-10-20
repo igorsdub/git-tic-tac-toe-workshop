@@ -11,12 +11,12 @@
     "branch": "match-01",
     "matchKey": "igorsdub/workshop-dashboard-verification-20261020#match-01",
     "status": "in_progress",
-    "state": "Waiting for O",
+    "state": "Waiting for X",
     "outcome": null,
     "boardValid": true,
     "board": [
       [
-        " ",
+        "O",
         " ",
         " "
       ],
