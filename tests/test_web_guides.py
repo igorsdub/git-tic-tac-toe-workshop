@@ -69,12 +69,42 @@ class TestWebGuides(unittest.TestCase):
         self.assertIn("not accepting responses", survey)
         self.assertIn("no survey action is required", survey)
 
-    def test_learner_match_uses_the_approved_source_control_contract(self):
+    def test_learner_match_and_registration_use_the_workshop_contract(self):
         for requirement in ("Source Control", "BOARD.txt", "match-01", "clean <code>main</code>", "Stage <code>BOARD.txt</code>", "rematch manually"):
             self.assertIn(requirement, self.guide)
         self.assertIn("Place X in the center of the board", self.guide)
-        self.assertIn("GitHub commit history", self.guide)
+        for requirement in (
+            "register-game.yml&amp;workshop_id=2026-10-01-scda",
+            "register your pair's shared repository once",
+            "both player GitHub handles",
+            "successful registration comment confirms",
+            "successful refresh finds the branch",
+            "literal lowercase prefix <code>match</code>",
+            "one card per discovered public match branch",
+            "Archived workshops remain visible",
+            "reject new repository registrations",
+        ):
+            self.assertIn(requirement.casefold(), self.guide.casefold())
+        self.assertNotIn("Register each match with its numbered branch", self.guide)
+        self.assertNotIn("Existing branchless records cannot be replayed", self.guide)
         self.assertIn("instructor demonstration, not a participant exercise", self.guide)
+
+    def test_repository_registration_contract_is_consistent_in_markdown_guides(self):
+        readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
+        learner = (REPO_ROOT / "LEARNER_GUIDE.md").read_text(encoding="utf-8")
+        facilitator = (REPO_ROOT / "FACILITATOR_GUIDE.md").read_text(encoding="utf-8")
+        context = (REPO_ROOT / "CONTEXT.md").read_text(encoding="utf-8")
+        for content in (learner, facilitator):
+            self.assertIn("workshop_id=2026-10-01-scda", content)
+            self.assertIn("registers its shared repository once", content)
+            self.assertIn("successful registration comment", content)
+            self.assertIn("successful refresh", content)
+            self.assertIn("Archived workshops", content)
+        self.assertIn("five legacy SCDA repositories", readme)
+        self.assertIn("Default Event", readme)
+        self.assertIn("2026-10-01-scda", facilitator)
+        self.assertIn("Register repository", context)
+        self.assertIn("literal lowercase prefix `match`", context)
 
     def test_guide_utility_keeps_theme_and_copy_fallback(self):
         self.assertIn("ttt_gamewall_theme", self.utils)

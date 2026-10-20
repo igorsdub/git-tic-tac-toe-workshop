@@ -1,0 +1,59 @@
+{
+  "registrations": [
+    {
+      "workshopId": "2026-10-01-scda",
+      "owner": "nanetteraczka1",
+      "repo": "tictactoe",
+      "repoUrl": "https://github.com/nanetteraczka1/tictactoe",
+      "playerX": "nanetteraczka1",
+      "playerO": "Daisuke-Yamagishi",
+      "issueNumber": null,
+      "issueUrl": null,
+      "migrationSource": "SCDA Training Week legacy entry"
+    },
+    {
+      "workshopId": "2026-10-01-scda",
+      "owner": "WLomics",
+      "repo": "sqcccccccccc",
+      "repoUrl": "https://github.com/WLomics/sqcccccccccc",
+      "playerX": "WLomics",
+      "playerO": "mayukawa",
+      "issueNumber": null,
+      "issueUrl": null,
+      "migrationSource": "SCDA Training Week legacy entry"
+    },
+    {
+      "workshopId": "2026-10-01-scda",
+      "owner": "yuteis",
+      "repo": "git-tic-tac-toe",
+      "repoUrl": "https://github.com/yuteis/git-tic-tac-toe",
+      "playerX": "yutei",
+      "playerO": "Latentlin",
+      "issueNumber": null,
+      "issueUrl": null,
+      "migrationSource": "SCDA Training Week legacy entry"
+    },
+    {
+      "workshopId": "2026-10-01-scda",
+      "owner": "pmuskusv",
+      "repo": "TIC-TAC-TOE",
+      "repoUrl": "https://github.com/pmuskusv/TIC-TAC-TOE",
+      "playerX": "Pati",
+      "playerO": "Ami",
+      "issueNumber": null,
+      "issueUrl": null,
+      "migrationSource": "SCDA Training Week legacy entry"
+    },
+    {
+      "workshopId": "2026-10-01-scda",
+      "owner": "oist",
+      "repo": "git-tic-tac-toe",
+      "repoUrl": "https://github.com/oist/git-tic-tac-toe",
+      "playerX": "igorsdub",
+      "playerO": "igorsdub",
+      "issueNumber": null,
+      "issueUrl": null,
+      "migrationSource": "SCDA Training Week legacy entry"
+    }
+  ]
+}

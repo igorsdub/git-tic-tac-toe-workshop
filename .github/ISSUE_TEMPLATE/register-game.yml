@@ -1,27 +1,27 @@
 name: Pair Game Registration
-description: Register your pair repository to display on the workshop Game Wall
+description: Register your pair repository with one workshop Game Wall
 title: "[Game Registration]: "
 labels: ["game-registration"]
 body:
   - type: markdown
     attributes:
       value: |
-        ### Register a match
-        Submit one registration for each match branch in your pair's public repository. The Game Wall reads the case-sensitive `BOARD.txt` file from the branch you enter. Keep the match branch on its own; do not merge it into `main`.
+        ### Register your pair repository
+        Submit one registration for your repository and workshop. The Game Wall discovers every branch whose name begins with the lowercase prefix `match` and reads `BOARD.txt` from each matching branch. A repository can belong to only one workshop.
+  - type: input
+    id: workshop_id
+    attributes:
+      label: Workshop ID
+      description: Use the stable ID from the workshop-specific registration link.
+      placeholder: 2026-10-01-scda
+    validations:
+      required: true
   - type: input
     id: repo_url
     attributes:
       label: Repository URL
       description: Full URL to your pair's public GitHub repository.
       placeholder: https://github.com/username/repository
-    validations:
-      required: true
-  - type: input
-    id: match_branch
-    attributes:
-      label: Match branch
-      description: Numbered match branch created from the clean main branch (for example, match-01).
-      placeholder: match-01
     validations:
       required: true
   - type: input
@@ -40,12 +40,3 @@ body:
       placeholder: hubot
     validations:
       required: true
-  - type: input
-    id: workshop_name
-    attributes:
-      label: Workshop Name
-      description: Workshop or cohort name for this training session.
-      value: "SCDA Training Week"
-      placeholder: "SCDA Training Week"
-    validations:
-      required: false

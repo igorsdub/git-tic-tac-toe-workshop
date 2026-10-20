@@ -18,6 +18,7 @@
 
   const BOARD_REGISTRY_URL = `./board.json`;
   const RAW_BOARD_REGISTRY_URL = `https://raw.githubusercontent.com/${CONFIG.REPO_OWNER}/${CONFIG.REPO_NAME}/main/docs/board.json`;
+  const WORKSHOPS_URL = './workshops.json';
   const MATCH_DATA = window.MatchData;
 
   // --- Fallback / Mock Data for Offline & Demo Modes ---
@@ -28,8 +29,6 @@
       repo: 'git-ttt-pair1',
       playerX: 'alice-researcher',
       playerO: 'bob-engineer',
-      workshopName: 'SCDA Training Week',
-      eventId: 'SCDA Training Week',
       boardContent: `# Git Tic-Tac-Toe
 Player X: @alice-researcher
 Player O: @bob-engineer
@@ -50,8 +49,6 @@ State: Waiting for O
       repo: 'git-ttt-pair2',
       playerX: 'carol-dev',
       playerO: 'david-analyst',
-      workshopName: 'SCDA Training Week',
-      eventId: 'SCDA Training Week',
       boardContent: `# Git Tic-Tac-Toe
 Player X: @carol-dev
 Player O: @david-analyst
@@ -72,8 +69,6 @@ State: Waiting for X
       repo: 'git-ttt-pair3',
       playerX: 'eva-student',
       playerO: 'frank-postdoc',
-      workshopName: 'SCDA Training Week',
-      eventId: 'SCDA Training Week',
       boardContent: `# Git Tic-Tac-Toe
 Player X: @eva-student
 Player O: @frank-postdoc
@@ -94,8 +89,6 @@ State: Ready for X
       repo: 'git-ttt-pair4',
       playerX: 'grace-hopper',
       playerO: 'alan-turing',
-      workshopName: 'SCDA Training Week',
-      eventId: 'SCDA Training Week',
       boardContent: `# Git Tic-Tac-Toe
 Player X: @grace-hopper
 Player O: @alan-turing
@@ -116,8 +109,6 @@ State: X won
       repo: 'git-ttt-pair5',
       playerX: 'helen-pi',
       playerO: 'ian-fellow',
-      workshopName: 'SCDA Training Week',
-      eventId: 'SCDA Training Week',
       boardContent: `# Git Tic-Tac-Toe
 Player X: @helen-pi
 Player O: @ian-fellow
@@ -138,8 +129,6 @@ State: O won
       repo: 'git-ttt-pair6',
       playerX: 'julia-phd',
       playerO: 'kevin-ra',
-      workshopName: 'SCDA Training Week',
-      eventId: 'SCDA Training Week',
       boardContent: `# Git Tic-Tac-Toe
 Player X: @julia-phd
 Player O: @kevin-ra
@@ -160,8 +149,6 @@ State: Draw
       repo: 'git-ttt-pair7',
       playerX: 'laura-sci',
       playerO: 'mike-fellow',
-      workshopName: 'SCDA Training Week',
-      eventId: 'SCDA Training Week',
       boardContent: `# Git Tic-Tac-Toe
 Player X: @laura-sci
 Player O: @mike-fellow
@@ -182,8 +169,6 @@ State: Waiting for O
       repo: 'git-ttt-pair8',
       playerX: 'nina-coder',
       playerO: 'oscar-dev',
-      workshopName: 'SCDA Training Week',
-      eventId: 'SCDA Training Week',
       boardContent: `# Git Tic-Tac-Toe
 Player X: @nina-coder
 Player O: @oscar-dev
@@ -204,6 +189,9 @@ State: Waiting for O
   const state = {
     useDemoData: false,
     allGames: [],
+    catalog: null,
+    activeWorkshopId: null,
+    lastLoadError: null,
     currentFilter: 'all', // 'all', 'pending', 'finished', 'errors'
     isLoading: false,
     lastUpdated: null,
@@ -223,6 +211,9 @@ State: Waiting for O
     noticeActionBtn: document.getElementById('notice-action-btn'),
     lastUpdated: document.getElementById('last-updated'),
     themeToggle: document.getElementById('theme-toggle'),
+    workshopSelect: document.getElementById('workshop-select'),
+    currentWorkshopName: document.getElementById('current-workshop-name'),
+    registerLinks: [document.getElementById('register-link'), document.getElementById('empty-register-link')],
     toggleDataModeBtn: document.getElementById('toggle-data-mode-btn'),
     liveIndicator: document.getElementById('live-indicator'),
     tabErrors: document.getElementById('tab-errors'),
@@ -302,9 +293,9 @@ State: Waiting for O
       if (val && val !== '_No response_') playerO = val;
     }
 
-    // Extract Event ID / Workshop Name (default to 'SCDA Training Week')
-    let eventId = 'SCDA Training Week';
-    let workshopName = 'SCDA Training Week';
+    // Workshop assignment comes from the configured registry, never from a fallback label.
+    let eventId = null;
+    let workshopName = null;
     const eventMatch = text.match(/###\s*(?:Workshop\s*Name|Event\s*ID|Session\s*Name|Event\s*ID\s*\/\s*Session\s*Name)\s*\n+([^\n#]+)/i);
     if (eventMatch) {
       const val = eventMatch[1].trim();
@@ -597,17 +588,105 @@ State: Waiting for O
   // 2. Data Fetching
   // ==========================================
 
-  /** Load only the branch-aware registry; old issue formats are shown as errors by normalizeMatch. */
+  async function loadWorkshopCatalog() {
+    const response = await fetch(`${WORKSHOPS_URL}?t=${Date.now()}`);
+    if (!response.ok) throw new Error(`Workshop catalog unavailable (HTTP ${response.status}).`);
+    const catalog = await response.json();
+    if (!catalog || !Array.isArray(catalog.workshops) || !catalog.workshops.length) {
+      throw new Error('The workshop catalog has no configured workshops.');
+    }
+    const configured = new Set(catalog.workshops.map((workshop) => workshop.id));
+    if (!configured.has(catalog.defaultWorkshopId)) throw new Error('The workshop catalog default is not configured.');
+    state.catalog = catalog;
+    const queryWorkshop = new URL(window.location.href).searchParams.get('workshop');
+    state.activeWorkshopId = configured.has(queryWorkshop) ? queryWorkshop : catalog.defaultWorkshopId;
+    if (queryWorkshop && !configured.has(queryWorkshop)) {
+      const url = new URL(window.location.href);
+      url.searchParams.set('workshop', state.activeWorkshopId);
+      window.history.replaceState({}, '', url);
+    }
+    if (DOM.workshopSelect) {
+      const active = catalog.workshops.filter((workshop) => workshop.status === 'active');
+      const archived = catalog.workshops.filter((workshop) => workshop.status === 'archived');
+      const option = (workshop) => `<option value="${escapeHtml(workshop.id)}">${escapeHtml(workshop.name)}</option>`;
+      DOM.workshopSelect.innerHTML = [
+        ...active.map(option),
+        ...(archived.length ? [`<optgroup label="Archived workshops">${archived.map(option).join('')}</optgroup>`] : []),
+      ].join('');
+      DOM.workshopSelect.value = state.activeWorkshopId;
+    }
+    updateWorkshopChrome();
+  }
+
+  function selectedWorkshop() {
+    return state.catalog && state.catalog.workshops.find((workshop) => workshop.id === state.activeWorkshopId);
+  }
+
+  function updateWorkshopChrome() {
+    const workshop = selectedWorkshop();
+    if (!workshop) return;
+    if (DOM.currentWorkshopName) DOM.currentWorkshopName.textContent = workshop.name;
+    for (const link of DOM.registerLinks) {
+      if (link) link.href = workshop.registrationUrl;
+    }
+  }
+
+  function selectWorkshop(workshopId, updateUrl = true) {
+    if (!state.catalog || !state.catalog.workshops.some((workshop) => workshop.id === workshopId)) return;
+    state.activeWorkshopId = workshopId;
+    if (DOM.workshopSelect) DOM.workshopSelect.value = workshopId;
+    if (updateUrl) {
+      const url = new URL(window.location.href);
+      url.searchParams.set('workshop', workshopId);
+      window.history.pushState({}, '', url);
+    }
+    updateWorkshopChrome();
+    updateWorkshopNotice();
+    render();
+  }
+
+  function workshopGames() {
+    return state.allGames.filter((game) => game.workshopId === state.activeWorkshopId);
+  }
+
+  function updateWorkshopNotice() {
+    if (state.lastLoadError) {
+      showNotice(`${state.lastLoadError} Showing the last successfully loaded workshop snapshot.`, 'notice-warning');
+      return;
+    }
+    if (state.useDemoData) {
+      showNotice('Showing demo records for the selected workshop (Manual Demo Mode)', 'notice-info');
+      return;
+    }
+    const games = workshopGames();
+    const staleCount = games.filter((match) => match.refreshStatus === 'stale').length;
+    const errorCount = games.filter((match) => match.status === 'error').length;
+    if (staleCount > 0 || errorCount > 0) {
+      const messages = [];
+      if (staleCount > 0) {
+        messages.push(`${staleCount} ${staleCount === 1 ? 'match is' : 'matches are'} showing the last known board after a refresh failure. See marked cards for details.`);
+      }
+      if (errorCount > 0) {
+        messages.push(`${errorCount} registered ${errorCount === 1 ? 'match needs' : 'matches need'} attention. Open an Issues card for the reason.`);
+      }
+      showNotice(messages.join(' '), 'notice-warning');
+    } else if (games.length === 0) {
+      showNotice('No matching branches have been discovered for this workshop yet. Registered repositories appear here after a branch whose name begins with “match” is discovered.', 'notice-info');
+    } else {
+      hideNotice();
+    }
+  }
+
+  /** Load the generated branch snapshot; browser visitors make no GitHub API requests. */
   async function loadGames() {
     setLoading(true);
 
-    if (state.useDemoData) {
-      loadMockData('Showing Demo Games (Manual Demo Mode)');
-      setLoading(false);
-      return;
-    }
-
     try {
+      if (!state.catalog) await loadWorkshopCatalog();
+      if (state.useDemoData) {
+        loadMockData();
+        return;
+      }
       let response = await fetch(`${BOARD_REGISTRY_URL}?t=${Date.now()}`);
       if (!response.ok) response = await fetch(`${RAW_BOARD_REGISTRY_URL}?t=${Date.now()}`);
       if (!response.ok) throw new Error(`Match registry unavailable (HTTP ${response.status}).`);
@@ -615,27 +694,22 @@ State: Waiting for O
       if (!Array.isArray(records)) throw new Error('The match registry did not contain a list of records.');
 
       const registered = records.map((record) => MATCH_DATA.normalizeMatch(record));
-      state.allGames = await Promise.all(registered.map((match) =>
-        MATCH_DATA.canRefreshMatchBoard(match)
-          ? MATCH_DATA.refreshMatchBoard(match, fetch, evaluateBoardContent)
-          : match,
-      ));
+      // BOARD.txt is validated during the authenticated registry refresh. Keep the
+      // generated snapshot intact and avoid unauthenticated per-card requests.
+      state.allGames = registered.map((match) => ({
+        ...match,
+        isValid: match.boardValid === true && match.status !== 'error',
+        grid: match.boardValid === true ? match.board : null,
+      }));
       state.lastUpdated = new Date();
-      const errorCount = state.allGames.filter((match) => match.status === 'error').length;
-      if (errorCount > 0) {
-        showNotice(`${errorCount} registered ${errorCount === 1 ? 'match needs' : 'matches need'} attention. Open an Issues card for the reason.`, 'notice-warning');
-      } else {
-        hideNotice();
-      }
-      if (state.allGames.length === 0) {
-        showNotice('No matches are registered yet. Use Register Game to add a numbered match branch.', 'notice-info');
-      }
+      state.lastLoadError = null;
+      updateWorkshopNotice();
       render();
     } catch (err) {
       console.warn('Network or API failure fetching live games:', err);
-      state.allGames = [];
-      state.lastUpdated = new Date();
-      showNotice(`${err.message} Open a pair repository’s GitHub commit history if you need to inspect a match.`, 'notice-warning');
+      // Keep the last successful snapshot visible during a transient polling failure.
+      state.lastLoadError = err.message;
+      updateWorkshopNotice();
       render();
     } finally {
       setLoading(false);
@@ -643,9 +717,7 @@ State: Waiting for O
   }
 
   function loadMockData(message) {
-    if (message) {
-      showNotice(message, 'notice-info');
-    }
+    state.lastLoadError = null;
     state.allGames = MOCK_GAMES.map((mock) => {
       const evaluation = evaluateBoardContent(mock.boardContent);
       return {
@@ -654,8 +726,10 @@ State: Waiting for O
         repoUrl: mock.repoUrl,
         branch: 'match-01',
         matchKey: `${mock.owner}/${mock.repo}#match-01`,
-        eventId: mock.eventId,
-        workshopName: mock.workshopName || mock.eventId || 'SCDA Training Week',
+        workshopId: state.activeWorkshopId,
+        eventId: 'Demo data',
+        workshopName: 'Demo data',
+        isDemo: true,
         status: evaluation.isValid && ['X won', 'O won', 'Draw'].includes(evaluation.state) ? 'completed' : (evaluation.isValid ? 'in_progress' : 'error'),
         boardValid: evaluation.isValid,
         board: evaluation.grid,
@@ -665,6 +739,7 @@ State: Waiting for O
       };
     });
     state.lastUpdated = new Date();
+    updateWorkshopNotice();
     render();
   }
 
@@ -755,8 +830,9 @@ State: Waiting for O
       `;
     }
 
+    const boardLabel = game.refreshStatus === 'stale' ? 'Last known board' : 'Current board';
     const boardHtml = game.isValid && game.grid
-      ? `<div class="card-board-wrapper"><div class="board-grid-table" role="grid" aria-label="Current board for ${escapeHtml(game.branch)}">${cellsHtml}</div></div>`
+      ? `<div class="card-board-wrapper"><div class="board-grid-table" role="grid" aria-label="${boardLabel} for ${escapeHtml(game.branch)}">${cellsHtml}</div></div>`
       : '<div class="board-unavailable">No validated board is available for this match.</div>';
     const historyUrl = game.historyUrl;
     const historyState = MATCH_DATA.historyButtonState(state.historyByMatch[game.matchKey]);
@@ -768,6 +844,10 @@ State: Waiting for O
           <div class="history-panel" data-history-panel="${escapeHtml(game.matchKey)}" aria-live="polite"></div>
         </details>`
       : '';
+    const refreshErrors = [game.repositoryRefreshError, game.boardRefreshError].filter(Boolean);
+    const refreshStatusHtml = game.refreshStatus === 'stale'
+      ? `<p class="card-refresh-status" role="status"><strong>Showing last known board.</strong> Refresh failed: ${refreshErrors.map(escapeHtml).join(' ') || 'The latest repository refresh did not complete.'}</p>`
+      : '';
 
     return `
       <article class="game-card" data-match-key="${escapeHtml(game.matchKey)}">
@@ -776,13 +856,15 @@ State: Waiting for O
             <a href="${escapeHtml(game.repoUrl)}" target="_blank" rel="noopener noreferrer" class="repo-link" title="${escapeHtml(game.repoUrl)}">
               📦 ${escapeHtml(game.owner)}/${escapeHtml(game.repo)}
             </a>
-            <span class="card-workshop">${escapeHtml(game.workshopName || game.eventId || 'SCDA Training Week')}</span>
+            <span class="card-workshop">${escapeHtml(game.isDemo ? 'Demo data' : (selectedWorkshop()?.name || ''))}</span>
             ${game.branch ? `<a class="card-branch" href="${escapeHtml(game.repoUrl)}/tree/${encodeURIComponent(game.branch)}" target="_blank" rel="noopener noreferrer">Branch: ${escapeHtml(game.branch)}</a>` : '<span class="card-branch">No match branch registered</span>'}
           </div>
           <span class="status-badge ${badgeClass}">
-            <span>${statusIcon}</span> ${escapeHtml(game.state)}
+            <span>${statusIcon}</span> ${game.refreshStatus === 'stale' ? 'Last known: ' : ''}${escapeHtml(game.state)}
           </span>
         </div>
+
+        ${refreshStatusHtml}
 
         <div class="card-players">
           <div class="player-info player-x">
@@ -943,7 +1025,7 @@ State: Waiting for O
   }
 
   function filterGames() {
-    return state.allGames.filter((g) => {
+    return workshopGames().filter((g) => {
       if (state.currentFilter === 'pending') {
         return g.status === 'in_progress' && g.isValid;
       }
@@ -963,7 +1045,8 @@ State: Waiting for O
     const focusedAction = document.activeElement && DOM.gameGrid.contains(document.activeElement)
       ? { action: document.activeElement.dataset.historyAction, matchKey: document.activeElement.dataset.matchKey, value: document.activeElement.value }
       : null;
-    updateTabCounts(state.allGames);
+    const currentGames = workshopGames();
+    updateTabCounts(currentGames);
 
     const filtered = filterGames();
 
@@ -982,8 +1065,8 @@ State: Waiting for O
     if (filtered.length === 0) {
       DOM.gameGrid.innerHTML = '';
       DOM.emptyState.classList.remove('hidden');
-      if (state.allGames.length === 0) {
-        DOM.emptyMessage.textContent = 'No pair games have registered yet.';
+      if (currentGames.length === 0) {
+        DOM.emptyMessage.textContent = 'No matching branches have been found for this workshop yet. Registered repositories appear here after a branch whose name begins with “match” is discovered.';
       } else {
         DOM.emptyMessage.textContent = 'No games match the selected filter.';
       }
@@ -1040,9 +1123,7 @@ State: Waiting for O
 
   function startPolling() {
     if (state.timerId) clearInterval(state.timerId);
-    state.timerId = setInterval(() => {
-      loadGames();
-    }, CONFIG.REFRESH_INTERVAL_SEC * 1000);
+    state.timerId = setInterval(() => loadGames(), CONFIG.REFRESH_INTERVAL_SEC * 1000);
   }
 
   // ==========================================
@@ -1080,6 +1161,21 @@ State: Waiting for O
     // Theme toggle
     if (DOM.themeToggle) {
       DOM.themeToggle.addEventListener('click', toggleTheme);
+    }
+
+    if (DOM.workshopSelect) {
+      DOM.workshopSelect.addEventListener('change', () => selectWorkshop(DOM.workshopSelect.value));
+      window.addEventListener('popstate', () => {
+        const requested = new URL(window.location.href).searchParams.get('workshop');
+        const available = state.catalog && state.catalog.workshops.some((workshop) => workshop.id === requested);
+        const selectedId = available ? requested : state.catalog.defaultWorkshopId;
+        if (requested && !available) {
+          const url = new URL(window.location.href);
+          url.searchParams.set('workshop', selectedId);
+          window.history.replaceState({}, '', url);
+        }
+        selectWorkshop(selectedId, false);
+      });
     }
 
     // Filter tabs

@@ -1,13 +1,28 @@
 name: Sync Registrations to Board JSON
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - "scripts/**"
+      - "CONTEXT.md"
+      - ".github/workflows/sync-registrations.yml"
   issues:
     types: [opened, edited, labeled, closed, reopened]
   workflow_dispatch:
+  schedule:
+    - cron: "*/5 * * * *"
 
 permissions:
   contents: write
-  issues: read
+  issues: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: game-wall-registration-sync
+  cancel-in-progress: false
 
 jobs:
   sync:
@@ -21,24 +36,45 @@ jobs:
       - name: Set up Python 3
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: "3.10"
 
-      - name: Sync board.json from issues
+      - name: Sync registrations and discovered match branches
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          python3 scripts/sync_board_registry.py
+        run: python3 scripts/sync_board_registry.py
 
-      - name: Commit and push if board.json changed
+      - name: Commit and push generated snapshots
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git status
-          git diff docs/board.json
-          if git diff --quiet docs/board.json; then
-            echo "No changes to docs/board.json"
+          git add docs/board.json docs/registrations.json docs/registry-status.json
+          if git diff --cached --quiet; then
+            echo "No generated snapshot changes"
           else
-            git add docs/board.json
-            git commit -m "chore(registry): sync registrations from GitHub issues to docs/board.json [skip ci]"
+            git commit -m "chore(registry): sync workshop registrations and matches [skip ci]"
             git push
           fi
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: docs/
+
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: sync
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy refreshed Game Wall
+        id: deployment
+        uses: actions/deploy-pages@v4

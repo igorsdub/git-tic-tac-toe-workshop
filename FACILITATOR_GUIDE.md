@@ -1,6 +1,6 @@
 # Facilitator Guide: Git Tic-Tac-Toe Workshop
 
-> **Delivery status (2026-10-20):** The starter and branch-aware Game Wall are published. The six current registry records lack numbered branches, so they appear as needing attention until re-registered. The two-account rehearsal remains incomplete; see [the delivery record](docs/delivery-status-2026-10-20.md) and [rehearsal evidence](docs/rehearsal-evidence-2026-10-20.md).
+> **Delivery status (2026-10-20):** The starter and branch-aware Game Wall are published. Five legacy SCDA repositories map to workshop `2026-10-01-scda`; the `Default Event` record remains preserved and excluded from workshop dashboards pending review. The two-account rehearsal remains incomplete; see [the delivery record](docs/delivery-status-2026-10-20.md) and [rehearsal evidence](docs/rehearsal-evidence-2026-10-20.md).
 
 ## Purpose and outcomes
 
@@ -26,7 +26,7 @@ At minute 80, transition the room together even if a manual match is unfinished.
 
 Use the [rehearsal guide](REHEARSAL_GUIDE.md) to verify the live starter, Codespaces, Copilot access, pair collaboration, Source Control pull/push, and deployed dashboard. Send the [pre-session checklist](PRE_SESSION_CHECK.md) with setup instructions. The survey form is currently an unpublished instructor draft and is not accepting responses; distribute it only after it is published and approved. It is for instructor preparation; do not add identity, tutorial-completion, or setup-readiness questions.
 
-Before the session, each participant creates a public repository from the template, opens that repository in their own Codespace, selects Ask, and asks exactly “What does this repository do?” Readiness passes when the response correctly describes the shared tic-tac-toe purpose and how `BOARD.txt` records moves. Participants retain their repositories and Codespaces. During pair setup, each pair chooses one prepared repository, invites the partner, and opens that repository in separate Codespaces. No board edit is required during preparation.
+Before the session, each participant creates a public repository from the template, opens that repository in their own Codespace, selects Ask, and asks exactly “What does this repository do?” Readiness passes when the response correctly describes the shared tic-tac-toe purpose and how `BOARD.txt` records moves. Participants retain their repositories and Codespaces. During pair setup, each pair chooses one prepared repository, invites the partner, and opens that repository in separate Codespaces. Each pair registers its shared repository once for this workshop with both player GitHub handles using the [SCDA Training Week registration form](https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&workshop_id=2026-10-01-scda). No board edit is required during preparation.
 
 ## Facilitation
 
@@ -36,7 +36,7 @@ Use the shared-board analogy: each learner’s Codespace is their own working co
 
 ### Pair setup and manual match (25–70)
 
-Each pair chooses one prepared public repository and adds the partner as a collaborator. Each learner opens that same repository in their own Codespace. Assign X and O, then play numbered moves in order. The canonical `BOARD.txt` has three rows of three single-space-separated cells (`.`, `X`, or `O`); a move replaces one `.`. On every turn: pull the latest partner change in Source Control, edit one square, inspect the diff, stage the board, commit with a clear numbered message, and sync the change. The next player pulls before editing. Keep the first full manual workflow as the shared foundation for Copilot practice.
+Each pair chooses one prepared public repository and adds the partner as a collaborator. Each learner opens that same repository in their own Codespace. Assign X and O, then play numbered moves in order. The canonical `BOARD.txt` has three rows of three single-space-separated cells (`.`, `X`, or `O`); a move replaces one `.`. On every turn: pull the latest partner change in Source Control, edit one square, inspect the diff, stage the board, commit with a clear numbered message, and sync the change. The next player pulls before editing. Keep the first full manual workflow as the shared foundation for Copilot practice. Match branches start from `main`; any branch name beginning with literal lowercase `match` qualifies, with `match-01` a clear teaching example.
 
 ### Copilot demonstration and rematch (70–105)
 
@@ -46,7 +46,7 @@ Create a fresh rematch branch from the agreed baseline. Repeat the same Source C
 
 ### History demonstration and wrap-up (105–120)
 
-The published Game Wall groups public matches by outcome and replays committed board states as a time machine. This is an instructor demonstration, not a participant exercise. Register each match with its numbered branch; the six older branchless records currently appear as errors and cannot be replayed. Verify a newly registered public match before the session, and use GitHub commit history for older records until they are re-registered.
+The published Game Wall shows one card for each discovered `match…` branch and reads `BOARD.txt` from that exact branch. This is an instructor demonstration, not a participant exercise. If replay cannot load, use the GitHub commit history for that match branch to inspect earlier boards. A successful registration comment confirms the repository/workshop link; the card appears only after a successful refresh finds a matching branch. A repository belongs to one workshop, so use a fresh template copy for another workshop. If handles need correction, submit registration again for the same repository and workshop. Archived workshops remain available and receive updates to existing repositories, including handles, but reject new repository registrations. Verify registration acceptance and that at least one branch has appeared before the session. The five legacy SCDA repositories map to `2026-10-01-scda`; the preserved `Default Event` record remains unclassified and excluded pending review.
 
 Connect the workflow to research files, analysis code, and shared manuscripts. Ask what becomes easier when changes have clear authorship, messages, and reviewable history.
 

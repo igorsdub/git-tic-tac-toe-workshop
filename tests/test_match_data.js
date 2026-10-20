@@ -21,7 +21,7 @@ test('normalizes old repository-only registrations as explicit errors', () => {
   const result = MatchData.normalizeMatch({ owner: 'pair', repo: 'old-game' });
   assert.equal(result.status, 'error');
   assert.equal(result.isValid, false);
-  assert.match(result.errors.join(' '), /no match branch/i);
+  assert.match(result.errors.join(' '), /no discovered match branch/i);
   assert.equal(result.historyUrl, null);
 });
 
@@ -29,7 +29,7 @@ test('does not offer replay for a malformed branch registration', () => {
   const result = match({ branch: 'main' });
   assert.equal(result.status, 'error');
   assert.equal(result.historyUrl, null);
-  assert.throws(() => MatchData.historyApiUrl(result), /numbered match branch/);
+  assert.throws(() => MatchData.historyApiUrl(result), /match-prefixed branch/);
 });
 
 test('keeps a valid registration refreshable when its last board read failed', async () => {
@@ -71,7 +71,27 @@ test('history API is scoped to the registered branch and uppercase board filenam
     MatchData.historyApiUrl(current),
     'https://api.github.com/repos/pair/research-game/commits?sha=match-02&path=BOARD.txt&per_page=100',
   );
-  assert.throws(() => MatchData.historyApiUrl(match({ branch: 'main' })), /numbered match branch/);
+  assert.throws(() => MatchData.historyApiUrl(match({ branch: 'main' })), /match-prefixed branch/);
+});
+
+test('accepts every lowercase match-prefixed branch and preserves its full label', async () => {
+  const branches = ['match', 'match01', 'match-01', 'match02', 'match-test'];
+  const normalized = branches.map((branch) => match({ branch }));
+  assert.deepEqual(normalized.map((item) => item.branch), branches);
+  assert.equal(new Set(normalized.map((item) => item.matchKey)).size, branches.length);
+  assert.ok(normalized.every((item) => item.isValid));
+
+  const urls = [];
+  await Promise.all(normalized.map((item) => MatchData.refreshMatchBoard(item, async (url) => {
+    urls.push(url);
+    return { ok: true, text: async () => item.branch };
+  }, (content) => ({ isValid: true, state: 'Ready for X', grid: [[content], [], []] }))));
+  assert.deepEqual(urls.sort(), branches.map((branch) =>
+    `https://raw.githubusercontent.com/pair/research-game/${branch}/BOARD.txt`,
+  ).sort());
+  assert.equal(MatchData.normalizeMatch({ ...normalized[3], branch: 'Match-test' }).isValid, false);
+  assert.equal(MatchData.normalizeMatch({ ...normalized[3], branch: 'MATCH' }).isValid, false);
+  assert.equal(MatchData.normalizeMatch({ ...normalized[3], branch: 'main' }).isValid, false);
 });
 
 test('refreshes the current board from its exact branch and recomputes the outcome', async () => {

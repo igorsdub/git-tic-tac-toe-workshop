@@ -2,28 +2,37 @@
 
 Terms for the paired tic-tac-toe activity and its shared event display.
 
+## GitHub Pages deployment
+
+The Game Wall refresh workflow publishes the `docs/` directory as a GitHub Pages artifact. GitHub Pages must use the **GitHub Actions** publishing source for that workflow to deploy. The current repository setting uses the legacy `main` branch `/docs` source; commits made by the workflow with `GITHUB_TOKEN` do not trigger builds from that source. A repository administrator must make this one-time change under **Settings → Pages → Build and deployment → Source → GitHub Actions**. The workflow cannot switch an existing legacy publishing source automatically.
+
 ## Language
 
-**Pair game**:
-A tic-tac-toe game played by two learners through one shared GitHub repository. Each learner makes moves from their own local copy.
+**Game**:
+The collaborative tic-tac-toe activity in general. Use *match* for one play-through.
+
+**Match**:
+One play-through of tic-tac-toe between a pair, represented by a repository branch whose name starts with the literal lowercase prefix `match`. Each matching branch appears as a separate Game Wall entry; its full branch name identifies the match.
 
 **Board**:
-The uppercase `BOARD.txt` file whose current version records a pair game's 3×3 squares. The canonical format uses three rows of single-space-separated `.`, `X`, and `O` cells. Game state is evaluated dynamically from the grid marks.
+The uppercase `BOARD.txt` file whose current version records a match's 3×3 squares. The canonical format uses three rows of single-space-separated `.`, `X`, and `O` cells. Game state is evaluated dynamically from the grid marks.
 
 **Move**:
 One player's change to one empty square, saved as a commit and shared with the other player.
 
 **Game wall**:
-The public workshop page that displays the current board and state of each registered pair game.
+The public workshop page that displays the current board and state of each discovered match branch for the selected workshop.
 _Avoid_: Leaderboard
 
-**Register game**:
-The action and GitHub issue form used to register a pair game onto the game wall.
-_Avoid_: Register pair game, Add game, Register match
+**Register repository**:
+The action used to connect a pair's repository to one workshop and provide both player GitHub handles. A pair registers once per workshop; matching branches are discovered automatically.
+_Avoid_: Register every match branch
 
 **Workshop**:
-One training session (e.g. SCDA Training Week) and the set of pair games registered for its game wall.
-_Avoid_: Event, Session, Cohort
+A particular scheduled delivery of the training and the matches registered for it.
+
+**Workshop ID**:
+A stable identifier for one workshop, written as `YYYY-MM-DD-short-lowercase-identifier`. Once registrations exist for a workshop, its ID remains unchanged. Its display name is separate from its ID.
 
 **Learner guide**:
 The in-session web page (`docs/guide.html`) explaining pair roles, the turn cycle, and Git commands for playing the game.
@@ -38,5 +47,5 @@ The five-step sequence of Git operations (pull, edit, stage, commit, push) each 
 _Avoid_: Sacred turn cycle, Game loop, Play cycle
 
 **Branch rematch**:
-An extension activity where pairs create a new Git branch to play a second game, learning branch creation, switching, and merging.
+An extension activity where pairs create a new Git branch whose name starts with `match` to play another match. The branch is discovered automatically for the workshop.
 _Avoid_: Game 2, Rematch game, Feature branch game

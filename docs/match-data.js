@@ -6,7 +6,8 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
 
-  const MATCH_BRANCH_PATTERN = /^match-\d{2,}$/;
+  // A match is any branch whose full name starts with literal lowercase "match".
+  const MATCH_BRANCH_PATTERN = /^match/;
   const TERMINAL_STATES = new Set(['X won', 'O won', 'Draw']);
 
   function normalizeMatch(item) {
@@ -19,9 +20,9 @@
 
     if (!owner || !repo) errors.push('Registration does not identify a public repository.');
     if (!branch) {
-      errors.push('This registration has no match branch. Re-register it with a numbered match branch such as match-01.');
+      errors.push('This repository has no discovered match branch beginning with “match”.');
     } else if (!MATCH_BRANCH_PATTERN.test(branch)) {
-      errors.push(`Branch “${branch}” is not a numbered match branch (match-01, match-02, …).`);
+      errors.push(`Branch “${branch}” does not begin with the lowercase prefix “match”.`);
     }
     if (item.boardValid !== true && errors.length === 0) {
       errors.push('This registry record has no validated board. Sync the branch registry before displaying this match.');
@@ -73,7 +74,7 @@
 
   function historyApiUrl(match) {
     if (!match.owner || !match.repo || !MATCH_BRANCH_PATTERN.test(match.branch || '')) {
-      throw new Error('A valid repository and numbered match branch are required to load history.');
+      throw new Error('A valid repository and lowercase match-prefixed branch are required to load history.');
     }
     return `https://api.github.com/repos/${encodeURIComponent(match.owner)}/${encodeURIComponent(match.repo)}/commits?sha=${encodeURIComponent(match.branch)}&path=BOARD.txt&per_page=100`;
   }
@@ -94,7 +95,7 @@
 
   function boardUrl(match) {
     if (!match.owner || !match.repo || !MATCH_BRANCH_PATTERN.test(match.branch || '')) {
-      throw new Error('A valid repository and numbered match branch are required to load the current board.');
+      throw new Error('A valid repository and lowercase match-prefixed branch are required to load the current board.');
     }
     return `https://raw.githubusercontent.com/${encodeURIComponent(match.owner)}/${encodeURIComponent(match.repo)}/${encodeURIComponent(match.branch)}/BOARD.txt`;
   }
