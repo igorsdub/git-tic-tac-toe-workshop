@@ -10,12 +10,12 @@ This handoff is self-contained; access to the background research is optional. F
 
 The workshop serves a broad audience with mixed coding experience and no coding prerequisites. GitHub Codespaces is the primary environment; using each participant's own laptop environment is optional. Each participant works in their own environment. Each pair shares one GitHub repository. Do not use Live Share.
 
-Send one short advance survey alongside the setup instructions for instructor preparation. It links to the instructions and contains exactly these four questions; add no identity, research-modality, pairing, tutorial, or setup-readiness questions. Design it around concrete competency anchors, not self-rated skill levels or a 1–5 scale. Ask each question as select-all-that-apply, with “none/not yet” exclusive where offered:
+Send one short advance survey alongside the setup instructions for instructor preparation. It links to the instructions and contains exactly four questions; add no identity, research-modality, pairing, tutorial, or setup-readiness questions. Use concrete, recognizable examples rather than self-rated skill levels or a numeric scale. Ask participants to tick any choices that fit and let them leave a question blank; do not add a “none/not yet” choice:
 
-- “How do you currently keep track of changes to research files?” Options: renamed files or dated copies/folders; version history in tools such as Google Drive or OneDrive; Git or another version-control system; no consistent method yet.
-- “Which of these have you personally done with Git?” Options: committed and pushed changes; pulled a collaborator's changes; worked with branches or resolved merge conflicts; none of these yet.
-- “How have you used an AI coding assistant?” Options: asked questions or copied suggested code; accepted code suggestions inside the editor; asked an agent to edit files directly; none of these yet.
-- “Which tools do you regularly use in your work?” Options: graphical applications (Excel, Prism, Geneious); code editors or IDEs (RStudio, VS Code, PyCharm); terminal or command line; none of these yet.
+- “How do you keep track of changes to research files?” Options: make renamed copies such as `analysis_v2`, `analysis_final`, or `analysis_final_revised`; use version history in a shared document or cloud storage such as Google Drive or Word; use Git or another version-control system.
+- “How do you usually work on files with other people?” Options: send revised copies by email or chat; work together in a shared Google Doc, Word document, or other cloud document; collaborate through a shared GitHub repository or another version-control system.
+- “How have you used an AI coding assistant?” Options: ask it to explain something or copy suggested code; accept code suggestions while editing; ask an agent to edit files.
+- “Which of these sound like your regular work?” Options: organize data, make tables, or analyze results in tools such as Excel, Prism, or Geneious; edit files in an application such as RStudio, VS Code, or PyCharm; use a terminal or command line to run tools or give commands.
 
 These four questions define the survey's complete scope. Reuse the step-by-step instructions on the existing workshop website, adapting the setup steps for Codespaces. Reserve a small troubleshooting buffer at the opening.
 
