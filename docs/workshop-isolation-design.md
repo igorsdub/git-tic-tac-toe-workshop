@@ -17,9 +17,10 @@ This note records resolved domain decisions and questions that remain open for t
 - A registration connects a repository to a workshop and supplies two player GitHub handles for avatars. The repository is what the dashboard watches.
 - A repository belongs to only one workshop. Registering the same repository with another workshop is rejected. The intended workflow for a new workshop is to make a fresh copy of the template.
 - Repeating registration of the same repository for the same workshop updates the existing registration, including its two player handles; it does not create another dashboard entry.
+- For valid registration issues for the same repository and workshop, the most recently created issue supplies the player handles. Participants submit the form again to correct handles; editing an older issue does not outrank a newer one.
 
 ## Open
 
 - The exact issue-form field name for the workshop ID is an implementation choice. Existing learner and delivery documentation describes repository, numbered branch, and player-handle fields for individual match registrations; that predates the resolved repository-level registration model.
 - How the archive selector presents and navigates organizer-archived workshops.
-- How competing repeat-registration issues are ordered or resolved, and how existing registrations are handled during migration, remain open.
+- How existing registrations are handled during migration remains open.
