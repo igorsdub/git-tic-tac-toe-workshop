@@ -12,6 +12,8 @@ The workshop serves a broad audience with mixed coding experience and no coding 
 
 Send an expected advance setup rehearsal with the survey and setup instructions. The survey links to those instructions and asks participants to report their progress and any blockers. Reuse the step-by-step instructions on the existing workshop website, adapting the setup steps for Codespaces. Reserve a small troubleshooting buffer at the opening.
 
+The advance check should verify that Copilot agent mode actually works, because Codespaces and Copilot access are separate. Copilot Free currently lists limited agent usage and IDE agent mode as included ([Copilot plans](https://github.com/features/copilot/plans)). If a participant cannot use Copilot, they may complete the manual rematch and follow the instructor's agent demonstration. Keep this fallback low prominence because free access is expected.
+
 The activity moves from manual Git play to a timed agent-assisted rematch:
 
 1. Start `match-01` from `main`, register it, then play manually in the shared pair repository.
