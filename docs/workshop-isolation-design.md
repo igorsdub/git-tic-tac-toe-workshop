@@ -2,6 +2,8 @@
 
 This note records resolved domain decisions and questions that remain open for the reusable Game Wall.
 
+The concrete delivery sequence is in [the implementation plan](workshop-isolation-implementation-plan.md).
+
 ## Resolved
 
 - A **workshop** is one scheduled event. Its display name is separate from its stable **workshop ID**.
@@ -16,10 +18,10 @@ This note records resolved domain decisions and questions that remain open for t
 - Keep GitHub issue-form registration. Give each workshop a distinct registration URL that prefills its stable workshop ID; multiple workshop links are supported.
 - Registration requires a workshop ID from the configured list. Missing or unknown IDs are rejected; there is no fallback or default workshop.
 - A registration connects a repository to a workshop and supplies two player GitHub handles for avatars. The repository is what the dashboard watches.
-- Each registration identifies a repository to scan. On every dashboard refresh, discover all branches whose names start with `match`.
+- Each registration identifies a repository to scan. On every successful registry refresh, discover all branches whose names start with `match` and feed the resulting per-branch snapshot to the dashboard.
 - Each matching branch becomes a separate dashboard entry showing the repository, player handles and avatars, and full branch name. Read the board from that branch, not from `main`.
-- A registered repository with no matching branches has no dashboard entries. Confirm registration acceptance in an issue comment; an entry appears on a later successful refresh once a matching branch exists. Apply this same discovery behavior to the five migrated SCDA repositories.
-- When a matching branch is deleted, remove its entry on the next successful refresh. A temporary fetch failure retains the last known entry rather than treating it as deleted.
+- A registered repository with no matching branches has no dashboard entries. Confirm registration acceptance in an issue comment; an entry appears on a later successful registry refresh once a matching branch exists. Apply this same discovery behavior to the five migrated SCDA repositories.
+- When a matching branch is deleted, remove its entry on the next successful registry refresh. A temporary fetch failure retains the last known entry rather than treating it as deleted.
 - A repository belongs to only one workshop. Registering the same repository with another workshop is rejected. The intended workflow for a new workshop is to make a fresh copy of the template.
 - Repeating registration of the same repository for the same workshop updates the existing registration, including its two player handles; it does not create another dashboard entry.
 - For valid registration issues for the same repository and workshop, the most recently created issue supplies the player handles. Participants submit the form again to correct handles; editing an older issue does not outrank a newer one.
