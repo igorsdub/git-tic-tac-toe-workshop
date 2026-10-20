@@ -10,7 +10,7 @@ This handoff is self-contained; access to the background research is optional. F
 
 The workshop serves a broad audience with mixed coding experience and no coding prerequisites. GitHub Codespaces is the primary environment; using each participant's own laptop environment is optional. Each participant works in their own environment. Each pair shares one GitHub repository. Do not use Live Share.
 
-Send an expected advance setup rehearsal with the survey and setup instructions. The survey links to those instructions and asks participants to report their progress and any blockers. Reuse the step-by-step instructions on the existing workshop website, adapting the setup steps for Codespaces. Reserve a small troubleshooting buffer at the opening.
+Send one short advance survey alongside the setup instructions. It links to the instructions and is submitted after participants attempt the rehearsal. It covers prior Git, GitHub, and Copilot experience; GitHub username; rehearsal outcome and any blocker; and support needs. This settles the survey's overall structure, not exact wording or which fields are mandatory. Reuse the step-by-step instructions on the existing workshop website, adapting the setup steps for Codespaces. Reserve a small troubleshooting buffer at the opening.
 
 The advance check should verify that Copilot agent mode actually works, because Codespaces and Copilot access are separate. Copilot Free currently lists limited agent usage and IDE agent mode as included ([Copilot plans](https://github.com/features/copilot/plans)). If a participant cannot use Copilot, they may complete the manual rematch and follow the instructor's agent demonstration. Keep this fallback low prominence because free access is expected.
 
