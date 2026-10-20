@@ -30,7 +30,15 @@ The activity moves from manual Git play to a timed agent-assisted rematch:
 3. At the announced transition, start the agent-assisted rematch on the next numbered branch from `main` and register it. If the optional match was skipped, this is `match-02`; otherwise it is the next number.
 4. Keep completed match branches for review. Do not merge them back into `main`.
 
-No minute-by-minute schedule is agreed here. Final timing remains to be designed.
+The confirmed working agenda totals 120 minutes; website implementation remains pending:
+
+- 10 minutes: arrival and setup troubleshooting.
+- 15 minutes: Git/GitHub mental model and demonstration.
+- 15 minutes: form pairs, create the shared repository, and open Codespaces.
+- 30 minutes: manual match.
+- 10 minutes: Copilot demonstration.
+- 25 minutes: agent-assisted rematch.
+- 15 minutes: review history, research applications, and wrap up.
 
 ## Repository, board, and registration model
 
@@ -64,7 +72,6 @@ A later, separately authorized implementation plan should cover the template and
 
 ## Open design decisions
 
-- Exact two-hour agenda and transition time.
 - Board validation rules and facilitator recovery for an invalid or inaccessible registered branch.
 - Whether conflict practice is included and its exact deterministic sequence.
 - How instructional steps and automated checks are delivered, separately from match registration.
