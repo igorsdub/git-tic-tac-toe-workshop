@@ -1,6 +1,6 @@
 # Git Tic-Tac-Toe: Learner Guide
 
-> **Workshop readiness:** This guide describes the approved match workflow. The uppercase `BOARD.txt` starter contract and branch-aware Game Wall are implemented in local feature branches, but have not been published. The live starter still uses lowercase `board.txt`, and the public Game Wall does not yet reflect the local changes. Your facilitator will confirm the live setup before play begins.
+> **Workshop readiness:** The starter template and branch-aware Game Wall are published. The Game Wall currently has six older records without numbered match branches; they appear as needing attention until re-registered. For each match, register the pair repository, numbered branch, and both player handles using the [game registration form](https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml). Your facilitator will confirm the live match before play begins.
 
 In this workshop, you and a partner collaborate in one shared public GitHub repository. You will play one match by hand, then use Copilot to make a board edit you already know how to make. You remain responsible for reviewing and publishing every change.
 
@@ -10,7 +10,7 @@ Each person works in their own GitHub Codespace, opened in the browser-based VS 
 
 Before the session, each of you creates a public repository from the starter template, opens it in your own Codespace, and completes the Ask readiness check. Keep both prepared repositories and Codespaces. At the session, choose one repository for your pair, invite your partner, and each open that repository in a separate Codespace. Match setup uses numbered branches from `main`: the first match is `match-01`. Keep match branches separate; do not merge them back into `main`.
 
-The local registration and Game Wall code supports separate match branches. The public issue form and deployed Game Wall do not yet include those changes. Follow the facilitator's directions for registration and do not assume live matches will appear separately until publication is confirmed.
+The public issue form and Game Wall support separate match branches. Register every match branch separately; do not assume the older branchless records represent a live match.
 
 ## Manual match: make and share a move
 
@@ -46,4 +46,4 @@ Ask your partner or facilitator to look at the board and Source Control with you
 
 ## Closing demonstration
 
-The instructor will review repository history and connect the workflow to research files. The local Game Wall implementation groups public matches by result and replays valid committed board states, but the published site does not include it yet. If the update is not deployed, the instructor can use GitHub commit history. Exploring an alternative history from an earlier branch point is an optional instructor extension, not a learner task.
+The instructor will review repository history and connect the workflow to research files. The published Game Wall groups registered matches by result and replays valid committed board states. Existing branchless records cannot be replayed until re-registered; for those, the instructor can use GitHub commit history. Exploring an alternative history from an earlier branch point is an optional instructor extension, not a learner task.
