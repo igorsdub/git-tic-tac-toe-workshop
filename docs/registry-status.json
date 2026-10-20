@@ -3,7 +3,10 @@
     {
       "repoUrl": "https://github.com/igorsdub/workshop-dashboard-verification-20261020",
       "status": "success",
-      "matchBranches": []
+      "matchBranches": [
+        "match-01",
+        "match-02"
+      ]
     },
     {
       "repoUrl": "https://github.com/nanetteraczka1/tictactoe",
