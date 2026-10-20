@@ -15,6 +15,13 @@ This two-hour workshop teaches collaborative Git through a paired tic-tac-toe ga
 - [Game Wall](docs/index.html) and [setup page](docs/setup.html)
 - [Glossary](CONTEXT.md)
 
+## Repository map
+
+- [`template/`](template/README.md) is the local reference for the learner starter repository: its current `BOARD.txt`, editing conventions, and canonical empty-board example. Publish changes to the separate template repository explicitly.
+- [`scripts/`](scripts/) contains board validation, registration parsing, and registry synchronization.
+- [`tests/`](tests/) covers the workshop guides, parser, dashboard, and slides. `tests/fixtures/legacy-board/` preserves older board formats as compatibility fixtures.
+- [`docs/`](docs/) contains the Pages site and instructor Game Wall. The separate [`docs/slides/`](docs/slides/) directory contains the workshop presentation.
+
 ## Working 120-minute agenda
 
 | Minutes | Activity |

@@ -26,8 +26,10 @@ class TestDocumentationReadiness(unittest.TestCase):
         "docs/delivery-status-2026-10-20.md",
         "docs/rehearsal-evidence-2026-10-20.md",
         "docs/rehearsal-evidence-compact-board-2026-10-20.md",
-        "template-spec/README.md",
-        "template-spec/BOARD.txt",
+        "template/README.md",
+        "template/BOARD.txt",
+        "template/AGENTS.md",
+        "template/samples/empty.md",
     ]
 
     def test_primary_documents_exist(self):
@@ -104,7 +106,7 @@ class TestApprovedWorkshopPath(unittest.TestCase):
             self.assertIn(requirement, preflight)
 
     def test_compact_board_contract_and_agent_prompt_are_current(self):
-        board = (REPO_ROOT / "template-spec/BOARD.txt").read_text(encoding="utf-8")
+        board = (REPO_ROOT / "template/README.md").read_text(encoding="utf-8")
         learner = (REPO_ROOT / "LEARNER_GUIDE.md").read_text(encoding="utf-8")
         self.assertIn("exactly three rows of three cells", board)
         self.assertIn("replaces one `.`", board)
