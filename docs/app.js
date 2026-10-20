@@ -191,6 +191,7 @@ State: Waiting for O
     allGames: [],
     catalog: null,
     activeWorkshopId: null,
+    lastLoadError: null,
     currentFilter: 'all', // 'all', 'pending', 'finished', 'errors'
     isLoading: false,
     lastUpdated: null,
@@ -640,11 +641,32 @@ State: Waiting for O
       window.history.pushState({}, '', url);
     }
     updateWorkshopChrome();
+    updateWorkshopNotice();
     render();
   }
 
   function workshopGames() {
     return state.allGames.filter((game) => game.workshopId === state.activeWorkshopId);
+  }
+
+  function updateWorkshopNotice() {
+    if (state.lastLoadError) {
+      showNotice(`${state.lastLoadError} Showing the last successfully loaded workshop snapshot.`, 'notice-warning');
+      return;
+    }
+    if (state.useDemoData) {
+      showNotice('Showing demo records for the selected workshop (Manual Demo Mode)', 'notice-info');
+      return;
+    }
+    const games = workshopGames();
+    const errorCount = games.filter((match) => match.status === 'error').length;
+    if (errorCount > 0) {
+      showNotice(`${errorCount} registered ${errorCount === 1 ? 'match needs' : 'matches need'} attention. Open an Issues card for the reason.`, 'notice-warning');
+    } else if (games.length === 0) {
+      showNotice('No matching branches have been discovered for this workshop yet. Create a branch whose name begins with “match”.', 'notice-info');
+    } else {
+      hideNotice();
+    }
   }
 
   /** Load the generated branch snapshot; browser visitors make no GitHub API requests. */
@@ -654,7 +676,7 @@ State: Waiting for O
     try {
       if (!state.catalog) await loadWorkshopCatalog();
       if (state.useDemoData) {
-        loadMockData('Showing demo records for the selected workshop (Manual Demo Mode)');
+        loadMockData();
         return;
       }
       let response = await fetch(`${BOARD_REGISTRY_URL}?t=${Date.now()}`);
@@ -672,20 +694,14 @@ State: Waiting for O
         grid: match.boardValid === true ? match.board : null,
       }));
       state.lastUpdated = new Date();
-      const errorCount = workshopGames().filter((match) => match.status === 'error').length;
-      if (errorCount > 0) {
-        showNotice(`${errorCount} registered ${errorCount === 1 ? 'match needs' : 'matches need'} attention. Open an Issues card for the reason.`, 'notice-warning');
-      } else {
-        hideNotice();
-      }
-      if (workshopGames().length === 0) {
-        showNotice('No matching branches have been discovered for this workshop yet. Create a branch whose name begins with “match”.', 'notice-info');
-      }
+      state.lastLoadError = null;
+      updateWorkshopNotice();
       render();
     } catch (err) {
       console.warn('Network or API failure fetching live games:', err);
       // Keep the last successful snapshot visible during a transient polling failure.
-      showNotice(`${err.message} Showing the last successfully loaded workshop snapshot.`, 'notice-warning');
+      state.lastLoadError = err.message;
+      updateWorkshopNotice();
       render();
     } finally {
       setLoading(false);
@@ -693,9 +709,7 @@ State: Waiting for O
   }
 
   function loadMockData(message) {
-    if (message) {
-      showNotice(message, 'notice-info');
-    }
+    state.lastLoadError = null;
     state.allGames = MOCK_GAMES.map((mock) => {
       const evaluation = evaluateBoardContent(mock.boardContent);
       return {
@@ -717,6 +731,7 @@ State: Waiting for O
       };
     });
     state.lastUpdated = new Date();
+    updateWorkshopNotice();
     render();
   }
 
@@ -1093,9 +1108,7 @@ State: Waiting for O
 
   function startPolling() {
     if (state.timerId) clearInterval(state.timerId);
-    state.timerId = setInterval(() => {
-      loadGames();
-    }, CONFIG.REFRESH_INTERVAL_SEC * 1000);
+    state.timerId = setInterval(() => loadGames(), CONFIG.REFRESH_INTERVAL_SEC * 1000);
   }
 
   // ==========================================
@@ -1140,7 +1153,13 @@ State: Waiting for O
       window.addEventListener('popstate', () => {
         const requested = new URL(window.location.href).searchParams.get('workshop');
         const available = state.catalog && state.catalog.workshops.some((workshop) => workshop.id === requested);
-        selectWorkshop(available ? requested : state.catalog.defaultWorkshopId, false);
+        const selectedId = available ? requested : state.catalog.defaultWorkshopId;
+        if (requested && !available) {
+          const url = new URL(window.location.href);
+          url.searchParams.set('workshop', selectedId);
+          window.history.replaceState({}, '', url);
+        }
+        selectWorkshop(selectedId, false);
       });
     }
 

@@ -75,7 +75,7 @@ test('history API is scoped to the registered branch and uppercase board filenam
 });
 
 test('accepts every lowercase match-prefixed branch and preserves its full label', async () => {
-  const branches = ['match01', 'match-01', 'match02', 'match-test'];
+  const branches = ['match', 'match01', 'match-01', 'match02', 'match-test'];
   const normalized = branches.map((branch) => match({ branch }));
   assert.deepEqual(normalized.map((item) => item.branch), branches);
   assert.equal(new Set(normalized.map((item) => item.matchKey)).size, branches.length);
@@ -90,6 +90,7 @@ test('accepts every lowercase match-prefixed branch and preserves its full label
     `https://raw.githubusercontent.com/pair/research-game/${branch}/BOARD.txt`,
   ).sort());
   assert.equal(MatchData.normalizeMatch({ ...normalized[3], branch: 'Match-test' }).isValid, false);
+  assert.equal(MatchData.normalizeMatch({ ...normalized[3], branch: 'MATCH' }).isValid, false);
   assert.equal(MatchData.normalizeMatch({ ...normalized[3], branch: 'main' }).isValid, false);
 });
 
