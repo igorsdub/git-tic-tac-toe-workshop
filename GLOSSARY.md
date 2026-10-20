@@ -9,3 +9,5 @@
 **Repository**: The GitHub repository connected to a workshop by a registration. Its branches are the source from which the dashboard discovers matches.
 
 **Match**: One play-through of tic-tac-toe represented by a repository branch. Matches are discovered automatically from branches; each match is not registered separately. A pair may play multiple matches during a workshop.
+
+**Game**: The collaborative tic-tac-toe activity in general. Use *match* for one play-through.
