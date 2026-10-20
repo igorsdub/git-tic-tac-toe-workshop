@@ -10,6 +10,8 @@ This handoff is self-contained; access to the background research is optional. F
 
 The workshop serves a broad audience with mixed coding experience and no coding prerequisites. GitHub Codespaces is the primary environment; using each participant's own laptop environment is optional. Each participant works in their own environment. Each pair shares one GitHub repository. Do not use Live Share.
 
+Send an expected advance setup rehearsal with the survey and setup instructions. The survey links to those instructions and asks participants to report their progress and any blockers. Reuse the step-by-step instructions on the existing workshop website, adapting the setup steps for Codespaces. Reserve a small troubleshooting buffer at the opening.
+
 The activity moves from manual Git play to a timed agent-assisted rematch:
 
 1. Start `match-01` from `main`, register it, then play manually in the shared pair repository.
@@ -17,7 +19,7 @@ The activity moves from manual Git play to a timed agent-assisted rematch:
 3. At the announced transition, start the agent-assisted rematch on the next numbered branch from `main` and register it. If the optional match was skipped, this is `match-02`; otherwise it is the next number.
 4. Keep completed match branches for review. Do not merge them back into `main`.
 
-No minute-by-minute schedule is agreed here. Final timing, setup/preflight, and recovery time remain to be designed.
+No minute-by-minute schedule is agreed here. Final timing remains to be designed.
 
 ## Repository, board, and registration model
 
@@ -31,7 +33,7 @@ A registration issue identifies a match. Any instructional or progress issue is 
 
 For the initial agent-assisted moves, participants choose a legal move and tell the agent what to change. Later, they may optionally ask the agent to choose an individual move. This optional mode is limited to an individual move; the workshop does not ask participants to build a game from scratch or create a continuously playing unattended bot.
 
-Before publishing an agent-assisted change, participants inspect the diff, check that the move is legal, and review the Git state. Both participants must actively edit and complete Git steps themselves: commit, push, pull the partner's change, and check the resulting board and history. The exercise should give each person a turn as the active editor and make the navigator's review work explicit.
+Collaborative Git is a core workshop outcome. Everyone completes the manual Git workflow first; the Copilot agent-assisted rematch builds on that experience. Before publishing an agent-assisted change, participants inspect the diff, check that the move is legal, and review the Git state. Learners remain responsible for reviewing the agent's edit and committing it. Both participants must actively edit and complete Git steps themselves: commit, push, pull the partner's change, and check the resulting board and history. The exercise should give each person a turn as the active editor and make the navigator's review work explicit.
 
 ## Tentative conflict-practice activity
 
@@ -51,7 +53,7 @@ A later, separately authorized implementation plan should cover the template and
 
 ## Open design decisions
 
-- Exact two-hour agenda, transition time, participant instructions, setup/preflight, and recovery buffer.
+- Exact two-hour agenda and transition time.
 - Board validation rules and facilitator recovery for an invalid or inaccessible registered branch.
 - Whether conflict practice is included and its exact deterministic sequence.
 - How instructional steps and automated checks are delivered, separately from match registration.
