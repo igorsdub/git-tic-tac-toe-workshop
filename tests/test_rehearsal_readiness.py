@@ -31,7 +31,7 @@ class TestMarkdownDocumentationReadiness(unittest.TestCase):
         "CONTEXT.md",
         "docs/load_test_simulation.md",
         "template-spec/README.md",
-        "template-spec/board.txt",
+        "template-spec/BOARD.txt",
     ]
 
     def test_expected_documentation_files_exist(self):
