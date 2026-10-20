@@ -33,6 +33,8 @@ class TestPublishRegistrySnapshots(unittest.TestCase):
         (checkout / "docs").mkdir()
         (checkout / "docs" / "source.json").write_text('{"source":"initial"}\n', encoding="utf-8")
         (checkout / "docs" / "board.json").write_text("[]\n", encoding="utf-8")
+        (checkout / "docs" / "registrations.json").write_text('{"registrations":[]}\n', encoding="utf-8")
+        (checkout / "docs" / "registry-status.json").write_text('{"repositories":[]}\n', encoding="utf-8")
         git(checkout, "add", "docs")
         git(checkout, "commit", "-m", "initial source")
         git(checkout, "push", "-u", "origin", "main")
