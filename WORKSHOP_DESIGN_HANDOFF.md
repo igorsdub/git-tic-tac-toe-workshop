@@ -14,6 +14,8 @@ Send an expected advance setup rehearsal with the survey and setup instructions.
 
 The advance check should verify that Copilot agent mode actually works, because Codespaces and Copilot access are separate. Copilot Free currently lists limited agent usage and IDE agent mode as included ([Copilot plans](https://github.com/features/copilot/plans)). If a participant cannot use Copilot, they may complete the manual rematch and follow the instructor's agent demonstration. Keep this fallback low prominence because free access is expected.
 
+For the setup rehearsal, participants open the instructor-supplied tic-tac-toe repository in their own Codespace and ask Copilot chat, “What does this repository do?” They confirm the response, leave the editor, and delete the Codespace from the GitHub Codespaces dashboard. They do not commit or push before the workshop; the first complete Git workflow stays live. The exact repository and whether this chat must use Agent mode remain undecided.
+
 The activity moves from manual Git play to a timed agent-assisted rematch:
 
 1. Start `match-01` from `main`, register it, then play manually in the shared pair repository.
