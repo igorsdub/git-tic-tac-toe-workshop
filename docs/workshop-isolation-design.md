@@ -16,13 +16,16 @@ This note records resolved domain decisions and questions that remain open for t
 - Keep GitHub issue-form registration. Give each workshop a distinct registration URL that prefills its stable workshop ID; multiple workshop links are supported.
 - Registration requires a workshop ID from the configured list. Missing or unknown IDs are rejected; there is no fallback or default workshop.
 - A registration connects a repository to a workshop and supplies two player GitHub handles for avatars. The repository is what the dashboard watches.
+- Each registration identifies a repository to scan. On every dashboard refresh, discover all branches whose names start with `match`.
+- Each matching branch becomes a separate dashboard entry showing the repository, player handles and avatars, and full branch name. Read the board from that branch, not from `main`.
+- A registered repository with no matching branches has no dashboard entries. Confirm registration acceptance in an issue comment; an entry appears on a later successful refresh once a matching branch exists. Apply this same discovery behavior to the five migrated SCDA repositories.
+- When a matching branch is deleted, remove its entry on the next successful refresh. A temporary fetch failure retains the last known entry rather than treating it as deleted.
 - A repository belongs to only one workshop. Registering the same repository with another workshop is rejected. The intended workflow for a new workshop is to make a fresh copy of the template.
 - Repeating registration of the same repository for the same workshop updates the existing registration, including its two player handles; it does not create another dashboard entry.
 - For valid registration issues for the same repository and workshop, the most recently created issue supplies the player handles. Participants submit the form again to correct handles; editing an older issue does not outrank a newer one.
 - Every registration issue receives an automated comment stating whether it was accepted or rejected and why. Rejection examples include a missing or unknown workshop ID and a repository already assigned to another workshop.
 - Migrate the five legacy entries labeled `SCDA Training Week` to workshop ID `2026-10-01-scda`. Keep the unclassified `Default Event` entry out of workshop dashboards pending review, and preserve it rather than deleting it.
 
-## Open
+## Deferred
 
-- The exact issue-form field name for the workshop ID is an implementation choice. Existing learner and delivery documentation describes repository, numbered branch, and player-handle fields for individual match registrations; that predates the resolved repository-level registration model.
-- The five legacy SCDA records contain repository and player fields but no branch fields; which matching branches currently exist in those repositories has not been established for migration.
+- Future workshop names and date mappings remain unconfirmed and can be supplied as configuration data when known.
