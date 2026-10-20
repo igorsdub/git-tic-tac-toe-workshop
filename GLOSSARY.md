@@ -6,7 +6,7 @@
 
 **Registration**: A connection between a repository and a workshop, with two player GitHub handles supplied for avatars. The dashboard watches the registered repository.
 
-**Repository**: The GitHub repository connected to a workshop by a registration. Its branches are the source from which the dashboard discovers matches.
+**Repository**: The GitHub repository connected to one workshop by a registration. A repository belongs to only one workshop; its branches are the source from which the dashboard discovers matches.
 
 **Match**: One play-through of tic-tac-toe represented by a repository branch. Matches are discovered automatically from branches; each match is not registered separately. A pair may play multiple matches during a workshop.
 
