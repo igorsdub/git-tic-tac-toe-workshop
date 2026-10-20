@@ -1,108 +1,53 @@
-# Git Tic-Tac-Toe: Learner Handout
+# Git Tic-Tac-Toe: Learner Guide
 
-> **Design status (2026-10-20):** These instructions describe the current lowercase `board.txt` activity. The [current design handoff](WORKSHOP_DESIGN_HANDOFF.md) documents a planned workflow and is not implemented yet.
+> **Workshop readiness:** This guide describes the approved match workflow. The live starter currently uses lowercase `board.txt`, while the planned match workflow uses uppercase `BOARD.txt`. The public Game Wall also cannot yet register or display separate match branches. Your facilitator will confirm that the required updates are ready before play begins.
 
-> [!TIP]
-> **Interactive Web Version Available!**
-> Prefer an interactive guide with 1-click terminal copy buttons, quick section jumps, and dark mode?
-> Open **[`docs/guide.html`](docs/guide.html)** in your browser!
-> Need laptop setup first? Check out **[`docs/setup.html`](docs/setup.html)**.
+In this workshop, you and a partner collaborate in one shared public GitHub repository. You will play one match by hand, then use Copilot to make a board edit you already know how to make. You remain responsible for reviewing and publishing every change.
 
-Welcome to the **Git Tic-Tac-Toe Workshop**! In this session, you and your partner will play a game of tic-tac-toe by committing and pushing moves to a single shared GitHub repository.
+Each person works in their own GitHub Codespace, opened in the browser-based VS Code editor. You will use the VS Code **Source Control** view for Git. You do not need to use the terminal.
 
----
+## Before play
 
-## 1. Roles & Initial Setup
+Your facilitator will guide your pair through creating one shared repository from the starter template and inviting both partners. Each of you then opens that pair repository in your own Codespace. Match setup uses numbered branches from `main`: the first match is `match-01`. Keep match branches separate; do not merge them back into `main`.
 
-Pick who is **Player X** and who is **Player O**:
+The match registration form and Game Wall do not yet support separate match branches. Follow the facilitator's instructions for any registration during the workshop; do not assume the current Game Wall will show every match separately.
 
-| Role | Responsibilities | Setup Steps |
-|---|---|---|
-| **Player X** <br>*(Host / First Mover)* | • Owns the repository<br>• Makes opening move (`X`) | 1. Create the repository from template [igorsdub/git-tic-tac-toe-template](https://github.com/igorsdub/git-tic-tac-toe-template) (click **Use this template**).<br>2. Go to **Settings > Collaborators > Add people**.<br>3. Invite Player O by their GitHub username. |
-| **Player O** <br>*(Collaborator / Second Mover)* | • Collaborates on repository<br>• Makes second move (`O`) | 1. Accept the invitation (check email or GitHub notifications).<br>2. Open your terminal and clone the repository:<br>&nbsp;&nbsp;&nbsp;`git clone <repo-url>`<br>&nbsp;&nbsp;&nbsp;`cd <repo-folder>` |
+## Manual match: make and share a move
 
----
+Both partners use the same match branch in their own Codespace. Take turns. Before editing, confirm the branch name in the VS Code status bar and use **Source Control → Pull** to get your partner's latest move.
 
-## 2. The Sacred Turn Cycle
+1. Open `BOARD.txt` in the editor. Change one empty square to your mark, then save.
+2. In **Source Control**, open the changed file and review the diff. Check that it contains only the legal move you intended.
+3. Stage the board file with the **+** control.
+4. Enter a clear commit message and select **Commit**.
+5. Select **Push** in Source Control. Tell your partner the move is ready.
+6. Your partner selects **Pull**, checks the board and commit, and takes the next turn.
 
-Every turn follows five simple steps. **Never edit the board before pulling!**
+Saving a file, staging it, committing it, and pushing it are separate actions. The facilitator will show where each action appears in Source Control before the match starts.
 
-```
-┌───────────┐      ┌─────────────┐      ┌─────────────┐      ┌────────────┐      ┌────────────┐
-│ 1. PULL   │ ───> │ 2. EDIT     │ ───> │ 3. STAGE    │ ───> │ 4. COMMIT  │ ───> │ 5. PUSH    │
-│ git pull  │      │  board.txt   │      │ git add ... │      │ git commit │      │  git push  │
-└───────────┘      └─────────────┘      └─────────────┘      └────────────┘      └────────────┘
-```
+## Agent-assisted rematch
 
-### Step 1: Pull the latest move
-Always pull before making your move so you have your partner's latest board:
-```bash
-git pull origin main
-```
+At the scheduled transition, every pair begins a fresh rematch, even if its manual match is unfinished. Leave the unfinished match on its branch. Start the next numbered match from `main` and use the same VS Code web workflow.
 
-### Step 2: Make your move in `board.txt`
-Open `board.txt` in your text editor. Replace **one** empty square (`[ ]`) with your symbol (`[X]` or `[O]`) and update the `State:` line. Save the file.
+You choose a legal move and ask Copilot to make that board edit. For example: “Update `BOARD.txt` to place X in the top-left square. Make only this move.” Then:
 
-### Step 3: Check and stage your change
-Verify what you modified and prepare it for saving:
-```bash
-git status
-git diff
-git add board.txt
-```
+1. Inspect the diff yourself and confirm Copilot made only the intended legal move.
+2. Check the branch and Git state in Source Control.
+3. Stage the board, write the commit message, and commit it yourself.
+4. Push the commit. Your partner pulls it and checks the resulting board and history.
 
-### Step 4: Commit with a descriptive message
-Save your move into the project history:
-```bash
-git commit -m "Move 3: X in center square 5"
-```
+Copilot makes the board edit; you make the decisions and complete the Git workflow. Later, you may ask Copilot to choose an individual legal move, but that is optional.
 
-### Step 5: Push your move to GitHub
-Send your move to the shared repository:
-```bash
-git push origin main
-```
-**Tell your partner:** *"Your turn!"*
+If Copilot is unavailable to you, continue with the manual workflow during the rematch and follow the instructor's Copilot demonstration.
 
----
+## If something goes wrong
 
-## 3. Quick Reference Commands
+- **The repository or branch is missing, or the board cannot be opened:** Pause and ask the facilitator to check the repository and branch. Do not create a replacement branch or change `main` on your own.
+- **A push is rejected:** Stop and ask your partner and facilitator to check the current branch and incoming changes. Use **Pull** only after you have saved and reviewed your own work; then inspect the updated board before continuing.
+- **A merge conflict appears naturally:** Keep the current work. Open the conflicted board in VS Code, review the conflict with your partner, and agree on a legal board state. Remove conflict markers, review the complete diff, then stage, commit, and push the resolution. Ask the facilitator to help if you are unsure. Never discard changes, reset the branch, or force-push to get past a conflict.
 
-| Command | What It Does | When to Use |
-|---|---|---|
-| `git status` | Shows modified, staged, or untracked files | Anytime you are unsure what state your folder is in |
-| `git diff` | Shows line-by-line changes since last commit | Before staging to confirm you only changed one square |
-| `git log --oneline` | Displays commit history in a clean, short list | After pulling to see who made what moves |
-| `git log --graph --oneline` | Visualizes the branch and commit history | At the end of the game to review the full match |
+There is no staged conflict exercise. Conflicts are handled only if they arise during normal collaboration.
 
----
+## Closing demonstration
 
-## 4. What If a Push Is Rejected?
-
-If you see:
-```text
-! [rejected] main -> main (fetch first)
-error: failed to push some refs...
-```
-**Do not panic!** Git is simply telling you that your partner pushed a move that you don't have yet.
-1. Run `git pull origin main`.
-2. Inspect `board.txt` to see the updated board.
-3. Run `git push origin main`.
-
----
-
-## 5. Extension: Branch Rematch (Finished Early?)
-
-If you and your partner finish your game before time is called, play a **rematch on a branch**! This keeps your first game safe on `main` while you play game 2 in isolation:
-
-1. **Player X** creates and pushes a new branch:
-   ```bash
-   git checkout -b rematch
-   git push -u origin rematch
-   ```
-2. **Player O** switches to the rematch branch:
-   ```bash
-   git fetch origin
-   git checkout rematch
-   ```
-3. Reset `board.txt` back to empty squares (`[ ]`), update `State: Ready for X` (swap roles if Player O wants to go first), commit as `"Start Rematch Game 2"`, push, and play!
+The instructor will review repository history and connect the workflow to research files. A dashboard that groups public matches by result and replays committed board states is a planned instructor demonstration; its implementation is separate from this guide. The current Game Wall does not yet support match branches or history replay. Exploring an alternative history from an earlier branch point is an optional instructor extension, not a learner task.

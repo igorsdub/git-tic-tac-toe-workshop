@@ -3,240 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Setup Guide - Git Tic-Tac-Toe Workshop</title>
-  <meta name="description" content="Pre-session environment checklist for Git Tic-Tac-Toe: GitHub account, Git installation, email privacy, and authentication.">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><text y=%2226%22 font-size=%2224%22>🛠️</text></svg>">
+  <title>Setup - Git Tic-Tac-Toe Workshop</title>
+  <meta name="description" content="Prepare for the Git Tic-Tac-Toe workshop with a short Codespaces and Copilot rehearsal.">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="wall-header">
-    <div class="header-container">
-      <div class="brand">
-        <a href="index.html" class="brand-link">
-          <span class="brand-icon">🎮</span>
-          <div class="brand-text">
-            <h1>Git Tic-Tac-Toe</h1>
-            <p class="subtitle">Collaboration with Git and GitHub</p>
-          </div>
-        </a>
-      </div>
-      <div class="header-actions">
-        <nav class="nav-links" aria-label="Workshop Navigation">
-          <a href="guide.html" class="btn btn-outline nav-btn">📖 How to Play</a>
-          <a href="setup.html" class="btn btn-outline nav-btn active">🛠️ Setup</a>
-        </nav>
-        <a href="https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml" 
-           target="_blank" rel="noopener noreferrer" class="btn btn-primary register-btn">
-          ➕ Register Game
-        </a>
-        <button id="theme-toggle" class="btn btn-icon" title="Toggle dark/light theme" aria-label="Toggle theme">
-          🌙
-        </button>
-        <a href="https://github.com/igorsdub/git-tic-tac-toe-workshop" 
-           target="_blank" 
-           rel="noopener noreferrer" 
-           class="btn btn-icon" 
-           aria-label="View repository on GitHub" 
-           title="View repository on GitHub">
-          <svg class="github-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
-          </svg>
-        </a>
-      </div>
-    </div>
-  </header>
-
-  <main class="guide-main">
-    <div class="guide-container">
-      <header class="guide-hero">
-        <h1>Setup Guide</h1>
-        <p class="lead">Complete these steps before attending the workshop to ensure your laptop has Git installed, configured, and authenticated with GitHub.</p>
-      </header>
-
-      <!-- Quick Jump Navigation -->
-      <nav class="jump-nav" aria-label="Quick jump to section">
-        <span class="jump-nav-label">Jump to:</span>
-        <a href="#step-github" class="jump-pill">Account &amp; Privacy</a>
-        <a href="#step-install" class="jump-pill">Install Git</a>
-        <a href="#step-auth" class="jump-pill">Authenticate</a>
-        <a href="#step-verify" class="jump-pill">Verification</a>
-      </nav>
-
-      <!-- Step 1: GitHub Account & Privacy -->
-      <section class="guide-section" id="step-github">
-        <h2>GitHub Account &amp; Privacy</h2>
-        <p>GitHub hosts our shared pair repositories and coordinates collaboration.</p>
-        
-        <ol>
-          <li>
-            <strong>Sign In or Register</strong>: If you do not have an account, sign up at <a href="https://github.com/signup" target="_blank" rel="noopener noreferrer">github.com/signup</a>.
-          </li>
-          <li>
-            <strong>Enable 2FA / Passkeys</strong>: GitHub requires two-factor authentication. We recommend registering a <strong>Passkey</strong> (Touch ID, Windows Hello, or device PIN) via GitHub <strong>Settings &gt; Password and authentication</strong>.
-          </li>
-          <li>
-            <strong>Protect Your Email Privacy (Recommended)</strong>:
-            By default, your email address is etched permanently into every Git commit. Protect your address from web scrapers and spam:
-            <ul>
-              <li>Open GitHub <strong>Settings &gt; Emails</strong> (<a href="https://github.com/settings/emails" target="_blank" rel="noopener noreferrer">github.com/settings/emails</a>).</li>
-              <li>Check <strong>Keep my email addresses private</strong>.</li>
-              <li>Check <strong>Block command line pushes that expose my email</strong>.</li>
-              <li>Copy your private generated address (looks like <code>12345678+username@users.noreply.github.com</code> or <code>username@users.noreply.github.com</code>). You will use this in Step 3!</li>
-            </ul>
-          </li>
-        </ol>
-      </section>
-
-      <!-- Step 2: Install Git -->
-      <section class="guide-section" id="step-install">
-        <h2>Install Git</h2>
-        <p>Open your terminal application and verify if Git is already installed:</p>
-
-        <div class="code-block-wrapper">
-          <pre><code>git --version</code></pre>
-          <button class="copy-btn" title="Copy to clipboard" aria-label="Copy command to clipboard">📋 Copy</button>
-        </div>
-
-        <p>If Git is already installed (any version 2.20+), you can proceed directly to Step 3. If not, install Git via GitHub Desktop or your operating system below:</p>
-
-        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-          <div class="role-card" style="border: 2px solid var(--border-dark);">
-            <span class="role-badge" style="background-color: var(--primary);">Recommended Alternative</span>
-            <p><strong>GitHub Desktop</strong> (from <a href="https://desktop.github.com/" target="_blank" rel="noopener noreferrer">desktop.github.com</a>) is an official app for macOS and Windows that:</p>
-            <ul style="margin-top:0.25rem; margin-bottom:0.25rem;">
-              <li>Bundles Git automatically (no separate command-line installer needed).</li>
-              <li>Handles browser-based authentication seamlessly.</li>
-              <li>Provides an easy graphical interface for cloning, committing, and pushing.</li>
-            </ul>
-            <p><a href="https://desktop.github.com/" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="margin-top:0.25rem;">Download GitHub Desktop</a></p>
-          </div>
-
-          <div class="role-card">
-            <span class="role-badge">macOS</span>
-            <p>Run the following command in Terminal (<code>Cmd + Space</code>, type <code>Terminal</code>):</p>
-            <div class="code-block-wrapper">
-              <pre><code>xcode-select --install</code></pre>
-              <button class="copy-btn" title="Copy to clipboard" aria-label="Copy command to clipboard">📋 Copy</button>
-            </div>
-            <p>Click <strong>Install</strong> when the dialog appears. Alternatively, if you use Homebrew: <code>brew install git</code>.</p>
-          </div>
-
-          <div class="role-card">
-            <span class="role-badge">Windows</span>
-            <p>Download and install <strong>Git for Windows</strong>:</p>
-            <p><a href="https://git-scm.com/download/win" target="_blank" rel="noopener noreferrer" class="btn btn-outline" style="margin-top:0.25rem;">Download Git for Windows</a></p>
-            <p style="margin-top:0.5rem;font-size:0.875rem;">Run the installer and accept the default settings. This provides <strong>Git Bash</strong>, a UNIX-like terminal for Windows.</p>
-          </div>
-
-          <div class="role-card">
-            <span class="role-badge">Linux (Ubuntu/Debian)</span>
-            <p>Run the standard package manager in your terminal (<code>Ctrl + Alt + T</code>):</p>
-            <div class="code-block-wrapper">
-              <pre><code>sudo apt update && sudo apt install -y git curl</code></pre>
-              <button class="copy-btn" title="Copy to clipboard" aria-label="Copy command to clipboard">📋 Copy</button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Step 3: Authenticate & Configure -->
-      <section class="guide-section" id="step-auth">
-        <h2>Authenticate &amp; Configure</h2>
-        <p>To push your game moves, your terminal must be authenticated with GitHub. Choose the method that best matches your workflow:</p>
-
-        <details class="accordion" open>
-          <summary>Option 1: GitHub CLI (recommended)</summary>
-          <div class="accordion-content">
-            <p>The <strong>GitHub CLI (<code>gh</code>)</strong> is the fastest and most foolproof way to connect your terminal. It configures Git credentials, protocol, and browser sign-in in one command.</p>
-            
-            <p>1. Check if <code>gh</code> is installed, or install it:</p>
-            <ul>
-              <li><strong>macOS</strong>: <code>brew install gh</code></li>
-              <li><strong>Windows</strong>: <code>winget install --id GitHub.cli</code> (or download from <a href="https://cli.github.com/" target="_blank" rel="noopener noreferrer">cli.github.com</a>)</li>
-              <li><strong>Linux</strong>: <code>sudo apt install gh</code></li>
-            </ul>
-
-            <p>2. Run the authentication wizard:</p>
-            <div class="code-block-wrapper">
-              <pre><code>gh auth login</code></pre>
-              <button class="copy-btn" title="Copy to clipboard" aria-label="Copy command to clipboard">📋 Copy</button>
-            </div>
-
-            <p>3. Select the recommended answers in the terminal prompts:</p>
-            <ul>
-              <li>What account do you want to log into? &rarr; <strong>GitHub.com</strong></li>
-              <li>What is your preferred protocol? &rarr; <strong>HTTPS</strong></li>
-              <li>Authenticate Git with your GitHub credentials? &rarr; <strong>Yes</strong></li>
-              <li>How would you like to authenticate? &rarr; <strong>Login with a web browser</strong></li>
-              <li>Press <strong>Enter</strong> to open the browser, enter the 8-character one-time code shown in your terminal, and click <strong>Authorize</strong>.</li>
-            </ul>
-          </div>
-        </details>
-
-        <details class="accordion">
-          <summary>Option 2: Visual Studio Code</summary>
-          <div class="accordion-content">
-            <p>If you prefer an editor-based workflow, Visual Studio Code handles GitHub authentication automatically:</p>
-            <ol>
-              <li>Download and install Visual Studio Code from <a href="https://code.visualstudio.com/" target="_blank" rel="noopener noreferrer">code.visualstudio.com</a>.</li>
-              <li>Open VS Code, click the <strong>Accounts</strong> icon in the lower-left corner (or open Source Control <code>Ctrl+Shift+G</code> / <code>Cmd+Shift+G</code>).</li>
-              <li>Select <strong>Sign in with GitHub</strong> and authorize the connection in your browser.</li>
-              <li>When you open the integrated terminal in VS Code (<code>View &gt; Terminal</code>), Git commands will use VS Code's authenticated credential helper.</li>
-            </ol>
-          </div>
-        </details>
-
-        <details class="accordion">
-          <summary>Option 3: Terminal</summary>
-          <div class="accordion-content">
-            <p>Set your global commit author name and email. If you enabled email privacy in Step 1, use your private <code>noreply</code> address:</p>
-
-            <p>1. Set your Git author name (substitute your real name):</p>
-            <div class="code-block-wrapper">
-              <pre><code>git config --global user.name "Firstname Lastname"</code></pre>
-              <button class="copy-btn" title="Copy to clipboard" aria-label="Copy command to clipboard">📋 Copy</button>
-            </div>
-
-            <p>2. Set your Git author email (use your private <code>noreply</code> address from Step 1):</p>
-            <div class="code-block-wrapper">
-              <pre><code>git config --global user.email "username@users.noreply.github.com"</code></pre>
-              <button class="copy-btn" title="Copy to clipboard" aria-label="Copy command to clipboard">📋 Copy</button>
-            </div>
-
-            <p>3. Set your default branch name for new repositories to <code>main</code>:</p>
-            <div class="code-block-wrapper">
-              <pre><code>git config --global init.defaultBranch main</code></pre>
-              <button class="copy-btn" title="Copy to clipboard" aria-label="Copy command to clipboard">📋 Copy</button>
-            </div>
-
-            <p>On your first <code>git push</code> or clone over HTTPS, Git Credential Manager will open a browser window asking you to sign in to GitHub.</p>
-          </div>
-        </details>
-      </section>
-
-      <!-- Step 4: Verification -->
-      <section class="guide-section" id="step-verify">
-        <h2>Verification</h2>
-        <p>Verify that your environment is fully prepared by running this one-line check in your terminal:</p>
-
-        <div class="code-block-wrapper">
-          <pre><code>echo "Git: $(git --version)" && echo "Author: $(git config user.name) &lt;$(git config user.email)&gt;"</code></pre>
-          <button class="copy-btn" title="Copy to clipboard" aria-label="Copy command to clipboard">📋 Copy</button>
-        </div>
-
-        <p>If this prints your Git version along with your configured name and email, your setup is complete!</p>
-
-      </section>
-    </div>
-  </main>
-
-  <footer class="wall-footer">
-    <div class="footer-container">
-      <span>Workshop: <strong>SCDA Training Week</strong> &bull; Git Tic-Tac-Toe Setup Guide</span>
-      <a href="guide.html" class="footer-btn">Continue to Gameplay Guide &rarr;</a>
-    </div>
-  </footer>
-
+  <header class="wall-header"><div class="header-container">
+    <div class="brand"><a href="index.html" class="brand-link"><span class="brand-icon">🎮</span><div class="brand-text"><h1>Git Tic-Tac-Toe</h1><p class="subtitle">Collaboration with Git and GitHub</p></div></a></div>
+    <div class="header-actions"><nav class="nav-links" aria-label="Workshop Navigation"><a href="guide.html" class="btn btn-outline nav-btn">📖 How to Play</a><a href="setup.html" class="btn btn-outline nav-btn active">🛠️ Setup</a></nav><button id="theme-toggle" class="btn btn-icon" title="Toggle dark/light theme" aria-label="Toggle theme">🌙</button></div>
+  </div></header>
+  <main class="guide-main"><div class="guide-container">
+    <header class="guide-hero"><h1>Get ready for the workshop</h1><p class="lead">Try a short setup rehearsal before we meet. You do not need to install Git or use a terminal.</p></header>
+    <nav class="jump-nav" aria-label="Quick jump to section"><span class="jump-nav-label">Jump to:</span><a href="#rehearsal" class="jump-pill">Rehearsal</a><a href="#access" class="jump-pill">Access help</a><a href="#survey" class="jump-pill">Survey</a></nav>
+    <section class="guide-section" id="rehearsal"><h2>One short rehearsal</h2><ol>
+      <li>Open the <a href="https://github.com/igorsdub/git-tic-tac-toe-template" target="_blank" rel="noopener noreferrer">existing tic-tac-toe starter template</a>. Choose <strong>Use this template → Open in a codespace</strong>. This opens a Codespace directly from the starter; do not create a personal template copy or pair repository.</li>
+      <li>In the VS Code web editor, open Copilot Chat and ask: <strong>“What does this repository do?”</strong> Confirm that Copilot responds.</li>
+      <li>Leave the editor, then delete the Codespace from the <a href="https://github.com/codespaces" target="_blank" rel="noopener noreferrer">GitHub Codespaces dashboard</a>.</li>
+    </ol><p>Do not commit or push during this rehearsal. Pair repositories are created together during the workshop.</p><p>See GitHub’s instructions for <a href="https://docs.github.com/en/codespaces/developing-in-a-codespace/creating-a-codespace-from-a-template" target="_blank" rel="noopener noreferrer">creating a Codespace from a template</a>.</p></section>
+    <section class="guide-section" id="access"><h2>Access and support</h2><p>Codespaces and Copilot access are separate. If Copilot Chat or agent editing is unavailable, tell the facilitator; the workshop includes a manual rematch path and an instructor demonstration. We will check agent editing separately for the rematch.</p><p>For current guidance, see <a href="https://docs.github.com/en/copilot/how-tos/copilot-in-your-ide/chat-with-copilot/chat-in-ide" target="_blank" rel="noopener noreferrer">Copilot Chat in your IDE</a>.</p></section>
+    <section class="guide-section" id="survey"><h2>Short survey</h2><p>Please complete the linked <a href="../SURVEY.md">instructor-preparation survey</a>. It asks about your current versioning habits, Git experience, AI coding assistant experience, and everyday tools. It does not ask whether you completed the rehearsal.</p></section>
+    <section class="guide-section"><h2>In the session</h2><p>You will work with a partner in one shared public repository, each using your own Codespace. VS Code’s Source Control view will guide pull, diff review, staging, commits, and push. No terminal setup is required.</p><p><a href="guide.html">Read the learner guide →</a></p></section>
+  </div></main>
+  <script src="app.js"></script>
   <script src="guide-utils.js"></script>
 </body>
 </html>

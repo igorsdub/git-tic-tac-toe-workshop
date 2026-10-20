@@ -1,7 +1,7 @@
 # Git Tic-Tac-Toe Workshop Design Handoff
 
 **Date:** 2026-10-20
-**Status:** Current design for discussion and transfer. Runtime implementation is pending and is not authorized by this document.
+**Status:** Current design for documentation and transfer. Runtime changes to the starter template, branch registration, and dashboard remain separately scoped and pending.
 **Scope:** Standalone, two-hour workshop. This is separate from the GECS Project Gutenberg course.
 
 This handoff is self-contained; access to the background research is optional. For its earlier source research and citations, see [the report in this repository](docs/research/browser-agent-workshop.md). The report is exploratory background. Its snack dashboard, one shared physical Codespace, and optional Live Share recommendations are superseded here; the source findings remain historical research, not a specification for the tic-tac-toe exercise.
@@ -21,7 +21,7 @@ These four questions define the survey's complete scope. Reuse the step-by-step 
 
 The advance check should verify that Copilot agent mode actually works, because Codespaces and Copilot access are separate. Copilot Free currently lists limited agent usage and IDE agent mode as included ([Copilot plans](https://github.com/features/copilot/plans)). If a participant cannot use Copilot, they may complete the manual rematch and follow the instructor's agent demonstration. Keep this fallback low prominence because free access is expected.
 
-For the setup rehearsal, participants open the existing tic-tac-toe starter template directly in their own Codespace and ask Copilot chat, “What does this repository do?” They confirm the response, leave the editor, and delete the Codespace from the GitHub Codespaces dashboard. They do not make a personal template copy, create a pair repository, or commit or push before the workshop; the first complete Git workflow stays live. Pair formation and shared-repository creation remain live guided activities. Whether this chat must use Agent mode remains undecided.
+For the setup rehearsal, participants open the existing tic-tac-toe starter template directly in their own Codespace and ask Copilot chat, “What does this repository do?” They confirm the response, leave the editor, and delete the Codespace from the GitHub Codespaces dashboard. They do not make a personal template copy, create a pair repository, or commit or push before the workshop; the first complete Git workflow stays live. Pair formation and shared-repository creation remain live guided activities.
 
 The activity moves from manual Git play to a timed agent-assisted rematch:
 
@@ -64,17 +64,15 @@ Do not include a deliberate merge-conflict exercise or synthetic conflict in the
 
 The existing repository and guides describe the current implementation. This design handoff records future requirements; none of the following changes is implemented by this document.
 
-- The learner template and [`template-spec/board.txt`](template-spec/board.txt) use lowercase `board.txt`, not the proposed `BOARD.txt`.
+- The live external starter template's `main` branch contains lowercase `board.txt` with a raw 3×3 grid; [`template-spec/board.txt`](template-spec/board.txt) also uses lowercase `board.txt`. The designed match workflow calls for uppercase `BOARD.txt`. Neither the external template nor this repository has been updated to that contract.
 - [`.github/ISSUE_TEMPLATE/register-game.yml`](.github/ISSUE_TEMPLATE/register-game.yml) collects a repository URL, player handles, and workshop name. It has no match-branch field.
 - [`scripts/sync_board_registry.py`](scripts/sync_board_registry.py) builds [`docs/board.json`](docs/board.json) and deduplicates registrations by repository owner and name. It does not key registrations by branch.
 - [`scripts/game_wall_parser.py`](scripts/game_wall_parser.py) parses existing registration issues. [`docs/app.js`](docs/app.js) fetches root `board.txt` from `main`, then `master`; it does not read a registered match branch or the proposed uppercase file.
-- [`LEARNER_GUIDE.md`](LEARNER_GUIDE.md) and [`FACILITATOR_GUIDE.md`](FACILITATOR_GUIDE.md) describe the existing lowercase board and generic rematch behavior. These remain descriptions of current materials, not instructions for the future match model.
+- [`LEARNER_GUIDE.md`](LEARNER_GUIDE.md), [`FACILITATOR_GUIDE.md`](FACILITATOR_GUIDE.md), and the website guides now describe the approved Codespaces and VS Code Source Control workflow. They also identify the separate template, branch-registration, and dashboard dependencies still needed for the planned match model.
 
-A later, separately authorized implementation plan should cover the template and guides, registration form, issue parser and registry, wall branch fetching and display, and rehearsal. It should define how a new match branch from `main` receives the initial no-moves board. No code, forms, scripts, or runtime behavior are changed as part of this design handoff.
+A later, separately scoped implementation plan should cover the template, registration form, issue parser and registry, and branch-aware dashboard display. The current public dashboard only fetches root `board.txt` from `main` or `master`, and the registration pipeline deduplicates by repository; it cannot show the planned match branches or their history. The final-segment dashboard/time-machine demonstration depends on that separate dashboard work. The implementation plan should also define how each fresh match branch from `main` receives the initial no-moves board. Documentation edits do not change these runtime contracts.
 
 ## Open design decisions
 
-- How to handle an invalid or inaccessible registered board during the workshop.
-- Exact recovery instructions for merge conflicts that arise naturally during pair work.
 - How instructional steps and automated checks are delivered, separately from match registration.
 - How to support the optional agent-chosen individual move while retaining participant review and active Git practice.
