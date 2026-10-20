@@ -12,10 +12,10 @@ The workshop serves a broad audience with mixed coding experience and no coding 
 
 Send one short advance survey alongside the setup instructions for instructor preparation. It links to the instructions and contains exactly four questions; add no identity, research-modality, pairing, tutorial, or setup-readiness questions. Use concrete, recognizable examples rather than self-rated skill levels or a numeric scale. Ask participants to tick any choices that fit and let them leave a question blank; do not add a “none/not yet” choice:
 
-- “How do you keep track of changes to research files?” Options: make renamed copies such as `analysis_v2`, `analysis_final`, or `analysis_final_revised`; use version history in a shared document or cloud storage such as Google Drive or Word; use Git or another version-control system.
-- “How do you usually work on files with other people?” Options: send revised copies by email or chat; work together in a shared Google Doc, Word document, or other cloud document; collaborate through a shared GitHub repository or another version-control system.
-- “How have you used an AI coding assistant?” Options: ask it to explain something or copy suggested code; accept code suggestions while editing; ask an agent to edit files.
-- “Which of these sound like your regular work?” Options: organize data, make tables, or analyze results in tools such as Excel, Prism, or Geneious; edit files in an application such as RStudio, VS Code, or PyCharm; use a terminal or command line to run tools or give commands.
+- “How do you keep track of changes to research files?” Options: renamed copies, such as `analysis_v2`, `analysis_final`, or `analysis_final_revised`; version history in a shared document or cloud storage, such as Google Drive or Word; Git or another version-control system.
+- “How do you usually work on files with other people?” Options: sending revised copies by email or chat; working together in a shared Google Doc, Word document, or other cloud document; collaborating through a shared GitHub repository or another version-control system.
+- “How have you used an AI coding assistant?” Options: asking for explanations or copying suggested code; accepting code suggestions while editing; delegating file edits to an agent.
+- “Which of these sound like your regular work?” Options: organizing data, making tables, or analyzing results in tools such as Excel, Prism, or Geneious; editing files in applications such as RStudio, VS Code, or PyCharm; running tools or commands in a terminal.
 
 These four questions define the survey's complete scope. Reuse the step-by-step instructions on the existing workshop website, adapting the setup steps for Codespaces. Reserve a small troubleshooting buffer at the opening.
 
