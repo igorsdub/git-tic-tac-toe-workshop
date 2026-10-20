@@ -4,7 +4,7 @@
 **Status:** Current design for discussion and transfer. Runtime implementation is pending and is not authorized by this document.
 **Scope:** Standalone, two-hour workshop. This is separate from the GECS Project Gutenberg course.
 
-For the earlier source research and its citations, see the [GECS browser-agent workshop research report](https://github.com/igorsdub/gecs/blob/codex/browser-agent-workshop-research/research/browser-agent-workshop.md). That report is exploratory background. Its snack dashboard, one shared physical Codespace, and optional Live Share recommendations are superseded here; the source findings remain historical research, not a specification for the tic-tac-toe exercise.
+This handoff is self-contained; access to the background research is optional. For its earlier source research and citations, see the local [GECS browser-agent workshop research report](/Users/igorsdubanevics/GitHub/gecs/research/browser-agent-workshop.md). The corresponding GitHub URL, `https://github.com/igorsdub/gecs/blob/codex/browser-agent-workshop-research/research/browser-agent-workshop.md`, is pending publication of that branch. The report is exploratory background. Its snack dashboard, one shared physical Codespace, and optional Live Share recommendations are superseded here; the source findings remain historical research, not a specification for the tic-tac-toe exercise.
 
 ## Workshop shape
 
