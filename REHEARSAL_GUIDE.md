@@ -1,6 +1,6 @@
 # Workshop Rehearsal Guide
 
-> **Current status:** Tasks 2–4 are implemented in local branches but are not published. The live starter is still on the old lowercase `board.txt` contract, and the live Game Wall has not deployed branch-aware registration or replay. The complete two-account rehearsal is blocked; see the [original rehearsal evidence](docs/rehearsal-evidence-2026-10-20.md) and [compact-board addendum](docs/rehearsal-evidence-compact-board-2026-10-20.md) before treating this checklist as passed.
+> **Current status (2026-10-20):** The uppercase-board starter and branch-aware Game Wall are published. All six records currently in the Game Wall lack numbered match branches and show migration errors until re-registered. The complete two-account rehearsal remains incomplete; see the [original rehearsal evidence](docs/rehearsal-evidence-2026-10-20.md) and [compact-board addendum](docs/rehearsal-evidence-compact-board-2026-10-20.md) before treating this checklist as passed.
 
 ## Rehearse the participant path
 
@@ -16,11 +16,11 @@ Official product guidance: [create a Codespace from a template](https://docs.git
 
 ## Verify dependencies before promising the full flow
 
-The local starter-template branch now defines initialized uppercase `BOARD.txt` and numbered branches from clean `main`. The live starter’s `main` still has lowercase `board.txt`; the local template commit has not been pushed. Verify the live template after publication before participants follow the board instructions as written.
+The learner template's default branch contains initialized uppercase `BOARD.txt` and documents numbered branches from clean `main`. Verify the live starter before each workshop, including a fresh pair repository created from the template.
 
-Local registration, registry, and dashboard code now support repository-plus-branch identities, exact uppercase `BOARD.txt` retrieval, outcome groups, and history replay. The live issue template, registry, and published dashboard have not received these changes. Do not promise that the public Game Wall will display each pair branch until publication is confirmed.
+The published registration form, registry, and dashboard use repository-plus-branch identities, exact uppercase `BOARD.txt` retrieval, outcome groups, and history replay. Existing branchless records show migration errors; verify a newly registered match branch before promising the live match display.
 
-Before using the dashboard demo, verify the deployed site against a public match branch and its committed history. The latest observed Pages workflow succeeded for `origin/main` before the local implementation. Until deployment and that live check, use a public repository’s GitHub commit history for the instructor demonstration. The dashboard demonstration remains instructor-led; participants do not do a replay exercise.
+Before using the dashboard demo, verify the deployed site against a public match branch and its committed history. The Pages deployment for `ec91e03` succeeded; however, the current six registry records are branchless and cannot be replayed there. Until a valid match is re-registered and checked, use that repository’s GitHub commit history for the instructor demonstration. The dashboard demonstration remains instructor-led; participants do not do a replay exercise.
 
 ## Room and facilitation readiness
 

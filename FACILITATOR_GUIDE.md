@@ -1,6 +1,6 @@
 # Facilitator Guide: Git Tic-Tac-Toe Workshop
 
-> **Delivery status (2026-10-20):** The starter, registration pipeline, and Game Wall changes exist in local feature branches but are not published. The live starter still lacks uppercase `BOARD.txt`, and the published Game Wall has not deployed branch-aware display. The two-account rehearsal is blocked; see [the delivery record](docs/delivery-status-2026-10-20.md) and [rehearsal evidence](docs/rehearsal-evidence-2026-10-20.md).
+> **Delivery status (2026-10-20):** The starter and branch-aware Game Wall are published. The six current registry records lack numbered branches, so they appear as needing attention until re-registered. The two-account rehearsal remains incomplete; see [the delivery record](docs/delivery-status-2026-10-20.md) and [rehearsal evidence](docs/rehearsal-evidence-2026-10-20.md).
 
 ## Purpose and outcomes
 
@@ -46,7 +46,7 @@ Create a fresh rematch branch from the agreed baseline. Repeat the same Source C
 
 ### History demonstration and wrap-up (105–120)
 
-The local Game Wall implementation groups public matches by outcome and replays committed board states as a time machine. This is an instructor demonstration, not a participant exercise. The currently published dashboard still reads root `board.txt` from `main`/`master`; the branch-aware registration and dashboard changes have not been deployed. Do not imply that each pair branch will appear separately on the live site. Until a live deployment and public match check are confirmed, use GitHub commit history to illustrate the idea.
+The published Game Wall groups public matches by outcome and replays committed board states as a time machine. This is an instructor demonstration, not a participant exercise. Register each match with its numbered branch; the six older branchless records currently appear as errors and cannot be replayed. Verify a newly registered public match before the session, and use GitHub commit history for older records until they are re-registered.
 
 Connect the workflow to research files, analysis code, and shared manuscripts. Ask what becomes easier when changes have clear authorship, messages, and reviewable history.
 
