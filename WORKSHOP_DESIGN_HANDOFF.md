@@ -10,11 +10,12 @@ This handoff is self-contained; access to the background research is optional. F
 
 The workshop serves a broad audience with mixed coding experience and no coding prerequisites. GitHub Codespaces is the primary environment; using each participant's own laptop environment is optional. Each participant works in their own environment. Each pair shares one GitHub repository. Do not use Live Share.
 
-Send one short advance survey alongside the setup instructions. It links to the instructions and collects GitHub username and support needs. Do not ask whether participants completed the tutorial or setup, how far they got, or what blockers they encountered; the survey has no tutorial-related questions. Design it around concrete competency anchors and observed environment-readiness checks, not self-rated skill levels or a 1–5 scale. Ask these three questions as select-all-that-apply, with the “none/not yet” option exclusive in each:
+Send one short advance survey alongside the setup instructions. It links to the instructions and collects GitHub username and support needs. Do not ask whether participants completed the tutorial or setup, how far they got, or what blockers they encountered; the survey has no tutorial-related questions. Design it around concrete competency anchors and observed environment-readiness checks, not self-rated skill levels or a 1–5 scale. Ask these four questions as select-all-that-apply, with the “none/not yet” option exclusive in each:
 
 - “How do you currently keep track of changes to research files?” Options: renamed files or dated copies/folders; version history in tools such as Google Drive or OneDrive; Git or another version-control system; no consistent method yet.
 - “Which of these have you personally done with Git?” Options: committed and pushed changes; pulled a collaborator's changes; worked with branches or resolved merge conflicts; none of these yet.
 - “How have you used an AI coding assistant?” Options: asked questions or copied suggested code; accepted code suggestions inside the editor; asked an agent to edit files directly; none of these yet.
+- “Which tools do you regularly use in your work?” Options: graphical applications (Excel, Prism, Geneious); code editors or IDEs (RStudio, VS Code, PyCharm); terminal or command line; none of these yet.
 
 These questions establish the survey's experience checks, not the wording or required status of other fields. Reuse the step-by-step instructions on the existing workshop website, adapting the setup steps for Codespaces. Reserve a small troubleshooting buffer at the opening.
 
