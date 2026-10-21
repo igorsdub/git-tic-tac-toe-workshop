@@ -5,9 +5,14 @@ const SLUG = 'stop-codespace';
 const REPO = process.env.CAPTURE_REPO || 'tic-tac-toe-demo';
 
 const SELECTORS = {
-  moreMenu: (p) => p.getByRole('button', { name: /Open menu|More options|Codespace actions/ }).first(),
-  stop: (p) => p.getByRole('menuitem', { name: 'Stop codespace' }),
-  stoppedLabel: (p) => p.getByText(/Stopped|Inactive/).first(),
+  // The row of the demo repo only (exact repo link), never the -2026... lookalikes or other repos.
+  row: (p) => p.locator('li, [role=listitem], div')
+    .filter({ has: p.locator(`a[href$="/${REPO}"]`) })
+    .filter({ has: p.getByRole('button') })
+    .last(),
+  moreMenu: (p) => SELECTORS.row(p).getByRole('button').first(),
+  stop: (p) => p.getByRole('menuitemradio', { name: 'Stop codespace' }),
+  stoppedLabel: (p) => SELECTORS.row(p).getByText(/Last used|Shutting down|Stopped/).first(),
 };
 
 async function run() {
@@ -15,7 +20,7 @@ async function run() {
   const page = context.pages()[0] || (await context.newPage());
   const step = createStep(page, SLUG);
   await page.goto('https://github.com/codespaces');
-  await page.getByText(REPO).first().waitFor();
+  await page.locator(`a[href$="/${REPO}"]`).first().waitFor();
   await step.shot(null, '01-codespaces-list.png');
   await step.click(SELECTORS.moreMenu(page), '02-more-menu.png');
   await SELECTORS.stop(page).click();

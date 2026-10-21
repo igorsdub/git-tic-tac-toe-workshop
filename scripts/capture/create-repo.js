@@ -10,14 +10,16 @@ const SELECTORS = {
   useTemplate: (p) => p.getByRole('button', { name: 'Use this template' }),
   createNewRepo: (p) => p.getByRole('menuitem', { name: 'Create a new repository' }),
   owner: (p) => p.getByRole('button', { name: /Owner|Choose an owner/ }),
-  name: (p) => p.getByRole('textbox', { name: 'Repository name' }),
-  publicRadio: (p) => p.getByRole('radio', { name: /Public/ }),
+  ownerOption: (p, login) => p.getByRole('menuitemradio', { name: login, exact: true }),
+  name: (p) => p.locator('#repository-name-input'),
+  visibility: (p) => p.getByRole('button', { name: /Choose visibility/ }),
+  publicOption: (p) => p.getByRole('menuitemradio', { name: /Public/ }),
   create: (p) => p.getByRole('button', { name: 'Create repository' }),
   // UI delete fallback
   settingsTab: (p) => p.getByRole('link', { name: 'Settings' }),
   deleteRepo: (p) => p.getByRole('button', { name: 'Delete this repository' }),
-  confirmInput: (p) => p.getByRole('textbox', { name: /To confirm, type/ }),
-  confirmDelete: (p) => p.getByRole('button', { name: /I understand the consequences, delete this repository/ }),
+  confirmInput: (p) => p.locator('#verification_field'),
+  confirmDelete: (p) => p.getByRole('dialog').getByRole('button', { name: 'Delete this repository' }),
 };
 
 function ghAvailable() {
@@ -30,8 +32,8 @@ async function deleteExisting(page) {
     const owner = who.stdout.trim();
     if (owner) {
       const r = spawnSync('gh', ['repo', 'delete', `${owner}/${REPO}`, '--yes'], { encoding: 'utf8' });
-      if (r.status !== 0) console.warn(`gh repo delete: ${r.stderr.trim()}`);
-      return;
+      if (r.status === 0 || /404|Not Found|Could not resolve/i.test(r.stderr)) return;
+      console.warn(`gh repo delete failed, using the web UI: ${r.stderr.trim()}`);
     }
   }
   const login = await page.locator('meta[name="user-login"]').getAttribute('content');
@@ -42,6 +44,7 @@ async function deleteExisting(page) {
   await page.getByRole('button', { name: /I have read and understand these effects/ }).click().catch(() => {});
   await SELECTORS.confirmInput(page).fill(`${login}/${REPO}`);
   await SELECTORS.confirmDelete(page).click();
+  await page.waitForURL((u) => !u.pathname.endsWith('/settings'), { timeout: 60000 });
 }
 
 async function run() {
@@ -55,10 +58,14 @@ async function run() {
   await step.click(SELECTORS.useTemplate(page), '02-use-this-template.png');
   await step.click(SELECTORS.createNewRepo(page), '03-create-new-repository.png');
   await step.shot(SELECTORS.owner(page), '04-owner-and-name.png');
+  await SELECTORS.owner(page).click();
+  await SELECTORS.ownerOption(page, await page.locator('meta[name="user-login"]').getAttribute('content')).click();
   await SELECTORS.name(page).fill(REPO);
-  await step.click(SELECTORS.publicRadio(page), '05-visibility-public.png');
+  await step.click(SELECTORS.visibility(page), '05-visibility-public.png');
+  await SELECTORS.publicOption(page).click();
   await step.click(SELECTORS.create(page), '06-create-repository.png');
-  await page.waitForLoadState('networkidle');
+  await page.waitForURL(new RegExp(`/${REPO}(\\?|$|/)`), { timeout: 60000 });
+  await page.waitForLoadState('domcontentloaded');
   return step.finish();
 }
 

@@ -2,7 +2,7 @@
 
 Generates the screenshots and per-step videos used by `docs/setup.html`. See `docs/adr/0005-scripted-screenshot-capture-for-setup-guide.md`.
 
-**The first real run is expected to need selector fixes.** GitHub's UI changes often and these scripts have not been run against it yet. Selectors live in the `SELECTORS` object at the top of each step script.
+**Selectors were verified against the live GitHub UI on 2026-10-21** (all four steps pass headless) but GitHub's UI changes often, so expect to refresh them. Selectors live in the `SELECTORS` object at the top of each step script.
 
 ## Prerequisites
 
@@ -31,3 +31,7 @@ npm run capture:video      # zoomed mp4 per step from the recordings
 - The login is saved as a Playwright storage-state file, `.playwright-auth.json`, at the repo root. It holds live GitHub session cookies: never commit it (it is in `.gitignore`, as is the legacy `.playwright-profile/`).
 - The saved login expires when GitHub logs you out or the session lapses. When `npm run capture:check` reports "signed out" or steps fail on login, rerun `npm run capture:login`.
 - Captures show your avatar and username.
+- Headless Chromium works for the Codespace editor; no `HEADLESS=0` needed. The new codespace opens in a new tab, which the script closes and reopens in the recorded page.
+- `gh` without the `delete_repo` scope cannot delete the demo repo; `create-repo` then deletes it through the web UI (a 404 from `gh` means the repo is already gone). Deleting the repo also removes its codespaces, so `open-codespace` always starts clean.
+- The web editor currently offers only Agent mode in Copilot Chat (no Ask). `look-around` uses Ask when present and otherwise asks the question in Agent mode.
+- `gh codespace` needs the `codespace` scope; the scripts do not use it and stop the codespace through the web UI.
