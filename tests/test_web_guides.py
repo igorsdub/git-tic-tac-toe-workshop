@@ -20,6 +20,23 @@ class TestWebGuides(unittest.TestCase):
         self.context = (DOCS_DIR / "workshop-context.js").read_text(encoding="utf-8")
         self.styles = (DOCS_DIR / "styles.css").read_text(encoding="utf-8")
 
+    def test_stage_strip_on_all_learner_pages(self):
+        pages = {"index.html": "wall", "guide.html": "guide", "setup.html": "setup"}
+        for name, stage in pages.items():
+            with self.subTest(page=name):
+                html = (DOCS_DIR / name).read_text(encoding="utf-8")
+                marker = f'data-stage-strip="{stage}"'
+                self.assertIn(marker, html)
+                self.assertGreater(html.index(marker), html.index("</header>"))
+                self.assertIn('src="stage-strip.js"', html)
+                self.assertLess(html.index('src="stage-strip.js"'), html.index('src="workshop-context.js"'))
+        setup = (DOCS_DIR / "setup.html").read_text(encoding="utf-8")
+        guide = (DOCS_DIR / "guide.html").read_text(encoding="utf-8")
+        index = (DOCS_DIR / "index.html").read_text(encoding="utf-8")
+        self.assertIn('<a data-workshop-route href="guide.html">Next: How to play</a>', setup)
+        self.assertIn('<a data-workshop-route href="index.html">Next: Game Wall</a>', guide)
+        self.assertIn('<a data-workshop-route href="setup.html">Back to start: Setup</a>', index)
+
     def test_guide_assets_exist(self):
         for path in (DOCS_DIR / "setup.html", DOCS_DIR / "guide.html", DOCS_DIR / "guide-utils.js", DOCS_DIR / "workshop-context.js", DOCS_DIR / "styles.css"):
             self.assertTrue(path.is_file(), str(path))

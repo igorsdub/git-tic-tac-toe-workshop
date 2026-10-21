@@ -1608,3 +1608,61 @@ a.register-btn:focus-visible {
 [data-theme="dark"] a.register-btn:focus-visible {
   outline-color: #ffffff;
 }
+
+/* Stage strip: Setup -> How to play -> Game Wall */
+[data-stage-strip] {
+  padding: 0.75rem 16px 0;
+}
+
+.stage-strip ol {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 72rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.stage-strip li {
+  flex: 1 1 12rem;
+  min-width: 0;
+}
+
+.stage-strip a {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.stage-strip a:hover {
+  background: var(--bg-secondary);
+}
+
+.stage-strip a.is-current {
+  background: var(--primary);
+  border-color: var(--border-dark);
+  color: var(--text-inverse);
+  font-weight: 600;
+}
+
+.stage-strip .stage-number {
+  font-weight: 700;
+}
+
+.stage-strip .stage-when {
+  font-size: 0.85em;
+  opacity: 0.85;
+}
+
+.stage-next {
+  margin: 2rem 0 1rem;
+  font-weight: 600;
+}
