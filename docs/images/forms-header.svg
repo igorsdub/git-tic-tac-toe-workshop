@@ -4,7 +4,7 @@
   <!-- Each board scales the template's 96-unit grid and mark proportions by 2.75. -->
   <defs>
     <g id="board-grid" stroke-linecap="round" stroke-linejoin="round">
-      <g stroke="#d3d3d3" stroke-width="2">
+      <g stroke="#d3d3d3" stroke-width="1.1">
         <path d="M 32 2 V 94 M 64 2 V 94 M 2 32 H 94 M 2 64 H 94"/>
       </g>
     </g>
