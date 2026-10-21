@@ -54,10 +54,16 @@ test('live refresh and history replay preserve the open panel, selected state, a
       await wait(100);
       const select = document.getElementById('workshop-select');
       const defaultWorkshopSelected = select.value === 'workshop-a' && !new URL(location.href).searchParams.has('workshop');
-      const eventContextRendered = document.getElementById('current-workshop-name').textContent === 'Workshop A'
-        && document.getElementById('current-workshop-date').textContent === 'October 1, 2026'
-        && document.getElementById('current-workshop-note').textContent === 'Test note'
-        && !document.getElementById('current-workshop-note').hidden;
+      const optionLabels = Array.from(select.options, (option) => option.textContent);
+      const eventContextRendered = optionLabels[0] === '2026 Oct 1 · WORKSHOP A'
+        && optionLabels[1] === '2026 Oct 2 · WORKSHOP OLD'
+        && select.closest('header') !== null
+        && !document.getElementById('current-workshop-name')
+        && !document.getElementById('current-workshop-date')
+        && !document.getElementById('current-workshop-note');
+      const actionLinksShareRow = document.querySelector('[data-workshop-registration]').parentElement
+        === document.querySelector('[data-workshop-dashboard]').parentElement
+        && document.querySelector('[data-workshop-dashboard]').textContent.trim() === 'View all games';
       const details = document.querySelector('.history-details');
       details.querySelector('summary').click();
       details.querySelector('[data-history-action="load"]').click();
@@ -136,7 +142,7 @@ test('live refresh and history replay preserve the open panel, selected state, a
       await window.__poll();
       const freshClearsStaleNotice = document.getElementById('notice-banner').classList.contains('hidden')
         && document.querySelectorAll('.card-refresh-status').length === 0;
-      const passed = defaultWorkshopSelected && eventContextRendered && directQuerySelected && unknownQueryFallsBack && bareUrlUsesDefault
+      const passed = defaultWorkshopSelected && eventContextRendered && actionLinksShareRow && directQuerySelected && unknownQueryFallsBack && bareUrlUsesDefault
         && stableDuringInput && stableDuringPoll && preserved && liveOutcome
         && ordering[0] === 'workshop-a' && ordering[1] === 'Archived workshops'
         && archivedIsIsolated && archiveNoticeCleared && stableUrl && registrationLink
@@ -185,11 +191,13 @@ test('workshop context keeps route, date, registration, and navigation in sync o
           const select = document.getElementById('workshop-select');
           const requested = new URL(location.href).searchParams.get('workshop');
           const initialId = requested || 'scda';
-          const expectedInitialName = initialId === 'sokedai' ? 'Sokedai Test' : 'SCDA Test';
-          const expectedInitialDate = initialId === 'sokedai' ? 'November 6, 2026' : 'October 1, 2026';
+          const expectedInitialLabel = initialId === 'sokedai' ? '2026 Nov 6 · SOKEDAI TEST' : '2026 Oct 1 · SCDA TEST';
           const initial = select.value === initialId
-            && document.getElementById('current-workshop-name').textContent === expectedInitialName
-            && document.getElementById('current-workshop-date').textContent === expectedInitialDate;
+            && select.selectedOptions[0].textContent === expectedInitialLabel
+            && select.closest('header') !== null
+            && !document.getElementById('current-workshop-name')
+            && !document.getElementById('current-workshop-date')
+            && !document.getElementById('current-workshop-note');
           const chosenId = initialId === 'sokedai' ? 'riken' : 'sokedai';
           const routeBefore = location.pathname;
           select.value = chosenId;
@@ -197,22 +205,16 @@ test('workshop context keeps route, date, registration, and navigation in sync o
           const changed = select.value === chosenId
             && location.pathname === routeBefore
             && new URL(location.href).searchParams.get('workshop') === chosenId
-            && document.getElementById('current-workshop-name').textContent === (chosenId === 'sokedai' ? 'Sokedai Test' : 'Riken Test')
-            && document.getElementById('current-workshop-date').textContent === (chosenId === 'sokedai' ? 'November 6, 2026' : 'November 10, 2026')
+            && select.selectedOptions[0].textContent === (chosenId === 'sokedai' ? '2026 Nov 6 · SOKEDAI TEST' : '2026 Nov 10 · RIKEN TEST')
             && document.querySelector('[data-workshop-registration]').href.endsWith('workshop_id=' + chosenId)
             && document.querySelector('[data-workshop-dashboard]').search.includes('workshop=' + chosenId)
             && Array.from(document.querySelectorAll('.nav-links a')).every((link) => link.search.includes('workshop=' + chosenId));
-          const noteIsSafeText = chosenId === 'sokedai'
-            ? document.getElementById('current-workshop-note').textContent === '<strong>Safe note</strong>'
-              && document.getElementById('current-workshop-note').children.length === 0
-              && !document.getElementById('current-workshop-note').hidden
-            : document.getElementById('current-workshop-note').hidden;
+          const detailsRemoved = !document.getElementById('current-workshop-note');
           select.value = 'riken';
           select.dispatchEvent(new Event('change', { bubbles: true }));
-          const riken = document.getElementById('current-workshop-date').textContent === 'November 10, 2026'
-            && document.querySelector('[data-workshop-registration]').href.endsWith('workshop_id=riken')
-            && document.getElementById('current-workshop-note').hidden;
-          document.body.dataset.fixtureResult = initial && changed && noteIsSafeText && riken ? 'PASS' : 'FAIL';
+          const riken = select.selectedOptions[0].textContent === '2026 Nov 10 · RIKEN TEST'
+            && document.querySelector('[data-workshop-registration]').href.endsWith('workshop_id=riken');
+          document.body.dataset.fixtureResult = initial && changed && detailsRemoved && riken ? 'PASS' : 'FAIL';
         })();
       </script></body>`);
     for (const query of ['', '?workshop=sokedai']) {
@@ -279,7 +281,6 @@ test('workshop catalog retries after failure and coalesces overlapping retries',
   const htmlPath = path.join(os.tmpdir(), `workshop-context-retry-${process.pid}.html`);
   const html = `<!doctype html><html><body>
     <label for="workshop-select">Workshop</label><select id="workshop-select"></select>
-    <p id="current-workshop-name"></p><p id="current-workshop-date"></p><p id="current-workshop-note" hidden></p>
     <span id="workshop-context-status"></span>
     <script>
       let requests = 0;
@@ -302,7 +303,7 @@ test('workshop catalog retries after failure and coalesces overlapping retries',
         const [first, second] = await Promise.all([window.WorkshopContext.ready, window.WorkshopContext.ready]);
         document.body.dataset.fixtureResult = failed && errorShown && requests === 2
           && first === second && first.workshopId === 'scda'
-          && document.getElementById('current-workshop-name').textContent === 'SCDA Test'
+          && document.getElementById('workshop-select').selectedOptions[0].textContent === '2026 Oct 1 · SCDA TEST'
           ? 'PASS' : 'FAIL';
       })();
     </script>

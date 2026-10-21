@@ -17,6 +17,7 @@ class TestWebGuides(unittest.TestCase):
         self.setup = (DOCS_DIR / "setup.html").read_text(encoding="utf-8")
         self.guide = (DOCS_DIR / "guide.html").read_text(encoding="utf-8")
         self.utils = (DOCS_DIR / "guide-utils.js").read_text(encoding="utf-8")
+        self.context = (DOCS_DIR / "workshop-context.js").read_text(encoding="utf-8")
         self.styles = (DOCS_DIR / "styles.css").read_text(encoding="utf-8")
 
     def test_guide_assets_exist(self):
@@ -34,11 +35,25 @@ class TestWebGuides(unittest.TestCase):
         self.assertEqual({item["id"]: (item["name"], item["date"]) for item in catalog["workshops"]}, expected)
         for name, html in (("wall", self.index), ("learner", self.guide), ("setup", self.setup)):
             with self.subTest(page=name):
-                for element_id in ("workshop-select", "current-workshop-name", "current-workshop-date", "current-workshop-note"):
-                    self.assertIn(f'id="{element_id}"', html)
+                header = html[:html.index("</header>")]
+                self.assertIn('class="header-workshop-picker"', header)
+                self.assertIn('<label for="workshop-select"', header)
+                self.assertIn('id="workshop-select"', header)
+                self.assertNotIn('id="current-workshop-name"', html)
+                self.assertNotIn('id="current-workshop-date"', html)
+                self.assertNotIn('id="current-workshop-note"', html)
                 self.assertIn('data-workshop-registration', html)
                 self.assertIn('data-workshop-dashboard', html)
                 self.assertIn('src="workshop-context.js"', html)
+                actions_start = html.index('<section class="workshop-actions"')
+                actions_end = html.index('</section>', actions_start)
+                actions = html[actions_start:actions_end]
+                self.assertIn('data-workshop-registration', actions)
+                self.assertIn('data-workshop-dashboard', actions)
+                self.assertIn('View all games', actions)
+        self.assertIn("function formatWorkshopOption(workshop)", self.context)
+        self.assertIn("month: 'short'", self.context)
+        self.assertIn("String(workshop.name).toUpperCase()", self.context)
         self.assertIn('data-workshop-route href="guide.html"', self.setup)
         workshop_instructions = self.guide[
             self.guide.index('<section class="guide-section"><h2>Workshop setup</h2>'):]

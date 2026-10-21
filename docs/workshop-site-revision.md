@@ -1,6 +1,6 @@
 # Workshop site revision
 
-This note records the approved design direction and implementation sequence. The current implementation slice covers only the shared header controls, registration-button colors, and favicon. Workshop selector and page-content changes remain for a later slice.
+This note records the approved design and its remaining decisions. The shared header selector, formatted workshop labels, workshop action row, header controls, registration-button colors, and favicon are implemented.
 
 ## Approved plan
 

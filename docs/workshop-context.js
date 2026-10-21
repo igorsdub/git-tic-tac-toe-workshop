@@ -4,21 +4,18 @@
 
   const CATALOG_URL = './workshops.json';
   const select = document.getElementById('workshop-select');
-  const nameNode = document.getElementById('current-workshop-name');
-  const dateNode = document.getElementById('current-workshop-date');
-  const noteNode = document.getElementById('current-workshop-note');
   const statusNode = document.getElementById('workshop-context-status');
   let catalog = null;
   let activeWorkshop = null;
   let catalogLoad = null;
   let listenersInstalled = false;
 
-  function formatDate(isoDate) {
-    const [year, month, day] = String(isoDate || '').split('-').map(Number);
-    if (!year || !month || !day) return 'Date to be announced';
-    const monthName = new Intl.DateTimeFormat('en', { month: 'long', timeZone: 'UTC' })
+  function formatWorkshopOption(workshop) {
+    const [year, month, day] = String(workshop.date || '').split('-').map(Number);
+    if (!year || !month || !day) return `${String(workshop.name).toUpperCase()}`;
+    const monthName = new Intl.DateTimeFormat('en', { month: 'short', timeZone: 'UTC' })
       .format(new Date(Date.UTC(year, month - 1, 1)));
-    return `${monthName} ${day}, ${year}`;
+    return `${year} ${monthName} ${day} · ${String(workshop.name).toUpperCase()}`;
   }
 
   function navigationHref(href, workshopId) {
@@ -37,12 +34,6 @@
   function render(workshop) {
     activeWorkshop = workshop;
     if (select) select.value = workshop.id;
-    if (nameNode) nameNode.textContent = workshop.name;
-    if (dateNode) dateNode.textContent = formatDate(workshop.date);
-    if (noteNode) {
-      noteNode.textContent = workshop.note || '';
-      noteNode.hidden = !workshop.note;
-    }
     document.querySelectorAll('[data-workshop-registration]').forEach((link) => {
       link.href = workshop.registrationUrl;
       link.setAttribute('aria-label', `Register a repository for ${workshop.name}`);
@@ -107,7 +98,7 @@
       const appendOption = (workshop, parent = select) => {
         const option = document.createElement('option');
         option.value = workshop.id;
-        option.textContent = workshop.name;
+        option.textContent = formatWorkshopOption(workshop);
         parent.appendChild(option);
       };
       select.replaceChildren();
@@ -128,7 +119,7 @@
       window.history.replaceState({}, '', url);
     }
     installListeners();
-    if (statusNode) statusNode.textContent = 'Choose a workshop for its date, registration, and Game Wall.';
+    if (statusNode) statusNode.textContent = 'Choose a workshop to update the registration link and Game Wall.';
     return { catalog, workshopId: selectedId };
   }
 

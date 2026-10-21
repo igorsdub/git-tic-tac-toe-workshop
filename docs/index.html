@@ -25,6 +25,11 @@
           <a href="guide.html" class="btn btn-outline nav-btn">📖 How to Play</a>
           <a href="setup.html" class="btn btn-outline nav-btn">🛠️ Setup</a>
         </nav>
+        <div class="header-workshop-picker">
+          <label for="workshop-select" class="header-workshop-label">Workshop</label>
+          <select id="workshop-select" aria-describedby="workshop-context-status"></select>
+          <span id="workshop-context-status" class="visually-hidden" role="status">Choose a workshop to update the registration link and Game Wall.</span>
+        </div>
         <button id="theme-toggle" class="btn btn-icon" title="Toggle dark/light theme" aria-label="Toggle theme">
           🌙
         </button>
@@ -43,15 +48,10 @@
   </header>
 
   <main class="wall-main">
-    <section class="workshop-context" aria-label="Selected workshop">
-      <div class="workshop-context-picker">
-        <label for="workshop-select">Workshop</label>
-        <select id="workshop-select" aria-describedby="workshop-context-status"></select>
-        <span id="workshop-context-status" class="visually-hidden" role="status">Choose a workshop for its date, registration, and Game Wall.</span>
-      </div>
-      <div class="workshop-context-details" aria-live="polite">
-        <div><h2 id="current-workshop-name">Loading workshop…</h2><p id="current-workshop-date"></p><p id="current-workshop-note" hidden></p></div>
-        <div class="workshop-context-actions"><a id="register-link" data-workshop-registration class="btn btn-primary" href="https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&amp;workshop_id=2026-10-01-scda" target="_blank" rel="noopener noreferrer">Register repository</a><a data-workshop-dashboard class="btn btn-outline" href="index.html">View Game Wall</a></div>
+    <section class="workshop-actions" aria-label="Workshop actions">
+      <div class="workshop-context-actions">
+        <a id="register-link" data-workshop-registration class="btn btn-primary" href="https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&amp;workshop_id=2026-10-01-scda" target="_blank" rel="noopener noreferrer">Register repository</a>
+        <a data-workshop-dashboard class="btn btn-outline" href="index.html">View all games</a>
       </div>
     </section>
     <!-- Notice / Alert Banner -->
