@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Git Tic-Tac-Toe Game Wall</title>
   <meta name="description" content="Live paired-game activity wall for the Git Tic-Tac-Toe Workshop. Displays real-time game status and 3x3 board representations for all registered pairs.">
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link id="theme-favicon" rel="icon" type="image/svg+xml" href="images/xo-logo-light.svg">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -13,7 +13,7 @@
     <div class="header-container">
       <div class="brand">
         <a href="index.html" class="brand-link">
-          <span class="brand-icon">🎮</span>
+          <img id="brand-logo" class="brand-icon" src="images/xo-logo-light.svg" data-light-src="images/xo-logo-light.svg" data-dark-src="images/xo-logo-dark.svg" alt="X and O">
           <div class="brand-text">
             <h1>Git Tic-Tac-Toe</h1>
             <p class="subtitle">Collaboration with Git and GitHub</p>
@@ -21,18 +21,20 @@
         </a>
       </div>
       <div class="header-actions">
-        <nav class="nav-links" aria-label="Workshop Navigation">
-          <a href="guide.html" class="btn btn-outline nav-btn">📖 How to Play</a>
-          <a href="setup.html" class="btn btn-outline nav-btn">🛠️ Setup</a>
-        </nav>
+        <div class="header-navigation">
+          <nav class="nav-links" aria-label="Workshop Navigation">
+            <a href="guide.html" class="btn btn-outline nav-btn">How to play</a>
+            <a href="setup.html" class="btn btn-outline nav-btn">Setup</a>
+          </nav>
+          <button id="theme-toggle" class="btn btn-icon" title="Toggle dark/light theme" aria-label="Toggle theme">
+            🌙
+          </button>
+        </div>
         <div class="header-workshop-picker">
           <label for="workshop-select" class="header-workshop-label">Workshop</label>
           <select id="workshop-select" aria-describedby="workshop-context-status"></select>
           <span id="workshop-context-status" class="visually-hidden" role="status">Choose a workshop to update the registration link and Game Wall.</span>
         </div>
-        <button id="theme-toggle" class="btn btn-icon" title="Toggle dark/light theme" aria-label="Toggle theme">
-          🌙
-        </button>
         <a href="https://github.com/igorsdub/git-tic-tac-toe-workshop" 
            target="_blank" 
            rel="noopener noreferrer" 

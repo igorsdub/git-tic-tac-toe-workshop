@@ -69,8 +69,36 @@ class TestWebGuides(unittest.TestCase):
                 self.assertIn('href="setup.html"', nav)
                 self.assertIn('href="guide.html"', nav)
                 self.assertIn('id="theme-toggle"', html)
+                header_navigation = html[html.index('<div class="header-navigation">'):]
+                header_navigation = header_navigation.split('</div>', 1)[0]
+                self.assertIn('class="nav-links"', header_navigation)
+                self.assertIn('id="theme-toggle"', header_navigation)
+                self.assertIn('>How to play</a>', nav)
+                self.assertIn('>Setup</a>', nav)
+                self.assertNotIn('🎮', html[:html.index('</header>')])
+                self.assertIn('id="brand-logo"', html)
+                self.assertIn('id="theme-favicon"', html)
+                self.assertIn('images/xo-logo-light.svg', html)
+                self.assertIn('images/xo-logo-dark.svg', html)
         self.assertIn(f'href="{repo_url}"', self.index)
         self.assertIn('aria-label="View repository on GitHub"', self.index)
+
+    def test_xo_logo_and_favicon_follow_saved_theme(self):
+        for asset, expected_fill, expected_stroke in (
+            ("xo-logo-light.svg", '#ffffff', '#111827'),
+            ("xo-logo-dark.svg", '#09090b', '#ffffff'),
+        ):
+            svg = (DOCS_DIR / "images" / asset).read_text(encoding="utf-8")
+            self.assertIn(f'fill="{expected_fill}"', svg)
+            self.assertIn(f'stroke="{expected_stroke}"', svg)
+        for script in (self.utils, (DOCS_DIR / "app.js").read_text(encoding="utf-8")):
+            self.assertIn("images/xo-logo-dark.svg", script)
+            self.assertIn("images/xo-logo-light.svg", script)
+            self.assertIn("setAttribute('src', asset)", script)
+            self.assertIn("setAttribute('href', asset)", script)
+        self.assertIn(".brand-link:hover .brand-text h1", self.styles)
+        self.assertIn('[data-theme="dark"] .brand-link:hover .brand-text h1', self.styles)
+        self.assertIn(".nav-links {\n    width: auto;\n    order: 0;", self.styles)
 
     def test_quick_jump_links_target_real_guide_sections(self):
         for name, html, expected in (

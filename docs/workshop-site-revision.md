@@ -1,6 +1,6 @@
 # Workshop site revision
 
-This note records the approved design and its remaining decisions. The shared header selector, formatted workshop labels, workshop action row, header controls, registration-button colors, favicon, setup flow, and learner guide are implemented.
+This note records the approved design and its remaining decisions. The shared header selector, formatted workshop labels, workshop action row, header controls, registration-button colors, themed X/O logo and favicon, setup flow, and learner guide are implemented.
 
 ## Approved plan
 
@@ -13,9 +13,7 @@ This note records the approved design and its remaining decisions. The shared he
 - In the learner guide, teach **One move** first, then the Copilot-assisted **Rematch**, with **Rewind** as an optional activity. Keep the manual workflow first and Copilot later.
 - Explain that match branches start from clean `main` and qualify when their names begin with lowercase `match`; use clear branch-name examples.
 - Use a static favicon showing X and O side by side.
-- Keep a shared GitHub logo visible on the main, setup, and guide routes, with the theme toggle aligned beside the neighboring header controls.
+- Group **How to play**, **Setup**, and the theme toggle together on every route. Use the X/O artwork for the site logo and favicon, switching between black on white in light theme and white on black in dark theme.
+- Keep the GitHub repository logo visible on the main, setup, and guide routes.
+- Keep the **Git Tic-Tac-Toe** header title black in light theme and white in dark theme, including hover and visited states.
 - Give every **Register repository** button a white background, black text, and a visible outline in both themes, including dynamic empty states. Do not tint the button blue.
-
-## Still pending
-
-- Final theme alignment details.
