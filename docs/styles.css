@@ -1547,3 +1547,46 @@ details.accordion[open] summary {
     grid-template-columns: 1fr;
   }
 }
+
+/* Registration actions remain neutral and high-contrast in either theme. */
+a[data-workshop-registration],
+a[data-workshop-registration]:link,
+a[data-workshop-registration]:visited,
+a.register-btn,
+a.register-btn:link,
+a.register-btn:visited {
+  background-color: #ffffff;
+  color: #000000;
+  border: 2px solid #111827;
+}
+
+a[data-workshop-registration]:hover,
+a.register-btn:hover {
+  background-color: #f3f4f6;
+  color: #000000;
+  border-color: #000000;
+}
+
+a[data-workshop-registration]:focus-visible,
+a.register-btn:focus-visible {
+  outline: 3px solid #111827;
+  outline-offset: 3px;
+}
+
+[data-theme="dark"] a[data-workshop-registration],
+[data-theme="dark"] a[data-workshop-registration]:link,
+[data-theme="dark"] a[data-workshop-registration]:visited,
+[data-theme="dark"] a.register-btn,
+[data-theme="dark"] a.register-btn:link,
+[data-theme="dark"] a.register-btn:visited,
+[data-theme="dark"] a[data-workshop-registration]:hover,
+[data-theme="dark"] a.register-btn:hover {
+  background-color: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
+}
+
+[data-theme="dark"] a[data-workshop-registration]:focus-visible,
+[data-theme="dark"] a.register-btn:focus-visible {
+  outline-color: #ffffff;
+}
