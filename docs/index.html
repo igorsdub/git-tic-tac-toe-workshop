@@ -25,10 +25,6 @@
           <a href="guide.html" class="btn btn-outline nav-btn">📖 How to Play</a>
           <a href="setup.html" class="btn btn-outline nav-btn">🛠️ Setup</a>
         </nav>
-        <a id="register-link" href="https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml"
-           target="_blank" rel="noopener noreferrer" class="btn btn-primary register-btn">
-          ➕ Register Repository
-        </a>
         <button id="theme-toggle" class="btn btn-icon" title="Toggle dark/light theme" aria-label="Toggle theme">
           🌙
         </button>
@@ -47,6 +43,17 @@
   </header>
 
   <main class="wall-main">
+    <section class="workshop-context" aria-label="Selected workshop">
+      <div class="workshop-context-picker">
+        <label for="workshop-select">Workshop</label>
+        <select id="workshop-select" aria-describedby="workshop-context-status"></select>
+        <span id="workshop-context-status" class="visually-hidden" role="status">Choose a workshop for its date, registration, and Game Wall.</span>
+      </div>
+      <div class="workshop-context-details" aria-live="polite">
+        <div><h2 id="current-workshop-name">Loading workshop…</h2><p id="current-workshop-date"></p><p id="current-workshop-note" hidden></p></div>
+        <div class="workshop-context-actions"><a id="register-link" data-workshop-registration class="btn btn-primary" href="https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&amp;workshop_id=2026-10-01-scda" target="_blank" rel="noopener noreferrer">Register repository</a><a data-workshop-dashboard class="btn btn-outline" href="index.html">View Game Wall</a></div>
+      </div>
+    </section>
     <!-- Notice / Alert Banner -->
     <div id="notice-banner" class="notice-banner hidden" role="alert">
       <span id="notice-icon" class="notice-icon">ℹ️</span>
@@ -55,12 +62,6 @@
     </div>
 
     <!-- Top Filter & Status Bar -->
-    <section class="workshop-picker" aria-label="Workshop selection">
-      <label for="workshop-select">Workshop</label>
-      <select id="workshop-select" aria-describedby="workshop-status"></select>
-      <span id="workshop-status" class="visually-hidden">Choose a workshop to view its matches.</span>
-    </section>
-
     <section class="toolbar-section" aria-label="Game Filters and Status">
       <div class="filter-tabs" role="tablist">
         <button class="filter-tab active" data-filter="all" aria-pressed="true">All <span id="count-all" class="tab-count">0</span></button>
@@ -90,7 +91,7 @@
         <div class="empty-icon">🎲</div>
         <h2>No games found</h2>
         <p id="empty-message">No pair games match the selected filters.</p>
-        <a id="empty-register-link" href="https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml"
+        <a id="empty-register-link" data-workshop-registration href="https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&amp;workshop_id=2026-10-01-scda"
            target="_blank" rel="noopener noreferrer" class="btn btn-primary register-btn">
           Register a repository
         </a>
@@ -102,12 +103,13 @@
 
   <footer class="wall-footer">
     <div class="footer-container">
-      <span>Workshop: <strong id="current-workshop-name">Loading workshops…</strong> &bull; Git Tic-Tac-Toe Workshop</span>
+      <span>Git Tic-Tac-Toe Workshop</span>
       <button id="toggle-data-mode-btn" class="footer-btn">Switch to Demo Data</button>
     </div>
   </footer>
 
   <script src="match-data.js"></script>
+  <script src="workshop-context.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

@@ -377,21 +377,34 @@ a:hover {
 }
 
 /* Top Unified Toolbar Section */
-.workshop-picker {
+.workshop-context {
   max-width: 1440px;
   width: 100%;
-  margin: 1.25rem auto 0;
-  padding: 0 1.5rem;
+  margin: 1.25rem auto;
+  padding: 1rem 1.5rem;
+  display: grid;
+  gap: 1rem;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+}
+
+.guide-container .workshop-context {
+  margin: 0;
+  padding: 1rem;
+}
+
+.workshop-context-picker {
   display: flex;
   align-items: center;
   gap: 0.75rem;
 }
 
-.workshop-picker label {
+.workshop-context-picker label {
   font-weight: 700;
 }
 
-.workshop-picker select {
+.workshop-context-picker select {
   min-width: min(22rem, 100%);
   padding: 0.6rem 0.75rem;
   border: 1px solid var(--border-medium);
@@ -399,6 +412,32 @@ a:hover {
   background: var(--bg-card);
   color: var(--text-primary);
   font: inherit;
+}
+
+.workshop-context-details {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-top: 1px solid var(--border-light);
+  padding-top: 0.9rem;
+}
+
+.workshop-context-details h2 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.workshop-context-details p {
+  margin: 0.25rem 0 0;
+  color: var(--text-secondary);
+}
+
+.workshop-context-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .visually-hidden {
@@ -1025,13 +1064,19 @@ a:hover {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .workshop-picker {
-    padding: 0 1rem;
+  .workshop-context {
+    margin: 1rem auto;
+    padding: 1rem;
   }
 
-  .workshop-picker select {
+  .workshop-context-picker select {
     min-width: 0;
     flex: 1;
+  }
+
+  .workshop-context-details {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .header-container {

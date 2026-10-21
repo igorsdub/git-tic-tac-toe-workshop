@@ -18,7 +18,6 @@
 
   const BOARD_REGISTRY_URL = `./board.json`;
   const RAW_BOARD_REGISTRY_URL = `https://raw.githubusercontent.com/${CONFIG.REPO_OWNER}/${CONFIG.REPO_NAME}/main/docs/board.json`;
-  const WORKSHOPS_URL = './workshops.json';
   const MATCH_DATA = window.MatchData;
 
   // --- Fallback / Mock Data for Offline & Demo Modes ---
@@ -211,9 +210,6 @@ State: Waiting for O
     noticeActionBtn: document.getElementById('notice-action-btn'),
     lastUpdated: document.getElementById('last-updated'),
     themeToggle: document.getElementById('theme-toggle'),
-    workshopSelect: document.getElementById('workshop-select'),
-    currentWorkshopName: document.getElementById('current-workshop-name'),
-    registerLinks: [document.getElementById('register-link'), document.getElementById('empty-register-link')],
     toggleDataModeBtn: document.getElementById('toggle-data-mode-btn'),
     liveIndicator: document.getElementById('live-indicator'),
     tabErrors: document.getElementById('tab-errors'),
@@ -589,60 +585,13 @@ State: Waiting for O
   // ==========================================
 
   async function loadWorkshopCatalog() {
-    const response = await fetch(`${WORKSHOPS_URL}?t=${Date.now()}`);
-    if (!response.ok) throw new Error(`Workshop catalog unavailable (HTTP ${response.status}).`);
-    const catalog = await response.json();
-    if (!catalog || !Array.isArray(catalog.workshops) || !catalog.workshops.length) {
-      throw new Error('The workshop catalog has no configured workshops.');
-    }
-    const configured = new Set(catalog.workshops.map((workshop) => workshop.id));
-    if (!configured.has(catalog.defaultWorkshopId)) throw new Error('The workshop catalog default is not configured.');
-    state.catalog = catalog;
-    const queryWorkshop = new URL(window.location.href).searchParams.get('workshop');
-    state.activeWorkshopId = configured.has(queryWorkshop) ? queryWorkshop : catalog.defaultWorkshopId;
-    if (queryWorkshop && !configured.has(queryWorkshop)) {
-      const url = new URL(window.location.href);
-      url.searchParams.set('workshop', state.activeWorkshopId);
-      window.history.replaceState({}, '', url);
-    }
-    if (DOM.workshopSelect) {
-      const active = catalog.workshops.filter((workshop) => workshop.status === 'active');
-      const archived = catalog.workshops.filter((workshop) => workshop.status === 'archived');
-      const option = (workshop) => `<option value="${escapeHtml(workshop.id)}">${escapeHtml(workshop.name)}</option>`;
-      DOM.workshopSelect.innerHTML = [
-        ...active.map(option),
-        ...(archived.length ? [`<optgroup label="Archived workshops">${archived.map(option).join('')}</optgroup>`] : []),
-      ].join('');
-      DOM.workshopSelect.value = state.activeWorkshopId;
-    }
-    updateWorkshopChrome();
+    const context = await window.WorkshopContext.ready;
+    state.catalog = context.catalog;
+    state.activeWorkshopId = context.workshopId;
   }
 
   function selectedWorkshop() {
     return state.catalog && state.catalog.workshops.find((workshop) => workshop.id === state.activeWorkshopId);
-  }
-
-  function updateWorkshopChrome() {
-    const workshop = selectedWorkshop();
-    if (!workshop) return;
-    if (DOM.currentWorkshopName) DOM.currentWorkshopName.textContent = workshop.name;
-    for (const link of DOM.registerLinks) {
-      if (link) link.href = workshop.registrationUrl;
-    }
-  }
-
-  function selectWorkshop(workshopId, updateUrl = true) {
-    if (!state.catalog || !state.catalog.workshops.some((workshop) => workshop.id === workshopId)) return;
-    state.activeWorkshopId = workshopId;
-    if (DOM.workshopSelect) DOM.workshopSelect.value = workshopId;
-    if (updateUrl) {
-      const url = new URL(window.location.href);
-      url.searchParams.set('workshop', workshopId);
-      window.history.pushState({}, '', url);
-    }
-    updateWorkshopChrome();
-    updateWorkshopNotice();
-    render();
   }
 
   function workshopGames() {
@@ -1163,20 +1112,12 @@ State: Waiting for O
       DOM.themeToggle.addEventListener('click', toggleTheme);
     }
 
-    if (DOM.workshopSelect) {
-      DOM.workshopSelect.addEventListener('change', () => selectWorkshop(DOM.workshopSelect.value));
-      window.addEventListener('popstate', () => {
-        const requested = new URL(window.location.href).searchParams.get('workshop');
-        const available = state.catalog && state.catalog.workshops.some((workshop) => workshop.id === requested);
-        const selectedId = available ? requested : state.catalog.defaultWorkshopId;
-        if (requested && !available) {
-          const url = new URL(window.location.href);
-          url.searchParams.set('workshop', selectedId);
-          window.history.replaceState({}, '', url);
-        }
-        selectWorkshop(selectedId, false);
-      });
-    }
+    document.addEventListener('workshopchange', (event) => {
+      if (!state.catalog || !state.catalog.workshops.some((workshop) => workshop.id === event.detail.workshopId)) return;
+      state.activeWorkshopId = event.detail.workshopId;
+      updateWorkshopNotice();
+      render();
+    });
 
     // Filter tabs
     const tabs = document.querySelectorAll('.filter-tab');
