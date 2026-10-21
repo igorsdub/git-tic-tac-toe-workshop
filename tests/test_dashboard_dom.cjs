@@ -285,7 +285,10 @@ test('workshop catalog retries after failure and coalesces overlapping retries',
       let requests = 0;
       window.fetch = async () => {
         requests += 1;
-        if (requests === 1) return new Response('', { status: 503 });
+        if (requests === 1) {
+          await new Promise((resolve) => setTimeout(resolve, 100));
+          return new Response('', { status: 503 });
+        }
         return new Response(JSON.stringify({ defaultWorkshopId: 'scda', workshops: [
           { id: 'scda', name: 'SCDA Test', date: '2026-10-01', status: 'active', registrationUrl: 'https://example.test/register?workshop_id=scda' },
         ] }), { status: 200, headers: { 'Content-Type': 'application/json' } });
