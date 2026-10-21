@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const REPO_ROOT = path.resolve(__dirname, '..', '..');
-const PROFILE_DIR = path.join(REPO_ROOT, '.playwright-profile');
+const AUTH_FILE = path.join(REPO_ROOT, '.playwright-auth.json');
 const OUT_DIR = path.join(__dirname, 'out');
 const VIEWPORT = { width: 1440, height: 900 };
 
@@ -19,12 +19,22 @@ function stepEntry(slug) {
 
 async function launch({ headless = true, recordVideo = false, slug } = {}) {
   const { chromium } = require('playwright');
-  const opts = { headless, viewport: VIEWPORT };
+  if (process.env.HEADLESS === '0') headless = false;
+  if (!fs.existsSync(AUTH_FILE)) throw new Error('Run npm run capture:login first');
+  const opts = { storageState: AUTH_FILE, viewport: VIEWPORT };
   if (recordVideo) {
     if (!slug) throw new Error('launch: slug is required with recordVideo');
     opts.recordVideo = { dir: path.join(OUT_DIR, slug), size: VIEWPORT };
   }
-  return chromium.launchPersistentContext(PROFILE_DIR, opts);
+  const browser = await chromium.launch({ headless });
+  const context = await browser.newContext(opts);
+  // Closing the context also closes the browser, so step scripts need no changes.
+  const closeContext = context.close.bind(context);
+  context.close = async (...args) => {
+    await closeContext(...args);
+    await browser.close();
+  };
+  return context;
 }
 
 function createStep(page, slug) {
@@ -88,4 +98,4 @@ function createStep(page, slug) {
   return { shot, click, finish };
 }
 
-module.exports = { PROFILE_DIR, OUT_DIR, REPO_ROOT, VIEWPORT, launch, createStep, loadManifest };
+module.exports = { AUTH_FILE, OUT_DIR, REPO_ROOT, VIEWPORT, launch, createStep, loadManifest };

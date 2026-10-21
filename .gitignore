@@ -4,4 +4,5 @@ __pycache__/
 .pytest_cache/
 node_modules/
 .playwright-profile/
+.playwright-auth.json
 scripts/capture/out/
