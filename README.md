@@ -17,9 +17,9 @@ This two-hour workshop teaches collaborative Git through a paired tic-tac-toe ga
 
 ## Workshop links
 
-The main Game Wall opens the organizer-designated default workshop, SCDA Training Week. Use a workshop-specific link to open its dashboard or prefilled registration form directly.
+The main Game Wall opens the organizer-designated default workshop, Sokedai (2026-11-06). SCDA Training Week is archived. Use a workshop-specific link to open its dashboard or prefilled registration form directly.
 
-The shared event context on the Game Wall, learner guide, and setup page reads event names, ISO dates, status, registration links, and optional `note` text from [`docs/workshops.json`](docs/workshops.json). Change the catalog's `defaultWorkshopId` to designate a different plain-URL default; stable workshop links continue using their own `?workshop=<id>` value.
+The shared event context on the Game Wall, learner guide, and setup page reads event names, ISO dates, status, registration links, and optional `note` text from [`docs/workshops.json`](docs/workshops.json). Each workshop may also set `setupTrack` (`"codespaces"` or `"local"`) and `surveyUrl`. Change the catalog's `defaultWorkshopId` to designate a different plain-URL default; stable workshop links continue using their own `?workshop=<id>` value.
 
 | Workshop | Dashboard | Register a pair repository |
 |---|---|---|

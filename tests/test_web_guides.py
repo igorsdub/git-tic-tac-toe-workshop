@@ -24,6 +24,20 @@ class TestWebGuides(unittest.TestCase):
         for path in (DOCS_DIR / "setup.html", DOCS_DIR / "guide.html", DOCS_DIR / "guide-utils.js", DOCS_DIR / "workshop-context.js", DOCS_DIR / "styles.css"):
             self.assertTrue(path.is_file(), str(path))
 
+    def test_workshop_catalog_setup_fields(self):
+        catalog = json.loads((DOCS_DIR / "workshops.json").read_text(encoding="utf-8"))
+        by_id = {item["id"]: item for item in catalog["workshops"]}
+        self.assertEqual(by_id["2026-10-01-scda"]["status"], "archived")
+        self.assertNotIn("setupTrack", by_id["2026-10-01-scda"])
+        self.assertEqual(by_id["2026-11-06-sokedai"]["setupTrack"], "codespaces")
+        self.assertEqual(by_id["2026-11-06-sokedai"]["surveyUrl"], "https://forms.gle/eo9pgChEGpdvdcQ67")
+        self.assertNotIn("setupTrack", by_id["2026-11-10-riken"])
+        for item in catalog["workshops"]:
+            if "setupTrack" in item:
+                self.assertIn(item["setupTrack"], {"codespaces", "local"})
+            if "surveyUrl" in item:
+                self.assertTrue(item["surveyUrl"].startswith("https://"))
+
     def test_shared_workshop_context_is_configured_on_all_routes(self):
         catalog = json.loads((DOCS_DIR / "workshops.json").read_text(encoding="utf-8"))
         expected = {
@@ -31,7 +45,7 @@ class TestWebGuides(unittest.TestCase):
             "2026-11-06-sokedai": ("Sokedai", "2026-11-06"),
             "2026-11-10-riken": ("Riken", "2026-11-10"),
         }
-        self.assertEqual(catalog["defaultWorkshopId"], "2026-10-01-scda")
+        self.assertEqual(catalog["defaultWorkshopId"], "2026-11-06-sokedai")
         self.assertEqual({item["id"]: (item["name"], item["date"]) for item in catalog["workshops"]}, expected)
         for name, html in (("wall", self.index), ("learner", self.guide), ("setup", self.setup)):
             with self.subTest(page=name):
