@@ -228,3 +228,88 @@ test('workshop context keeps route, date, registration, and navigation in sync o
     }
   }
 });
+
+test('in-content route CTA opens the learner guide for the selected workshop', { skip: !chromiumHeadlessUsable }, () => {
+  const repo = path.resolve(__dirname, '..');
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'workshop-route-click-'));
+  const contextScript = path.join(repo, 'docs/workshop-context.js');
+  for (const page of ['setup.html', 'guide.html']) {
+    const source = fs.readFileSync(path.join(repo, 'docs', page), 'utf8');
+    const fixture = `<script>
+      window.fetch = async () => new Response(JSON.stringify({ defaultWorkshopId: 'scda', workshops: [
+        { id: 'scda', name: 'SCDA Test', date: '2026-10-01', status: 'active', registrationUrl: 'https://example.test/register?workshop_id=scda' },
+        { id: 'sokedai', name: 'Sokedai Test', date: '2026-11-06', status: 'active', registrationUrl: 'https://example.test/register?workshop_id=sokedai' },
+      ] }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    </script><script src="${contextScript}"></script><script>
+      (async () => {
+        await window.WorkshopContext.ready;
+        if (location.pathname.endsWith('/setup.html')) {
+          const select = document.getElementById('workshop-select');
+          select.value = 'sokedai';
+          select.dispatchEvent(new Event('change', { bubbles: true }));
+          document.querySelector('[data-workshop-route]').click();
+          return;
+        }
+        const selected = document.getElementById('workshop-select').value;
+        document.body.dataset.fixtureResult = location.pathname.endsWith('/guide.html')
+          && new URL(location.href).searchParams.get('workshop') === 'sokedai'
+          && selected === 'sokedai'
+          && document.querySelector('[data-workshop-registration]').href.endsWith('workshop_id=sokedai')
+          ? 'PASS' : 'FAIL';
+      })();
+    </script>`;
+    const html = source
+      .replace(/\s*<script[^>]*><\/script>/g, '')
+      .replace(/<script src="[^"]+"><\/script>/g, '')
+      .replace(/href="styles\.css"/g, `href="${path.join(repo, 'docs/styles.css')}"`)
+      .replace('</body>', `${fixture}</body>`);
+    fs.writeFileSync(path.join(tempDir, page), html);
+  }
+  try {
+    const result = spawnSync(chromium, ['--headless=new', '--no-sandbox', '--disable-gpu', '--disable-background-networking', '--virtual-time-budget=3000', '--dump-dom', `file://${path.join(tempDir, 'setup.html')}`], { encoding: 'utf8', timeout: 15000 });
+    assert.equal(result.status, 0, `signal=${result.signal} error=${result.error || ''}\n${result.stderr}`);
+    assert.match(result.stdout, /data-fixture-result="PASS"/, result.stdout.slice(-3000));
+  } finally {
+    fs.rmSync(tempDir, { recursive: true, force: true });
+  }
+});
+
+test('workshop catalog retries after failure and coalesces overlapping retries', { skip: !chromiumHeadlessUsable }, () => {
+  const repo = path.resolve(__dirname, '..');
+  const htmlPath = path.join(os.tmpdir(), `workshop-context-retry-${process.pid}.html`);
+  const html = `<!doctype html><html><body>
+    <label for="workshop-select">Workshop</label><select id="workshop-select"></select>
+    <p id="current-workshop-name"></p><p id="current-workshop-date"></p><p id="current-workshop-note" hidden></p>
+    <span id="workshop-context-status"></span>
+    <script>
+      let requests = 0;
+      window.fetch = async () => {
+        requests += 1;
+        if (requests === 1) return new Response('', { status: 503 });
+        return new Response(JSON.stringify({ defaultWorkshopId: 'scda', workshops: [
+          { id: 'scda', name: 'SCDA Test', date: '2026-10-01', status: 'active', registrationUrl: 'https://example.test/register?workshop_id=scda' },
+        ] }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+      };
+    </script>
+    <script src="${path.join(repo, 'docs/workshop-context.js')}"></script>
+    <script>
+      (async () => {
+        const failed = await window.WorkshopContext.ready.then(() => false, () => true);
+        const errorShown = document.getElementById('workshop-context-status').textContent.includes('could not be loaded');
+        const [first, second] = await Promise.all([window.WorkshopContext.ready, window.WorkshopContext.ready]);
+        document.body.dataset.fixtureResult = failed && errorShown && requests === 2
+          && first === second && first.workshopId === 'scda'
+          && document.getElementById('current-workshop-name').textContent === 'SCDA Test'
+          ? 'PASS' : 'FAIL';
+      })();
+    </script>
+  </body></html>`;
+  fs.writeFileSync(htmlPath, html);
+  try {
+    const result = spawnSync(chromium, ['--headless=new', '--no-sandbox', '--disable-gpu', '--disable-background-networking', '--virtual-time-budget=1500', '--dump-dom', `file://${htmlPath}`], { encoding: 'utf8', timeout: 15000 });
+    assert.equal(result.status, 0, `signal=${result.signal} error=${result.error || ''}\n${result.stderr}`);
+    assert.match(result.stdout, /data-fixture-result="PASS"/, result.stdout.slice(-2500));
+  } finally {
+    fs.rmSync(htmlPath, { force: true });
+  }
+});

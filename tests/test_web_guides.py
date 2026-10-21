@@ -39,7 +39,11 @@ class TestWebGuides(unittest.TestCase):
                 self.assertIn('data-workshop-registration', html)
                 self.assertIn('data-workshop-dashboard', html)
                 self.assertIn('src="workshop-context.js"', html)
-        self.assertNotIn("workshop_id=2026-10-01-scda", self.guide)
+        self.assertIn('data-workshop-route href="guide.html"', self.setup)
+        workshop_instructions = self.guide[
+            self.guide.index('<section class="guide-section"><h2>Workshop setup</h2>'):]
+        workshop_instructions = workshop_instructions.split('</section>', 1)[0]
+        self.assertNotIn("workshop_id=2026-10-01-scda", workshop_instructions)
 
     def test_shared_navigation_and_repository_link(self):
         repo_url = "https://github.com/igorsdub/git-tic-tac-toe-workshop"

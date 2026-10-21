@@ -10,6 +10,8 @@
   const statusNode = document.getElementById('workshop-context-status');
   let catalog = null;
   let activeWorkshop = null;
+  let catalogLoad = null;
+  let listenersInstalled = false;
 
   function formatDate(isoDate) {
     const [year, month, day] = String(isoDate || '').split('-').map(Number);
@@ -27,7 +29,7 @@
   }
 
   function updateNavigation(workshopId) {
-    document.querySelectorAll('.nav-links a, .brand-link').forEach((link) => {
+    document.querySelectorAll('.nav-links a, .brand-link, [data-workshop-route]').forEach((link) => {
       link.setAttribute('href', navigationHref(link.getAttribute('href'), workshopId));
     });
   }
@@ -70,6 +72,24 @@
     if (notify) emitSelection();
   }
 
+  function installListeners() {
+    if (listenersInstalled) return;
+    listenersInstalled = true;
+    if (select) select.addEventListener('change', () => selectWorkshop(select.value));
+    window.addEventListener('popstate', () => {
+      if (!catalog) return;
+      const requestedId = new URL(window.location.href).searchParams.get('workshop');
+      const valid = catalog.workshops.some((workshop) => workshop.id === requestedId);
+      const resolvedId = valid ? requestedId : catalog.defaultWorkshopId;
+      if (requestedId && !valid) {
+        const url = new URL(window.location.href);
+        url.searchParams.set('workshop', resolvedId);
+        window.history.replaceState({}, '', url);
+      }
+      selectWorkshop(resolvedId, { updateUrl: false });
+    });
+  }
+
   async function initialize() {
     const response = await fetch(`${CATALOG_URL}?t=${Date.now()}`);
     if (!response.ok) throw new Error(`Workshop catalog unavailable (HTTP ${response.status}).`);
@@ -98,7 +118,6 @@
         archived.forEach((workshop) => appendOption(workshop, group));
         select.appendChild(group);
       }
-      select.addEventListener('change', () => selectWorkshop(select.value));
     }
     const requestedWorkshopId = new URL(window.location.href).searchParams.get('workshop');
     const selectedId = workshopIds.has(requestedWorkshopId) ? requestedWorkshopId : catalog.defaultWorkshopId;
@@ -108,27 +127,29 @@
       url.searchParams.set('workshop', catalog.defaultWorkshopId);
       window.history.replaceState({}, '', url);
     }
-    window.addEventListener('popstate', () => {
-      const requestedId = new URL(window.location.href).searchParams.get('workshop');
-      const valid = workshopIds.has(requestedId);
-      const resolvedId = valid ? requestedId : catalog.defaultWorkshopId;
-      if (requestedId && !valid) {
-        const url = new URL(window.location.href);
-        url.searchParams.set('workshop', resolvedId);
-        window.history.replaceState({}, '', url);
-      }
-      selectWorkshop(resolvedId, { updateUrl: false });
-    });
+    installListeners();
+    if (statusNode) statusNode.textContent = 'Choose a workshop for its date, registration, and Game Wall.';
     return { catalog, workshopId: selectedId };
   }
 
-  const ready = initialize().catch((error) => {
-    if (statusNode) statusNode.textContent = 'Workshop details could not be loaded.';
-    throw error;
-  });
+  function loadCatalog() {
+    if (!catalogLoad) {
+      const pending = initialize().catch((error) => {
+        if (statusNode) statusNode.textContent = 'Workshop details could not be loaded.';
+        if (catalogLoad === pending) catalogLoad = null;
+        throw error;
+      });
+      catalogLoad = pending;
+    }
+    return catalogLoad;
+  }
+
+  // Start loading for guide and setup routes, which do not otherwise request the catalog.
+  // The shared promise resets after failure so a dashboard refresh can retry it.
+  loadCatalog().catch(() => {});
 
   window.WorkshopContext = {
-    ready,
+    get ready() { return loadCatalog(); },
     get selectedWorkshop() { return activeWorkshop; },
     selectWorkshop,
   };
