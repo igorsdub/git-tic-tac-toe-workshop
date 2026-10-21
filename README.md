@@ -49,7 +49,7 @@ npm test
 Without npm:
 
 ```
-node --test tests/
+node --test tests/*.cjs tests/*.js
 python3 -m unittest discover -s tests -p 'test_*.py'
 ```
 
