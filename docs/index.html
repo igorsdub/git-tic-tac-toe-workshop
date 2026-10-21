@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Git Tic-Tac-Toe Game Wall</title>
   <meta name="description" content="Live paired-game activity wall for the Git Tic-Tac-Toe Workshop. Displays real-time game status and 3x3 board representations for all registered pairs.">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><text y=%2226%22 font-size=%2224%22>🎮</text></svg>">
+  <link id="theme-favicon" rel="icon" type="image/svg+xml" href="images/xo-logo-light.svg">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -13,7 +13,7 @@
     <div class="header-container">
       <div class="brand">
         <a href="index.html" class="brand-link">
-          <span class="brand-icon">🎮</span>
+          <img id="brand-logo" class="brand-icon" src="images/xo-logo-light.svg" data-light-src="images/xo-logo-light.svg" data-dark-src="images/xo-logo-dark.svg" alt="X and O">
           <div class="brand-text">
             <h1>Git Tic-Tac-Toe</h1>
             <p class="subtitle">Collaboration with Git and GitHub</p>
@@ -21,13 +21,20 @@
         </a>
       </div>
       <div class="header-actions">
-        <nav class="nav-links" aria-label="Workshop Navigation">
-          <a href="guide.html" class="btn btn-outline nav-btn">📖 How to Play</a>
-          <a href="setup.html" class="btn btn-outline nav-btn">🛠️ Setup</a>
-        </nav>
-        <button id="theme-toggle" class="btn btn-icon" title="Toggle dark/light theme" aria-label="Toggle theme">
-          🌙
-        </button>
+        <div class="header-navigation">
+          <nav class="nav-links" aria-label="Workshop Navigation">
+            <a href="guide.html" class="btn btn-outline nav-btn">How to play</a>
+            <a href="setup.html" class="btn btn-outline nav-btn">Setup</a>
+          </nav>
+          <button id="theme-toggle" class="btn btn-icon" title="Toggle dark/light theme" aria-label="Toggle theme">
+            🌙
+          </button>
+        </div>
+        <div class="header-workshop-picker">
+          <label for="workshop-select" class="header-workshop-label">Workshop</label>
+          <select id="workshop-select" aria-describedby="workshop-context-status"></select>
+          <span id="workshop-context-status" class="visually-hidden" role="status">Choose a workshop to update the registration link and Game Wall.</span>
+        </div>
         <a href="https://github.com/igorsdub/git-tic-tac-toe-workshop" 
            target="_blank" 
            rel="noopener noreferrer" 
@@ -43,15 +50,10 @@
   </header>
 
   <main class="wall-main">
-    <section class="workshop-context" aria-label="Selected workshop">
-      <div class="workshop-context-picker">
-        <label for="workshop-select">Workshop</label>
-        <select id="workshop-select" aria-describedby="workshop-context-status"></select>
-        <span id="workshop-context-status" class="visually-hidden" role="status">Choose a workshop for its date, registration, and Game Wall.</span>
-      </div>
-      <div class="workshop-context-details" aria-live="polite">
-        <div><h2 id="current-workshop-name">Loading workshop…</h2><p id="current-workshop-date"></p><p id="current-workshop-note" hidden></p></div>
-        <div class="workshop-context-actions"><a id="register-link" data-workshop-registration class="btn btn-primary" href="https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&amp;workshop_id=2026-10-01-scda" target="_blank" rel="noopener noreferrer">Register repository</a><a data-workshop-dashboard class="btn btn-outline" href="index.html">View Game Wall</a></div>
+    <section class="workshop-actions" aria-label="Workshop actions">
+      <div class="workshop-context-actions">
+        <a id="register-link" data-workshop-registration class="btn btn-primary" href="https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&amp;workshop_id=2026-10-01-scda" target="_blank" rel="noopener noreferrer">Register repository</a>
+        <a data-workshop-dashboard class="btn btn-outline" href="index.html">View all games</a>
       </div>
     </section>
     <!-- Notice / Alert Banner -->

@@ -20,6 +20,11 @@
   function setTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem(STORAGE_KEY_THEME, theme);
+    const logo = document.getElementById('brand-logo');
+    const favicon = document.getElementById('theme-favicon');
+    const asset = theme === 'dark' ? 'images/xo-logo-dark.svg' : 'images/xo-logo-light.svg';
+    if (logo) logo.setAttribute('src', asset);
+    if (favicon) favicon.setAttribute('href', asset);
     const themeToggle = document.getElementById('theme-toggle');
     if (themeToggle) {
       themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
