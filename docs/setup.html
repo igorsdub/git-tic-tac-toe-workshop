@@ -14,6 +14,10 @@
   </div></header>
   <main class="guide-main"><div class="guide-container">
     <header class="guide-hero"><h1>Get ready for the workshop</h1><p class="lead">Try a short setup rehearsal before we meet. You do not need to install Git or use a terminal.</p></header>
+    <section class="workshop-context" aria-label="Selected workshop">
+      <div class="workshop-context-picker"><label for="workshop-select">Workshop</label><select id="workshop-select" aria-describedby="workshop-context-status"></select><span id="workshop-context-status" class="visually-hidden" role="status">Choose a workshop for its date, registration, and Game Wall.</span></div>
+      <div class="workshop-context-details" aria-live="polite"><div><h2 id="current-workshop-name">Loading workshop…</h2><p id="current-workshop-date"></p><p id="current-workshop-note" hidden></p></div><div class="workshop-context-actions"><a data-workshop-registration class="btn btn-primary" href="https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&amp;workshop_id=2026-10-01-scda" target="_blank" rel="noopener noreferrer">Register repository</a><a data-workshop-dashboard class="btn btn-outline" href="index.html">View Game Wall</a></div></div>
+    </section>
     <nav class="jump-nav" aria-label="Quick jump to section"><span class="jump-nav-label">Jump to:</span><a href="#rehearsal" class="jump-pill">Rehearsal</a><a href="#access" class="jump-pill">Access help</a><a href="#survey" class="jump-pill">Survey</a></nav>
     <section class="guide-section" id="rehearsal"><h2>One short rehearsal</h2><ol>
       <li>Open the <a href="https://github.com/igorsdub/git-tic-tac-toe-template" target="_blank" rel="noopener noreferrer">tic-tac-toe starter template</a> and choose <strong>Use this template → Create a new repository</strong>. Make the repository public.</li>
@@ -23,9 +27,9 @@
     </ol><p>No board edit is required for preparation. Codespaces and Copilot access are separate. If Copilot Chat or Ask is unavailable, tell the facilitator; a manual rematch path is available.</p><p>See GitHub’s instructions for <a href="https://docs.github.com/en/codespaces/developing-a-codespace/creating-a-codespace-from-a-template" target="_blank" rel="noopener noreferrer">creating a Codespace from a template</a>.</p></section>
     <section class="guide-section" id="access"><h2>Access and support</h2><p>Codespaces and Copilot access are separate. If Copilot Chat or agent editing is unavailable, tell the facilitator; the workshop includes a manual rematch path and an instructor demonstration. We will check agent editing separately for the rematch.</p><p>For current guidance, see <a href="https://docs.github.com/en/copilot/how-tos/copilot-in-your-ide/chat-with-copilot/chat-in-ide" target="_blank" rel="noopener noreferrer">Copilot Chat in your IDE</a>.</p></section>
     <section class="guide-section" id="survey"><h2>Short survey</h2><p>The five-question instructor-preparation survey asks about everyday tools, file-versioning habits, collaboration, AI coding-assistant use, and an optional open-ended response. Its Google Form is an unpublished draft and is not accepting responses, so no survey action is required now. The instructor will share it separately if it is published and used.</p></section>
-    <section class="guide-section"><h2>In the session</h2><p>You will work with a partner in one shared public repository, each using your own Codespace. VS Code’s Source Control view will guide pull, diff review, staging, commits, and push. No terminal setup is required.</p><p><a href="guide.html">Read the learner guide →</a></p></section>
+    <section class="guide-section"><h2>In the session</h2><p>You will work with a partner in one shared public repository, each using your own Codespace. VS Code’s Source Control view will guide pull, diff review, staging, commits, and push. No terminal setup is required.</p><p><a data-workshop-route href="guide.html">Read the learner guide →</a></p></section>
   </div></main>
-  <script src="app.js"></script>
+  <script src="workshop-context.js"></script>
   <script src="guide-utils.js"></script>
 </body>
 </html>

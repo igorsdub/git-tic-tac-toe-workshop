@@ -4,18 +4,21 @@
     {
       "id": "2026-10-01-scda",
       "name": "SCDA Training Week",
+      "date": "2026-10-01",
       "status": "active",
       "registrationUrl": "https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&workshop_id=2026-10-01-scda"
     },
     {
       "id": "2026-11-06-sokedai",
       "name": "Sokedai",
+      "date": "2026-11-06",
       "status": "active",
       "registrationUrl": "https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&workshop_id=2026-11-06-sokedai"
     },
     {
       "id": "2026-11-10-riken",
       "name": "Riken",
+      "date": "2026-11-10",
       "status": "active",
       "registrationUrl": "https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&workshop_id=2026-11-10-riken"
     }

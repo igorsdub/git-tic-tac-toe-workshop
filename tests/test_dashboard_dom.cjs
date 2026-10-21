@@ -28,8 +28,8 @@ test('live refresh and history replay preserve the open panel, selected state, a
   const fixture = `<script>
     const historyBoard = '# Git Tic-Tac-Toe\\nState: Waiting for O\\n\\n [X] | [ ] | [ ]\\n-----+-----+-----\\n [ ] | [ ] | [ ]\\n-----+-----+-----\\n [ ] | [ ] | [ ]';
     const catalog = { defaultWorkshopId: 'workshop-a', workshops: [
-      { id: 'workshop-a', name: 'Workshop A', status: 'active', registrationUrl: 'https://github.com/example/issues/new?workshop_id=workshop-a' },
-      { id: 'workshop-old', name: 'Workshop Old', status: 'archived', registrationUrl: 'https://github.com/example/issues/new?workshop_id=workshop-old' },
+      { id: 'workshop-a', name: 'Workshop A', date: '2026-10-01', note: 'Test note', status: 'active', registrationUrl: 'https://github.com/example/issues/new?workshop_id=workshop-a' },
+      { id: 'workshop-old', name: 'Workshop Old', date: '2026-10-02', status: 'archived', registrationUrl: 'https://github.com/example/issues/new?workshop_id=workshop-old' },
     ] };
     let record = { owner: 'pair', repo: 'dom-fixture', repoUrl: 'https://github.com/pair/dom-fixture', workshopId: 'workshop-a', branch: 'match-01', matchKey: 'pair/dom-fixture#match-01', playerX: 'alice', playerO: 'bob', status: 'in_progress', state: 'Ready for X', boardValid: true, board: [[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']], errors: [] };
     const oldRecord = { owner: 'pair', repo: 'archived-game', repoUrl: 'https://github.com/pair/archived-game', workshopId: 'workshop-old', branch: 'match-test', matchKey: 'pair/archived-game#match-test', playerX: 'carol', playerO: 'dave', status: 'in_progress', state: 'Ready for X', boardValid: true, board: [[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']], errors: [] };
@@ -54,6 +54,10 @@ test('live refresh and history replay preserve the open panel, selected state, a
       await wait(100);
       const select = document.getElementById('workshop-select');
       const defaultWorkshopSelected = select.value === 'workshop-a' && !new URL(location.href).searchParams.has('workshop');
+      const eventContextRendered = document.getElementById('current-workshop-name').textContent === 'Workshop A'
+        && document.getElementById('current-workshop-date').textContent === 'October 1, 2026'
+        && document.getElementById('current-workshop-note').textContent === 'Test note'
+        && !document.getElementById('current-workshop-note').hidden;
       const details = document.querySelector('.history-details');
       details.querySelector('summary').click();
       details.querySelector('[data-history-action="load"]').click();
@@ -98,6 +102,8 @@ test('live refresh and history replay preserve the open panel, selected state, a
       const archiveNoticeCleared = document.getElementById('notice-banner').classList.contains('hidden');
       const stableUrl = new URL(location.href).searchParams.get('workshop') === 'workshop-old';
       const registrationLink = document.getElementById('register-link').href.endsWith('workshop-old');
+      const pageNavigationPreservesWorkshop = document.querySelector('.nav-links a').search.includes('workshop=workshop-old');
+      const dashboardLinkPreservesWorkshop = document.querySelector('[data-workshop-dashboard]').search.includes('workshop=workshop-old');
       select.value = 'workshop-a';
       select.dispatchEvent(new Event('change', { bubbles: true }));
       records = [oldRecord];
@@ -130,10 +136,11 @@ test('live refresh and history replay preserve the open panel, selected state, a
       await window.__poll();
       const freshClearsStaleNotice = document.getElementById('notice-banner').classList.contains('hidden')
         && document.querySelectorAll('.card-refresh-status').length === 0;
-      const passed = defaultWorkshopSelected && directQuerySelected && unknownQueryFallsBack && bareUrlUsesDefault
+      const passed = defaultWorkshopSelected && eventContextRendered && directQuerySelected && unknownQueryFallsBack && bareUrlUsesDefault
         && stableDuringInput && stableDuringPoll && preserved && liveOutcome
         && ordering[0] === 'workshop-a' && ordering[1] === 'Archived workshops'
         && archivedIsIsolated && archiveNoticeCleared && stableUrl && registrationLink
+        && pageNavigationPreservesWorkshop && dashboardLinkPreservesWorkshop
         && removedAfterSuccessfulSnapshot && emptyStateIsHonest && retainedAfterFailure
         && activeStaleNotice && activeStaleCard && archivedStaleNotice && archivedStaleCard && freshClearsStaleNotice;
       document.body.dataset.fixtureResult = passed ? 'PASS' : 'FAIL';
@@ -141,6 +148,7 @@ test('live refresh and history replay preserve the open panel, selected state, a
     setTimeout(() => window.__testRun(), 150);
   </script>`;
   let harness = index.replace('<script src="match-data.js"></script>', `${fixture}<script src="${path.join(repo, 'docs/match-data.js')}"></script>`)
+    .replace('src="workshop-context.js"', `src="${path.join(repo, 'docs/workshop-context.js')}"`)
     .replace('src="app.js"', `src="${path.join(repo, 'docs/app.js')}"`)
     .replace(/href="styles\.css"/g, `href="${path.join(repo, 'docs/styles.css')}"`);
   fs.writeFileSync(htmlPath, harness);
@@ -148,6 +156,162 @@ test('live refresh and history replay preserve the open panel, selected state, a
     const result = spawnSync(chromium, ['--headless=new', '--no-sandbox', '--disable-gpu', '--disable-background-networking', '--virtual-time-budget=5000', '--dump-dom', `file://${htmlPath}`], { encoding: 'utf8', timeout: 15000 });
     assert.equal(result.status, 0, `signal=${result.signal} error=${result.error || ''}\n${result.stderr}`);
     assert.match(result.stdout, /data-fixture-result="PASS"/, result.stdout.slice(-3000));
+  } finally {
+    fs.rmSync(htmlPath, { force: true });
+  }
+});
+
+test('workshop context keeps route, date, registration, and navigation in sync on all pages', { skip: !chromiumHeadlessUsable }, () => {
+  const repo = path.resolve(__dirname, '..');
+  const htmlPath = path.join(os.tmpdir(), `workshop-context-dom-${process.pid}.html`);
+  const pages = ['index.html', 'guide.html', 'setup.html'];
+  for (const page of pages) {
+    const source = fs.readFileSync(path.join(repo, 'docs', page), 'utf8');
+    const pageHtml = source
+      .replace(/\s*<script[^>]*><\/script>/g, '')
+      .replace(/<script src="[^"]+"><\/script>/g, '')
+      .replace(/href="styles\.css"/g, `href="${path.join(repo, 'docs/styles.css')}"`)
+      .replace('</body>', `<script>
+        window.fetch = async () => new Response(JSON.stringify({ defaultWorkshopId: 'scda', workshops: [
+          { id: 'scda', name: 'SCDA Test', date: '2026-10-01', status: 'active', registrationUrl: 'https://example.test/register?workshop_id=scda' },
+          { id: 'sokedai', name: 'Sokedai Test', date: '2026-11-06', note: '<strong>Safe note</strong>', status: 'active', registrationUrl: 'https://example.test/register?workshop_id=sokedai' },
+          { id: 'riken', name: 'Riken Test', date: '2026-11-10', status: 'active', registrationUrl: 'https://example.test/register?workshop_id=riken' },
+        ] }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+      </script>
+      <script src="${path.join(repo, 'docs/workshop-context.js')}"></script>
+      <script>
+        (async () => {
+          await window.WorkshopContext.ready;
+          const select = document.getElementById('workshop-select');
+          const requested = new URL(location.href).searchParams.get('workshop');
+          const initialId = requested || 'scda';
+          const expectedInitialName = initialId === 'sokedai' ? 'Sokedai Test' : 'SCDA Test';
+          const expectedInitialDate = initialId === 'sokedai' ? 'November 6, 2026' : 'October 1, 2026';
+          const initial = select.value === initialId
+            && document.getElementById('current-workshop-name').textContent === expectedInitialName
+            && document.getElementById('current-workshop-date').textContent === expectedInitialDate;
+          const chosenId = initialId === 'sokedai' ? 'riken' : 'sokedai';
+          const routeBefore = location.pathname;
+          select.value = chosenId;
+          select.dispatchEvent(new Event('change', { bubbles: true }));
+          const changed = select.value === chosenId
+            && location.pathname === routeBefore
+            && new URL(location.href).searchParams.get('workshop') === chosenId
+            && document.getElementById('current-workshop-name').textContent === (chosenId === 'sokedai' ? 'Sokedai Test' : 'Riken Test')
+            && document.getElementById('current-workshop-date').textContent === (chosenId === 'sokedai' ? 'November 6, 2026' : 'November 10, 2026')
+            && document.querySelector('[data-workshop-registration]').href.endsWith('workshop_id=' + chosenId)
+            && document.querySelector('[data-workshop-dashboard]').search.includes('workshop=' + chosenId)
+            && Array.from(document.querySelectorAll('.nav-links a')).every((link) => link.search.includes('workshop=' + chosenId));
+          const noteIsSafeText = chosenId === 'sokedai'
+            ? document.getElementById('current-workshop-note').textContent === '<strong>Safe note</strong>'
+              && document.getElementById('current-workshop-note').children.length === 0
+              && !document.getElementById('current-workshop-note').hidden
+            : document.getElementById('current-workshop-note').hidden;
+          select.value = 'riken';
+          select.dispatchEvent(new Event('change', { bubbles: true }));
+          const riken = document.getElementById('current-workshop-date').textContent === 'November 10, 2026'
+            && document.querySelector('[data-workshop-registration]').href.endsWith('workshop_id=riken')
+            && document.getElementById('current-workshop-note').hidden;
+          document.body.dataset.fixtureResult = initial && changed && noteIsSafeText && riken ? 'PASS' : 'FAIL';
+        })();
+      </script></body>`);
+    for (const query of ['', '?workshop=sokedai']) {
+      fs.writeFileSync(htmlPath, pageHtml);
+      try {
+        const url = `file://${htmlPath}${query}`;
+        const result = spawnSync(chromium, ['--headless=new', '--no-sandbox', '--disable-gpu', '--disable-background-networking', '--virtual-time-budget=1500', '--dump-dom', url], { encoding: 'utf8', timeout: 15000 });
+        assert.equal(result.status, 0, `${page}${query}: signal=${result.signal} error=${result.error || ''}\n${result.stderr}`);
+        assert.match(result.stdout, /data-fixture-result="PASS"/, `${page}${query}: ${result.stdout.slice(-2500)}`);
+      } finally {
+        fs.rmSync(htmlPath, { force: true });
+      }
+    }
+  }
+});
+
+test('in-content route CTA opens the learner guide for the selected workshop', { skip: !chromiumHeadlessUsable }, () => {
+  const repo = path.resolve(__dirname, '..');
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'workshop-route-click-'));
+  const contextScript = path.join(repo, 'docs/workshop-context.js');
+  for (const page of ['setup.html', 'guide.html']) {
+    const source = fs.readFileSync(path.join(repo, 'docs', page), 'utf8');
+    const fixture = `<script>
+      window.fetch = async () => new Response(JSON.stringify({ defaultWorkshopId: 'scda', workshops: [
+        { id: 'scda', name: 'SCDA Test', date: '2026-10-01', status: 'active', registrationUrl: 'https://example.test/register?workshop_id=scda' },
+        { id: 'sokedai', name: 'Sokedai Test', date: '2026-11-06', status: 'active', registrationUrl: 'https://example.test/register?workshop_id=sokedai' },
+      ] }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    </script><script src="${contextScript}"></script><script>
+      (async () => {
+        await window.WorkshopContext.ready;
+        if (location.pathname.endsWith('/setup.html')) {
+          const select = document.getElementById('workshop-select');
+          select.value = 'sokedai';
+          select.dispatchEvent(new Event('change', { bubbles: true }));
+          document.querySelector('[data-workshop-route]').click();
+          return;
+        }
+        const selected = document.getElementById('workshop-select').value;
+        document.body.dataset.fixtureResult = location.pathname.endsWith('/guide.html')
+          && new URL(location.href).searchParams.get('workshop') === 'sokedai'
+          && selected === 'sokedai'
+          && document.querySelector('[data-workshop-registration]').href.endsWith('workshop_id=sokedai')
+          ? 'PASS' : 'FAIL';
+      })();
+    </script>`;
+    const html = source
+      .replace(/\s*<script[^>]*><\/script>/g, '')
+      .replace(/<script src="[^"]+"><\/script>/g, '')
+      .replace(/href="styles\.css"/g, `href="${path.join(repo, 'docs/styles.css')}"`)
+      .replace('</body>', `${fixture}</body>`);
+    fs.writeFileSync(path.join(tempDir, page), html);
+  }
+  try {
+    const result = spawnSync(chromium, ['--headless=new', '--no-sandbox', '--disable-gpu', '--disable-background-networking', '--virtual-time-budget=3000', '--dump-dom', `file://${path.join(tempDir, 'setup.html')}`], { encoding: 'utf8', timeout: 15000 });
+    assert.equal(result.status, 0, `signal=${result.signal} error=${result.error || ''}\n${result.stderr}`);
+    assert.match(result.stdout, /data-fixture-result="PASS"/, result.stdout.slice(-3000));
+  } finally {
+    fs.rmSync(tempDir, { recursive: true, force: true });
+  }
+});
+
+test('workshop catalog retries after failure and coalesces overlapping retries', { skip: !chromiumHeadlessUsable }, () => {
+  const repo = path.resolve(__dirname, '..');
+  const htmlPath = path.join(os.tmpdir(), `workshop-context-retry-${process.pid}.html`);
+  const html = `<!doctype html><html><body>
+    <label for="workshop-select">Workshop</label><select id="workshop-select"></select>
+    <p id="current-workshop-name"></p><p id="current-workshop-date"></p><p id="current-workshop-note" hidden></p>
+    <span id="workshop-context-status"></span>
+    <script>
+      let requests = 0;
+      window.fetch = async () => {
+        requests += 1;
+        if (requests === 1) {
+          await new Promise((resolve) => setTimeout(resolve, 100));
+          return new Response('', { status: 503 });
+        }
+        return new Response(JSON.stringify({ defaultWorkshopId: 'scda', workshops: [
+          { id: 'scda', name: 'SCDA Test', date: '2026-10-01', status: 'active', registrationUrl: 'https://example.test/register?workshop_id=scda' },
+        ] }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+      };
+    </script>
+    <script src="${path.join(repo, 'docs/workshop-context.js')}"></script>
+    <script>
+      (async () => {
+        const failed = await window.WorkshopContext.ready.then(() => false, () => true);
+        const errorShown = document.getElementById('workshop-context-status').textContent.includes('could not be loaded');
+        const [first, second] = await Promise.all([window.WorkshopContext.ready, window.WorkshopContext.ready]);
+        document.body.dataset.fixtureResult = failed && errorShown && requests === 2
+          && first === second && first.workshopId === 'scda'
+          && document.getElementById('current-workshop-name').textContent === 'SCDA Test'
+          ? 'PASS' : 'FAIL';
+      })();
+    </script>
+  </body></html>`;
+  fs.writeFileSync(htmlPath, html);
+  try {
+    const result = spawnSync(chromium, ['--headless=new', '--no-sandbox', '--disable-gpu', '--disable-background-networking', '--virtual-time-budget=1500', '--dump-dom', `file://${htmlPath}`], { encoding: 'utf8', timeout: 15000 });
+    assert.equal(result.status, 0, `signal=${result.signal} error=${result.error || ''}\n${result.stderr}`);
+    assert.match(result.stdout, /data-fixture-result="PASS"/, result.stdout.slice(-2500));
   } finally {
     fs.rmSync(htmlPath, { force: true });
   }

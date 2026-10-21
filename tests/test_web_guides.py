@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import re
 import unittest
 from pathlib import Path
@@ -19,8 +20,30 @@ class TestWebGuides(unittest.TestCase):
         self.styles = (DOCS_DIR / "styles.css").read_text(encoding="utf-8")
 
     def test_guide_assets_exist(self):
-        for path in (DOCS_DIR / "setup.html", DOCS_DIR / "guide.html", DOCS_DIR / "guide-utils.js", DOCS_DIR / "styles.css"):
+        for path in (DOCS_DIR / "setup.html", DOCS_DIR / "guide.html", DOCS_DIR / "guide-utils.js", DOCS_DIR / "workshop-context.js", DOCS_DIR / "styles.css"):
             self.assertTrue(path.is_file(), str(path))
+
+    def test_shared_workshop_context_is_configured_on_all_routes(self):
+        catalog = json.loads((DOCS_DIR / "workshops.json").read_text(encoding="utf-8"))
+        expected = {
+            "2026-10-01-scda": ("SCDA Training Week", "2026-10-01"),
+            "2026-11-06-sokedai": ("Sokedai", "2026-11-06"),
+            "2026-11-10-riken": ("Riken", "2026-11-10"),
+        }
+        self.assertEqual(catalog["defaultWorkshopId"], "2026-10-01-scda")
+        self.assertEqual({item["id"]: (item["name"], item["date"]) for item in catalog["workshops"]}, expected)
+        for name, html in (("wall", self.index), ("learner", self.guide), ("setup", self.setup)):
+            with self.subTest(page=name):
+                for element_id in ("workshop-select", "current-workshop-name", "current-workshop-date", "current-workshop-note"):
+                    self.assertIn(f'id="{element_id}"', html)
+                self.assertIn('data-workshop-registration', html)
+                self.assertIn('data-workshop-dashboard', html)
+                self.assertIn('src="workshop-context.js"', html)
+        self.assertIn('data-workshop-route href="guide.html"', self.setup)
+        workshop_instructions = self.guide[
+            self.guide.index('<section class="guide-section"><h2>Workshop setup</h2>'):]
+        workshop_instructions = workshop_instructions.split('</section>', 1)[0]
+        self.assertNotIn("workshop_id=2026-10-01-scda", workshop_instructions)
 
     def test_shared_navigation_and_repository_link(self):
         repo_url = "https://github.com/igorsdub/git-tic-tac-toe-workshop"
@@ -74,7 +97,6 @@ class TestWebGuides(unittest.TestCase):
             self.assertIn(requirement, self.guide)
         self.assertIn("Place X in the center of the board", self.guide)
         for requirement in (
-            "register-game.yml&amp;workshop_id=2026-10-01-scda",
             "register your pair's shared repository once",
             "both player GitHub handles",
             "successful registration comment confirms",
