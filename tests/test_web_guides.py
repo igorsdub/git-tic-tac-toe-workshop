@@ -55,10 +55,9 @@ class TestWebGuides(unittest.TestCase):
         self.assertIn("month: 'short'", self.context)
         self.assertIn("String(workshop.name).toUpperCase()", self.context)
         self.assertIn('data-workshop-route href="guide.html"', self.setup)
-        workshop_instructions = self.guide[
-            self.guide.index('<section class="guide-section"><h2>Workshop setup</h2>'):]
-        workshop_instructions = workshop_instructions.split('</section>', 1)[0]
-        self.assertNotIn("workshop_id=2026-10-01-scda", workshop_instructions)
+        first_section = self.guide[self.guide.index('<section class="guide-section" id="turn">'):]
+        first_section = first_section.split('</section>', 1)[0]
+        self.assertNotIn("workshop_id=2026-10-01-scda", first_section)
 
     def test_shared_navigation_and_repository_link(self):
         repo_url = "https://github.com/igorsdub/git-tic-tac-toe-workshop"
@@ -75,7 +74,7 @@ class TestWebGuides(unittest.TestCase):
 
     def test_quick_jump_links_target_real_guide_sections(self):
         for name, html, expected in (
-            ("learner", self.guide, ("setup", "turn", "rematch", "recovery")),
+            ("learner", self.guide, ("turn", "rematch", "rewind")),
             ("setup", self.setup, ("survey", "getting-started", "checklist", "access")),
         ):
             with self.subTest(page=name):
@@ -117,23 +116,30 @@ class TestWebGuides(unittest.TestCase):
         self.assertIn('id="checklist"', self.setup)
 
     def test_learner_match_and_registration_use_the_workshop_contract(self):
-        for requirement in ("Source Control", "BOARD.txt", "match-01", "clean <code>main</code>", "Stage <code>BOARD.txt</code>", "rematch manually"):
+        for requirement in ("Source Control", "BOARD.txt", "match-01", "clean <code>main</code>", "Stage <code>BOARD.txt</code>", "complete the move manually"):
             self.assertIn(requirement, self.guide)
         self.assertIn("Place X in the center of the board", self.guide)
+        ordered_sections = [self.guide.index(f'id="{section}"') for section in ("turn", "rematch", "rewind")]
+        self.assertEqual(ordered_sections, sorted(ordered_sections))
+        for heading in ("One move", "Rematch", "Rewind (optional)"):
+            self.assertIn(f"<h2>{heading}</h2>", self.guide)
+        self.assertEqual(self.guide.count('<section class="guide-section"'), 3)
+        self.assertNotIn("Workshop setup", self.guide)
+        self.assertNotIn("History as a time machine", self.guide)
+        self.assertIn("match-02</code> from clean <code>main</code>", self.guide)
+        self.assertIn("match-01-rewind", self.guide)
+        self.assertIn("Checkout (Detached)", self.guide)
+        self.assertIn("Do not reset it or force-push", self.guide)
         for requirement in (
-            "register your pair's shared repository once",
+            "Register the shared repository once",
             "both player GitHub handles",
             "successful registration comment confirms",
-            "successful refresh finds the branch",
-            "literal lowercase prefix <code>match</code>",
-            "one card per discovered public match branch",
-            "Archived workshops remain visible",
-            "reject new repository registrations",
+            "lowercase <code>match</code>",
+            "separate cards",
         ):
             self.assertIn(requirement.casefold(), self.guide.casefold())
         self.assertNotIn("Register each match with its numbered branch", self.guide)
         self.assertNotIn("Existing branchless records cannot be replayed", self.guide)
-        self.assertIn("instructor demonstration, not a participant exercise", self.guide)
 
     def test_repository_registration_contract_is_consistent_in_markdown_guides(self):
         readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8")

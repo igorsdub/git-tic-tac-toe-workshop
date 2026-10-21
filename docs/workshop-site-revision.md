@@ -1,6 +1,6 @@
 # Workshop site revision
 
-This note records the approved design and its remaining decisions. The shared header selector, formatted workshop labels, workshop action row, header controls, registration-button colors, and favicon are implemented.
+This note records the approved design and its remaining decisions. The shared header selector, formatted workshop labels, workshop action row, header controls, registration-button colors, favicon, setup flow, and learner guide are implemented.
 
 ## Approved plan
 
@@ -12,7 +12,7 @@ This note records the approved design and its remaining decisions. The shared he
 - Place **Checklist** after Survey and Getting started, and keep existing practical setup instructions. Emphasize the public repository and Codespaces, and retain the quoted “template” wording and **Use this template → Create a new repository** action.
 - In the learner guide, teach **One move** first, then the Copilot-assisted **Rematch**, with **Rewind** as an optional activity. Keep the manual workflow first and Copilot later.
 - Explain that match branches start from clean `main` and qualify when their names begin with lowercase `match`; use clear branch-name examples.
-- Use a static favicon showing X and O side by side. Do not add diagrams.
+- Use a static favicon showing X and O side by side.
 - Keep a shared GitHub logo visible on the main, setup, and guide routes, with the theme toggle aligned beside the neighboring header controls.
 - Give every **Register repository** button a white background, black text, and a visible outline in both themes, including dynamic empty states. Do not tint the button blue.
 
