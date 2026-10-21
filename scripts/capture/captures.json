@@ -1,0 +1,9 @@
+{
+  "imageRoot": "images/setup",
+  "steps": [
+    {"slug": "create-repo", "video": "create-repo.mp4", "screenshots": ["01-template-page.png", "02-use-this-template.png", "03-create-new-repository.png", "04-owner-and-name.png", "05-visibility-public.png", "06-create-repository.png"]},
+    {"slug": "open-codespace", "video": "open-codespace.mp4", "screenshots": ["01-code-button.png", "02-codespaces-tab.png", "03-create-codespace.png", "04-editor-ready.png"]},
+    {"slug": "look-around", "video": "look-around.mp4", "screenshots": ["01-explorer-board.png", "02-source-control.png", "03-copilot-chat-ask.png", "04-copilot-answer.png"]},
+    {"slug": "stop-codespace", "video": "stop-codespace.mp4", "screenshots": ["01-codespaces-list.png", "02-more-menu.png", "03-stopped.png"]}
+  ]
+}

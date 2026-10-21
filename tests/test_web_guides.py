@@ -64,6 +64,7 @@ class TestWebGuides(unittest.TestCase):
         }
         self.assertEqual(catalog["defaultWorkshopId"], "2026-11-06-sokedai")
         self.assertEqual({item["id"]: (item["name"], item["date"]) for item in catalog["workshops"]}, expected)
+        self.assertNotIn('data-workshop-registration', self.setup)
         for name, html in (("wall", self.index), ("learner", self.guide), ("setup", self.setup)):
             with self.subTest(page=name):
                 header = html[:html.index("</header>")]
@@ -73,9 +74,11 @@ class TestWebGuides(unittest.TestCase):
                 self.assertNotIn('id="current-workshop-name"', html)
                 self.assertNotIn('id="current-workshop-date"', html)
                 self.assertNotIn('id="current-workshop-note"', html)
+                self.assertIn('src="workshop-context.js"', html)
+                if name == "setup":
+                    continue
                 self.assertIn('data-workshop-registration', html)
                 self.assertIn('data-workshop-dashboard', html)
-                self.assertIn('src="workshop-context.js"', html)
                 actions_start = html.index('<section class="workshop-actions"')
                 actions_end = html.index('</section>', actions_start)
                 actions = html[actions_start:actions_end]
@@ -134,45 +137,56 @@ class TestWebGuides(unittest.TestCase):
     def test_quick_jump_links_target_real_guide_sections(self):
         for name, html, expected in (
             ("learner", self.guide, ("turn", "rematch", "rewind")),
-            ("setup", self.setup, ("survey", "getting-started", "checklist", "access")),
+            ("setup", self.setup, ("step-survey", "step-account", "step-repo", "step-codespace", "step-look-around", "step-stop")),
         ):
             with self.subTest(page=name):
                 nav = html[html.index('class="jump-nav"'):]
-                section_ids = set(re.findall(r'<section[^>]+id="([^"]+)"', html))
+                section_ids = set(re.findall(r'<(?:section|article)[^>]+id="([^"]+)"', html))
                 for anchor in expected:
                     self.assertIn(f'href="#{anchor}"', nav)
                     self.assertIn(anchor, section_ids)
         self.assertIn(".jump-nav", self.styles)
         self.assertIn(".jump-pill", self.styles)
 
-    def test_setup_preflight_and_separate_copilot_access(self):
+    def test_setup_page_content(self):
         for requirement in (
-            "Use this template → Create a new repository",
-            "Make the repository public",
-            "Keep the public repository and Codespace",
-            "separate Codespaces",
-            "select <strong>Ask</strong>",
+            "https://github.com/igorsdub/git-tic-tac-toe-template",
+            "Use this template",
+            "Create codespace on main",
+            "Stop codespace",
             "What does this repository do?",
-            "No board edit is required",
             "Codespaces and Copilot access are separate",
             "manual rematch path",
+            "https://github.com/signup",
+            'id="setup-archived"',
+            'id="setup-pending"',
+            'id="setup-codespaces"',
+            'data-setup-track="codespaces"',
+            "This workshop has finished.",
+            "Setup instructions for this workshop will appear here.",
+            'src="setup.js"',
         ):
             self.assertIn(requirement, self.setup)
+        self.assertLess(self.setup.index('src="workshop-context.js"'), self.setup.index('src="setup.js"'))
+        for step in ("step-survey", "step-account", "step-repo", "step-codespace", "step-look-around", "step-stop"):
+            self.assertIn(f'<input type="checkbox" class="step-check" data-step="{step}" id="check-{step}">', self.setup)
+        for old in ("docs.google.com/forms", "education.github.com/pack", "Keep the public repository and Codespace"):
+            self.assertNotIn(old, self.setup)
 
-    def test_setup_order_and_preparation_links_are_current(self):
-        survey_url = "https://docs.google.com/forms/d/e/1FAIpQLSfLyChJpWXVWAoScFT5XNU68FZxRMuR4Nv0AN9HUSvOE8v1EA/viewform?usp=header"
-        self.assertLess(self.setup.index('id="survey"'), self.setup.index('id="getting-started"'))
-        self.assertLess(self.setup.index('id="getting-started"'), self.setup.index('id="checklist"'))
-        survey = self.setup[self.setup.index('id="survey"'):self.setup.index('id="getting-started"')]
-        self.assertIn(survey_url, survey)
-        self.assertNotIn("<iframe", survey.casefold())
-        getting_started = self.setup[self.setup.index('id="getting-started"'):self.setup.index('id="checklist"')]
-        self.assertIn("https://github.com/signup", getting_started)
-        self.assertIn("https://education.github.com/pack", getting_started)
-        self.assertIn("Optional: eligible students can apply", getting_started)
-        self.assertIn("GitHub verifies student status", getting_started)
-        self.assertIn("not required for this workshop or Codespaces", getting_started)
-        self.assertIn('id="checklist"', self.setup)
+    def test_setup_media_never_shows_broken_icons(self):
+        for tag in re.findall(r"<(?:img|video)\b[^>]*>", self.setup[self.setup.index("<main"):]):
+            self.assertIn("onerror=", tag, tag)
+
+    def test_capture_manifest_matches_setup_page(self):
+        manifest = json.loads((REPO_ROOT / "scripts" / "capture" / "captures.json").read_text(encoding="utf-8"))
+        root = manifest["imageRoot"]
+        expected = set()
+        for step in manifest["steps"]:
+            expected.add(f"{root}/{step['slug']}/{step['video']}")
+            for shot in step["screenshots"]:
+                expected.add(f"{root}/{step['slug']}/{shot}")
+        referenced = set(re.findall(r'(?:src)="(images/setup/[^"]+)"', self.setup))
+        self.assertEqual(expected, referenced)
 
     def test_learner_match_and_registration_use_the_workshop_contract(self):
         for requirement in ("Source Control", "BOARD.txt", "match-01", "clean <code>main</code>", "Stage <code>BOARD.txt</code>", "complete the move manually"):

@@ -1666,3 +1666,25 @@ a.register-btn:focus-visible {
   margin: 2rem 0 1rem;
   font-weight: 600;
 }
+
+/* Setup page: workshop-aware steps */
+.setup-workshop { color: var(--text-secondary); font-weight: 600; font-size: 1.05rem; margin-top: 0.25rem; }
+.setup-notice { border-left: 4px solid var(--primary); background-color: var(--bg-surface); color: var(--text-primary); }
+.setup-step { display: flex; flex-direction: column; gap: 0.9rem; padding: 1.25rem 0; border-top: 1px solid var(--border-light); scroll-margin-top: 5.5rem; min-width: 0; }
+.setup-step h4 { font-size: 0.95rem; font-weight: 700; color: var(--text-primary); margin-top: 0.25rem; }
+.step-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 1rem; }
+.step-heading { display: flex; align-items: center; gap: 0.6rem; margin: 0; }
+.step-num { display: inline-flex; align-items: center; justify-content: center; width: 1.8rem; height: 1.8rem; border-radius: 9999px; border: 1px solid var(--border-dark); font-size: 0.9rem; flex: none; }
+.step-done { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.9rem; font-weight: 600; color: var(--text-secondary); cursor: pointer; }
+.step-check { width: 1.15rem; height: 1.15rem; accent-color: var(--primary); cursor: pointer; }
+.username-tips { background-color: var(--bg-surface); border: 1px solid var(--border-light); border-left: 4px solid var(--border-medium); border-radius: var(--radius-md); padding: 0.9rem 1.1rem; }
+.username-tips-title { font-weight: 700; margin-bottom: 0.4rem; }
+.username-tips ul { padding-left: 1.25rem; display: flex; flex-direction: column; gap: 0.4rem; }
+.step-shot { margin: 0; display: flex; flex-direction: column; gap: 0.4rem; max-width: 100%; }
+.step-shot img { display: block; max-width: 100%; height: auto; border: 1px solid var(--border-medium); border-radius: var(--radius-md); }
+.step-shot figcaption { font-size: 0.875rem; color: var(--text-secondary); }
+.step-video-wrap { border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 0.5rem 0.75rem; max-width: 100%; }
+.step-video-wrap summary { cursor: pointer; font-weight: 600; }
+.step-video { display: block; width: 100%; max-width: 100%; margin-top: 0.6rem; border-radius: var(--radius-md); }
+[hidden] { display: none !important; }
+@media (max-width: 600px) { .setup-step { padding: 1rem 0; } }
