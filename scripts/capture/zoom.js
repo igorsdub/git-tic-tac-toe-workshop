@@ -7,6 +7,7 @@ const ZOOM = 2;
 const LEAD = 0.3;
 const HOLD = 1.5;
 const EASE = 0.4;
+const PRE = 2;
 
 // Smooth 1 -> ZOOM -> 1 envelope for one click, as an ffmpeg expression in t.
 function envelope(c) {
@@ -23,6 +24,7 @@ function envelope(c) {
 // Returns an ffmpeg -vf filter string that zooms 2x centred on each click.
 function buildZoomFilter(clicks, { width = 1440, height = 900, fps = 30 } = {}) {
   const tail = `fps=${fps},scale=${width}:${height},format=yuv420p`;
+  // clicks are in source px; scale first so coordinates match the output size
   if (!clicks || clicks.length === 0) return tail;
   // z(t) = 1 + sum of envelopes; centre follows the click nearest in time.
   const z = `(1+${clicks.map(envelope).join('+')})`;
@@ -33,12 +35,15 @@ function buildZoomFilter(clicks, { width = 1440, height = 900, fps = 30 } = {}) 
     cx = `if(lt(t,${mid}),${clicks[i].x},${cx})`;
     cy = `if(lt(t,${mid}),${clicks[i].y},${cy})`;
   }
-  const w = `${width}/(${z})`;
-  const h = `${height}/(${z})`;
-  const x = `clip((${cx})-(${w})/2,0,${width}-(${w}))`;
-  const y = `clip((${cy})-(${h})/2,0,${height}-(${h}))`;
-  const crop = `crop=w='${w}':h='${h}':x='${x}':y='${y}':exact=1`;
-  return `${fps ? `fps=${fps},` : ''}${crop},scale=${width}:${height},format=yuv420p`;
+  // crop() cannot vary its size per frame, so scale up per frame (eval=frame)
+  // and crop a fixed window whose offset follows the click.
+  const sw = `${width}*(${z})`;
+  const sh = `${height}*(${z})`;
+  const x = `clip((${cx})*(${z})-${width}/2,0,${width}*((${z})-1))`;
+  const y = `clip((${cy})*(${z})-${height}/2,0,${height}*((${z})-1))`;
+  return `fps=${fps},scale=${width}:${height},` +
+    `scale=w='${sw}':h='${sh}':eval=frame:flags=bilinear,` +
+    `crop=w=${width}:h=${height}:x='${x}':y='${y}':exact=1,format=yuv420p`;
 }
 
 function main(argv) {
@@ -56,11 +61,14 @@ function main(argv) {
       console.error(`Missing ${raw} or clicks.json; run \`npm run capture -- ${slug}\` first.`);
       process.exit(1);
     }
-    const clicks = JSON.parse(fs.readFileSync(clicksFile, 'utf8'));
+    const allClicks = JSON.parse(fs.readFileSync(clicksFile, 'utf8'));
+    // Drop the setup before the first click: start PRE seconds ahead of it.
+    const start = allClicks.length ? Math.max(0, allClicks[0].t / 1000 - PRE) : 0;
+    const clicks = allClicks.map((c) => ({ ...c, t: c.t - start * 1000 }));
     const out = path.join(REPO_ROOT, 'docs', 'images', 'setup', slug, `${slug}.mp4`);
     fs.mkdirSync(path.dirname(out), { recursive: true });
     const vf = buildZoomFilter(clicks, { width: VIEWPORT.width, height: VIEWPORT.height, fps: 30 });
-    const r = spawnSync('ffmpeg', ['-y', '-i', raw, '-vf', vf, '-c:v', 'libx264', '-pix_fmt', 'yuv420p',
+    const r = spawnSync('ffmpeg', ['-y', '-ss', String(start), '-i', raw, '-vf', vf, '-c:v', 'libx264', '-crf', '28', '-preset', 'medium', '-pix_fmt', 'yuv420p',
       '-movflags', '+faststart', '-an', out], { stdio: 'inherit' });
     if (r.status !== 0) { console.error(`ffmpeg failed for ${slug}`); process.exit(1); }
     console.log(`wrote ${out}`);
