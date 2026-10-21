@@ -317,17 +317,6 @@ a:hover {
   font-weight: 600;
 }
 
-.btn-primary.register-btn {
-  background-color: var(--primary);
-  color: var(--text-inverse);
-  border-color: var(--primary);
-}
-
-.btn-primary.register-btn:hover {
-  background-color: var(--primary-hover);
-  border-color: var(--primary-hover);
-}
-
 .btn-icon {
   padding: 0.5rem;
   font-size: 1.1rem;
