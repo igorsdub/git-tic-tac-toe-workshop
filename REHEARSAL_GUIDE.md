@@ -5,7 +5,7 @@
 ## Rehearse the participant path
 
 - [ ] For each participant account, create a public repository from the [starter template](https://github.com/igorsdub/git-tic-tac-toe-template) using **Use this template → Create a new repository**.
-- [ ] Open each new repository in that participant's own Codespace. In Copilot Chat, select **Ask**, then ask exactly: **“What does this repository do?”** Readiness passes when the response correctly explains the shared tic-tac-toe purpose and how `BOARD.txt` records moves. No board edit is required.
+- [ ] Open each new repository in that participant's own Codespace. Open Copilot Chat, type exactly **“What does this repository do?”** in the box that says “Describe what to build”, and press Enter. Readiness passes when the answer mentions tic-tac-toe and `BOARD.txt`. No board edit is required.
 - [ ] Retain every prepared public repository and Codespace. Verify that the pair can choose one repository, invite the partner, and open it in two separate Codespaces.
 - [ ] Separately verify that Copilot agent editing is available for the rematch. Codespaces and Copilot access are separate.
 - [ ] In both Codespaces, verify the entire manual turn through VS Code Source Control: pull, edit the board, inspect the diff, stage, commit, push, and pull the partner’s move.
