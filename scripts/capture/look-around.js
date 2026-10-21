@@ -41,7 +41,7 @@ async function run() {
   await page.waitForTimeout(3000);
   await step.click(SELECTORS.boardFile(page), '01-explorer-board.png');
   await step.click(SELECTORS.sourceControl(page), '02-source-control.png');
-  await step.click(SELECTORS.modePicker(page), '03-copilot-chat-ask.png');
+  await step.click(SELECTORS.modePicker(page), '03-copilot-chat.png');
   // The current web editor offers only Agent mode (no Ask); use Ask when present, otherwise close the menu.
   if (await SELECTORS.modeAsk(page).isVisible({ timeout: 3000 }).catch(() => false)) {
     await SELECTORS.modeAsk(page).click();
