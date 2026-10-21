@@ -76,7 +76,7 @@ class TestWebGuides(unittest.TestCase):
     def test_quick_jump_links_target_real_guide_sections(self):
         for name, html, expected in (
             ("learner", self.guide, ("setup", "turn", "rematch", "recovery")),
-            ("setup", self.setup, ("rehearsal", "access", "survey")),
+            ("setup", self.setup, ("survey", "getting-started", "checklist", "access")),
         ):
             with self.subTest(page=name):
                 nav = html[html.index('class="jump-nav"'):]
@@ -101,11 +101,20 @@ class TestWebGuides(unittest.TestCase):
         ):
             self.assertIn(requirement, self.setup)
 
-    def test_survey_is_not_presented_as_ready_for_learners(self):
-        survey = self.setup[self.setup.index('id="survey"'):]
-        self.assertIn("unpublished draft", survey)
-        self.assertIn("not accepting responses", survey)
-        self.assertIn("no survey action is required", survey)
+    def test_setup_order_and_preparation_links_are_current(self):
+        survey_url = "https://docs.google.com/forms/d/e/1FAIpQLSfLyChJpWXVWAoScFT5XNU68FZxRMuR4Nv0AN9HUSvOE8v1EA/viewform?usp=header"
+        self.assertLess(self.setup.index('id="survey"'), self.setup.index('id="getting-started"'))
+        self.assertLess(self.setup.index('id="getting-started"'), self.setup.index('id="checklist"'))
+        survey = self.setup[self.setup.index('id="survey"'):self.setup.index('id="getting-started"')]
+        self.assertIn(survey_url, survey)
+        self.assertNotIn("<iframe", survey.casefold())
+        getting_started = self.setup[self.setup.index('id="getting-started"'):self.setup.index('id="checklist"')]
+        self.assertIn("https://github.com/signup", getting_started)
+        self.assertIn("https://education.github.com/pack", getting_started)
+        self.assertIn("Optional: eligible students can apply", getting_started)
+        self.assertIn("GitHub verifies student status", getting_started)
+        self.assertIn("not required for this workshop or Codespaces", getting_started)
+        self.assertIn('id="checklist"', self.setup)
 
     def test_learner_match_and_registration_use_the_workshop_contract(self):
         for requirement in ("Source Control", "BOARD.txt", "match-01", "clean <code>main</code>", "Stage <code>BOARD.txt</code>", "rematch manually"):
