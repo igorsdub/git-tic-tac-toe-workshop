@@ -1,6 +1,6 @@
 # Git Tic-Tac-Toe: Learner Guide
 
-> **Workshop registration:** Your pair registers its shared repository once for this workshop and enters both player GitHub handles in the [SCDA Training Week registration form](https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&workshop_id=2026-10-01-scda). A successful registration comment confirms the repository/workshop link. The Game Wall shows a card after a successful refresh finds a branch whose name starts with lowercase `match`.
+> **Workshop registration:** Your pair registers its shared repository once for this workshop and enters both player GitHub handles in your workshop's registration form, shown on the Game Wall (for example the [SCDA Training Week registration form](https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&workshop_id=2026-10-01-scda)). A successful registration comment confirms the repository/workshop link. The Game Wall shows a card after a successful refresh finds a branch whose name starts with lowercase `match`.
 
 In this workshop, you and a partner collaborate in one shared public GitHub repository. You will play one match by hand, then use Copilot to make a board edit you already know how to make. You remain responsible for reviewing and publishing every change.
 

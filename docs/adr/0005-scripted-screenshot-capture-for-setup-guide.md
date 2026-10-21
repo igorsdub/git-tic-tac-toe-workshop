@@ -13,3 +13,5 @@ Alternatives rejected:
 
 ## Consequences
 The guide always matches the current GitHub UI, at the cost of a Node/Playwright dev dependency and a one-off manual login per machine. The facilitator's avatar and username appear in captures. Account signup itself cannot be captured on an existing account, so that step is text-only.
+
+`scripts/capture/captures.json` is the manifest of step slugs and screenshot names; the capture scripts reject unlisted screenshots, and a test keeps it consistent with `docs/setup.html`.
