@@ -121,12 +121,14 @@ class TestWebGuides(unittest.TestCase):
         self.assertIn("Place X in the center of the board", self.guide)
         ordered_sections = [self.guide.index(f'id="{section}"') for section in ("turn", "rematch", "rewind")]
         self.assertEqual(ordered_sections, sorted(ordered_sections))
-        for heading in ("One move", "Rematch", "Rewind (optional)"):
+        for heading in ("One move and repeat", "Rematch", "Rewind (optional)"):
             self.assertIn(f"<h2>{heading}</h2>", self.guide)
         self.assertEqual(self.guide.count('<section class="guide-section"'), 3)
         self.assertNotIn("Workshop setup", self.guide)
         self.assertNotIn("History as a time machine", self.guide)
         self.assertIn("match-02</code> from clean <code>main</code>", self.guide)
+        self.assertIn("partner fetches <code>match-02</code>, checks it out, and pulls", self.guide)
+        self.assertIn("select an editing mode such as <strong>Agent</strong>", self.guide)
         self.assertIn("match-01-rewind", self.guide)
         self.assertIn("Checkout (Detached)", self.guide)
         self.assertIn("Do not reset it or force-push", self.guide)
