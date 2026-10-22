@@ -3,23 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Git and GitHub Collaboration — SCDA training week</title>
+<title>Git and GitHub Collaboration — Git Tic-Tac-Toe Workshop</title>
 <link rel="stylesheet" href="css/slides.css">
 </head>
 <body>
 
-<div class="slide-stage" id="stage" onclick="handleStageClick(event)">
+<div class="slide-stage" id="stage" tabindex="0" role="region" aria-roledescription="slide deck" aria-label="Slides. Press Enter, Space or the right arrow for the next slide, the left arrow for the previous one.">
 
   <!-- SLIDE 1: Title -->
   <div class="slide active" id="slide-1">
     <div class="title-content">
-      <div class="title-meta">SCDA TRAINING WEEK</div>
+      <div class="title-meta">GIT TIC-TAC-TOE WORKSHOP</div>
       <h1 class="title-main">Git and GitHub Collaboration</h1>
       <p class="title-sub">Workflows for Synchronized Teamwork</p>
     </div>
     <div class="slide-footer">
-      <span>SCDA training week</span>
-      <span>1 / 22</span>
+      <span>Git Tic-Tac-Toe Workshop</span>
+      <span class="slide-num"></span>
     </div>
   </div>
 
@@ -37,22 +37,22 @@
             Ad-hoc File Naming
           </div>
           <div class="file-list">
-            <div class="file-item danger">board.txt</div>
-            <div class="file-item danger">board_v2.txt</div>
-            <div class="file-item danger">board_final.txt</div>
-            <div class="file-item danger">board_final_really_FINAL.txt</div>
-            <div class="file-item danger">board_v3_reviewer_OCT14.txt</div>
+            <div class="file-item danger">BOARD.txt</div>
+            <div class="file-item danger">BOARD_v2.txt</div>
+            <div class="file-item danger">BOARD_final.txt</div>
+            <div class="file-item danger">BOARD_final_really_FINAL.txt</div>
+            <div class="file-item danger">BOARD_v3_reviewer_OCT14.txt</div>
           </div>
         </div>
-        <div style="font-size: clamp(20px, 2.5cqw, 36px); color: #30363d; text-align: center;">&rarr;</div>
+        <div style="font-size: clamp(20px, 2.5cqw, 36px); color: var(--text-muted); text-align: center;">&rarr;</div>
         <div class="card-pane empty-slot">
           <span>[ Next: Version Control ]</span>
         </div>
       </div>
     </div>
     <div class="slide-footer">
-      <span>SCDA training week</span>
-      <span>2 / 22</span>
+      <span>Git Tic-Tac-Toe Workshop</span>
+      <span class="slide-num"></span>
     </div>
   </div>
 
@@ -64,17 +64,15 @@
     </div>
     <div class="slide-body">
       <div class="horror-grid">
-        <div class="card-pane">
-          <div class="pane-header" style="color: #ff7b72;">
+        <div class="card-pane recap-pane">
+          <div class="pane-header" style="color: var(--text-muted);">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
-            Ad-hoc File Naming
+            Before
           </div>
-          <div class="file-list">
-            <div class="file-item danger">board.txt</div>
-            <div class="file-item danger">board_v2.txt</div>
-            <div class="file-item danger">board_final.txt</div>
-            <div class="file-item danger">board_final_really_FINAL.txt</div>
-            <div class="file-item danger">board_v3_reviewer_OCT14.txt</div>
+          <div class="recap-text">
+            <div class="recap-stat">5 copies</div>
+            <p>of one board, named by hand (<s>BOARD_v2.txt</s>, <s>BOARD_final.txt</s> &hellip;)</p>
+            <p>Which one is current?</p>
           </div>
         </div>
         <div style="font-size: clamp(20px, 2.5cqw, 36px); color: var(--text-muted); text-align: center;">&rarr;</div>
@@ -85,7 +83,7 @@
           </div>
           <div class="file-list">
             <div class="file-item good">
-              <span>board.txt</span>
+              <span>BOARD.txt</span>
               <span style="font-size: 0.85em; opacity: 0.7;">main</span>
             </div>
           </div>
@@ -94,14 +92,14 @@
             <div>&#9679; 5c8b1 &bull; Player X: place X in bottom-right</div>
             <div>&#9679; a2d56 &bull; Player O: place O in bottom-left</div>
             <div>&#9679; 9b2d8 &bull; Player X: place X in center</div>
-            <div>&#9679; e4a10 &bull; Initialize empty board.txt</div>
+            <div>&#9679; e4a10 &bull; Initialize empty BOARD.txt</div>
           </div>
         </div>
       </div>
     </div>
     <div class="slide-footer">
-      <span>SCDA training week</span>
-      <span>3 / 22</span>
+      <span>Git Tic-Tac-Toe Workshop</span>
+      <span class="slide-num"></span>
     </div>
   </div>
 
@@ -116,7 +114,7 @@
         <div class="board-pane">
           <svg viewBox="0 0 190 200" fill="none">
             <rect width="190" height="200" rx="10" fill="#161b22" stroke="#30363d" stroke-width="1.5" />
-            <text x="95" y="24" text-anchor="middle" font-family="ui-monospace, monospace" font-size="13" font-weight="700" fill="#c9d1d9">board.txt</text>
+            <text x="95" y="24" text-anchor="middle" font-family="ui-monospace, monospace" font-size="13" font-weight="700" fill="#c9d1d9">BOARD.txt</text>
             <g transform="translate(35, 36)">
               <rect width="120" height="120" rx="4" fill="#0d1117" stroke="#21262d" stroke-width="1.5"/>
               <line x1="40" y1="2" x2="40" y2="118" stroke="#30363d" stroke-width="2.5" stroke-linecap="round"/>
@@ -136,18 +134,18 @@
             <div class="commit-row active">
               <span class="commit-hash">Commit 1</span>
               <span class="commit-dot" style="color: var(--accent);">&#9679;</span>
-              <span class="commit-msg">Initialize empty board.txt</span>
+              <span class="commit-msg">Initialize empty BOARD.txt</span>
             </div>
           </div>
           <div class="commit-cue">
-            <strong>Commit 1:</strong> Initial repository state. The single file <code>board.txt</code> is created and committed as our baseline.
+            <strong>Commit 1:</strong> Initial repository state. The single file <code>BOARD.txt</code> is created and committed as our baseline.
           </div>
         </div>
       </div>
     </div>
     <div class="slide-footer">
-      <span>SCDA training week</span>
-      <span>4 / 22</span>
+      <span>Git Tic-Tac-Toe Workshop</span>
+      <span class="slide-num"></span>
     </div>
   </div>
 
@@ -162,7 +160,7 @@
         <div class="board-pane">
           <svg viewBox="0 0 190 200" fill="none">
             <rect width="190" height="200" rx="10" fill="#161b22" stroke="#30363d" stroke-width="1.5" />
-            <text x="95" y="24" text-anchor="middle" font-family="ui-monospace, monospace" font-size="13" font-weight="700" fill="#c9d1d9">board.txt</text>
+            <text x="95" y="24" text-anchor="middle" font-family="ui-monospace, monospace" font-size="13" font-weight="700" fill="#c9d1d9">BOARD.txt</text>
             <g transform="translate(35, 36)">
               <rect width="120" height="120" rx="4" fill="#0d1117" stroke="#21262d" stroke-width="1.5"/>
               <rect x="41" y="41" width="38" height="38" rx="4" fill="#388bfd26" stroke="#58a6ff" stroke-width="1.5"/>
@@ -185,7 +183,7 @@
             <div class="commit-row">
               <span class="commit-hash">Commit 1</span>
               <span class="commit-dot">&#9679;</span>
-              <span class="commit-msg">Initialize empty board.txt</span>
+              <span class="commit-msg">Initialize empty BOARD.txt</span>
             </div>
             <div class="commit-row active">
               <span class="commit-hash">Commit 2</span>
@@ -194,14 +192,14 @@
             </div>
           </div>
           <div class="commit-cue">
-            <strong>Commit 2:</strong> Player X modifies <code>board.txt</code> and commits. The timeline appends smoothly below Commit 1.
+            <strong>Commit 2:</strong> Player X modifies <code>BOARD.txt</code> and commits. The timeline appends smoothly below Commit 1.
           </div>
         </div>
       </div>
     </div>
     <div class="slide-footer">
-      <span>SCDA training week</span>
-      <span>5 / 22</span>
+      <span>Git Tic-Tac-Toe Workshop</span>
+      <span class="slide-num"></span>
     </div>
   </div>
 
@@ -216,7 +214,7 @@
         <div class="board-pane">
           <svg viewBox="0 0 190 200" fill="none">
             <rect width="190" height="200" rx="10" fill="#161b22" stroke="#30363d" stroke-width="1.5" />
-            <text x="95" y="24" text-anchor="middle" font-family="ui-monospace, monospace" font-size="13" font-weight="700" fill="#c9d1d9">board.txt</text>
+            <text x="95" y="24" text-anchor="middle" font-family="ui-monospace, monospace" font-size="13" font-weight="700" fill="#c9d1d9">BOARD.txt</text>
             <g transform="translate(35, 36)">
               <rect width="120" height="120" rx="4" fill="#0d1117" stroke="#21262d" stroke-width="1.5"/>
               <rect x="81" y="1" width="38" height="38" rx="4" fill="#bd561d26" stroke="#f0883e" stroke-width="1.5"/>
@@ -241,7 +239,7 @@
             <div class="commit-row">
               <span class="commit-hash">Commit 1</span>
               <span class="commit-dot">&#9679;</span>
-              <span class="commit-msg">Initialize empty board.txt</span>
+              <span class="commit-msg">Initialize empty BOARD.txt</span>
             </div>
             <div class="commit-row">
               <span class="commit-hash">Commit 2</span>
@@ -261,8 +259,8 @@
       </div>
     </div>
     <div class="slide-footer">
-      <span>SCDA training week</span>
-      <span>6 / 22</span>
+      <span>Git Tic-Tac-Toe Workshop</span>
+      <span class="slide-num"></span>
     </div>
   </div>
 
@@ -277,7 +275,7 @@
         <div class="board-pane">
           <svg viewBox="0 0 190 200" fill="none">
             <rect width="190" height="200" rx="10" fill="#161b22" stroke="#30363d" stroke-width="1.5" />
-            <text x="95" y="24" text-anchor="middle" font-family="ui-monospace, monospace" font-size="13" font-weight="700" fill="#c9d1d9">board.txt</text>
+            <text x="95" y="24" text-anchor="middle" font-family="ui-monospace, monospace" font-size="13" font-weight="700" fill="#c9d1d9">BOARD.txt</text>
             <g transform="translate(35, 36)">
               <rect width="120" height="120" rx="4" fill="#0d1117" stroke="#21262d" stroke-width="1.5"/>
               <rect x="1" y="1" width="38" height="38" rx="4" fill="#388bfd26" stroke="#58a6ff" stroke-width="1.5"/>
@@ -302,7 +300,7 @@
             <div class="commit-row">
               <span class="commit-hash">Commit 1</span>
               <span class="commit-dot">&#9679;</span>
-              <span class="commit-msg">Initialize empty board.txt</span>
+              <span class="commit-msg">Initialize empty BOARD.txt</span>
             </div>
             <div class="commit-row">
               <span class="commit-hash">Commit 2</span>
@@ -327,8 +325,8 @@
       </div>
     </div>
     <div class="slide-footer">
-      <span>SCDA training week</span>
-      <span>7 / 22</span>
+      <span>Git Tic-Tac-Toe Workshop</span>
+      <span class="slide-num"></span>
     </div>
   </div>
 
@@ -343,7 +341,7 @@
         <div class="board-pane">
           <svg viewBox="0 0 190 200" fill="none">
             <rect width="190" height="200" rx="10" fill="#161b22" stroke="#30363d" stroke-width="1.5" />
-            <text x="95" y="24" text-anchor="middle" font-family="ui-monospace, monospace" font-size="13" font-weight="700" fill="#c9d1d9">board.txt</text>
+            <text x="95" y="24" text-anchor="middle" font-family="ui-monospace, monospace" font-size="13" font-weight="700" fill="#c9d1d9">BOARD.txt</text>
             <g transform="translate(35, 36)">
               <rect width="120" height="120" rx="4" fill="#0d1117" stroke="#21262d" stroke-width="1.5"/>
               <rect x="1" y="81" width="38" height="38" rx="4" fill="#bd561d26" stroke="#f0883e" stroke-width="1.5"/>
@@ -369,7 +367,7 @@
             <div class="commit-row">
               <span class="commit-hash">Commit 1</span>
               <span class="commit-dot">&#9679;</span>
-              <span class="commit-msg">Initialize empty board.txt</span>
+              <span class="commit-msg">Initialize empty BOARD.txt</span>
             </div>
             <div class="commit-row">
               <span class="commit-hash">Commit 2</span>
@@ -399,8 +397,8 @@
       </div>
     </div>
     <div class="slide-footer">
-      <span>SCDA training week</span>
-      <span>8 / 22</span>
+      <span>Git Tic-Tac-Toe Workshop</span>
+      <span class="slide-num"></span>
     </div>
   </div>
 
@@ -438,8 +436,8 @@
       </div>
     </div>
     <div class="slide-footer">
-      <span>SCDA training week</span>
-      <span>9 / 22</span>
+      <span>Git Tic-Tac-Toe Workshop</span>
+      <span class="slide-num"></span>
     </div>
   </div>
 
@@ -483,8 +481,8 @@
       </div>
     </div>
     <div class="slide-footer">
-      <span>SCDA training week</span>
-      <span>10 / 22</span>
+      <span>Git Tic-Tac-Toe Workshop</span>
+      <span class="slide-num"></span>
     </div>
   </div>
 
@@ -534,8 +532,8 @@
       </div>
     </div>
     <div class="slide-footer">
-      <span>SCDA training week</span>
-      <span>11 / 22</span>
+      <span>Git Tic-Tac-Toe Workshop</span>
+      <span class="slide-num"></span>
     </div>
   </div>
 
@@ -543,12 +541,12 @@
   <div class="slide" id="slide-12">
     <div class="slide-header">
       <h2>Three Local Stages</h2>
-      <span class="tag">Working Directory</span>
+      <span class="tag">Working Tree</span>
     </div>
     <div class="slide-body">
       <div class="stages-diagram">
         <div class="stage-box">
-          <div class="stage-title">Working Directory</div>
+          <div class="stage-title">Working Tree</div>
           <div class="stage-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
@@ -557,24 +555,24 @@
               <line x1="9" y1="17" x2="13" y2="17" stroke="#ff7b72" stroke-width="2.5"/>
             </svg>
           </div>
-          <div class="stage-cue">Edit <code>board.txt</code> with your latest move</div>
+          <div class="stage-cue">Edit one cell of <code>BOARD.txt</code> and save. It appears under Changes</div>
           <div style="font-family: monospace; color: #ff7b72; font-size: clamp(11px, 1.2cqw, 16px);">[ Unstaged edits ]</div>
         </div>
         <div class="trans-arrow">
-          <div class="stage-cmd-box">git add</div>
+          <div class="stage-action-box">Stage (+)</div>
           <svg width="28" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </div>
         <div class="stage-box ghost"></div>
         <div class="trans-arrow">
-          <div class="stage-cmd-box">git commit</div>
+          <div class="stage-action-box">Commit</div>
           <svg width="28" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </div>
         <div class="stage-box ghost"></div>
       </div>
     </div>
     <div class="slide-footer">
-      <span>SCDA training week</span>
-      <span>12 / 22</span>
+      <span>Git Tic-Tac-Toe Workshop</span>
+      <span class="slide-num"></span>
     </div>
   </div>
 
@@ -582,12 +580,12 @@
   <div class="slide" id="slide-13">
     <div class="slide-header">
       <h2>Three Local Stages</h2>
-      <span class="tag">Staging Area</span>
+      <span class="tag">Staged</span>
     </div>
     <div class="slide-body">
       <div class="stages-diagram">
         <div class="stage-box">
-          <div class="stage-title">Working Directory</div>
+          <div class="stage-title">Working Tree</div>
           <div class="stage-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
@@ -596,34 +594,34 @@
               <line x1="9" y1="17" x2="13" y2="17" stroke="#ff7b72" stroke-width="2.5"/>
             </svg>
           </div>
-          <div class="stage-cue">Edit <code>board.txt</code> with your latest move</div>
+          <div class="stage-cue">Edit one cell of <code>BOARD.txt</code> and save. It appears under Changes</div>
           <div style="font-family: monospace; color: var(--text-muted); font-size: clamp(11px, 1.2cqw, 16px);">[ Unstaged edits ]</div>
         </div>
         <div class="trans-arrow visible">
-          <div class="stage-cmd-box">git add</div>
+          <div class="stage-action-box">Stage (+)</div>
           <svg width="28" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </div>
         <div class="stage-box">
-          <div class="stage-title">Staging Area</div>
+          <div class="stage-title">Staged Changes</div>
           <div class="stage-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5">
               <rect x="3" y="3" width="18" height="18" rx="2"/>
               <path d="M9 12l2 2 4-4" stroke="var(--accent)" stroke-width="2.5"/>
             </svg>
           </div>
-          <div class="stage-cue">Package <code>board.txt</code> ready for snapshot</div>
+          <div class="stage-cue">Click + next to <code>BOARD.txt</code> to stage it</div>
           <div style="font-family: monospace; color: var(--accent); font-size: clamp(11px, 1.2cqw, 16px);">[ Staged / Index ]</div>
         </div>
         <div class="trans-arrow">
-          <div class="stage-cmd-box">git commit</div>
+          <div class="stage-action-box">Commit</div>
           <svg width="28" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </div>
         <div class="stage-box ghost"></div>
       </div>
     </div>
     <div class="slide-footer">
-      <span>SCDA training week</span>
-      <span>13 / 22</span>
+      <span>Git Tic-Tac-Toe Workshop</span>
+      <span class="slide-num"></span>
     </div>
   </div>
 
@@ -636,7 +634,7 @@
     <div class="slide-body">
       <div class="stages-diagram">
         <div class="stage-box">
-          <div class="stage-title">Working Directory</div>
+          <div class="stage-title">Working Tree</div>
           <div class="stage-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
@@ -645,26 +643,26 @@
               <line x1="9" y1="17" x2="13" y2="17" stroke="#ff7b72" stroke-width="2.5"/>
             </svg>
           </div>
-          <div class="stage-cue">Edit <code>board.txt</code> with your latest move</div>
+          <div class="stage-cue">Edit one cell of <code>BOARD.txt</code> and save. It appears under Changes</div>
           <div style="font-family: monospace; color: var(--text-muted); font-size: clamp(11px, 1.2cqw, 16px);">[ Working Tree ]</div>
         </div>
         <div class="trans-arrow visible">
-          <div class="stage-cmd-box">git add</div>
+          <div class="stage-action-box">Stage (+)</div>
           <svg width="28" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </div>
         <div class="stage-box">
-          <div class="stage-title">Staging Area</div>
+          <div class="stage-title">Staged Changes</div>
           <div class="stage-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5">
               <rect x="3" y="3" width="18" height="18" rx="2"/>
               <path d="M9 12l2 2 4-4" stroke="var(--accent)" stroke-width="2.5"/>
             </svg>
           </div>
-          <div class="stage-cue">Prepare <code>board.txt</code> for commit</div>
+          <div class="stage-cue">Click + next to <code>BOARD.txt</code> to stage it</div>
           <div style="font-family: monospace; color: var(--accent); font-size: clamp(11px, 1.2cqw, 16px);">[ Staged ]</div>
         </div>
         <div class="trans-arrow visible">
-          <div class="stage-cmd-box" style="border-color: var(--green); box-shadow: 0 4px 14px rgba(63, 185, 80, 0.25);">git commit</div>
+          <div class="stage-action-box" style="border-color: var(--green); box-shadow: 0 4px 14px rgba(63, 185, 80, 0.25);">Commit</div>
           <svg width="28" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </div>
         <div class="stage-box">
@@ -675,18 +673,18 @@
               <circle cx="12" cy="12" r="4" fill="var(--green)"/>
             </svg>
           </div>
-          <div class="stage-cue">Permanent snapshot sealed into .git history</div>
+          <div class="stage-cue">Type a clear message and click Commit. Your partner sees it only after Sync Changes</div>
           <div style="font-family: monospace; color: var(--green); font-size: clamp(11px, 1.2cqw, 16px);">[ Committed ]</div>
         </div>
       </div>
     </div>
     <div class="slide-footer">
-      <span>SCDA training week</span>
-      <span>14 / 22</span>
+      <span>Git Tic-Tac-Toe Workshop</span>
+      <span class="slide-num"></span>
     </div>
   </div>
 
-  <!-- SLIDE 15: Remotes Step 1 (Push - Arrow Only) -->
+  <!-- SLIDE 15: Remotes Step 1 (Sync Changes - Arrow Only) -->
   <div class="slide" id="slide-15">
     <div class="slide-header">
       <h2>Remotes: GitHub Sync</h2>
@@ -710,15 +708,15 @@
             <text y="-6" text-anchor="middle" fill="#58a6ff" font-size="16" font-weight="bold">Player X</text>
             <text y="14" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="12">local repo</text>
           </g>
-          <!-- Clean arrow with label 'Push' -->
+          <!-- Clean arrow with label 'Sync Changes' -->
           <path d="M 225 175 L 340 115" stroke="#58a6ff" stroke-width="3.5" marker-end="url(#arr-blue-15)" fill="none" />
-          <text x="270" y="132" fill="#58a6ff" font-family="-apple-system, sans-serif" font-size="15" font-weight="700">Push</text>
+          <text x="262" y="140" text-anchor="end" fill="#58a6ff" font-family="-apple-system, sans-serif" font-size="15" font-weight="700">Sync Changes</text>
         </svg>
       </div>
     </div>
     <div class="slide-footer">
-      <span>SCDA training week</span>
-      <span>15 / 22</span>
+      <span>Git Tic-Tac-Toe Workshop</span>
+      <span class="slide-num"></span>
     </div>
   </div>
 
@@ -756,24 +754,24 @@
             <text y="-6" text-anchor="middle" fill="#f0883e" font-size="16" font-weight="bold">Player O</text>
             <text y="14" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="12">local repo</text>
           </g>
-          <!-- X Push -->
+          <!-- X Sync Changes -->
           <path d="M 225 175 L 340 115" stroke="#58a6ff" stroke-width="3.5" marker-end="url(#arr-blue-16)" fill="none" />
-          <text x="270" y="132" fill="#58a6ff" font-family="-apple-system, sans-serif" font-size="15" font-weight="700">Push</text>
+          <text x="262" y="140" text-anchor="end" fill="#58a6ff" font-family="-apple-system, sans-serif" font-size="15" font-weight="700">Sync Changes</text>
           <!-- X Pull -->
           <path d="M 355 135 L 240 195" stroke="#58a6ff" stroke-width="3.5" stroke-dasharray="5,5" marker-end="url(#arr-blue-16)" fill="none" />
           <text x="310" y="180" fill="#58a6ff" font-family="-apple-system, sans-serif" font-size="15" font-weight="700">Pull</text>
           <!-- O Pull -->
           <path d="M 520 115 L 635 175" stroke="#f0883e" stroke-width="3.5" marker-end="url(#arr-orange-16)" fill="none" />
           <text x="590" y="132" fill="#f0883e" font-family="-apple-system, sans-serif" font-size="15" font-weight="700">Pull</text>
-          <!-- O Push -->
+          <!-- O Sync Changes -->
           <path d="M 620 195 L 505 135" stroke="#f0883e" stroke-width="3.5" stroke-dasharray="5,5" marker-end="url(#arr-orange-16)" fill="none" />
-          <text x="540" y="180" fill="#f0883e" font-family="-apple-system, sans-serif" font-size="15" font-weight="700">Push</text>
+          <text x="590" y="212" text-anchor="end" fill="#f0883e" font-family="-apple-system, sans-serif" font-size="15" font-weight="700">Sync Changes</text>
         </svg>
       </div>
     </div>
     <div class="slide-footer">
-      <span>SCDA training week</span>
-      <span>16 / 22</span>
+      <span>Git Tic-Tac-Toe Workshop</span>
+      <span class="slide-num"></span>
     </div>
   </div>
 
@@ -799,7 +797,7 @@
           <!-- Board on Left -->
           <g transform="translate(24, 54)">
             <rect width="156" height="170" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1" />
-            <text x="78" y="20" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#c9d1d9">board.txt</text>
+            <text x="78" y="20" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#c9d1d9">BOARD.txt</text>
             <g transform="translate(30, 28)">
               <rect width="96" height="96" rx="4" fill="#0d1117" stroke="#21262d" stroke-width="1"/>
               <rect x="33" y="33" width="30" height="30" rx="3" fill="#388bfd26" stroke="#58a6ff" stroke-width="1"/>
@@ -822,8 +820,8 @@
             <circle cx="50" cy="24" r="12" fill="#1f6feb"/>
             <text x="50" y="28" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#ffffff">1</text>
             <text x="50" y="58" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="14" font-weight="800" fill="#58a6ff">PULL</text>
-            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#f0f6fc">Fetch partner's</text>
-            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#f0f6fc">latest move</text>
+            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#f0f6fc">Pull to fetch</text>
+            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#f0f6fc">partner's move</text>
           </g>
           <!-- Arrow 1 -> 2 (dimmed) -->
           <g opacity="0.3"><line x1="300" y1="120" x2="312" y2="120" stroke="#484f58" stroke-width="2" stroke-linecap="round"/><polygon points="311,116 316,120 311,124" fill="#484f58"/></g>
@@ -833,8 +831,8 @@
             <circle cx="50" cy="24" r="12" fill="#bd561d"/>
             <text x="50" y="28" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#ffffff">2</text>
             <text x="50" y="58" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="14" font-weight="800" fill="#f0f6fc">EDIT</text>
-            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Mark [X] or [O]</text>
-            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">in empty square</text>
+            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Change one cell,</text>
+            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">then save</text>
           </g>
           <!-- Arrow 2 -> 3 -->
           <g opacity="0.3"><line x1="421" y1="120" x2="433" y2="120" stroke="#484f58" stroke-width="2" stroke-linecap="round"/><polygon points="432,116 437,120 432,124" fill="#484f58"/></g>
@@ -844,8 +842,8 @@
             <circle cx="50" cy="24" r="12" fill="#9e6a03"/>
             <text x="50" y="28" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#ffffff">3</text>
             <text x="50" y="58" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="14" font-weight="800" fill="#f0f6fc">STAGE</text>
-            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Prepare board</text>
-            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">for snapshot</text>
+            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Click + beside</text>
+            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">BOARD.txt</text>
           </g>
           <!-- Arrow 3 -> 4 -->
           <g opacity="0.3"><line x1="542" y1="120" x2="554" y2="120" stroke="#484f58" stroke-width="2" stroke-linecap="round"/><polygon points="553,116 558,120 553,124" fill="#484f58"/></g>
@@ -855,26 +853,26 @@
             <circle cx="50" cy="24" r="12" fill="#6e40c9"/>
             <text x="50" y="28" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#ffffff">4</text>
             <text x="50" y="58" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="14" font-weight="800" fill="#f0f6fc">COMMIT</text>
-            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Save move to</text>
-            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">project history</text>
+            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Clear message,</text>
+            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">then Commit</text>
           </g>
           <!-- Arrow 4 -> 5 -->
           <g opacity="0.3"><line x1="663" y1="120" x2="675" y2="120" stroke="#484f58" stroke-width="2" stroke-linecap="round"/><polygon points="674,116 679,120 674,124" fill="#484f58"/></g>
-          <!-- Card 5: PUSH (upcoming) -->
+          <!-- Card 5: SYNC CHANGES (upcoming) -->
           <g transform="translate(680, 54)" opacity="0.35">
             <rect width="100" height="126" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
             <circle cx="50" cy="24" r="12" fill="#238636"/>
             <text x="50" y="28" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#ffffff">5</text>
-            <text x="50" y="58" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="14" font-weight="800" fill="#f0f6fc">PUSH</text>
-            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Publish move to</text>
-            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">shared hub</text>
+            <text x="50" y="58" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="800" textLength="86" lengthAdjust="spacingAndGlyphs" fill="#f0f6fc">SYNC CHANGES</text>
+            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Send your move</text>
+            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">to your partner</text>
           </g>
         </svg>
       </div>
     </div>
     <div class="slide-footer">
-      <span>SCDA training week</span>
-      <span>17 / 22</span>
+      <span>Git Tic-Tac-Toe Workshop</span>
+      <span class="slide-num"></span>
     </div>
   </div>
 
@@ -900,7 +898,7 @@
           <!-- Board on Left -->
           <g transform="translate(24, 54)">
             <rect width="156" height="170" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1" />
-            <text x="78" y="20" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#c9d1d9">board.txt</text>
+            <text x="78" y="20" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#c9d1d9">BOARD.txt</text>
             <g transform="translate(30, 28)">
               <rect width="96" height="96" rx="4" fill="#0d1117" stroke="#21262d" stroke-width="1"/>
               <rect x="33" y="33" width="30" height="30" rx="3" fill="#388bfd26" stroke="#58a6ff" stroke-width="1"/>
@@ -923,8 +921,8 @@
             <circle cx="50" cy="24" r="12" fill="#1f6feb"/>
             <text x="50" y="28" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#ffffff">1</text>
             <text x="50" y="58" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="14" font-weight="800" fill="#f0f6fc">PULL</text>
-            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Fetch partner's</text>
-            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">latest move</text>
+            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Pull to fetch</text>
+            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">partner's move</text>
           </g>
           <!-- Arrow 1 -> 2 (active) -->
           <g><line x1="300" y1="120" x2="312" y2="120" stroke="#58a6ff" stroke-width="2" stroke-linecap="round"/><polygon points="311,116 316,120 311,124" fill="#58a6ff"/></g>
@@ -934,8 +932,8 @@
             <circle cx="50" cy="24" r="12" fill="#bd561d"/>
             <text x="50" y="28" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#ffffff">2</text>
             <text x="50" y="58" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="14" font-weight="800" fill="#f0883e">EDIT</text>
-            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#f0f6fc">Mark [X] or [O]</text>
-            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#f0f6fc">in empty square</text>
+            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#f0f6fc">Change one cell,</text>
+            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#f0f6fc">then save</text>
           </g>
           <!-- Arrow 2 -> 3 (dimmed) -->
           <g opacity="0.3"><line x1="421" y1="120" x2="433" y2="120" stroke="#484f58" stroke-width="2" stroke-linecap="round"/><polygon points="432,116 437,120 432,124" fill="#484f58"/></g>
@@ -945,8 +943,8 @@
             <circle cx="50" cy="24" r="12" fill="#9e6a03"/>
             <text x="50" y="28" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#ffffff">3</text>
             <text x="50" y="58" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="14" font-weight="800" fill="#f0f6fc">STAGE</text>
-            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Prepare board</text>
-            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">for snapshot</text>
+            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Click + beside</text>
+            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">BOARD.txt</text>
           </g>
           <!-- Arrow 3 -> 4 -->
           <g opacity="0.3"><line x1="542" y1="120" x2="554" y2="120" stroke="#484f58" stroke-width="2" stroke-linecap="round"/><polygon points="553,116 558,120 553,124" fill="#484f58"/></g>
@@ -956,26 +954,26 @@
             <circle cx="50" cy="24" r="12" fill="#6e40c9"/>
             <text x="50" y="28" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#ffffff">4</text>
             <text x="50" y="58" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="14" font-weight="800" fill="#f0f6fc">COMMIT</text>
-            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Save move to</text>
-            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">project history</text>
+            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Clear message,</text>
+            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">then Commit</text>
           </g>
           <!-- Arrow 4 -> 5 -->
           <g opacity="0.3"><line x1="663" y1="120" x2="675" y2="120" stroke="#484f58" stroke-width="2" stroke-linecap="round"/><polygon points="674,116 679,120 674,124" fill="#484f58"/></g>
-          <!-- Card 5: PUSH (upcoming) -->
+          <!-- Card 5: SYNC CHANGES (upcoming) -->
           <g transform="translate(680, 54)" opacity="0.35">
             <rect width="100" height="126" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
             <circle cx="50" cy="24" r="12" fill="#238636"/>
             <text x="50" y="28" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#ffffff">5</text>
-            <text x="50" y="58" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="14" font-weight="800" fill="#f0f6fc">PUSH</text>
-            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Publish move to</text>
-            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">shared hub</text>
+            <text x="50" y="58" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="800" textLength="86" lengthAdjust="spacingAndGlyphs" fill="#f0f6fc">SYNC CHANGES</text>
+            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Send your move</text>
+            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">to your partner</text>
           </g>
         </svg>
       </div>
     </div>
     <div class="slide-footer">
-      <span>SCDA training week</span>
-      <span>18 / 22</span>
+      <span>Git Tic-Tac-Toe Workshop</span>
+      <span class="slide-num"></span>
     </div>
   </div>
 
@@ -1001,7 +999,7 @@
           <!-- Board on Left -->
           <g transform="translate(24, 54)">
             <rect width="156" height="170" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1" />
-            <text x="78" y="20" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#c9d1d9">board.txt</text>
+            <text x="78" y="20" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#c9d1d9">BOARD.txt</text>
             <g transform="translate(30, 28)">
               <rect width="96" height="96" rx="4" fill="#0d1117" stroke="#21262d" stroke-width="1"/>
               <rect x="33" y="33" width="30" height="30" rx="3" fill="#388bfd26" stroke="#58a6ff" stroke-width="1"/>
@@ -1024,8 +1022,8 @@
             <circle cx="50" cy="24" r="12" fill="#1f6feb"/>
             <text x="50" y="28" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#ffffff">1</text>
             <text x="50" y="58" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="14" font-weight="800" fill="#f0f6fc">PULL</text>
-            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Fetch partner's</text>
-            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">latest move</text>
+            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Pull to fetch</text>
+            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">partner's move</text>
           </g>
           <g><line x1="300" y1="120" x2="312" y2="120" stroke="#484f58" stroke-width="2" stroke-linecap="round"/><polygon points="311,116 316,120 311,124" fill="#484f58"/></g>
           <!-- Card 2: EDIT (completed) -->
@@ -1034,8 +1032,8 @@
             <circle cx="50" cy="24" r="12" fill="#bd561d"/>
             <text x="50" y="28" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#ffffff">2</text>
             <text x="50" y="58" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="14" font-weight="800" fill="#f0f6fc">EDIT</text>
-            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Mark [X] or [O]</text>
-            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">in empty square</text>
+            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Change one cell,</text>
+            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">then save</text>
           </g>
           <!-- Arrow 2 -> 3 (active) -->
           <g><line x1="421" y1="120" x2="433" y2="120" stroke="#d29922" stroke-width="2" stroke-linecap="round"/><polygon points="432,116 437,120 432,124" fill="#d29922"/></g>
@@ -1045,8 +1043,8 @@
             <circle cx="50" cy="24" r="12" fill="#9e6a03"/>
             <text x="50" y="28" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#ffffff">3</text>
             <text x="50" y="58" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="14" font-weight="800" fill="#d29922">STAGE</text>
-            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#f0f6fc">Prepare board</text>
-            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#f0f6fc">for snapshot</text>
+            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#f0f6fc">Click + beside</text>
+            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#f0f6fc">BOARD.txt</text>
           </g>
           <!-- Arrow 3 -> 4 (dimmed) -->
           <g opacity="0.3"><line x1="542" y1="120" x2="554" y2="120" stroke="#484f58" stroke-width="2" stroke-linecap="round"/><polygon points="553,116 558,120 553,124" fill="#484f58"/></g>
@@ -1056,26 +1054,26 @@
             <circle cx="50" cy="24" r="12" fill="#6e40c9"/>
             <text x="50" y="28" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#ffffff">4</text>
             <text x="50" y="58" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="14" font-weight="800" fill="#f0f6fc">COMMIT</text>
-            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Save move to</text>
-            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">project history</text>
+            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Clear message,</text>
+            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">then Commit</text>
           </g>
           <!-- Arrow 4 -> 5 -->
           <g opacity="0.3"><line x1="663" y1="120" x2="675" y2="120" stroke="#484f58" stroke-width="2" stroke-linecap="round"/><polygon points="674,116 679,120 674,124" fill="#484f58"/></g>
-          <!-- Card 5: PUSH (upcoming) -->
+          <!-- Card 5: SYNC CHANGES (upcoming) -->
           <g transform="translate(680, 54)" opacity="0.35">
             <rect width="100" height="126" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
             <circle cx="50" cy="24" r="12" fill="#238636"/>
             <text x="50" y="28" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#ffffff">5</text>
-            <text x="50" y="58" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="14" font-weight="800" fill="#f0f6fc">PUSH</text>
-            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Publish move to</text>
-            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">shared hub</text>
+            <text x="50" y="58" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="800" textLength="86" lengthAdjust="spacingAndGlyphs" fill="#f0f6fc">SYNC CHANGES</text>
+            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Send your move</text>
+            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">to your partner</text>
           </g>
         </svg>
       </div>
     </div>
     <div class="slide-footer">
-      <span>SCDA training week</span>
-      <span>19 / 22</span>
+      <span>Git Tic-Tac-Toe Workshop</span>
+      <span class="slide-num"></span>
     </div>
   </div>
 
@@ -1101,7 +1099,7 @@
           <!-- Board on Left -->
           <g transform="translate(24, 54)">
             <rect width="156" height="170" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1" />
-            <text x="78" y="20" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#c9d1d9">board.txt</text>
+            <text x="78" y="20" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#c9d1d9">BOARD.txt</text>
             <g transform="translate(30, 28)">
               <rect width="96" height="96" rx="4" fill="#0d1117" stroke="#21262d" stroke-width="1"/>
               <rect x="33" y="33" width="30" height="30" rx="3" fill="#388bfd26" stroke="#58a6ff" stroke-width="1"/>
@@ -1124,8 +1122,8 @@
             <circle cx="50" cy="24" r="12" fill="#1f6feb"/>
             <text x="50" y="28" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#ffffff">1</text>
             <text x="50" y="58" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="14" font-weight="800" fill="#f0f6fc">PULL</text>
-            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Fetch partner's</text>
-            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">latest move</text>
+            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Pull to fetch</text>
+            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">partner's move</text>
           </g>
           <g><line x1="300" y1="120" x2="312" y2="120" stroke="#484f58" stroke-width="2" stroke-linecap="round"/><polygon points="311,116 316,120 311,124" fill="#484f58"/></g>
           <!-- Card 2: EDIT (completed) -->
@@ -1134,8 +1132,8 @@
             <circle cx="50" cy="24" r="12" fill="#bd561d"/>
             <text x="50" y="28" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#ffffff">2</text>
             <text x="50" y="58" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="14" font-weight="800" fill="#f0f6fc">EDIT</text>
-            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Mark [X] or [O]</text>
-            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">in empty square</text>
+            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Change one cell,</text>
+            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">then save</text>
           </g>
           <g><line x1="421" y1="120" x2="433" y2="120" stroke="#484f58" stroke-width="2" stroke-linecap="round"/><polygon points="432,116 437,120 432,124" fill="#484f58"/></g>
           <!-- Card 3: STAGE (completed) -->
@@ -1144,8 +1142,8 @@
             <circle cx="50" cy="24" r="12" fill="#9e6a03"/>
             <text x="50" y="28" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#ffffff">3</text>
             <text x="50" y="58" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="14" font-weight="800" fill="#f0f6fc">STAGE</text>
-            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Prepare board</text>
-            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">for snapshot</text>
+            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Click + beside</text>
+            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">BOARD.txt</text>
           </g>
           <!-- Arrow 3 -> 4 (active) -->
           <g><line x1="542" y1="120" x2="554" y2="120" stroke="#bc8cff" stroke-width="2" stroke-linecap="round"/><polygon points="553,116 558,120 553,124" fill="#bc8cff"/></g>
@@ -1155,30 +1153,30 @@
             <circle cx="50" cy="24" r="12" fill="#6e40c9"/>
             <text x="50" y="28" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#ffffff">4</text>
             <text x="50" y="58" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="14" font-weight="800" fill="#bc8cff">COMMIT</text>
-            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#f0f6fc">Save move to</text>
-            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#f0f6fc">project history</text>
+            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#f0f6fc">Clear message,</text>
+            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#f0f6fc">then Commit</text>
           </g>
           <!-- Arrow 4 -> 5 (dimmed) -->
           <g opacity="0.3"><line x1="663" y1="120" x2="675" y2="120" stroke="#484f58" stroke-width="2" stroke-linecap="round"/><polygon points="674,116 679,120 674,124" fill="#484f58"/></g>
-          <!-- Card 5: PUSH (upcoming) -->
+          <!-- Card 5: SYNC CHANGES (upcoming) -->
           <g transform="translate(680, 54)" opacity="0.35">
             <rect width="100" height="126" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
             <circle cx="50" cy="24" r="12" fill="#238636"/>
             <text x="50" y="28" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#ffffff">5</text>
-            <text x="50" y="58" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="14" font-weight="800" fill="#f0f6fc">PUSH</text>
-            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Publish move to</text>
-            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">shared hub</text>
+            <text x="50" y="58" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="800" textLength="86" lengthAdjust="spacingAndGlyphs" fill="#f0f6fc">SYNC CHANGES</text>
+            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Send your move</text>
+            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">to your partner</text>
           </g>
         </svg>
       </div>
     </div>
     <div class="slide-footer">
-      <span>SCDA training week</span>
-      <span>20 / 22</span>
+      <span>Git Tic-Tac-Toe Workshop</span>
+      <span class="slide-num"></span>
     </div>
   </div>
 
-  <!-- SLIDE 21: Turn Cycle Step 5 (PUSH & The Repeat Loop) -->
+  <!-- SLIDE 21: Turn Cycle Step 5 (SYNC CHANGES & The Repeat Loop) -->
   <div class="slide" id="slide-21">
     <div class="slide-header">
       <h2>The Turn Cycle: Step 5</h2>
@@ -1200,7 +1198,7 @@
           <!-- Board on Left -->
           <g transform="translate(24, 54)">
             <rect width="156" height="170" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1" />
-            <text x="78" y="20" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#c9d1d9">board.txt</text>
+            <text x="78" y="20" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" font-weight="600" fill="#c9d1d9">BOARD.txt</text>
             <g transform="translate(30, 28)">
               <rect width="96" height="96" rx="4" fill="#0d1117" stroke="#21262d" stroke-width="1"/>
               <rect x="33" y="33" width="30" height="30" rx="3" fill="#388bfd26" stroke="#58a6ff" stroke-width="1"/>
@@ -1223,8 +1221,8 @@
             <circle cx="50" cy="24" r="12" fill="#1f6feb"/>
             <text x="50" y="28" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#ffffff">1</text>
             <text x="50" y="58" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="14" font-weight="800" fill="#f0f6fc">PULL</text>
-            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Fetch partner's</text>
-            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">latest move</text>
+            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Pull to fetch</text>
+            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">partner's move</text>
           </g>
           <g><line x1="300" y1="120" x2="312" y2="120" stroke="#484f58" stroke-width="2" stroke-linecap="round"/><polygon points="311,116 316,120 311,124" fill="#484f58"/></g>
           <!-- Card 2: EDIT -->
@@ -1233,8 +1231,8 @@
             <circle cx="50" cy="24" r="12" fill="#bd561d"/>
             <text x="50" y="28" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#ffffff">2</text>
             <text x="50" y="58" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="14" font-weight="800" fill="#f0f6fc">EDIT</text>
-            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Mark [X] or [O]</text>
-            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">in empty square</text>
+            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Change one cell,</text>
+            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">then save</text>
           </g>
           <g><line x1="421" y1="120" x2="433" y2="120" stroke="#484f58" stroke-width="2" stroke-linecap="round"/><polygon points="432,116 437,120 432,124" fill="#484f58"/></g>
           <!-- Card 3: STAGE -->
@@ -1243,8 +1241,8 @@
             <circle cx="50" cy="24" r="12" fill="#9e6a03"/>
             <text x="50" y="28" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#ffffff">3</text>
             <text x="50" y="58" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="14" font-weight="800" fill="#f0f6fc">STAGE</text>
-            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Prepare board</text>
-            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">for snapshot</text>
+            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Click + beside</text>
+            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">BOARD.txt</text>
           </g>
           <g><line x1="542" y1="120" x2="554" y2="120" stroke="#484f58" stroke-width="2" stroke-linecap="round"/><polygon points="553,116 558,120 553,124" fill="#484f58"/></g>
           <!-- Card 4: COMMIT -->
@@ -1253,19 +1251,19 @@
             <circle cx="50" cy="24" r="12" fill="#6e40c9"/>
             <text x="50" y="28" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#ffffff">4</text>
             <text x="50" y="58" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="14" font-weight="800" fill="#f0f6fc">COMMIT</text>
-            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Save move to</text>
-            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">project history</text>
+            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">Clear message,</text>
+            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#8b949e">then Commit</text>
           </g>
           <!-- Arrow 4 -> 5 (active) -->
           <g><line x1="663" y1="120" x2="675" y2="120" stroke="#3fb950" stroke-width="2" stroke-linecap="round"/><polygon points="674,116 679,120 674,124" fill="#3fb950"/></g>
-          <!-- Card 5: PUSH (ACTIVE) -->
+          <!-- Card 5: SYNC CHANGES (ACTIVE) -->
           <g transform="translate(680, 54)">
             <rect width="100" height="126" rx="8" fill="#161b22" stroke="#3fb950" stroke-width="2"/>
             <circle cx="50" cy="24" r="12" fill="#238636"/>
             <text x="50" y="28" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="700" fill="#ffffff">5</text>
-            <text x="50" y="58" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="14" font-weight="800" fill="#3fb950">PUSH</text>
-            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#f0f6fc">Publish move to</text>
-            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#f0f6fc">shared hub</text>
+            <text x="50" y="58" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="12" font-weight="800" textLength="86" lengthAdjust="spacingAndGlyphs" fill="#3fb950">SYNC CHANGES</text>
+            <text x="50" y="88" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#f0f6fc">Send your move</text>
+            <text x="50" y="104" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="10.5" fill="#f0f6fc">to your partner</text>
           </g>
           <!-- Collaborative Loop Arrow -->
           <path d="M 730 180 V 194 Q 730 204 718 204 H 258 Q 246 204 246 194 V 183" fill="none" stroke="#58a6ff" stroke-width="1.8" stroke-dasharray="4 3"/>
@@ -1279,8 +1277,8 @@
       </div>
     </div>
     <div class="slide-footer">
-      <span>SCDA training week</span>
-      <span>21 / 22</span>
+      <span>Git Tic-Tac-Toe Workshop</span>
+      <span class="slide-num"></span>
     </div>
   </div>
 
@@ -1296,28 +1294,28 @@
           <div class="rule-number">PRACTICE 01</div>
           <div class="rule-heading">Always Pull Before You Play</div>
           <p style="margin-top: 1cqw; font-size: clamp(11px, 1.2cqw, 16px); color: var(--text-muted); line-height: 1.4;">
-            Run <code>git pull</code> before every turn to ensure your local <code>board.txt</code> reflects your partner's latest move.
+            Click Pull before every turn so your <code>BOARD.txt</code> shows your partner's latest move.
           </p>
         </div>
         <div class="rule-card">
           <div class="rule-number">PRACTICE 02</div>
           <div class="rule-heading">One Move Per Commit</div>
           <p style="margin-top: 1cqw; font-size: clamp(11px, 1.2cqw, 16px); color: var(--text-muted); line-height: 1.4;">
-            Stage and commit only your single turn. Keep commit messages descriptive: <code>place X center</code>.
+            Stage with + and commit only your single turn. Keep commit messages descriptive: <code>place X center</code>.
           </p>
         </div>
         <div class="rule-card">
           <div class="rule-number">PRACTICE 03</div>
-          <div class="rule-heading">Push Immediately to Unblock</div>
+          <div class="rule-heading">Sync Changes Right After Committing</div>
           <p style="margin-top: 1cqw; font-size: clamp(11px, 1.2cqw, 16px); color: var(--text-muted); line-height: 1.4;">
-            Push right after committing so your partner can immediately pull and continue the game without sync delays.
+            Click Sync Changes right after committing so your partner can Pull straight away and continue the game.
           </p>
         </div>
       </div>
     </div>
     <div class="slide-footer">
-      <span>SCDA training week</span>
-      <span>22 / 22</span>
+      <span>Git Tic-Tac-Toe Workshop</span>
+      <span class="slide-num"></span>
     </div>
   </div>
 
