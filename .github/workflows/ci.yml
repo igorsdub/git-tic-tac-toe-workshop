@@ -46,7 +46,7 @@ jobs:
         run: npm test
 
       - name: Install ruff
-        run: pip install ruff
+        run: pip install ruff==0.17.1
 
       - name: Lint Python with ruff
         run: ruff check scripts tests
