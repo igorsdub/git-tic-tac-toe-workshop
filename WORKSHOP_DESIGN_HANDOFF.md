@@ -1,5 +1,7 @@
 # Git Tic-Tac-Toe Workshop Design Handoff
 
+> **Historical record, superseded 2026-10-22 by the guides.** This file keeps the original design intent. Where it disagrees with the [Learner guide](LEARNER_GUIDE.md), [Facilitator guide](FACILITATOR_GUIDE.md), [Pre-session checklist](PRE_SESSION_CHECK.md), or [Glossary](GLOSSARY.md), those win.
+
 **Date:** 2026-10-20
 **Status (2026-10-20):** The starter contract, branch-aware registration, and Game Wall are published. The six current Game Wall records have no numbered branch and appear as migration errors until re-registered. The two-account rehearsal remains incomplete, and task 1 is an unpublished instructor survey draft. See the [delivery status](planning/delivery-status-2026-10-20.md) for the published commit and remaining blockers.
 **Scope:** Standalone, two-hour workshop. This is separate from the GECS Project Gutenberg course.

@@ -48,3 +48,14 @@ Briefly introduce possible extensions: skills, custom agents, subagents, orchest
 - Confirm the pacing while rehearsing. The broad two-part structure is agreed, while detailed timings and exercise choices remain provisional.
 
 No external lecture research has been established for this plan. The plan records the agreed workshop scope and open design choices.
+
+## Open points
+
+The shared written materials (Learner guide, Facilitator guide, Setup page, Game Wall) assume RIKEN runs the same design as SOKEDAI: Codespaces track, Copilot, no pull requests, one two-hour session. This plan differs in four places. They stay here as questions for the organiser; the shared documents are not changed for them.
+
+1. **Own laptops or Codespaces?** This plan lets participants use their own computers and tools, with Codespaces as the fallback. The Setup page and guides teach only the Codespaces track. Will RIKEN use Codespaces for everyone, or does it need a local track?
+2. **Copilot or any LLM?** This plan lets participants choose their own LLM. The readiness check and the agent-assisted rematch use Copilot Chat in agent mode. Is Copilot available to every participant, or should the exercise be tool-neutral?
+3. **Pull requests?** This plan has participants inspect diffs and pull requests in the afternoon. The shared design uses no pull requests: match branches are never merged back. Are pull requests in scope, and what do participants need before using them?
+4. **Two sessions?** This plan runs a morning and an afternoon session with lunch between them, and uses one project all day. The shared design is one two-hour session. Does the tic-tac-toe Git workshop run as a single block inside the day, or is it split across both sessions?
+
+The ten-question survey draft in [survey-questions.md](survey-questions.md) is a related open point; see [SURVEY.md](../../SURVEY.md).

@@ -231,17 +231,21 @@ class TestWebGuides(unittest.TestCase):
         readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
         learner = (REPO_ROOT / "LEARNER_GUIDE.md").read_text(encoding="utf-8")
         facilitator = (REPO_ROOT / "FACILITATOR_GUIDE.md").read_text(encoding="utf-8")
-        context = (REPO_ROOT / "CONTEXT.md").read_text(encoding="utf-8")
+        glossary = (REPO_ROOT / "GLOSSARY.md").read_text(encoding="utf-8")
         for content in (learner, facilitator):
             self.assertIn("registers its shared repository once", content)
             self.assertIn("successful registration comment", content)
             self.assertIn("successful refresh", content)
             self.assertIn("Archived workshops", content)
-        self.assertIn("five legacy SCDA repositories", readme)
+        self.assertIn("registers its shared repository once", readme)
+        self.assertIn("Existing registrations map to workshop `2026-10-01-scda`", readme)
         self.assertIn("Default Event", readme)
         self.assertIn("2026-10-01-scda", facilitator)
-        self.assertIn("Register repository", context)
-        self.assertIn("literal lowercase prefix `match`", context)
+        self.assertIn("Register repository", glossary)
+        self.assertIn("once per workshop, with both GitHub handles", glossary)
+        self.assertIn("literal lowercase prefix `match`", glossary)
+        self.assertIn("discovered automatically", glossary)
+        self.assertFalse((REPO_ROOT / "CONTEXT.md").exists())
 
     def test_turn_cycle_is_five_source_control_steps(self):
         turn = self.guide[self.guide.index('id="turn"'):self.guide.index('id="rematch"')]

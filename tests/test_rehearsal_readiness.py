@@ -80,8 +80,10 @@ class TestDocumentationReadiness(unittest.TestCase):
         for target in required:
             with self.subTest(target=target):
                 self.assertIn(target, links)
-        self.assertIn("Unpublished instructor survey preview", readme)
-        self.assertIn("not accepting responses; not distributed", readme)
+        self.assertIn("SOKEDAI survey", readme)
+        self.assertIn("is live", readme)
+        self.assertNotIn("Unpublished instructor survey", readme)
+        self.assertIn("(GLOSSARY.md)", readme)
 
 
 class TestApprovedWorkshopPath(unittest.TestCase):
