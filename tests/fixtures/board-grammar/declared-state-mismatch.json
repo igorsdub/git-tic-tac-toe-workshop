@@ -1,0 +1,15 @@
+{
+  "description": "Declared state disagrees with the board: still valid, evaluated state wins",
+  "content": "# Git Tic-Tac-Toe\nPlayer X: @alice\nPlayer O: @bob\nState: Ready for X\n\n```\n. . .\n. X .\n. . .\n```\n",
+  "expected": {
+    "valid": true,
+    "state": "Waiting for O",
+    "reason": null,
+    "placeholderHandles": [],
+    "grid": [
+      [" ", " ", " "],
+      [" ", "X", " "],
+      [" ", " ", " "]
+    ]
+  }
+}

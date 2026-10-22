@@ -1,0 +1,10 @@
+{
+  "description": "O has moved but X has not",
+  "content": "O . .\n. . .\n. . .\n",
+  "expected": {
+    "valid": false,
+    "state": "Invalid board",
+    "reason": "Invalid turn parity",
+    "placeholderHandles": ["O", "X"]
+  }
+}

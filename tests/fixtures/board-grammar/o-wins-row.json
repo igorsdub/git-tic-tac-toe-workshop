@@ -1,0 +1,10 @@
+{
+  "description": "O completes the middle row",
+  "content": "X X .\nO O O\nX . .\n",
+  "expected": {
+    "valid": true,
+    "state": "O won",
+    "reason": null,
+    "placeholderHandles": ["O", "X"]
+  }
+}

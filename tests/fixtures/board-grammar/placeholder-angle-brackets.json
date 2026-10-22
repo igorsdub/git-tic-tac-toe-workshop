@@ -1,0 +1,10 @@
+{
+  "description": "Both handles are <your-handle>",
+  "content": "# Git Tic-Tac-Toe\nPlayer X: <your-handle>\nPlayer O: <your-handle>\nState: Ready for X\n\n```\n. . .\n. . .\n. . .\n```\n",
+  "expected": {
+    "valid": true,
+    "state": "Ready for X",
+    "reason": null,
+    "placeholderHandles": ["O", "X"]
+  }
+}

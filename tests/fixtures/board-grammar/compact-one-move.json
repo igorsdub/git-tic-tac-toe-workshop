@@ -1,0 +1,15 @@
+{
+  "description": "Compact board after a single X move",
+  "content": ". . .\n. X .\n. . .\n",
+  "expected": {
+    "valid": true,
+    "state": "Waiting for O",
+    "reason": null,
+    "placeholderHandles": ["O", "X"],
+    "grid": [
+      [" ", " ", " "],
+      [" ", "X", " "],
+      [" ", " ", " "]
+    ]
+  }
+}

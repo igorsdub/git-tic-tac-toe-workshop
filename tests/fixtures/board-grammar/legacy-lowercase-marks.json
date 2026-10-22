@@ -1,0 +1,15 @@
+{
+  "description": "Legacy rows accept lowercase x and o",
+  "content": "x | o | _\n_ | x | _\n_ | _ | _",
+  "expected": {
+    "valid": true,
+    "state": "Waiting for O",
+    "reason": null,
+    "placeholderHandles": ["O", "X"],
+    "grid": [
+      ["X", "O", " "],
+      [" ", "X", " "],
+      [" ", " ", " "]
+    ]
+  }
+}

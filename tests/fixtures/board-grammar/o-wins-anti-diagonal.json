@@ -1,0 +1,10 @@
+{
+  "description": "O completes the anti-diagonal",
+  "content": "X X O\nX O .\nO . .\n",
+  "expected": {
+    "valid": true,
+    "state": "O won",
+    "reason": null,
+    "placeholderHandles": ["O", "X"]
+  }
+}

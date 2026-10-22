@@ -1,0 +1,10 @@
+{
+  "description": "Only two compact rows",
+  "content": ". . .\n. . .\n",
+  "expected": {
+    "valid": false,
+    "state": "Invalid board",
+    "reason": "exactly 3 rows",
+    "placeholderHandles": ["O", "X"]
+  }
+}

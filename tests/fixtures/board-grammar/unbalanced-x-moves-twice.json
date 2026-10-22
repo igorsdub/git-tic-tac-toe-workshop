@@ -1,0 +1,10 @@
+{
+  "description": "X has two moves and O has none",
+  "content": "X X .\n. . .\n. . .\n",
+  "expected": {
+    "valid": false,
+    "state": "Invalid board",
+    "reason": "Invalid turn parity",
+    "placeholderHandles": ["O", "X"]
+  }
+}

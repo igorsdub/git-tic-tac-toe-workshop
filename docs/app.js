@@ -236,6 +236,24 @@ State: Waiting for O
   }
 
   /**
+   * True when a player handle is absent, blank or a template placeholder.
+   * Mirrors `_is_missing_or_placeholder` in scripts/validate_board.py.
+   */
+  function isMissingOrPlaceholder(handle) {
+    if (!handle) return true;
+    const cleaned = handle.trim();
+    if (!cleaned) return true;
+    const lower = cleaned.toLowerCase();
+    return (
+      (cleaned.startsWith('[') && cleaned.endsWith(']')) ||
+      (cleaned.startsWith('<') && cleaned.endsWith('>')) ||
+      lower.includes('github username') ||
+      lower.includes('placeholder') ||
+      ['none', 'tbd', 'todo', '<missing>'].includes(lower)
+    );
+  }
+
+  /**
    * Tests whether a grid line is just a divider (e.g. `-----+-----+-----`).
    */
   function isDividerLine(line) {
@@ -244,10 +262,40 @@ State: Waiting for O
     return /^[ \t\+\-\|\=]+$/.test(s) && s.includes('-');
   }
 
+  /**
+   * Bodies of every ``` / ```text fence, or the whole text when there are none.
+   * Mirrors the search areas used by scripts/validate_board.py.
+   */
+  function boardSearchAreas(text) {
+    const fences = Array.from(text.matchAll(/```(?:text)?\s*\n([\s\S]*?)\n```/g), (m) => m[1]);
+    return fences.length > 0 ? fences : [text];
+  }
+
+  /**
+   * Legacy pipe rows: the first area with exactly 3 rows, else the first area with any.
+   * Mirrors `_extract_grid_lines` in scripts/validate_board.py.
+   */
+  function extractLegacyGridLines(text) {
+    let gridLines = [];
+    for (const area of boardSearchAreas(text)) {
+      const candidates = area.split('\n').filter((line) => line.includes('|') && !isDividerLine(line));
+      if (candidates.length === 3) return candidates;
+      if (candidates.length > 0 && gridLines.length === 0) gridLines = candidates;
+    }
+    return gridLines;
+  }
+
+  /**
+   * Compact rows: every nonblank row of the first area that has any.
+   * Mirrors `_extract_compact_grid_lines` in scripts/validate_board.py. It can pick a
+   * different fence than the legacy search, as in Python.
+   */
   function extractCompactGridLines(text) {
-    const codeBlockMatch = text.match(/```(?:text)?\s*\n([\s\S]*?)\n```/);
-    const gridText = codeBlockMatch ? codeBlockMatch[1] : text;
-    return gridText.split(/\r?\n/).filter((line) => line.trim().length > 0);
+    for (const area of boardSearchAreas(text)) {
+      const rows = area.split('\n').filter((line) => line.trim().length > 0);
+      if (rows.length > 0) return rows;
+    }
+    return [];
   }
 
   /**
@@ -270,7 +318,7 @@ State: Waiting for O
     if (c === '[O]' || c === '[o]' || c === 'O' || c === 'o' || /^\[\s*[Oo]\s*\]$/.test(c)) {
       return { mark: 'O', error: null };
     }
-    return { mark: null, error: `Invalid cell: '${rawCell}'` };
+    return { mark: null, error: `Invalid cell mark: '${rawCell}'` };
   }
 
   /**
@@ -306,7 +354,7 @@ State: Waiting for O
     const errors = [];
     const warnings = [];
 
-    if (!content || typeof content !== 'string') {
+    if (typeof content !== 'string') {
       return {
         isValid: false,
         state: 'Invalid board',
@@ -325,24 +373,27 @@ State: Waiting for O
       };
     }
 
-    // 1. Players (optional metadata)
-    const playerX = extractBoardHeader(content, /^[ \t]*\*?\*?Player\s+X\*?\*?:\s*(.+)$/m);
-    const playerO = extractBoardHeader(content, /^[ \t]*\*?\*?Player\s+O\*?\*?:\s*(.+)$/m);
+    // Normalise line endings so CRLF boards parse like LF ones (Python does the same).
+    content = content.replace(/\r\n?/g, '\n');
 
-    if (!playerX) warnings.push("Missing 'Player X:' header; handle will be sourced from registration.");
-    if (!playerO) warnings.push("Missing 'Player O:' header; handle will be sourced from registration.");
+    // 1. Players (optional metadata)
+    const playerX = extractBoardHeader(content, /^[ \t]*\*?\*?Player\s+X\*?\*?:\s*(.+)$/im);
+    const playerO = extractBoardHeader(content, /^[ \t]*\*?\*?Player\s+O\*?\*?:\s*(.+)$/im);
+
+    if (isMissingOrPlaceholder(playerX)) {
+      warnings.push("Missing or placeholder 'Player X:' header; handle will be sourced from registration.");
+    }
+    if (isMissingOrPlaceholder(playerO)) {
+      warnings.push("Missing or placeholder 'Player O:' header; handle will be sourced from registration.");
+    }
 
     // 2. Declared state
-    const declaredState = extractBoardHeader(content, /^[ \t]*\*?\*?Stat(?:e|us)\*?\*?:\s*(.+)$/m);
-    if (!declaredState) warnings.push("Missing 'State:' indicator line.");
+    const declaredState = extractBoardHeader(content, /^[ \t]*\*?\*?Stat(?:e|us)\*?\*?:\s*(.+)$/im);
+    if (!declaredState) warnings.push("Missing 'State:' or 'Status:' indicator line; state evaluated dynamically.");
 
     // 3. Grid
-    const codeBlockMatch = content.match(/```(?:text)?\s*\n([\s\S]*?)\n```/);
-    const gridText = codeBlockMatch ? codeBlockMatch[1] : content;
-
-    const rawLines = gridText.split(/\r?\n/);
-    const legacyLines = rawLines.filter(line => line.includes('|') && !isDividerLine(line));
-    const compactLines = extractCompactGridLines(gridText);
+    const legacyLines = extractLegacyGridLines(content);
+    const compactLines = extractCompactGridLines(content);
     const compactFormat = legacyLines.length === 0;
     const candidateLines = legacyLines.length > 0 ? legacyLines : compactLines;
 
@@ -359,9 +410,10 @@ State: Waiting for O
       for (let r = 0; r < 3; r++) {
         const rawLine = candidateLines[r];
         let line = rawLine.trim();
+        const cleanLine = line;
         if (compactFormat) {
           if (!/^[.XO](?: [XO.]){2}$/.test(rawLine)) {
-            errors.push(`Row ${r + 1} must contain three cells separated by single spaces.`);
+            errors.push(`Row ${r + 1} must contain three cells separated by single spaces: '${cleanLine}'.`);
             continue;
           }
           parsedGrid.push(rawLine.split(' ').map((cell) => (cell === '.' ? ' ' : cell)));
@@ -372,7 +424,7 @@ State: Waiting for O
         }
         const cells = line.split('|');
         if (cells.length !== 3) {
-          errors.push(`Row ${r + 1} must have 3 columns; found ${cells.length}.`);
+          errors.push(`Row ${r + 1} must contain exactly 3 columns separated by '|'; found ${cells.length}: '${cleanLine}'.`);
           continue;
         }
 
@@ -380,7 +432,7 @@ State: Waiting for O
         for (let c = 0; c < 3; c++) {
           const { mark, error } = parseCell(cells[c]);
           if (error) {
-            errors.push(error);
+            errors.push(`Row ${r + 1}, Column ${c + 1}: ${error}.`);
             row.push('?');
           } else {
             row.push(mark);
@@ -418,10 +470,16 @@ State: Waiting for O
 
     // 5. Parity validation
     if (countO > countX) {
-      errors.push(`Invalid parity: Player O has ${countO} moves, Player X has ${countX}. X moves first.`);
+      errors.push(
+        `Invalid turn parity: Player O has ${countO} moves, Player X has ${countX}. ` +
+        'Player X moves first, so O cannot exceed X.'
+      );
     }
     if (countX > countO + 1) {
-      errors.push(`Invalid parity: Player X has ${countX} moves, Player O has ${countO}. Difference cannot exceed 1.`);
+      errors.push(
+        `Invalid turn parity: Player X has ${countX} moves, Player O has ${countO}. ` +
+        'Difference between X and O moves cannot exceed 1.'
+      );
     }
 
     // 6. Win conditions
@@ -432,10 +490,16 @@ State: Waiting for O
       errors.push('Invalid board: Both Player X and Player O have winning lines.');
     }
     if (xWinCoords && countX !== countO + 1) {
-      errors.push(`Invalid board: Player X won, but move counts are X=${countX}, O=${countO}. Expected X = O + 1.`);
+      errors.push(
+        `Invalid board: Player X won, but move counts are X=${countX}, O=${countO}. ` +
+        'For an X win, X must have exactly 1 more move than O.'
+      );
     }
     if (oWinCoords && countX !== countO) {
-      errors.push(`Invalid board: Player O won, but move counts are X=${countX}, O=${countO}. Expected X = O.`);
+      errors.push(
+        `Invalid board: Player O won, but move counts are X=${countX}, O=${countO}. ` +
+        'For an O win, move counts must be equal.'
+      );
     }
 
     if (errors.length > 0) {
@@ -1140,6 +1204,16 @@ State: Waiting for O
     startPolling();
     loadGames();
   }
+
+  // Test seam: under Node (module defined) export the board grammar and skip browser init.
+  // Only works inside a sandbox that provides `window` and `document` stubs (the IIFE reads
+  // them before reaching this guard), so a plain `require('docs/app.js')` throws.
+  const boardGrammar = { evaluateBoardContent, renderBoardRows };
+  if (typeof module === 'object' && module.exports) {
+    module.exports = boardGrammar;
+    return;
+  }
+  window.BoardGrammar = boardGrammar;
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);

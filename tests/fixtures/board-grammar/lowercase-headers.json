@@ -1,0 +1,10 @@
+{
+  "description": "Lowercase player headers are recognised",
+  "content": "# Git Tic-Tac-Toe\nplayer x: @alice\nplayer o: @bob\nstate: Ready for X\n\n```\n. . .\n. . .\n. . .\n```\n",
+  "expected": {
+    "valid": true,
+    "state": "Ready for X",
+    "reason": null,
+    "placeholderHandles": []
+  }
+}

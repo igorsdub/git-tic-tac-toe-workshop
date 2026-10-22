@@ -1,0 +1,10 @@
+{
+  "description": "Handles are todo and None",
+  "content": "# Git Tic-Tac-Toe\nPlayer X: todo\nPlayer O: None\nState: Ready for X\n\n```\n. . .\n. . .\n. . .\n```\n",
+  "expected": {
+    "valid": true,
+    "state": "Ready for X",
+    "reason": null,
+    "placeholderHandles": ["O", "X"]
+  }
+}

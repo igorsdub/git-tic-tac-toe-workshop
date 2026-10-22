@@ -1,0 +1,15 @@
+{
+  "description": "Fenced compact board with CRLF line endings",
+  "content": "# Git Tic-Tac-Toe\r\nPlayer X: @alice\r\nPlayer O: @bob\r\nState: Waiting for O\r\n\r\n```\r\n. . .\r\n. X .\r\n. . .\r\n```\r\n",
+  "expected": {
+    "valid": true,
+    "state": "Waiting for O",
+    "reason": null,
+    "placeholderHandles": [],
+    "grid": [
+      [" ", " ", " "],
+      [" ", "X", " "],
+      [" ", " ", " "]
+    ]
+  }
+}

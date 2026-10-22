@@ -5,6 +5,7 @@ Unit test suite for scripts/validate_board.py.
 
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
 import unittest
@@ -59,6 +60,41 @@ class TestBoardValidator(unittest.TestCase):
         result = validate_file(repo_root / "template" / "samples" / "empty.md")
         self.assertTrue(result.is_valid, result.errors)
         self.assertEqual(result.state, "Ready for X")
+
+    def test_shared_board_grammar_fixtures(self):
+        """Every shared fixture must get the same verdict here as in the browser evaluator."""
+        fixture_dir = Path(__file__).resolve().parent / "fixtures" / "board-grammar"
+        fixture_files = sorted(fixture_dir.glob("*.json"))
+        self.assertTrue(fixture_files, f"no fixtures found in {fixture_dir}")
+
+        for fixture_file in fixture_files:
+            with self.subTest(fixture=fixture_file.name):
+                fixture = json.loads(fixture_file.read_text(encoding="utf-8"))
+                expected = fixture["expected"]
+                res = validate_board(fixture["content"])
+
+                self.assertEqual(res.is_valid, expected["valid"], f"validity; errors={res.errors}")
+                self.assertEqual(res.state, expected["state"])
+
+                if expected["reason"] is None:
+                    self.assertEqual(res.errors, [])
+                else:
+                    self.assertTrue(
+                        any(expected["reason"] in err for err in res.errors),
+                        f"no error contains {expected['reason']!r}; errors={res.errors}",
+                    )
+
+                placeholder_handles = sorted(
+                    player
+                    for player in ("X", "O")
+                    if any(w.startswith(f"Missing or placeholder 'Player {player}:' header") for w in res.warnings)
+                )
+                self.assertEqual(placeholder_handles, sorted(expected["placeholderHandles"]))
+
+                if not expected["valid"]:
+                    self.assertNotIn("grid", expected, "grid is only allowed on valid boards")
+                if "grid" in expected:
+                    self.assertEqual(res.grid, expected["grid"])
 
     def test_handles_extraction(self):
         content = """# Git Tic-Tac-Toe

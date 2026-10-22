@@ -1,0 +1,10 @@
+{
+  "description": "Valid board followed by a stray row of two cells",
+  "content": ". . .\n. . .\n. . .\nX X",
+  "expected": {
+    "valid": false,
+    "state": "Invalid board",
+    "reason": "exactly 3 rows",
+    "placeholderHandles": ["O", "X"]
+  }
+}

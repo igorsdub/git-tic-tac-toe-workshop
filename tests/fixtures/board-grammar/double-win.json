@@ -1,0 +1,10 @@
+{
+  "description": "Both X and O hold a winning line",
+  "content": "X X X\nO O O\n. . .\n",
+  "expected": {
+    "valid": false,
+    "state": "Invalid board",
+    "reason": "Both Player X and Player O have winning lines",
+    "placeholderHandles": ["O", "X"]
+  }
+}

@@ -167,6 +167,9 @@ def validate_board(board_content: str) -> BoardValidationResult:
     errors: List[str] = []
     warnings: List[str] = []
 
+    # Normalise line endings so CRLF boards parse like LF ones (the browser evaluator does the same).
+    board_content = board_content.replace("\r\n", "\n").replace("\r", "\n")
+
     # 1. Player handles (optional metadata)
     player_x = _extract_header(board_content, r"^[ \t]*\*?\*?Player\s+X\*?\*?:\s*(.+)$")
     player_o = _extract_header(board_content, r"^[ \t]*\*?\*?Player\s+O\*?\*?:\s*(.+)$")
