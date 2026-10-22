@@ -175,7 +175,10 @@ class TestWebGuides(unittest.TestCase):
 
     def test_setup_media_never_shows_broken_icons(self):
         for tag in re.findall(r"<(?:img|video)\b[^>]*>", self.setup[self.setup.index("<main"):]):
-            self.assertIn("onerror=", tag, tag)
+            if tag.startswith("<img"):
+                self.assertIn("onerror=", tag, tag)
+            else:
+                self.assertNotIn("onerror=", tag, tag)
 
     def test_capture_manifest_matches_setup_page(self):
         manifest = json.loads((REPO_ROOT / "scripts" / "capture" / "captures.json").read_text(encoding="utf-8"))

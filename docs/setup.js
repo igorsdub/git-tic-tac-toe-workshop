@@ -70,11 +70,42 @@
     document.querySelectorAll('.step-check').forEach((box) => {
       box.addEventListener('change', () => writeChecked(box.dataset.step, box.checked));
     });
+    // Hide a step video only when its file is genuinely absent. A transient
+    // media error (interrupted download) keeps it visible with a reload link.
+    async function videoMissing(src) {
+      try {
+        const head = await fetch(src, { method: 'HEAD' });
+        if (head.ok) return false;
+        if (head.status === 404 || head.status === 410) return true;
+        const ranged = await fetch(src, { headers: { Range: 'bytes=0-0' } });
+        return !ranged.ok;
+      } catch (error) {
+        return false;
+      }
+    }
     document.querySelectorAll('video.step-video').forEach((video) => {
-      video.addEventListener('error', () => hideWrap(video));
-      video.querySelectorAll('source').forEach((source) => source.addEventListener('error', () => hideWrap(video)));
-      // The error may already have fired before this script ran.
-      if (video.error || video.networkState === 3) hideWrap(video);
+      const src = video.getAttribute('src');
+      let present = false;
+      const checked = videoMissing(src).then((missing) => {
+        if (missing) hideWrap(video); else present = true;
+      });
+      video.addEventListener('error', () => {
+        checked.then(() => {
+          const wrap = video.closest('details');
+          if (!present || !wrap || wrap.querySelector('.video-reload')) return;
+          const link = document.createElement('a');
+          link.href = '#';
+          link.className = 'video-reload';
+          link.textContent = 'Reload video';
+          link.addEventListener('click', (event) => {
+            event.preventDefault();
+            video.setAttribute('src', src);
+            video.load();
+            link.remove();
+          });
+          wrap.appendChild(link);
+        });
+      });
     });
     document.addEventListener('workshopchange', (event) => {
       renderSetup(event.detail && event.detail.workshop);

@@ -30,7 +30,7 @@ const catalog = { defaultWorkshopId: 'ws-code', workshops: [
 ] };
 
 // Runs setup.html in headless Chromium; `script` runs after setup.js and must set data-result.
-function runSetup(query, script) {
+function runSetup(query, script, mp4Status = 404) {
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'setup-dom-'));
   const source = fs.readFileSync(path.join(repo, 'docs/setup.html'), 'utf8');
   const html = source
@@ -39,7 +39,7 @@ function runSetup(query, script) {
     .replace(/ loading="lazy"/g, '')
     .replace(/(src|data-light-src|data-dark-src)="images\//g, '$1="file:///nonexistent/images/')
     .replace('</body>', `<script>
-      window.fetch = async () => new Response(JSON.stringify(${JSON.stringify(catalog)}), { status: 200, headers: { 'Content-Type': 'application/json' } });
+      window.fetch = async (url) => String(url).endsWith('.mp4') ? new Response('', { status: ${mp4Status} }) : new Response(JSON.stringify(${JSON.stringify(catalog)}), { status: 200, headers: { 'Content-Type': 'application/json' } });
     </script>
     <script src="${path.join(repo, 'docs/workshop-context.js')}"></script>
     <script src="${path.join(repo, 'docs/setup.js')}"></script>
@@ -124,4 +124,15 @@ test('missing images and videos are hidden, not broken', opts, () => {
     const wraps = Array.from(document.querySelectorAll('details.step-video-wrap'));
     const ok = figures.length > 0 && figures.every((f) => f.hidden) && wraps.length === 4 && wraps.every((w) => w.hidden);
     document.body.dataset.result = ok ? 'PASS' : 'FAIL';`);
+});
+
+test('a video whose file exists stays visible on a transient error', opts, () => {
+  runSetup('', `
+    await wait(300);
+    const videos = Array.from(document.querySelectorAll('video.step-video'));
+    videos.forEach((v) => v.dispatchEvent(new Event('error')));
+    await wait(300);
+    const wraps = Array.from(document.querySelectorAll('details.step-video-wrap'));
+    const ok = wraps.length === 4 && wraps.every((w) => !w.hidden && w.querySelector('.video-reload'));
+    document.body.dataset.result = ok ? 'PASS' : 'FAIL';`, 200);
 });
