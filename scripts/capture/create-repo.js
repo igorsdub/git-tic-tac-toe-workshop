@@ -57,7 +57,7 @@ async function run() {
   const page = context.pages()[0] || (await context.newPage());
   const step = createStep(page, SLUG);
   await page.goto('https://github.com');
-  await deleteExisting(page);
+  if (process.env.CAPTURE_SKIP_DELETE !== '1') await deleteExisting(page);
   await page.goto(TEMPLATE_URL);
   await step.shot(null, '01-template-page.png');
   await step.click(SELECTORS.useTemplate(page), '02-use-this-template.png');
