@@ -1,0 +1,14 @@
+{
+  "name": "git-tic-tac-toe-workshop",
+  "private": true,
+  "scripts": {
+    "capture:login": "node scripts/capture/login.js",
+    "capture:check": "node scripts/capture/check.js",
+    "capture": "node scripts/capture/run-all.js",
+    "capture:video": "node scripts/capture/zoom.js",
+    "test": "node --test tests/*.cjs tests/*.js && python3 -m unittest discover -s tests -p 'test_*.py'"
+  },
+  "devDependencies": {
+    "playwright": "^1.48.0"
+  }
+}

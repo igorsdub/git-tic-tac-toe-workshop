@@ -13,13 +13,14 @@ This two-hour workshop teaches collaborative Git through a paired tic-tac-toe ga
 - [Advance survey draft](SURVEY.md)
 - [Unpublished instructor survey preview](https://docs.google.com/forms/d/1N2-9HYEtIvWLp11hEa2d9NeS1vXBWiUy7xRycXJNW6c/preview) (not accepting responses; not distributed)
 - [Game Wall](docs/index.html) and [setup page](docs/setup.html)
+- [Capture pipeline](scripts/capture/README.md)
 - [Glossary](CONTEXT.md)
 
 ## Workshop links
 
-The main Game Wall opens the organizer-designated default workshop, SCDA Training Week. Use a workshop-specific link to open its dashboard or prefilled registration form directly.
+The main Game Wall opens the organizer-designated default workshop, Sokedai (2026-11-06). SCDA Training Week is archived. Use a workshop-specific link to open its dashboard or prefilled registration form directly.
 
-The shared event context on the Game Wall, learner guide, and setup page reads event names, ISO dates, status, registration links, and optional `note` text from [`docs/workshops.json`](docs/workshops.json). Change the catalog's `defaultWorkshopId` to designate a different plain-URL default; stable workshop links continue using their own `?workshop=<id>` value.
+The shared event context on the Game Wall, learner guide, and setup page reads event names, ISO dates, status, registration links, and optional `note` text from [`docs/workshops.json`](docs/workshops.json). Each workshop may also set `setupTrack` (`"codespaces"` or `"local"`) and `surveyUrl`. Change the catalog's `defaultWorkshopId` to designate a different plain-URL default; stable workshop links continue using their own `?workshop=<id>` value.
 
 | Workshop | Dashboard | Register a pair repository |
 |---|---|---|
@@ -27,10 +28,38 @@ The shared event context on the Game Wall, learner guide, and setup page reads e
 | Sokedai (2026-11-06) | [Game Wall](https://igorsdub.github.io/git-tic-tac-toe-workshop/?workshop=2026-11-06-sokedai) | [Registration form](https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&workshop_id=2026-11-06-sokedai) |
 | Riken (2026-11-10) | [Game Wall](https://igorsdub.github.io/git-tic-tac-toe-workshop/?workshop=2026-11-10-riken) | [Registration form](https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&workshop_id=2026-11-10-riken) |
 
+## Staged learner path
+
+Learners move through three pages, linked by a shared stage strip and Next links: Setup (`docs/setup.html`), How to play (`docs/guide.html`), then the Game Wall (`docs/index.html`). The Game Wall is the plain-URL landing page.
+
+The setup page adapts to the selected workshop (`?workshop=<id>`):
+
+- **Archived** (for example SCDA Training Week): setup steps are replaced by a notice that the workshop is archived, and no Next link is shown.
+- **No `setupTrack`** (for example Riken): the general setup content is shown without the Codespaces walkthrough.
+- **`setupTrack: "codespaces"`** (for example Sokedai): the step-by-step Codespaces track with screenshots and videos, per-step checkboxes remembered in the browser, and the workshop's `surveyUrl` when set.
+
+The setup page has no Register button; registration links live on the Game Wall and in the guides.
+
+## How to run tests
+
+```
+npm test
+```
+
+Without npm:
+
+```
+node --test tests/*.cjs tests/*.js
+python3 -m unittest discover -s tests -p 'test_*.py'
+```
+
+The DOM tests (`tests/test_dashboard_dom.cjs`, `tests/test_setup_dom.cjs`) need Chrome or Chromium and are skipped if none is found. Set `CHROMIUM_BIN` to point at a specific binary.
+
 ## Repository map
 
 - [`template/`](template/README.md) is the local reference for the learner starter repository: its current `BOARD.txt`, editing conventions, and canonical empty-board example. Publish changes to the separate template repository explicitly.
 - [`scripts/`](scripts/) contains board validation, registration parsing, and registry synchronization.
+- [`scripts/capture/`](scripts/capture/README.md) is the Playwright pipeline that regenerates the setup page's screenshots and videos; `captures.json` there lists every step slug and screenshot name.
 - [`tests/`](tests/) covers the workshop guides, parser, dashboard, and slides. `tests/fixtures/legacy-board/` preserves older board formats as compatibility fixtures.
 - [`docs/`](docs/) contains the Pages site and instructor Game Wall. The separate [`docs/slides/`](docs/slides/) directory contains the workshop presentation.
 

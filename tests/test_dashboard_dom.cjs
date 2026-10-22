@@ -206,14 +206,14 @@ test('workshop context keeps route, date, registration, and navigation in sync o
             && location.pathname === routeBefore
             && new URL(location.href).searchParams.get('workshop') === chosenId
             && select.selectedOptions[0].textContent === (chosenId === 'sokedai' ? '2026 Nov 6 · SOKEDAI TEST' : '2026 Nov 10 · RIKEN TEST')
-            && document.querySelector('[data-workshop-registration]').href.endsWith('workshop_id=' + chosenId)
-            && document.querySelector('[data-workshop-dashboard]').search.includes('workshop=' + chosenId)
+            && (!document.querySelector('[data-workshop-registration]') || document.querySelector('[data-workshop-registration]').href.endsWith('workshop_id=' + chosenId))
+            && (!document.querySelector('[data-workshop-dashboard]') || document.querySelector('[data-workshop-dashboard]').search.includes('workshop=' + chosenId))
             && Array.from(document.querySelectorAll('.nav-links a')).every((link) => link.search.includes('workshop=' + chosenId));
           const detailsRemoved = !document.getElementById('current-workshop-note');
           select.value = 'riken';
           select.dispatchEvent(new Event('change', { bubbles: true }));
           const riken = select.selectedOptions[0].textContent === '2026 Nov 10 · RIKEN TEST'
-            && document.querySelector('[data-workshop-registration]').href.endsWith('workshop_id=riken');
+            && (!document.querySelector('[data-workshop-registration]') || document.querySelector('[data-workshop-registration]').href.endsWith('workshop_id=riken'));
           document.body.dataset.fixtureResult = initial && changed && detailsRemoved && riken ? 'PASS' : 'FAIL';
         })();
       </script></body>`);

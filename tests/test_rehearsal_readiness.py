@@ -98,7 +98,7 @@ class TestApprovedWorkshopPath(unittest.TestCase):
             "Make your repository public",
             "Keep your public repository and Codespace",
             "separate Codespaces",
-            "select **Ask**",
+            "Describe what to build",
             "What does this repository do?",
             "No board edit is required",
             "Codespaces and Copilot access are separate",
