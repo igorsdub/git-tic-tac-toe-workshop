@@ -52,6 +52,7 @@
       }
       const view = setupView(workshop);
       const show = (id, on) => { const node = byId(id); if (node) node.hidden = !on; };
+      show('setup-error', false);
       show('setup-archived', view === 'archived');
       show('setup-codespaces', view === 'codespaces');
       show('setup-pending', view === 'pending');
@@ -113,7 +114,7 @@
     if (window.WorkshopContext) {
       window.WorkshopContext.ready.then(
         () => renderSetup(window.WorkshopContext.selectedWorkshop),
-        () => {},
+        () => { const node = byId('setup-error'); if (node) node.hidden = false; },
       );
     }
     window.renderSetup = renderSetup;

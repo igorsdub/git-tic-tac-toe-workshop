@@ -10,7 +10,7 @@
     },
     {
       "id": "2026-11-06-sokedai",
-      "name": "Sokedai",
+      "name": "SOKEDAI",
       "date": "2026-11-06",
       "status": "active",
       "registrationUrl": "https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&workshop_id=2026-11-06-sokedai",
@@ -19,10 +19,11 @@
     },
     {
       "id": "2026-11-10-riken",
-      "name": "Riken",
+      "name": "RIKEN",
       "date": "2026-11-10",
       "status": "active",
-      "registrationUrl": "https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&workshop_id=2026-11-10-riken"
+      "registrationUrl": "https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&workshop_id=2026-11-10-riken",
+      "setupTrack": "codespaces"
     }
   ]
 }

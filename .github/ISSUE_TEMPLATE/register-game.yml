@@ -13,7 +13,7 @@ body:
     attributes:
       label: Workshop ID
       description: Use the stable ID from the workshop-specific registration link.
-      placeholder: 2026-10-01-scda
+      placeholder: 2026-11-06-sokedai
     validations:
       required: true
   - type: input

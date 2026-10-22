@@ -6,6 +6,7 @@
   <title>Git Tic-Tac-Toe Game Wall</title>
   <meta name="description" content="Live paired-game activity wall for the Git Tic-Tac-Toe Workshop. Displays real-time game status and 3x3 board representations for all registered pairs.">
   <link id="theme-favicon" rel="icon" type="image/svg+xml" href="images/xo-logo-light.svg">
+  <script src="theme-init.js"></script>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -53,7 +54,7 @@
   <main class="wall-main">
     <section class="workshop-actions" aria-label="Workshop actions">
       <div class="workshop-context-actions">
-        <a id="register-link" data-workshop-registration class="btn btn-primary" href="https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&amp;workshop_id=2026-10-01-scda" target="_blank" rel="noopener noreferrer">Register repository</a>
+        <a id="register-link" data-workshop-registration class="btn btn-primary" href="https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&amp;workshop_id=2026-11-06-sokedai" target="_blank" rel="noopener noreferrer">Register repository</a>
         <a data-workshop-dashboard class="btn btn-outline" href="index.html">View all games</a>
       </div>
     </section>
@@ -66,7 +67,7 @@
 
     <!-- Top Filter & Status Bar -->
     <section class="toolbar-section" aria-label="Game Filters and Status">
-      <div class="filter-tabs" role="tablist">
+      <div class="filter-tabs" role="group" aria-label="Filter games">
         <button class="filter-tab active" data-filter="all" aria-pressed="true">All <span id="count-all" class="tab-count">0</span></button>
         <button class="filter-tab" data-filter="pending" aria-pressed="false">In progress <span id="count-pending" class="tab-count">0</span></button>
         <button class="filter-tab" data-filter="finished" aria-pressed="false">Completed <span id="count-finished" class="tab-count">0</span></button>
@@ -85,7 +86,7 @@
 
     <!-- Game Card Grid -->
     <section class="grid-section" aria-label="Game Wall Boards">
-      <div id="loading-indicator" class="loading-state hidden">
+      <div id="loading-indicator" class="loading-state hidden" aria-live="polite">
         <div class="spinner"></div>
         <p>Loading registered matches and board states...</p>
       </div>
@@ -94,7 +95,7 @@
         <div class="empty-icon">🎲</div>
         <h2>No games found</h2>
         <p id="empty-message">No pair games match the selected filters.</p>
-        <a id="empty-register-link" data-workshop-registration href="https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&amp;workshop_id=2026-10-01-scda"
+        <a id="empty-register-link" data-workshop-registration href="https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&amp;workshop_id=2026-11-06-sokedai"
            target="_blank" rel="noopener noreferrer" class="btn btn-primary register-btn">
           Register a repository
         </a>

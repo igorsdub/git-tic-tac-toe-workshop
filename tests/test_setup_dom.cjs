@@ -30,7 +30,7 @@ const catalog = { defaultWorkshopId: 'ws-code', workshops: [
 ] };
 
 // Runs setup.html in headless Chromium; `script` runs after setup.js and must set data-result.
-function runSetup(query, script, mp4Status = 404) {
+function runSetup(query, script, mp4Status = 404, catalogStatus = 200) {
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'setup-dom-'));
   const source = fs.readFileSync(path.join(repo, 'docs/setup.html'), 'utf8');
   const html = source
@@ -39,7 +39,7 @@ function runSetup(query, script, mp4Status = 404) {
     .replace(/ loading="lazy"/g, '')
     .replace(/(src|data-light-src|data-dark-src)="images\//g, '$1="file:///nonexistent/images/')
     .replace('</body>', `<script>
-      window.fetch = async (url) => String(url).endsWith('.mp4') ? new Response('', { status: ${mp4Status} }) : new Response(JSON.stringify(${JSON.stringify(catalog)}), { status: 200, headers: { 'Content-Type': 'application/json' } });
+      window.fetch = async (url) => String(url).endsWith('.mp4') ? new Response('', { status: ${mp4Status} }) : new Response(JSON.stringify(${JSON.stringify(catalog)}), { status: ${catalogStatus}, headers: { 'Content-Type': 'application/json' } });
     </script>
     <script src="${path.join(repo, 'docs/workshop-context.js')}"></script>
     <script src="${path.join(repo, 'docs/setup.js')}"></script>
@@ -47,7 +47,7 @@ function runSetup(query, script, mp4Status = 404) {
       (async () => {
         const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
         const vis = (id) => !document.getElementById(id).hidden;
-        await window.WorkshopContext.ready;
+        await window.WorkshopContext.ready.catch(() => {});
         await wait(100);
         const choose = async (id) => {
           const select = document.getElementById('workshop-select');
@@ -89,6 +89,7 @@ test('archived workshop shows only the finished notice', opts, () => {
 test('workshop without a track shows the pending notice, with a survey link only when configured', opts, () => {
   runSetup('?workshop=ws-pend-survey', `
     const withSurvey = vis('setup-pending') && !vis('setup-codespaces') && vis('setup-pending-survey')
+      && document.getElementById('setup-pending').textContent.includes('Setup for this workshop is not published yet')
       && document.querySelector('#setup-pending-survey a').getAttribute('href') === 'https://example.test/s2';
     await choose('ws-pend');
     const without = vis('setup-pending') && !vis('setup-pending-survey');
@@ -135,4 +136,13 @@ test('a video whose file exists stays visible on a transient error', opts, () =>
     const wraps = Array.from(document.querySelectorAll('details.step-video-wrap'));
     const ok = wraps.length === 4 && wraps.every((w) => !w.hidden && w.querySelector('.video-reload'));
     document.body.dataset.result = ok ? 'PASS' : 'FAIL';`, 200);
+});
+
+test('catalog load failure shows a visible message instead of an empty page', opts, () => {
+  runSetup('', `
+    const error = document.getElementById('setup-error');
+    const ok = vis('setup-error') && error.getAttribute('role') === 'alert'
+      && error.textContent.includes('Workshop details could not be loaded')
+      && !vis('setup-codespaces') && !vis('setup-pending') && !vis('setup-archived');
+    document.body.dataset.result = ok ? 'PASS' : 'FAIL';`, 404, 500);
 });
