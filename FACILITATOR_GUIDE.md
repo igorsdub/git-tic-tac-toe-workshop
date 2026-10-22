@@ -26,7 +26,7 @@ This is the only place the agenda is written down. Other documents link here.
 
 ## Before learners arrive
 
-Use the [Rehearsal guide](REHEARSAL_GUIDE.md) to verify the live starter, Codespaces, Copilot access, pair collaboration, Source Control Pull and Sync Changes, and the deployed Game Wall. Send the [Pre-session checklist](PRE_SESSION_CHECK.md) and the [Setup page](docs/setup.html). The SOKEDAI survey is live; its link comes from `docs/workshops.json` and appears on the Setup page. It is for instructor preparation; do not add identity, tutorial-completion, or setup-readiness questions. See [SURVEY.md](SURVEY.md).
+Use the [Rehearsal guide](REHEARSAL_GUIDE.md) to verify the live starter, Codespaces, Copilot access, pair collaboration, Source Control Pull and Sync Changes, and the deployed Game Wall. Send the [Pre-session checklist](PRE_SESSION_CHECK.md) and the [Setup page](docs/setup.html). The SOKENDAI survey is live; its link comes from `docs/workshops.json` and appears on the Setup page. It is for instructor preparation; do not add identity, tutorial-completion, or setup-readiness questions. See [SURVEY.md](SURVEY.md).
 
 Before the session, each learner:
 

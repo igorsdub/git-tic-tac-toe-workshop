@@ -27,7 +27,7 @@ Before the Game Wall demonstration, verify the deployed site against a public ma
 
 - [ ] Check venue Wi-Fi and projector, then open the workshop pages in a browser.
 - [ ] Prepare two facilitator accounts and a clean public test repository.
-- [ ] Send the [Pre-session checklist](PRE_SESSION_CHECK.md) and the [Setup page](docs/setup.html). The SOKEDAI survey is live; [SURVEY.md](SURVEY.md) holds the intended bilingual text. It is meant to cover everyday tools, file-versioning habits, collaboration, AI coding-assistant use, and an optional open-ended question; it should have no tutorial-completion or setup-readiness questions.
+- [ ] Send the [Pre-session checklist](PRE_SESSION_CHECK.md) and the [Setup page](docs/setup.html). The SOKENDAI survey is live; [SURVEY.md](SURVEY.md) holds the intended bilingual text. It is meant to cover everyday tools, file-versioning habits, collaboration, AI coding-assistant use, and an optional open-ended question; it should have no tutorial-completion or setup-readiness questions.
 - [ ] Brief helpers on the agenda in the [Facilitator guide](FACILITATOR_GUIDE.md#agenda-120-minutes), including the protected rematch, and the recovery steps below.
 - [ ] Keep the [Facilitator guide](FACILITATOR_GUIDE.md), [Learner guide](LEARNER_GUIDE.md), and [Pre-session checklist](PRE_SESSION_CHECK.md) available.
 

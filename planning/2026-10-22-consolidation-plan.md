@@ -5,7 +5,7 @@ work packages (WP) that run in separate sessions. Each WP owns a disjoint set of
 sessions never write the same file. Within a session, fan-out across many files may run as a
 dynamic workflow.
 
-Deadlines: SOKEDAI 2026-11-06, RIKEN 2026-11-10. Learner-facing packages (WP2, WP1) come first.
+Deadlines: SOKENDAI 2026-11-06, RIKEN 2026-11-10. Learner-facing packages (WP2, WP1) come first.
 
 ## Assumptions
 
@@ -15,19 +15,19 @@ is wrong, only the WPs that cite it change.
 | # | Assumption |
 |---|---|
 | A1 | The current guides are the truth. `WORKSHOP_DESIGN_HANDOFF.md` is a historical record. One registration per repository per workshop. Learners create a public repo from the template before the session, keep it, and stop (not delete) the Codespace. |
-| A2 | The SOKEDAI survey link in `docs/workshops.json` is intentional and live. Written docs that call the survey unpublished are stale. |
-| A3 | RIKEN runs the same design as SOKEDAI: Codespaces track, Copilot, no pull requests, 120-minute agenda. The RIKEN plan's divergences (own laptops, any LLM, PRs, two sessions) stay in the RIKEN folder as open points and are not merged into shared docs. |
+| A2 | The SOKENDAI survey link in `docs/workshops.json` is intentional and live. Written docs that call the survey unpublished are stale. |
+| A3 | RIKEN runs the same design as SOKENDAI: Codespaces track, Copilot, no pull requests, 120-minute agenda. The RIKEN plan's divergences (own laptops, any LLM, PRs, two sessions) stay in the RIKEN folder as open points and are not merged into shared docs. |
 | A4 | `MISSION.md`, `NOTES.md`, `RESOURCES.md`, `learning-records/`, `lessons/`, `reference/` are facilitator-training artefacts, not workshop material. They move, they are not deleted. |
 | A5 | The slide deck stays in use and is made workshop-neutral. |
 | A6 | The registry bot keeps pushing to `main`. No branch protection. Tests run in CI on pull requests and pushes. |
 | A7 | "Copilot Ask" wording is stale. The readiness check uses Copilot Chat. |
-| A8 | Workshop names are written RIKEN and SOKEDAI in capitals everywhere. SCDA Training Week stays as is (archived). |
+| A8 | Workshop names are written RIKEN and SOKENDAI in capitals everywhere. SCDA Training Week stays as is (archived). The spelling was corrected to SOKENDAI on 2026-10-22 at the organiser's instruction. |
 
 ## Canonical wording
 
 Every WP uses these. No WP invents alternatives.
 
-- Workshop names: SOKEDAI, RIKEN, SCDA Training Week.
+- Workshop names: SOKENDAI, RIKEN, SCDA Training Week.
 - Pages: Setup page (`docs/setup.html`), How to play (`docs/guide.html`), Game Wall (`docs/index.html`). "Game Wall" with capital W. Never "dashboard" in learner text.
 - Documents: Learner guide (`LEARNER_GUIDE.md`), Facilitator guide (`FACILITATOR_GUIDE.md`), Pre-session checklist (`PRE_SESSION_CHECK.md`), Rehearsal guide (`REHEARSAL_GUIDE.md`), Glossary (`GLOSSARY.md`).
 - Board: `BOARD.txt`, three rows of three single-space-separated cells, `.` `X` `O`.
@@ -48,7 +48,7 @@ Every WP uses these. No WP invents alternatives.
 #### WP2 Learner pages and catalog
 Files owned: `docs/index.html`, `docs/setup.html`, `docs/guide.html`, `docs/setup.js`, `docs/workshops.json`, `.github/ISSUE_TEMPLATE/register-game.yml`, `tests/test_web_guides.py`, `tests/test_setup_dom.cjs`, `tests/test_setup_unit.cjs`, `tests/test_dashboard_dom.cjs`.
 Do:
-- Catalog: names to SOKEDAI and RIKEN. Give RIKEN `setupTrack: "codespaces"` (A3). Remove hard-coded SCDA hrefs from `index.html` and `guide.html`; static fallback points at the default workshop. Issue-form placeholder uses the default workshop id.
+- Catalog: names to SOKENDAI and RIKEN. Give RIKEN `setupTrack: "codespaces"` (A3). Remove hard-coded SCDA hrefs from `index.html` and `guide.html`; static fallback points at the default workshop. Issue-form placeholder uses the default workshop id.
 - `guide.html`: five-step turn cycle with canonical wording; remove the Rewind section; next-match text says "the next numbered match", not `match-02`; Copilot fallback wording matches `LEARNER_GUIDE.md` ("follow the instructor's Copilot demonstration").
 - `setup.html`: one `h1` (page title; brand becomes a link, not a heading); `h2` for each step, `h3` inside; add a skip link; add `<script src="theme-init.js">` as the first script in `<head>` on all three pages (WP4 creates the file); catalog-load failure shows a visible message, not only the hidden status element.
 - Setup for a workshop without a `setupTrack`: either real general content or drop the README claim. With A3 every active workshop has a track, so the "pending" view becomes "Setup for this workshop is not published yet" and README WP1 drops the "general content" sentence.
@@ -103,10 +103,10 @@ Do:
 - `WORKSHOP_DESIGN_HANDOFF.md`: banner "Historical record, superseded 2026-10-22 by the guides"; README calls it "Design history", not "Current design handoff".
 - Readiness check and pre-session steps use canonical wording in README, Learner guide, Facilitator guide, Pre-session checklist, Rehearsal guide. `PRE_SESSION_CHECK.md` links to the Setup page and gains the stop-Codespace step.
 - Learner guide turn cycle to five steps with Sync Changes. Remove the SCDA example link; link to the Game Wall's Register button instead.
-- Survey: README and `PRE_SESSION_CHECK.md` say the survey is live for SOKEDAI (A2). Reconcile `SURVEY.md` with the ten-question RIKEN draft: keep one `SURVEY.md`, mark the RIKEN draft as proposed additions with a question to the organiser.
+- Survey: README and `PRE_SESSION_CHECK.md` say the survey is live for SOKENDAI (A2). Reconcile `SURVEY.md` with the ten-question RIKEN draft: keep one `SURVEY.md`, mark the RIKEN draft as proposed additions with a question to the organiser.
 - RIKEN plan: add an "Open points" section listing own-laptop, any-LLM, PR, and two-session divergences (A3) so they are visible, not silently dropped.
 - ADR 0002 and the glossary describe the Setup page as it is now (Codespaces track), not Git install and `gh auth`.
-- Names to SOKEDAI and RIKEN. Resolve "setup guide" and "learner guide" ambiguity with the canonical document names.
+- Names to SOKENDAI and RIKEN. Resolve "setup guide" and "learner guide" ambiguity with the canonical document names.
 - `RESOURCES.md` (moved): remove claims about content that does not exist (triage protocol, OS matrix, command reference, GitHub Desktop).
 Don't: edit HTML, JS, CSS, slides, workflows.
 Done: `python3 -m unittest tests/test_rehearsal_readiness.py` passes; `grep -ril "ask readiness\|copilot ask\|register each match\|board\.md" *.md docs/adr` returns nothing; every agenda number appears in exactly one file.

@@ -6,7 +6,7 @@ This note records the approved design and its remaining decisions. The shared he
 
 - Keep a shared workshop selector in the header on every route and retain the selected workshop in the URL.
 - Remove the repeated workshop description and date below the selector. Put **Register repository** and **View all games** together in one action row.
-- Format the displayed date and name exactly as `2026 Nov 6 · SOKEDAI`: year, abbreviated month, day, then the name in uppercase. Catalog dates remain authoritative.
+- Format the displayed date and name exactly as `2026 Nov 6 · SOKENDAI`: year, abbreviated month, day, then the name in uppercase. Catalog dates remain authoritative.
 - Start the setup route with **Survey** as a plain link to [the survey](https://docs.google.com/forms/d/e/1FAIpQLSfLyChJpWXVWAoScFT5XNU68FZxRMuR4Nv0AN9HUSvOE8v1EA/viewform?usp=header); do not embed the form.
 - Follow with **Getting started**: required GitHub account instructions, immediately followed in that same section by the optional GitHub Student Developer Pack for eligible students. Keep titles plain and short.
 - Place **Checklist** after Survey and Getting started, and keep existing practical setup instructions. Emphasize the public repository and Codespaces, and retain the quoted “template” wording and **Use this template → Create a new repository** action.

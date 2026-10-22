@@ -5,7 +5,7 @@ Terms for the paired tic-tac-toe workshop and its shared event display. Use thes
 ## Workshops and registration
 
 **Workshop**:
-A particular scheduled delivery of the training. Current and archived workshops are SOKEDAI, RIKEN, and SCDA Training Week (archived). Matches shown for a workshop are discovered from branches in repositories linked to it.
+A particular scheduled delivery of the training. Current and archived workshops are SOKENDAI, RIKEN, and SCDA Training Week (archived). Matches shown for a workshop are discovered from branches in repositories linked to it.
 
 **Workshop ID**:
 A stable identifier for one workshop, written as `YYYY-MM-DD-short-lowercase-identifier`. Once registrations exist for a workshop, its ID remains unchanged. Its display name is separate from its ID.

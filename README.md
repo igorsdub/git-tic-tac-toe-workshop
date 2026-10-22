@@ -10,21 +10,21 @@ This two-hour workshop teaches collaborative Git through a paired tic-tac-toe ga
 - [Facilitator guide](FACILITATOR_GUIDE.md), which holds the only copy of the agenda
 - [Pre-session checklist](PRE_SESSION_CHECK.md) and [Setup page](docs/setup.html)
 - [Rehearsal guide](REHEARSAL_GUIDE.md)
-- [Survey text](SURVEY.md). The [SOKEDAI survey](https://forms.gle/eo9pgChEGpdvdcQ67) is live; its link is the `surveyUrl` in the catalog.
+- [Survey text](SURVEY.md). The [SOKENDAI survey](https://forms.gle/eo9pgChEGpdvdcQ67) is live; its link is the `surveyUrl` in the catalog.
 - [Game Wall](docs/index.html)
 - [Capture pipeline](scripts/capture/README.md)
 - [Glossary](GLOSSARY.md)
 
 ## Workshop links
 
-The main Game Wall opens the organiser-designated default workshop, SOKEDAI (2026-11-06). SCDA Training Week is archived. Use a workshop-specific link to open its Game Wall or prefilled registration form directly.
+The main Game Wall opens the organiser-designated default workshop, SOKENDAI (2026-11-06). SCDA Training Week is archived. Use a workshop-specific link to open its Game Wall or prefilled registration form directly.
 
 The shared event context on the Game Wall, Setup page, and How to play reads event names, ISO dates, status, registration links, and optional `note` text from [`docs/workshops.json`](docs/workshops.json). Each workshop may also set `setupTrack` (`"codespaces"` or `"local"`) and `surveyUrl`. Change the catalog's `defaultWorkshopId` to designate a different plain-URL default; stable workshop links continue using their own `?workshop=<id>` value.
 
 | Workshop | Game Wall | Register a pair repository |
 |---|---|---|
 | SCDA Training Week (2026-10-01) | [Game Wall](https://igorsdub.github.io/git-tic-tac-toe-workshop/?workshop=2026-10-01-scda) | [Registration form](https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&workshop_id=2026-10-01-scda) |
-| SOKEDAI (2026-11-06) | [Game Wall](https://igorsdub.github.io/git-tic-tac-toe-workshop/?workshop=2026-11-06-sokedai) | [Registration form](https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&workshop_id=2026-11-06-sokedai) |
+| SOKENDAI (2026-11-06) | [Game Wall](https://igorsdub.github.io/git-tic-tac-toe-workshop/?workshop=2026-11-06-sokedai) | [Registration form](https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&workshop_id=2026-11-06-sokedai) |
 | RIKEN (2026-11-10) | [Game Wall](https://igorsdub.github.io/git-tic-tac-toe-workshop/?workshop=2026-11-10-riken) | [Registration form](https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&workshop_id=2026-11-10-riken) |
 
 ## Staged learner path
@@ -34,7 +34,7 @@ Learners move through three pages, linked by a shared stage strip and Next links
 The Setup page adapts to the selected workshop (`?workshop=<id>`):
 
 - **Archived** (for example SCDA Training Week): the setup steps are replaced by a notice that the workshop is archived, and no Next link is shown.
-- **`setupTrack: "codespaces"`** (SOKEDAI and RIKEN): the step-by-step Codespaces track with screenshots and videos, per-step checkboxes remembered in the browser, and the workshop's `surveyUrl` when set.
+- **`setupTrack: "codespaces"`** (SOKENDAI and RIKEN): the step-by-step Codespaces track with screenshots and videos, per-step checkboxes remembered in the browser, and the workshop's `surveyUrl` when set.
 - A workshop with no `setupTrack` shows "Setup for this workshop is not published yet".
 
 The Setup page has no Register button; registration is the **Register repository** button on the Game Wall.

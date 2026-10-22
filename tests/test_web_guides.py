@@ -60,7 +60,7 @@ class TestWebGuides(unittest.TestCase):
         catalog = json.loads((DOCS_DIR / "workshops.json").read_text(encoding="utf-8"))
         expected = {
             "2026-10-01-scda": ("SCDA Training Week", "2026-10-01"),
-            "2026-11-06-sokedai": ("SOKEDAI", "2026-11-06"),
+            "2026-11-06-sokedai": ("SOKENDAI", "2026-11-06"),
             "2026-11-10-riken": ("RIKEN", "2026-11-10"),
         }
         self.assertEqual(catalog["defaultWorkshopId"], "2026-11-06-sokedai")

@@ -51,7 +51,7 @@ No external lecture research has been established for this plan. The plan record
 
 ## Open points
 
-The shared written materials (Learner guide, Facilitator guide, Setup page, Game Wall) assume RIKEN runs the same design as SOKEDAI: Codespaces track, Copilot, no pull requests, one two-hour session. This plan differs in four places. They stay here as questions for the organiser; the shared documents are not changed for them.
+The shared written materials (Learner guide, Facilitator guide, Setup page, Game Wall) assume RIKEN runs the same design as SOKENDAI: Codespaces track, Copilot, no pull requests, one two-hour session. This plan differs in four places. They stay here as questions for the organiser; the shared documents are not changed for them.
 
 1. **Own laptops or Codespaces?** This plan lets participants use their own computers and tools, with Codespaces as the fallback. The Setup page and guides teach only the Codespaces track. Will RIKEN use Codespaces for everyone, or does it need a local track?
 2. **Copilot or any LLM?** This plan lets participants choose their own LLM. The readiness check and the agent-assisted rematch use Copilot Chat in agent mode. Is Copilot available to every participant, or should the exercise be tool-neutral?

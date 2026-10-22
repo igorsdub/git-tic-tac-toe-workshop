@@ -46,7 +46,7 @@ Please tick any choices that fit your experience; it is fine to leave a question
 
 ## Status and proposed additions (maintainer notes)
 
-The SOKEDAI survey is live; its link is the `surveyUrl` in `docs/workshops.json` and appears on the Setup page. The five questions above are the intended text of that form. RIKEN has no survey link yet.
+The SOKENDAI survey is live; its link is the `surveyUrl` in `docs/workshops.json` and appears on the Setup page. The five questions above are the intended text of that form. RIKEN has no survey link yet.
 
 The RIKEN organiser drafted a ten-question survey in [`planning/riken-2026-11-10/survey-questions.md`](planning/riken-2026-11-10/survey-questions.md) (bilingual). Keep one survey text, here. The RIKEN questions are recorded below as proposed additions; none is live.
 
@@ -63,4 +63,4 @@ The RIKEN organiser drafted a ten-question survey in [`planning/riken-2026-11-10
 | 9. You need to repeat a task with several steps. What sounds most like you? (choose one) | New |
 | 10. What's your biggest day-to-day struggle with programming right now? (optional short answer) | Overlaps question 5 |
 
-**Question for the RIKEN organiser:** Should RIKEN use the five SOKEDAI questions unchanged, the ten-question draft as written, or a merge? The draft's questions 1, 7, 8, and 9 are not in the SOKEDAI text. If the ten-question draft is chosen, RIKEN needs its own form and `surveyUrl`. Note that the existing text above says to tick all that apply and leave questions blank; the draft uses single choice with "Other".
+**Question for the RIKEN organiser:** Should RIKEN use the five SOKENDAI questions unchanged, the ten-question draft as written, or a merge? The draft's questions 1, 7, 8, and 9 are not in the SOKENDAI text. If the ten-question draft is chosen, RIKEN needs its own form and `surveyUrl`. Note that the existing text above says to tick all that apply and leave questions blank; the draft uses single choice with "Other".
