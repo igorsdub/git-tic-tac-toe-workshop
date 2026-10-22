@@ -54,6 +54,10 @@ python3 -m unittest discover -s tests -p 'test_*.py'
 
 The DOM tests (`tests/test_dashboard_dom.cjs`, `tests/test_setup_dom.cjs`) need Chrome or Chromium and are skipped if none is found. Set `CHROMIUM_BIN` to point at a specific binary.
 
+## Local preview
+
+Run `npm run preview` and open [http://127.0.0.1:8765/docs/setup.html](http://127.0.0.1:8765/docs/setup.html). Set `PORT` to choose another port. This server supports byte ranges so the setup-page MP4 controls can seek during local preview.
+
 ## Repository map
 
 - [`template/`](template/README.md) is the local reference for the learner starter repository: its current `BOARD.txt`, editing conventions, and canonical empty-board example. Publish changes to the separate template repository explicitly.
