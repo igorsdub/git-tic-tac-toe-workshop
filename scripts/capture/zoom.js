@@ -9,7 +9,6 @@ const ZOOM = 2;
 const EASE = 1.2; // zoom-in and zoom-out duration
 const HOLD = 3.0; // time held at full zoom after the click
 const PRE = 2; // lead-in kept before the first click
-const TAIL = 2; // video ends this long after the last zoom-out (or at recording end)
 // Clicks closer than this stay zoomed and the crop centre glides between them.
 const MERGE_GAP = HOLD + 2 * EASE;
 
@@ -19,6 +18,7 @@ const ss = (a, d) => {
 };
 
 // Seconds from the start of the output to the end of the last zoom-out.
+// Videos are not cut here: the full recording after the last click is kept.
 function zoomEnd(clicks) {
   return clicks.length ? clicks[clicks.length - 1].t / 1000 + HOLD + EASE : 0;
 }
@@ -93,7 +93,7 @@ function main(argv) {
     const out = path.join(REPO_ROOT, 'docs', 'images', 'setup', slug, `${slug}.mp4`);
     fs.mkdirSync(path.dirname(out), { recursive: true });
     const vf = buildZoomFilter(clicks, { width: VIEWPORT.width, height: VIEWPORT.height, fps: 30 });
-    const r = spawnSync('ffmpeg', ['-y', '-ss', String(start), '-i', raw, '-vf', vf, '-t', String(zoomEnd(clicks) + TAIL), '-c:v', 'libx264', '-crf', '28', '-preset', 'medium', '-pix_fmt', 'yuv420p',
+    const r = spawnSync('ffmpeg', ['-y', '-ss', String(start), '-i', raw, '-vf', vf, '-c:v', 'libx264', '-crf', '28', '-preset', 'medium', '-pix_fmt', 'yuv420p',
       '-movflags', '+faststart', '-an', out], { stdio: 'inherit' });
     if (r.status !== 0) { console.error(`ffmpeg failed for ${slug}`); process.exit(1); }
     console.log(`wrote ${out}`);
