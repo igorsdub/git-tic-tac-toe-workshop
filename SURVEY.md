@@ -1,7 +1,7 @@
 # A Few Questions Before the Workshop / ワークショップ前の簡単な質問
 
-Please tick any choices that fit your experience; it is fine to leave a question blank. These answers help the instructor prepare examples for the group. See the [setup instructions](PRE_SESSION_CHECK.md) before the workshop.<br>
-<span lang="ja">ご経験に当てはまる項目にすべてチェックしてください。質問を空欄にしてもかまいません。回答をもとに、講師が当日の例を準備します。ワークショップ前に[セットアップ手順](PRE_SESSION_CHECK.md)をご確認ください。</span>
+Please tick any choices that fit your experience; it is fine to leave a question blank. These answers help the instructor prepare examples for the group. See the [Pre-session checklist](PRE_SESSION_CHECK.md) before the workshop.<br>
+<span lang="ja">ご経験に当てはまる項目にすべてチェックしてください。質問を空欄にしてもかまいません。回答をもとに、講師が当日の例を準備します。ワークショップ前に[事前準備のチェックリスト](PRE_SESSION_CHECK.md)をご確認ください。</span>
 
 1. **Which of these sound like your regular work?**<br>
    <span lang="ja">普段の仕事で、次のようなことをしていますか？</span>
@@ -41,3 +41,26 @@ Please tick any choices that fit your experience; it is fine to leave a question
 
 5. **Optional: Is there anything you’d like to make easier in your day-to-day work?**<br>
    <span lang="ja">任意：日々の仕事で、もう少し楽にできたらと思うことはありますか？</span>
+
+---
+
+## Status and proposed additions (maintainer notes)
+
+The SOKEDAI survey is live; its link is the `surveyUrl` in `docs/workshops.json` and appears on the Setup page. The five questions above are the intended text of that form. RIKEN has no survey link yet.
+
+The RIKEN organiser drafted a ten-question survey in [`planning/riken-2026-11-10/survey-questions.md`](planning/riken-2026-11-10/survey-questions.md) (bilingual). Keep one survey text, here. The RIKEN questions are recorded below as proposed additions; none is live.
+
+| RIKEN draft question | Relation to the questions above |
+|---|---|
+| 1. Which programming language are you most comfortable with? (Python, R, Julia, MATLAB, other) | New |
+| 2. Which of these sounds like your regular work? (choose one) | Overlaps question 1; the draft is single choice and shorter |
+| 3. You've changed a research file. Where do you keep its history? (choose one) | Overlaps question 2; single choice |
+| 4. When working on files with other people, what does that look like? (choose one) | Overlaps question 3; single choice |
+| 5. Which AI tools do you use for your work? (optional short answer; helper text asks about access limits) | New |
+| 6. How do you use AI for your work? (select all; adds "coordinating several agents" and "I don't use AI") | Overlaps question 4; adds two options |
+| 7. Your code needs software packages. What's your approach? (choose one) | New |
+| 8. What helps you check that your code works as intended? (choose one) | New |
+| 9. You need to repeat a task with several steps. What sounds most like you? (choose one) | New |
+| 10. What's your biggest day-to-day struggle with programming right now? (optional short answer) | Overlaps question 5 |
+
+**Question for the RIKEN organiser:** Should RIKEN use the five SOKEDAI questions unchanged, the ten-question draft as written, or a merge? The draft's questions 1, 7, 8, and 9 are not in the SOKEDAI text. If the ten-question draft is chosen, RIKEN needs its own form and `surveyUrl`. Note that the existing text above says to tick all that apply and leave questions blank; the draft uses single choice with "Other".

@@ -1,5 +1,7 @@
 # Before the workshop / ワークショップの前に
 
+> The survey text lives in [`SURVEY.md`](../../SURVEY.md). These ten questions are recorded there as proposed additions, with a question to the RIKEN organiser. Keep the bilingual wording here until that is decided.
+
 ## English
 
 Hey,

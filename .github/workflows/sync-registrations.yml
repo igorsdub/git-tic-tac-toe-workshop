@@ -6,7 +6,7 @@ on:
     paths:
       - "docs/**"
       - "scripts/**"
-      - "CONTEXT.md"
+      - "GLOSSARY.md"
       - ".github/workflows/sync-registrations.yml"
   issues:
     types: [opened, edited, labeled, closed, reopened]
