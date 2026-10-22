@@ -32,19 +32,6 @@ test('does not offer replay for a malformed branch registration', () => {
   assert.throws(() => MatchData.historyApiUrl(result), /match-prefixed branch/);
 });
 
-test('keeps a valid registration refreshable when its last board read failed', async () => {
-  const failedSnapshot = match({ status: 'error', state: 'Error', boardValid: false, board: null, errors: ['BOARD.txt was unavailable'] });
-  assert.equal(MatchData.canRefreshMatchBoard(failedSnapshot), true);
-  const recovered = await MatchData.refreshMatchBoard(failedSnapshot, async () => ({
-    ok: true,
-    text: async () => 'winning board',
-  }), () => ({ isValid: true, state: 'X won', grid: [['X', 'X', 'X'], ['O', 'O', ' '], [' ', ' ', ' ']] }));
-  assert.equal(recovered.status, 'completed');
-  assert.equal(recovered.state, 'X won');
-  assert.deepEqual(recovered.errors, []);
-  assert.equal(MatchData.canRefreshMatchBoard(MatchData.normalizeMatch({ owner: 'pair', repo: 'game' })), false);
-});
-
 test('rebuilds a refreshed-history action from cached entries after rerender', () => {
   assert.deepEqual(MatchData.historyButtonState({ entries: [{ sha: 'abc' }], errors: [] }), { label: 'Refresh history', loaded: true });
   assert.deepEqual(MatchData.historyButtonState({ entries: [], errors: ['API unavailable'] }), { label: 'Retry history', loaded: false });
@@ -74,48 +61,16 @@ test('history API is scoped to the registered branch and uppercase board filenam
   assert.throws(() => MatchData.historyApiUrl(match({ branch: 'main' })), /match-prefixed branch/);
 });
 
-test('accepts every lowercase match-prefixed branch and preserves its full label', async () => {
+test('accepts every lowercase match-prefixed branch and preserves its full label', () => {
   const branches = ['match', 'match01', 'match-01', 'match02', 'match-test'];
   const normalized = branches.map((branch) => match({ branch }));
   assert.deepEqual(normalized.map((item) => item.branch), branches);
   assert.equal(new Set(normalized.map((item) => item.matchKey)).size, branches.length);
   assert.ok(normalized.every((item) => item.isValid));
 
-  const urls = [];
-  await Promise.all(normalized.map((item) => MatchData.refreshMatchBoard(item, async (url) => {
-    urls.push(url);
-    return { ok: true, text: async () => item.branch };
-  }, (content) => ({ isValid: true, state: 'Ready for X', grid: [[content], [], []] }))));
-  assert.deepEqual(urls.sort(), branches.map((branch) =>
-    `https://raw.githubusercontent.com/pair/research-game/${branch}/BOARD.txt`,
-  ).sort());
   assert.equal(MatchData.normalizeMatch({ ...normalized[3], branch: 'Match-test' }).isValid, false);
   assert.equal(MatchData.normalizeMatch({ ...normalized[3], branch: 'MATCH' }).isValid, false);
   assert.equal(MatchData.normalizeMatch({ ...normalized[3], branch: 'main' }).isValid, false);
-});
-
-test('refreshes the current board from its exact branch and recomputes the outcome', async () => {
-  const current = match({ state: 'Waiting for O', status: 'in_progress' });
-  const calls = [];
-  const result = await MatchData.refreshMatchBoard(current, async (url) => {
-    calls.push(url);
-    return { ok: true, text: async () => 'winning board' };
-  }, () => ({ isValid: true, state: 'X won', grid: [['X', 'X', 'X'], [' ', ' ', ' '], [' ', ' ', ' ']], winningCells: [[0, 0], [0, 1], [0, 2]] }));
-
-  assert.deepEqual(calls, ['https://raw.githubusercontent.com/pair/research-game/match-01/BOARD.txt']);
-  assert.equal(result.state, 'X won');
-  assert.equal(result.status, 'completed');
-  assert.equal(result.outcome, 'X won');
-  assert.deepEqual(MatchData.groupMatches([result]).map((group) => group.id), ['x_won']);
-});
-
-test('turns inaccessible or invalid current branch boards into explicit errors', async () => {
-  const inaccessible = await MatchData.refreshMatchBoard(match(), async () => ({ ok: false, status: 404 }), () => ({}));
-  assert.equal(inaccessible.status, 'error');
-  assert.match(inaccessible.errors[0], /match-01.*404/);
-  const invalid = await MatchData.refreshMatchBoard(match(), async () => ({ ok: true, text: async () => 'bad board' }), () => ({ isValid: false, errors: ['impossible move count'] }));
-  assert.equal(invalid.status, 'error');
-  assert.match(invalid.errors[0], /impossible move count/);
 });
 
 test('replays valid board snapshots oldest-first and reports invalid commits', async () => {

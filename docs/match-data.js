@@ -79,54 +79,11 @@
     return `https://api.github.com/repos/${encodeURIComponent(match.owner)}/${encodeURIComponent(match.repo)}/commits?sha=${encodeURIComponent(match.branch)}&path=BOARD.txt&per_page=100`;
   }
 
-  function canRefreshMatchBoard(match) {
-    return Boolean(
-      match.owner && match.repo && MATCH_BRANCH_PATTERN.test(match.branch || '')
-      && String(match.playerX || '').trim() && String(match.playerO || '').trim(),
-    );
-  }
-
   function historyButtonState(history) {
     if (history && Array.isArray(history.entries) && history.entries.length > 0) {
       return { label: 'Refresh history', loaded: true };
     }
     return { label: history ? 'Retry history' : 'Load history', loaded: false };
-  }
-
-  function boardUrl(match) {
-    if (!match.owner || !match.repo || !MATCH_BRANCH_PATTERN.test(match.branch || '')) {
-      throw new Error('A valid repository and lowercase match-prefixed branch are required to load the current board.');
-    }
-    return `https://raw.githubusercontent.com/${encodeURIComponent(match.owner)}/${encodeURIComponent(match.repo)}/${encodeURIComponent(match.branch)}/BOARD.txt`;
-  }
-
-  async function refreshMatchBoard(match, fetcher, validateBoard) {
-    try {
-      const response = await fetcher(boardUrl(match));
-      if (!response.ok) {
-        const message = `Could not load BOARD.txt from ${match.branch} (HTTP ${response.status}).`;
-        return { ...match, state: 'Error', status: 'error', outcome: null, isValid: false, grid: null, errors: [message], boardValid: false };
-      }
-      const evaluation = validateBoard(await response.text());
-      if (!evaluation.isValid) {
-        return { ...match, state: 'Error', status: 'error', outcome: null, isValid: false, grid: null, errors: (evaluation.errors || ['The branch board is invalid.']).map((error) => `Invalid BOARD.txt on ${match.branch}: ${error}`), boardValid: false };
-      }
-      const completed = ['X won', 'O won', 'Draw'].includes(evaluation.state);
-      return {
-        ...match,
-        state: evaluation.state,
-        status: completed ? 'completed' : 'in_progress',
-        outcome: completed ? evaluation.state : null,
-        isValid: true,
-        grid: evaluation.grid,
-        board: evaluation.grid,
-        boardValid: true,
-        winningCells: evaluation.winningCells || null,
-        errors: [],
-      };
-    } catch (error) {
-      return { ...match, state: 'Error', status: 'error', outcome: null, isValid: false, grid: null, errors: [`Could not load BOARD.txt from ${match.branch}: ${error.message}`], boardValid: false };
-    }
   }
 
   async function fetchMatchHistory(match, fetcher, validateBoard) {
@@ -201,5 +158,5 @@
     return { entries, errors, historyUrl };
   }
 
-  return { MATCH_BRANCH_PATTERN, normalizeMatch, groupMatches, canRefreshMatchBoard, historyButtonState, boardUrl, refreshMatchBoard, historyApiUrl, fetchMatchHistory };
+  return { MATCH_BRANCH_PATTERN, normalizeMatch, groupMatches, historyButtonState, historyApiUrl, fetchMatchHistory };
 });
