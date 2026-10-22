@@ -169,7 +169,7 @@ class TestPublishRegistrySnapshots(unittest.TestCase):
                 root,
                 "if [ \"$1 $2 $3\" = \"push origin HEAD:refs/heads/main\" ] && [ ! -e \"$RACE_MARKER\" ]; then\n"
                 "  touch \"$RACE_MARKER\"\n"
-                "  printf '{\\\"source\\\":\\\"during-push\\\"}\\n' > \"$WRITER_DIR/docs/source.json\"\n"
+                "  printf '%s\\n' '{\"source\":\"during-push\"}' > \"$WRITER_DIR/docs/source.json\"\n"
                 "  \"$REAL_GIT\" -C \"$WRITER_DIR\" add docs/source.json\n"
                 "  \"$REAL_GIT\" -C \"$WRITER_DIR\" -c user.name=Writer -c user.email=writer@example.com commit -m concurrent-race\n"
                 "  \"$REAL_GIT\" -C \"$WRITER_DIR\" push origin main\n"
