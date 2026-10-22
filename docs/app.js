@@ -540,10 +540,25 @@ State: Waiting for O
     }
   }
 
+  /** Reject with an AbortError as soon as `signal` aborts, even if `promise` never settles. */
+  function abortable(promise, signal) {
+    return new Promise((resolve, reject) => {
+      const abortError = () => new DOMException('The load was aborted.', 'AbortError');
+      if (signal.aborted) {
+        reject(abortError());
+        return;
+      }
+      const onAbort = () => reject(abortError());
+      signal.addEventListener('abort', onAbort, { once: true });
+      promise.then(resolve, reject).finally(() => signal.removeEventListener('abort', onAbort));
+    });
+  }
+
   /**
    * Load the generated branch snapshot; browser visitors make no GitHub API requests.
    * A background tick is skipped while a load is running; a user-initiated load
-   * (`force`) supersedes it. The spinner shows on the first load only.
+   * (`force`) supersedes it. The spinner shows on the first load only. Every step
+   * runs inside try so the in-flight guard is always cleared in finally.
    */
   async function loadGames({ force = false } = {}) {
     if (state.loadController) {
@@ -551,25 +566,41 @@ State: Waiting for O
       state.loadController.abort();
     }
     const controller = new AbortController();
-    let timedOut = false;
-    const timer = setTimeout(() => {
-      timedOut = true;
-      controller.abort();
-    }, CONFIG.FETCH_TIMEOUT_MS);
     state.loadController = controller;
-    const showSpinner = !state.hasLoaded;
-    if (showSpinner) setLoading(true);
+    const isCurrent = () => state.loadController === controller;
+    // After every await: stop if a newer load took over, or if this one timed out.
+    const ensureCurrent = () => {
+      if (!isCurrent() || controller.signal.aborted) throw new DOMException('The load was aborted.', 'AbortError');
+    };
+    let timedOut = false;
+    let timer = null;
+    let showSpinner = false;
 
     try {
-      if (!state.catalog) await loadWorkshopCatalog();
+      timer = setTimeout(() => {
+        timedOut = true;
+        controller.abort();
+      }, CONFIG.FETCH_TIMEOUT_MS);
+      showSpinner = !state.hasLoaded;
+      if (showSpinner) setLoading(true);
+
+      if (!state.catalog) {
+        await abortable(loadWorkshopCatalog(), controller.signal);
+        ensureCurrent();
+      }
       if (state.useDemoData) {
         loadMockData();
         return;
       }
       let response = await fetch(`${BOARD_REGISTRY_URL}?t=${Date.now()}`, { signal: controller.signal });
-      if (!response.ok) response = await fetch(`${RAW_BOARD_REGISTRY_URL}?t=${Date.now()}`, { signal: controller.signal });
+      ensureCurrent();
+      if (!response.ok) {
+        response = await fetch(`${RAW_BOARD_REGISTRY_URL}?t=${Date.now()}`, { signal: controller.signal });
+        ensureCurrent();
+      }
       if (!response.ok) throw new Error(`Match registry unavailable (HTTP ${response.status}).`);
       const records = await response.json();
+      ensureCurrent();
       if (!Array.isArray(records)) throw new Error('The match registry did not contain a list of records.');
 
       const registered = records.map((record) => MATCH_DATA.normalizeMatch(record));
@@ -586,7 +617,7 @@ State: Waiting for O
       render();
     } catch (err) {
       // A superseded load was aborted on purpose; the newer load owns the UI.
-      if (state.loadController !== controller) return;
+      if (!isCurrent()) return;
       console.warn('Network or API failure fetching live games:', err);
       // Keep the last successful snapshot visible during a transient polling failure.
       state.lastLoadError = timedOut
@@ -595,8 +626,8 @@ State: Waiting for O
       updateWorkshopNotice();
       render();
     } finally {
-      clearTimeout(timer);
-      if (state.loadController === controller) {
+      if (timer) clearTimeout(timer);
+      if (isCurrent()) {
         state.loadController = null;
         state.hasLoaded = true;
         if (showSpinner) setLoading(false);
@@ -978,13 +1009,8 @@ State: Waiting for O
   }
 
   function setLoading(loading) {
-    if (loading) {
-      DOM.loadingIndicator.classList.remove('hidden');
-      if (DOM.liveIndicator) DOM.liveIndicator.classList.add('warning');
-    } else {
-      DOM.loadingIndicator.classList.add('hidden');
-      if (DOM.liveIndicator) DOM.liveIndicator.classList.remove('warning');
-    }
+    if (DOM.loadingIndicator) DOM.loadingIndicator.classList.toggle('hidden', !loading);
+    if (DOM.liveIndicator) DOM.liveIndicator.classList.toggle('warning', loading);
   }
 
   function showNotice(msg, type = 'notice-info') {

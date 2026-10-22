@@ -204,25 +204,6 @@
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.6);
   }
 
-  :root:not([data-theme="light"]) a:link,
-  :root:not([data-theme="light"]) a:visited {
-    color: #38bdf8;
-  }
-
-  :root:not([data-theme="light"]) a:hover {
-    color: #7dd3fc;
-  }
-
-  :root:not([data-theme="light"]) .brand-link .brand-text h1,
-  :root:not([data-theme="light"]) .brand-link:visited .brand-text h1,
-  :root:not([data-theme="light"]) .brand-link:hover .brand-text h1,
-  :root:not([data-theme="light"]) .brand-link:focus-visible .brand-text h1,
-  :root:not([data-theme="light"]) .brand-link .brand-text .brand-title,
-  :root:not([data-theme="light"]) .brand-link:visited .brand-text .brand-title,
-  :root:not([data-theme="light"]) .brand-link:hover .brand-text .brand-title,
-  :root:not([data-theme="light"]) .brand-link:focus-visible .brand-text .brand-title {
-    color: #ffffff;
-  }
 }
 
 /* CSS Reset & Base */
@@ -253,6 +234,19 @@ a:visited {
 a:hover {
   color: #075985;
   text-decoration: none;
+}
+
+/* No-JS dark fallback for links. :where() keeps base-link specificity, and it only applies
+   while no data-theme attribute is set, so component link colours still win. */
+@media (prefers-color-scheme: dark) {
+  :where(:root:not([data-theme])) a:link,
+  :where(:root:not([data-theme])) a:visited {
+    color: #38bdf8;
+  }
+
+  :where(:root:not([data-theme])) a:hover {
+    color: #7dd3fc;
+  }
 }
 
 [data-theme="dark"] a:link,
@@ -406,6 +400,19 @@ a.skip-link:hover {
 [data-theme="dark"] .brand-link:hover .brand-text .brand-title,
 [data-theme="dark"] .brand-link:focus-visible .brand-text .brand-title {
   color: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :where(:root:not([data-theme])) .brand-link .brand-text h1,
+  :where(:root:not([data-theme])) .brand-link:visited .brand-text h1,
+  :where(:root:not([data-theme])) .brand-link:hover .brand-text h1,
+  :where(:root:not([data-theme])) .brand-link:focus-visible .brand-text h1,
+  :where(:root:not([data-theme])) .brand-link .brand-text .brand-title,
+  :where(:root:not([data-theme])) .brand-link:visited .brand-text .brand-title,
+  :where(:root:not([data-theme])) .brand-link:hover .brand-text .brand-title,
+  :where(:root:not([data-theme])) .brand-link:focus-visible .brand-text .brand-title {
+    color: #ffffff;
+  }
 }
 
 .brand-text .subtitle {
@@ -976,9 +983,8 @@ a.skip-link:hover {
 }
 
 .board-grid-table {
-  display: grid;
-  grid-template-columns: repeat(3, var(--grid-cell-size));
-  grid-template-rows: repeat(3, var(--grid-cell-size));
+  display: flex;
+  flex-direction: column;
   gap: 6px;
   background-color: var(--border-medium);
   padding: 6px;
@@ -987,7 +993,10 @@ a.skip-link:hover {
 }
 
 .board-row {
-  display: contents;
+  display: grid;
+  grid-template-columns: repeat(3, var(--grid-cell-size));
+  grid-auto-rows: var(--grid-cell-size);
+  gap: 6px;
 }
 
 .board-cell {
