@@ -11,6 +11,12 @@ function loadManifest() {
   return JSON.parse(fs.readFileSync(path.join(__dirname, 'captures.json'), 'utf8'));
 }
 
+function writeCaptureCompleteMarker(outDir, rawPath, answerText) {
+  if (!rawPath || !fs.existsSync(rawPath)) throw new Error('Cannot mark capture complete before its recording is finalized.');
+  if (typeof answerText !== 'string' || !answerText.trim()) throw new Error('Cannot mark capture complete without visible answer text.');
+  fs.writeFileSync(path.join(outDir, 'capture-complete.json'), JSON.stringify({ status: 'complete', mode: 'Ask', answerVisible: true }, null, 2));
+}
+
 function stepEntry(slug) {
   const entry = loadManifest().steps.find((s) => s.slug === slug);
   if (!entry) throw new Error(`Unknown step slug: ${slug}`);
@@ -109,8 +115,8 @@ function createStep(page, slug) {
     return raw;
   }
 
-  function markComplete() {
-    fs.writeFileSync(completionFile, JSON.stringify({ status: 'complete', mode: 'Ask', answerVisible: true }, null, 2));
+  function markComplete(rawPath, answerText) {
+    writeCaptureCompleteMarker(outDir, rawPath, answerText);
   }
 
   function recordWait(startMs, endMs) {
@@ -122,4 +128,4 @@ function createStep(page, slug) {
   return { shot, click, perform, recordWait, markComplete, finish };
 }
 
-module.exports = { AUTH_FILE, OUT_DIR, REPO_ROOT, VIEWPORT, launch, createStep, loadManifest };
+module.exports = { AUTH_FILE, OUT_DIR, REPO_ROOT, VIEWPORT, launch, createStep, loadManifest, writeCaptureCompleteMarker };

@@ -74,9 +74,16 @@ test('4x wait retiming produces the expected rendered video duration', (t) => {
 
 test('the Look around renderer rejects a failed or incomplete Ask capture', (t) => {
   const { isCaptureComplete } = require(path.join(dir, 'zoom.js'));
+  const { writeCaptureCompleteMarker } = require(path.join(dir, 'lib.js'));
   const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'look-around-completion-'));
   t.after(() => fs.rmSync(temp, { recursive: true, force: true }));
   assert.equal(isCaptureComplete('look-around', temp), false);
+  const raw = path.join(temp, 'raw.webm');
+  assert.throws(() => writeCaptureCompleteMarker(temp, raw, 'answer'), /recording is finalized/);
+  fs.writeFileSync(raw, 'recording');
+  assert.throws(() => writeCaptureCompleteMarker(temp, raw, '  '), /visible answer text/);
+  writeCaptureCompleteMarker(temp, raw, 'The answer describes the repository.');
+  assert.equal(isCaptureComplete('look-around', temp), true);
   fs.writeFileSync(path.join(temp, 'capture-complete.json'), JSON.stringify({ status: 'complete', mode: 'Agent', answerVisible: true }));
   assert.equal(isCaptureComplete('look-around', temp), false);
   fs.writeFileSync(path.join(temp, 'capture-complete.json'), JSON.stringify({ status: 'complete', mode: 'Ask', answerVisible: true }));

@@ -17,6 +17,7 @@ const SELECTORS = {
   modeAskSelected: (p) => p.getByRole('button', { name: /^Ask/ }).first(),
   chatInput: (p) => p.getByRole('textbox', { name: /Chat Input/ }),
   trust: (p) => p.getByRole('button', { name: 'Trust Folder & Continue' }),
+  completedAnswers: (p) => p.locator('.chat-response-completed-at'),
   answer: (p) => p.locator('.chat-response-completed-at').last(),
   workbench: (p) => p.locator('.monaco-workbench'),
 };
@@ -62,6 +63,7 @@ async function run() {
   await SELECTORS.modeAskSelected(page).waitFor({ state: 'visible', timeout: 10000 });
   const selectedMode = await SELECTORS.modeAskSelected(page).innerText();
   if (!/^Ask\b/.test(selectedMode.trim())) throw new Error('Expected Ask mode after selection, found "' + selectedMode.trim() + '".');
+  const priorAnswerCount = await SELECTORS.completedAnswers(page).count();
   const chatInput = SELECTORS.chatInput(page);
   await step.perform(chatInput, async () => {
     await chatInput.click();
@@ -70,10 +72,10 @@ async function run() {
   }, { outlineMs: 500 });
   const waitStarted = Date.now();
   await showWaitingLabel(page);
-  const answered = await SELECTORS.answer(page).waitFor({ state: 'attached', timeout: 120000 }).then(() => true).catch(() => false);
+  const answerText = await waitForNewCompletedAnswer(page, priorAnswerCount).catch(() => '');
   // Keep the instructional post-action hold, zoom-out, and wide interval at normal speed.
   step.recordWait(waitStarted + 4700, Date.now());
-  if (!answered) {
+  if (!answerText) {
     await page.screenshot({ path: path.join(OUT_DIR, 'look-around', 'debug-answer.png') });
     await step.finish();
     throw new Error('Copilot did not return a completed answer within 120 seconds.');
@@ -81,8 +83,33 @@ async function run() {
   await removeWaitingLabel(page);
   await page.waitForTimeout(2500);
   await page.mouse.move(700, 300);
-  step.markComplete();
-  return step.finish();
+  const rawPath = await step.finish();
+  step.markComplete(rawPath, answerText);
+  return rawPath;
+}
+
+async function waitForNewCompletedAnswer(page, priorCount) {
+  const selector = '.chat-response-completed-at';
+  await page.waitForFunction(({ css, before }) => {
+    const markers = [...document.querySelectorAll(css)];
+    if (markers.length <= before) return false;
+    const marker = markers[markers.length - 1];
+    if (!marker.getClientRects().length || getComputedStyle(marker).visibility === 'hidden') return false;
+    const markerText = (marker.innerText || '').trim();
+    for (let ancestor = marker.parentElement, depth = 0; ancestor && depth < 5; ancestor = ancestor.parentElement, depth++) {
+      const content = (ancestor.innerText || '').trim().replace(markerText, '').trim();
+      if (content) return true;
+    }
+    return false;
+  }, { css: selector, before: priorCount }, { timeout: 120000 });
+  return SELECTORS.answer(page).last().evaluate((marker) => {
+    const markerText = (marker.innerText || '').trim();
+    for (let ancestor = marker.parentElement, depth = 0; ancestor && depth < 5; ancestor = ancestor.parentElement, depth++) {
+      const content = (ancestor.innerText || '').trim().replace(markerText, '').trim();
+      if (content) return content;
+    }
+    return '';
+  });
 }
 
 async function showWaitingLabel(page) {
