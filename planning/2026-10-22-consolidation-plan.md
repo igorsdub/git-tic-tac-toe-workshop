@@ -82,6 +82,7 @@ Do:
 - Polling: in-flight guard, no spinner on background refresh (only on first load), pause on `visibilitychange` hidden, `AbortController` with timeout.
 - Guard every localStorage access; `init()` must reach listeners and polling even if storage throws.
 - Board grid: add `role="row"` wrappers.
+- From the WP2 handover: add a `.skip-link` rule (visually hidden until focused) because `setup.html` now has one and it is always visible; add a `.brand-title` rule reproducing the old brand `h1` look (hover and dark-theme variants under `.brand-text`) so the inline `style` on the brand span in `guide.html` and `setup.html` can go in a one-line WP2 follow-up; style `h2.step-heading` and the `h3` inside steps on the Setup page and delete the dead `.setup-step h4` rule.
 - CSS: link colour to at least 4.5:1 on `#f9fafb` and `#ffffff`; `prefers-reduced-motion` disables pulse and spin; give `--text-muted` a real muted value; add `@media (prefers-color-scheme: dark)` defaults as a fallback for no-JS.
 Don't: change HTML files or `setup.js` (WP2); change parsing logic in `evaluateBoardContent` (WP5).
 Done: `npm test` passes; `node --check` on every file; no function in `docs/*.js` without a call site outside tests.
@@ -95,7 +96,7 @@ Done: workflow YAML validates with `actionlint` if available, otherwise by a dry
 ### Wave 2 (after wave 1 lands on main)
 
 #### WP1 Written materials, single source of truth
-Depends on WP7 (paths). Files owned: `README.md`, `LEARNER_GUIDE.md`, `FACILITATOR_GUIDE.md`, `PRE_SESSION_CHECK.md`, `REHEARSAL_GUIDE.md`, `SURVEY.md`, `WORKSHOP_DESIGN_HANDOFF.md`, `GLOSSARY.md`, `CONTEXT.md`, `template/README.md`, `docs/adr/0002*`, `planning/riken-2026-11-10/*`, `facilitator-training/*.md`.
+Depends on WP7 (paths). Files owned: `tests/test_web_guides.py` (handed over from WP2: its markdown-contract test reads `CONTEXT.md` and asserts "five legacy SCDA repositories" in README, so WP1 updates it), `README.md`, `LEARNER_GUIDE.md`, `FACILITATOR_GUIDE.md`, `PRE_SESSION_CHECK.md`, `REHEARSAL_GUIDE.md`, `SURVEY.md`, `WORKSHOP_DESIGN_HANDOFF.md`, `GLOSSARY.md`, `CONTEXT.md`, `template/README.md`, `docs/adr/0002*`, `planning/riken-2026-11-10/*`, `facilitator-training/*.md`.
 Do:
 - Merge `CONTEXT.md` into `GLOSSARY.md` (one glossary, canonical wording above); delete `CONTEXT.md`; update links. Drop the deployment note from the glossary into README.
 - Agenda lives once, in `FACILITATOR_GUIDE.md`. README links to it. Add the optional extra match sentence there. Fix or remove the 60-minute and 20-minute claims in the moved `MISSION.md` and `NOTES.md`.
@@ -117,6 +118,11 @@ Done: both test files iterate the shared fixtures; a deliberately broken fixture
 
 ### Wave 3 Verification (here, not a session)
 Full `npm test` with Chromium; open each workshop URL (`?workshop=2026-11-06-sokedai`, `?workshop=2026-11-10-riken`, `?workshop=2026-10-01-scda`) and check name, setup view, register link; walk the Setup page as a learner; run the sync workflow once by dispatch and confirm the deploy gate.
+
+## Environment notes
+
+- `/opt/homebrew/bin/chromium` is a broken wrapper and makes the DOM tests skip silently. Run `CHROMIUM_BIN="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" npm test`.
+- Wave 1 branches: WP7 merged as c9142e0; WP2 `claude/charming-williamson-8121d5` (4470d71); WP3 `claude/mystifying-northcutt-7fc311` (d0ef727).
 
 ## Session rules
 
