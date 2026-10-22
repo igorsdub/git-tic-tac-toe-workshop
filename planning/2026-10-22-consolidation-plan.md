@@ -122,7 +122,7 @@ Full `npm test` with Chromium; open each workshop URL (`?workshop=2026-11-06-sok
 ## Environment notes
 
 - `/opt/homebrew/bin/chromium` is a broken wrapper and makes the DOM tests skip silently. Run `CHROMIUM_BIN="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" npm test`.
-- Wave 1 is merged into `main` as of 2779358 (WP7 c9142e0, WP2 ee1b2a2, WP3 fc77912, WP6 8379c1c, WP4 2779358); full suite and ruff green. Wave 2 may start.
+- Wave 1 merged into `main` (WP7 c9142e0, WP2 ee1b2a2, WP3 fc77912, WP6 8379c1c, WP4 2779358). Wave 2 merged (WP1 62703d7, WP5 139867a). At 139867a: 81 Node tests, 105 Python tests, ruff clean, no skips. Wave 3 verification beyond the suite needs a push so Pages and the sync workflow run.
 
 ## Session rules
 
