@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 1: The Live Demonstration - Git Tic-Tac-Toe Facilitator</title>
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+  <header>
+    <h1>Lesson 1: Mastering the Live Demonstration</h1>
+    <div class="lesson-meta">
+      <span>Lesson: <code>0001</code></span>
+      <span>Topic: Co-Pilot Demonstration (Minutes 20–40)</span>
+      <span>Mission: <a href="../MISSION.md">Facilitator Readiness</a></span>
+    </div>
+  </header>
+
+  <p>
+    Welcome to your first facilitator lesson! In the Git Tic-Tac-Toe Workshop, the <strong>Live Demonstration</strong> is the pivotal bridge between conceptual understanding and learner execution. If the demo drags or confuses, learners get stuck. If it is crisp and visual, 100% of pairs will begin playing within two minutes of being released.
+  </p>
+
+  <div class="callout facilitator-cue">
+    <div class="callout-title">The Facilitator's Goal</div>
+    <p>
+      Demonstrate <strong>Move 1 (Player X)</strong> and <strong>Move 2 (Player O)</strong> in under 20 minutes with a prepared co-facilitator or TA. Show side-by-side terminals and the GitHub web interface so learners visibly witness the remote handshake.
+    </p>
+  </div>
+
+  <h2>1. Technical Staging: Two Screens, One Board</h2>
+  <p>
+    Never perform the live demo alone by switching back and forth on one terminal. Novices cannot distinguish local branches from remote pushes if all commands run on one prompt.
+  </p>
+  <ul>
+    <li><strong>Screen Left (Player X):</strong> Lead Facilitator's laptop or terminal.</li>
+    <li><strong>Screen Right (Player O):</strong> Prepared Co-Facilitator or Teaching Assistant.</li>
+    <li><strong>Browser Window (Middle):</strong> The repository page on GitHub.com displayed on the projector.</li>
+  </ul>
+
+  <h2>2. The Exact 4-Step Script</h2>
+  
+  <h3>Step A: Handshake on GitHub (Minutes 20–24)</h3>
+  <p>
+    Player X creates the repository from the template <a href="https://github.com/igorsdub/tic-tac-toe-template"><code>igorsdub/tic-tac-toe-template</code></a> and adds Player O under <em>Settings &gt; Collaborators</em>. Player O confirms receipt and runs:
+  </p>
+  <pre><code>git clone &lt;repo-url&gt;
+cd &lt;repo-folder&gt;</code></pre>
+
+  <h3>Step B: Move 1 by Player X (Minutes 24–28)</h3>
+  <p>
+    Player X points out that <code>git status</code> is clean. Player X edits <code>board.md</code>, placing <code>X</code> in square 5 (center), and updates <code>State: Waiting for O</code>.
+  </p>
+  <pre><code>git status
+git diff              # Highlight: exactly one line changed!
+git add board.md
+git commit -m "Move 1: X in center square 5"
+git push origin main</code></pre>
+  <p>
+    <em>Facilitator Cue:</em> Refresh the GitHub browser tab on the projector. Show the commit hash and Player X's commit message appearing on the remote.
+  </p>
+
+  <h3>Step C: Move 2 by Player O (Minutes 28–34)</h3>
+  <p>
+    Player O opens their local <code>board.md</code> on screen. Point out: <strong>it is still empty!</strong> Git does not magically push files across local hard drives. Player O must pull:
+  </p>
+  <pre><code>git pull origin main  # Show square 5 instantly update to [X]!
+# Player O edits square 1 to [O], updates State: Waiting for X
+git add board.md
+git commit -m "Move 2: O takes top-left square 1"
+git push origin main</code></pre>
+
+  <h3>Step D: Closing the Loop (Minutes 34–38)</h3>
+  <p>
+    Player X runs <code>git pull origin main</code> to receive Move 2. Then, run the history inspection command:
+  </p>
+  <pre><code>git log --oneline --graph</code></pre>
+  <p>
+    Highlight to the room: each move has an immutable author name, timestamp, and message. The board's entire evolution is preserved.
+  </p>
+
+  <h2>3. Facilitator Check: Test Your Reflexes</h2>
+  <div class="quiz-container" id="demo-quiz">
+    <div class="quiz-question">
+      What is the most critical rule to emphasize during the live demonstration before Player O touches board.md?
+    </div>
+    <div class="quiz-options">
+      <button class="quiz-option" type="button">Run git pull to fetch the partner's move first</button>
+      <button class="quiz-option" type="button">Configure git config user name and user email first</button>
+      <button class="quiz-option" type="button">Inspect git status to ensure working tree is clean</button>
+      <button class="quiz-option" type="button">Create git branch to isolate subsequent game moves first</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <h2>4. Recommended Primary Source</h2>
+  <p>
+    Review the full live demonstration dialogue in the repository's 
+    <a href="../FACILITATOR_GUIDE.md#3-live-demonstration-with-prepared-second-player-2040-min">Facilitator Guide (FACILITATOR_GUIDE.md)</a>, 
+    and keep the <a href="../reference/0001-facilitator-quick-reference.html">Facilitator Quick Reference</a> open during rehearsals.
+  </p>
+
+  <div class="callout">
+    <div class="callout-title">Have Questions?</div>
+    <p>
+      I am your teaching mentor. Ask me any follow-up question right in the terminal or chat—such as how to handle an absent co-facilitator, or how to pace the demo if pairs have slow Wi-Fi!
+    </p>
+  </div>
+
+  <footer class="lesson-nav">
+    <span>&larr; <a href="../reference/0001-facilitator-quick-reference.html">Quick Reference Sheet</a></span>
+    <span>Next: <strong>Lesson 2: Error Triage &amp; The 4-Step Protocol</strong> &rarr;</span>
+  </footer>
+
+  <script src="../assets/quiz.js"></script>
+  <script>
+    initQuiz(
+      'demo-quiz', 
+      0, 
+      {
+        correct: 'Exactly right! "Always pull before you play" is the golden law of paired Git. If Player O edits before pulling, they will encounter a dirty working tree or merge conflict on their very first move.',
+        incorrect: 'Not quite. While author config and clean trees are important, the non-negotiable golden rule that prevents 90% of beginner errors is pulling before editing.'
+      }
+    );
+  </script>
+</body>
+</html>

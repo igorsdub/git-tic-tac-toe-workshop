@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Facilitator Quick Reference - Git Tic-Tac-Toe Workshop</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <style>
+    .grid-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    @media (max-width: 650px) {
+      .grid-2col { grid-template-columns: 1fr; }
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      margin: 1rem 0;
+    }
+    th, td {
+      border: 1px solid var(--border-color);
+      padding: 0.5rem 0.75rem;
+      text-align: left;
+    }
+    th {
+      background-color: var(--code-bg);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Facilitator Quick Reference</h1>
+    <div class="lesson-meta">
+      <span>Reference Doc: <code>REF-0001</code></span>
+      <span>Workshop Duration: 120 Minutes</span>
+      <span>Target: Zero-Stall Delivery</span>
+    </div>
+  </header>
+
+  <section>
+    <h2>1. Session Timeline Budget</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Phase</th>
+          <th>Facilitator Key Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>00:00 – 00:10</strong></td>
+          <td>Pair Up &amp; Setup</td>
+          <td>Assign Player X &amp; O. Confirm collaborator invite accepted.</td>
+        </tr>
+        <tr>
+          <td><strong>00:10 – 00:20</strong></td>
+          <td>Mental Model</td>
+          <td>Present clipboard vs central table analogy. Ban pre-pull editing.</td>
+        </tr>
+        <tr>
+          <td><strong>00:20 – 00:40</strong></td>
+          <td>Live Demonstration</td>
+          <td>Moves 1 &amp; 2 live with co-pilot. Keep under 20 minutes strictly.</td>
+        </tr>
+        <tr>
+          <td><strong>00:40 – 01:40</strong></td>
+          <td>Paired Game Play</td>
+          <td><strong>Guaranteed 60 min:</strong> Circulate, triage real errors, prompt branch rematches.</td>
+        </tr>
+        <tr>
+          <td><strong>01:40 – 01:55</strong></td>
+          <td>Game Wall &amp; History</td>
+          <td>Project Game Wall, inspect <code>git log --oneline --graph</code> together.</td>
+        </tr>
+        <tr>
+          <td><strong>01:55 – 02:00</strong></td>
+          <td>Research Transfer</td>
+          <td>Connect moves to code commits, lab notebooks, and feature branches.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>2. Core Teaching Mental Model</h2>
+    <div class="callout facilitator-cue">
+      <div class="callout-title">The Physical Desk Analogy</div>
+      <p>
+        <strong>Local Repository:</strong> A personal clipboard on your desk.<br>
+        <strong>GitHub (<code>origin/main</code>):</strong> A shared table in the middle of the room.<br>
+        <em>"You cannot draw on your partner's clipboard. You fetch the central paper (<code>git pull</code>), mark your move (<code>edit</code>), seal it in an envelope (<code>commit</code>), and send it to the table (<code>push</code>)."</em>
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2>3. The 5-Step Turn Cycle</h2>
+    <pre><code>1. PULL:    git pull origin main
+2. EDIT:    Update board.md (mark one empty square [ ] -> [X] or [O])
+3. STAGE:   git status && git diff && git add board.md
+4. COMMIT:  git commit -m "Move N: [X/O] in square [1-9]"
+5. PUSH:    git push origin main  --> Tell partner: "Your turn!"</code></pre>
+  </section>
+
+  <section>
+    <h2>4. 4-Step Error Triage Protocol</h2>
+    <ol>
+      <li><strong>Normalize:</strong> <em>"Git is not broken; it is protecting your work."</em> Error messages are status reports.</li>
+      <li><strong>Read aloud:</strong> Have the learner read the last 3 lines of output. The remedy is almost always in the hint.</li>
+      <li><strong>Triage:</strong> Identify symptom from the table below.</li>
+      <li><strong>Celebrate:</strong> Reinforce that committed work was never lost.</li>
+    </ol>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Error / Symptom</th>
+          <th>Root Cause</th>
+          <th>Immediate Resolution</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>[rejected] (fetch first)</code></td>
+          <td>Forgot to pull before moving or pushed out of turn.</td>
+          <td>Run <code>git pull origin main</code>, check <code>board.md</code>, then <code>git push origin main</code>.</td>
+        </tr>
+        <tr>
+          <td><code>CONFLICT in board.md</code></td>
+          <td>Both players edited simultaneously without pulling.</td>
+          <td>Open <code>board.md</code>, agree on grid, delete markers (<code>&lt;&lt;&lt;&lt;</code>, <code>====</code>, <code>&gt;&gt;&gt;&gt;</code>), save, <code>git add board.md</code>, commit, push.</td>
+        </tr>
+        <tr>
+          <td><code>Local changes overwritten by merge</code></td>
+          <td>Edited <code>board.md</code> locally before running pull.</td>
+          <td>Commit local change first, run <code>git pull --no-rebase origin main</code>, then push.</td>
+        </tr>
+        <tr>
+          <td><code>Permission denied (publickey/auth)</code></td>
+          <td>Invite not accepted or credential helper stuck.</td>
+          <td>Confirm repo invite accepted. Fallback to <strong>GitHub Desktop</strong> immediately to save time.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <div class="callout warning">
+    <div class="callout-title">Golden Facilitator Rule</div>
+    Never deliberately inject artificial merge conflicts or synthetic errors. Real mistakes will happen naturally in every room and provide the best authentic teaching moments.
+  </div>
+
+</body>
+</html>
