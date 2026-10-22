@@ -1,0 +1,15 @@
+{
+  "description": "Compact board with X in the centre and O in a corner",
+  "content": ". . .\n. X .\n. . O\n",
+  "expected": {
+    "valid": true,
+    "state": "Waiting for X",
+    "reason": null,
+    "placeholderHandles": ["O", "X"],
+    "grid": [
+      [" ", " ", " "],
+      [" ", "X", " "],
+      [" ", " ", "O"]
+    ]
+  }
+}

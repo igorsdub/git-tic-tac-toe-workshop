@@ -1,0 +1,10 @@
+{
+  "description": "Legacy bracket row containing [Z]",
+  "content": "# Git Tic-Tac-Toe\nPlayer X: @alice\nPlayer O: @bob\nState: Ready for X\n\n```\n [Z] | [] | []\n-----+-----+-----\n [] | [] | []\n-----+-----+-----\n [] | [] | []\n```\n",
+  "expected": {
+    "valid": false,
+    "state": "Invalid board",
+    "reason": "Invalid cell mark",
+    "placeholderHandles": []
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "description": "Both handles are real",
+  "content": "# Git Tic-Tac-Toe\nPlayer X: @octocat\nPlayer O: codemonkey\nState: Ready for X\n\n```\n. . .\n. . .\n. . .\n```\n",
+  "expected": {
+    "valid": true,
+    "state": "Ready for X",
+    "reason": null,
+    "placeholderHandles": []
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "description": "Markdown bold headers with real handles",
+  "content": "**Player X**: @octocat\n**Player O**: codemonkey\nState: Ready for X\n\n```\n. . .\n. . .\n. . .\n```\n",
+  "expected": {
+    "valid": true,
+    "state": "Ready for X",
+    "reason": null,
+    "placeholderHandles": []
+  }
+}

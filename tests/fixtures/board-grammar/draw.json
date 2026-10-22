@@ -1,0 +1,10 @@
+{
+  "description": "Full board with no winner",
+  "content": "X O X\nX O O\nO X X\n",
+  "expected": {
+    "valid": true,
+    "state": "Draw",
+    "reason": null,
+    "placeholderHandles": ["O", "X"]
+  }
+}

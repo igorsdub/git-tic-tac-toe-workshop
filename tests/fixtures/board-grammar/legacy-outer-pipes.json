@@ -1,0 +1,15 @@
+{
+  "description": "Legacy rows with outer pipes",
+  "content": "| X | O | X |\n| O | X | O |\n| X | O | X |",
+  "expected": {
+    "valid": true,
+    "state": "X won",
+    "reason": null,
+    "placeholderHandles": ["O", "X"],
+    "grid": [
+      ["X", "O", "X"],
+      ["O", "X", "O"],
+      ["X", "O", "X"]
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "description": "Compact row with two cells",
+  "content": ". .\n. . .\n. . .\n",
+  "expected": {
+    "valid": false,
+    "state": "Invalid board",
+    "reason": "must contain three cells separated by single spaces",
+    "placeholderHandles": ["O", "X"]
+  }
+}

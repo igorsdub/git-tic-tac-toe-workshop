@@ -1,0 +1,10 @@
+{
+  "description": "Handle contains the word placeholder",
+  "content": "# Git Tic-Tac-Toe\nPlayer X: placeholder handle\nPlayer O: @bob\nState: Ready for X\n\n```\n. . .\n. . .\n. . .\n```\n",
+  "expected": {
+    "valid": true,
+    "state": "Ready for X",
+    "reason": null,
+    "placeholderHandles": ["X"]
+  }
+}

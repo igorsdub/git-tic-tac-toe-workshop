@@ -1,0 +1,10 @@
+{
+  "description": "Player X is real, Player O is a placeholder",
+  "content": "# Git Tic-Tac-Toe\nPlayer X: @octocat\nPlayer O: TBD\nState: Ready for X\n\n```\n. . .\n. . .\n. . .\n```\n",
+  "expected": {
+    "valid": true,
+    "state": "Ready for X",
+    "reason": null,
+    "placeholderHandles": ["O"]
+  }
+}

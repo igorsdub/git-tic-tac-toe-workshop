@@ -1,80 +1,69 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
+const path = require('node:path');
 const vm = require('node:vm');
 
-function loadApp() {
-  const sourcePath = require.resolve('../docs/app.js');
-  const source = fs.readFileSync(sourcePath, 'utf8');
-  const instrumented = source.replace(
-    "  if (document.readyState === 'loading') {",
-    '  window.__evaluateBoardContent = evaluateBoardContent;\n  window.__renderBoardRows = renderBoardRows;\n  if (document.readyState === \'loading\') {'
-  );
-  const window = { MatchData: {} };
+const FIXTURE_DIR = path.join(__dirname, 'fixtures', 'board-grammar');
+
+function loadBoardGrammar() {
+  const source = fs.readFileSync(require.resolve('../docs/app.js'), 'utf8');
+  const module = { exports: {} };
   const document = {
     readyState: 'loading',
     getElementById: () => null,
     addEventListener: () => {},
   };
-  vm.runInNewContext(instrumented, { window, document, console });
-  return window;
+  vm.runInNewContext(source, { window: { MatchData: {} }, document, console, module });
+  return module.exports;
 }
 
-function loadBoardEvaluator() {
-  return loadApp().__evaluateBoardContent;
+const grammar = loadBoardGrammar();
+
+test('docs/app.js exports the board grammar for Node', () => {
+  assert.equal(typeof grammar.evaluateBoardContent, 'function', 'evaluateBoardContent export missing');
+  assert.equal(typeof grammar.renderBoardRows, 'function', 'renderBoardRows export missing');
+});
+
+const fixtureFiles = fs.existsSync(FIXTURE_DIR)
+  ? fs.readdirSync(FIXTURE_DIR).filter((name) => name.endsWith('.json')).sort()
+  : [];
+
+test('board-grammar fixtures exist', () => {
+  assert.ok(fixtureFiles.length > 0, `no fixtures found in ${FIXTURE_DIR}`);
+});
+
+for (const file of fixtureFiles) {
+  test(`board-grammar fixture ${file}`, () => {
+    const fixture = JSON.parse(fs.readFileSync(path.join(FIXTURE_DIR, file), 'utf8'));
+    const { content, expected } = fixture;
+    const result = grammar.evaluateBoardContent(content);
+
+    assert.equal(result.isValid, expected.valid, `${file}: validity; errors=${JSON.stringify(result.errors)}`);
+    assert.equal(result.state, expected.state, `${file}: state`);
+
+    if (expected.reason === null) {
+      assert.equal(result.errors.length, 0, `${file}: expected no errors; got ${JSON.stringify(result.errors)}`);
+    } else {
+      assert.ok(
+        result.errors.some((error) => error.includes(expected.reason)),
+        `${file}: no error contains ${JSON.stringify(expected.reason)}; errors=${JSON.stringify(result.errors)}`
+      );
+    }
+
+    const placeholderHandles = ['X', 'O']
+      .filter((player) => result.warnings.some((w) => w.startsWith(`Missing or placeholder 'Player ${player}:' header`)))
+      .sort();
+    assert.deepEqual(placeholderHandles, [...expected.placeholderHandles].sort(), `${file}: placeholder handles`);
+
+    if (expected.grid) {
+      assert.deepEqual(JSON.parse(JSON.stringify(result.grid)), expected.grid, `${file}: grid`);
+    }
+  });
 }
-
-test('browser board evaluator accepts compact rows and returns the normalized grid', () => {
-  const evaluate = loadBoardEvaluator();
-  const result = evaluate('. . .\n. X .\n. . O\n');
-
-  assert.equal(result.isValid, true);
-  assert.equal(result.state, 'Waiting for X');
-  assert.deepEqual(JSON.parse(JSON.stringify(result.grid)), [
-    [' ', ' ', ' '],
-    [' ', 'X', ' '],
-    [' ', ' ', 'O'],
-  ]);
-});
-
-test('browser board evaluator rejects malformed compact spacing and cell marks', () => {
-  const evaluate = loadBoardEvaluator();
-  for (const board of [
-    '.  . .\n. . .\n. . .',
-    '. .\n. . .\n. . .',
-    '. . ?\n. . .\n. . .',
-    '. . .\n. . .\n. . .\nX X',
-    '. . .\n. . .\n. . .\nX X X X X',
-    '. . .\n. . .\nXX',
-    ' . . .\n. . .\n. . .',
-    '. . . \n. . .\n. . .',
-  ]) {
-    const result = evaluate(board);
-    assert.equal(result.isValid, false, board);
-    assert.equal(result.state, 'Invalid board', board);
-  }
-});
-
-test('browser board evaluator keeps historical pipe and bracket rows valid', () => {
-  const evaluate = loadBoardEvaluator();
-  const result = evaluate(' [ ] | [ ] | [ ]\n-----+-----+-----\n [ ] | [X] | [ ]\n-----+-----+-----\n [ ] | [ ] | [ ]');
-
-  assert.equal(result.isValid, true);
-  assert.equal(result.state, 'Waiting for O');
-  assert.equal(JSON.parse(JSON.stringify(result.grid))[1][1], 'X');
-});
-
-test('browser board evaluator prioritizes legacy rows with unpadded separators', () => {
-  const evaluate = loadBoardEvaluator();
-  const result = evaluate('X | O|X\nO|X|O\nX|O |X');
-
-  assert.equal(result.isValid, true);
-  assert.equal(result.state, 'X won');
-  assert.deepEqual(JSON.parse(JSON.stringify(result.grid))[0], ['X', 'O', 'X']);
-});
 
 test('board rows wrap each row of grid cells in a role="row" element', () => {
-  const renderBoardRows = loadApp().__renderBoardRows;
+  const { renderBoardRows } = grammar;
   const html = renderBoardRows([['X', ' ', 'O'], [' ', 'X', ' '], [' ', ' ', 'O']], [[0, 0]]);
 
   assert.equal((html.match(/role="row"/g) || []).length, 3);

@@ -1,0 +1,10 @@
+{
+  "description": "X completes the main diagonal",
+  "content": "X O .\nO X .\n. . X\n",
+  "expected": {
+    "valid": true,
+    "state": "X won",
+    "reason": null,
+    "placeholderHandles": ["O", "X"]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "description": "O has a line but X has one move more than O",
+  "content": "O O O\nX X .\nX X .\n",
+  "expected": {
+    "valid": false,
+    "state": "Invalid board",
+    "reason": "Player O won, but move counts",
+    "placeholderHandles": ["O", "X"]
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "description": "Historical bracket rows with dividers and no fence, one X move",
+  "content": " [] | [] | []\n-----+-----+-----\n [] | [X] | []\n-----+-----+-----\n [] | [] | []",
+  "expected": {
+    "valid": true,
+    "state": "Waiting for O",
+    "reason": null,
+    "placeholderHandles": ["O", "X"],
+    "grid": [
+      [" ", " ", " "],
+      [" ", "X", " "],
+      [" ", " ", " "]
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "description": "Empty compact board",
+  "content": ". . .\n. . .\n. . .\n",
+  "expected": {
+    "valid": true,
+    "state": "Ready for X",
+    "reason": null,
+    "placeholderHandles": ["O", "X"],
+    "grid": [
+      [" ", " ", " "],
+      [" ", " ", " "],
+      [" ", " ", " "]
+    ]
+  }
+}
