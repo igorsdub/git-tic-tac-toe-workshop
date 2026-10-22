@@ -13,7 +13,7 @@ import unittest
 SCRIPTS_DIR = Path(__file__).resolve().parent.parent / "scripts"
 sys.path.insert(0, str(SCRIPTS_DIR))
 
-from validate_board import validate_board, validate_file  # type: ignore
+from validate_board import validate_board, validate_file  # type: ignore  # noqa: E402 - needs sys.path set above
 
 
 class TestBoardValidator(unittest.TestCase):

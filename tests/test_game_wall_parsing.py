@@ -14,10 +14,9 @@ from pathlib import Path
 SCRIPTS_DIR = Path(__file__).resolve().parent.parent / "scripts"
 sys.path.insert(0, str(SCRIPTS_DIR))
 
-from game_wall_parser import (  # type: ignore
+from game_wall_parser import (  # type: ignore  # noqa: E402 - needs sys.path set above
     extract_repo_info,
     parse_registration_issue,
-    load_workshop_catalog,
     evaluate_game_board,
     evaluate_registered_board,
 )

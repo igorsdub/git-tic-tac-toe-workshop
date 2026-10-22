@@ -8,7 +8,6 @@ from unittest.mock import patch
 SCRIPTS_DIR = Path(__file__).resolve().parent.parent / "scripts"
 sys.path.insert(0, str(SCRIPTS_DIR))
 
-from game_wall_parser import load_workshop_catalog  # noqa: E402
 from sync_board_registry import (  # noqa: E402
     FEEDBACK_MARKER,
     build_match_snapshot,

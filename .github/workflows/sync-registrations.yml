@@ -11,6 +11,11 @@ on:
   issues:
     types: [opened, edited, labeled, closed, reopened]
   workflow_dispatch:
+    inputs:
+      force_deploy:
+        description: "Deploy Pages even if the sync made no change"
+        type: boolean
+        default: false
   schedule:
     - cron: "*/5 * * * *"
 
@@ -27,6 +32,8 @@ concurrency:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.publish.outputs.changed }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -37,26 +44,39 @@ jobs:
           fetch-depth: 0
           persist-credentials: true
 
-      - name: Set up Python 3
+      - name: Set up Python 3.12
         uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: "3.12"
 
       - name: Publish current registration and match snapshots
+        id: publish
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python3 scripts/publish_registry_snapshots.py
+          EVENT_NAME: ${{ github.event_name }}
+          FORCE_DEPLOY: ${{ inputs.force_deploy }}
+        run: |
+          set -euo pipefail
+          python3 scripts/publish_registry_snapshots.py | tee "$RUNNER_TEMP/publish.log"
+          changed=false
+          if grep -qx 'Published generated registration and match snapshots' "$RUNNER_TEMP/publish.log"; then changed=true; fi
+          # A push to main that touched docs/, scripts/ or this workflow must still redeploy the site.
+          if [ "$EVENT_NAME" = "push" ]; then changed=true; fi
+          if [ "$EVENT_NAME" = "workflow_dispatch" ] && [ "$FORCE_DEPLOY" = "true" ]; then changed=true; fi
+          echo "changed=$changed" >> "$GITHUB_OUTPUT"
 
       - name: Configure GitHub Pages
+        if: steps.publish.outputs.changed == 'true'
         uses: actions/configure-pages@v5
 
       - name: Upload Pages artifact
+        if: steps.publish.outputs.changed == 'true'
         uses: actions/upload-pages-artifact@v4
         with:
           path: docs/
 
   deploy:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && needs.sync.outputs.changed == 'true'
     needs: sync
     runs-on: ubuntu-latest
     permissions:
