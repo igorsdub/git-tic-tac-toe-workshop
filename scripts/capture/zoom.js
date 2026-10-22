@@ -3,40 +3,65 @@ const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
 
+// Timing (seconds). One zoom = EASE in (finishing at the click), HOLD after the
+// click, then EASE out. Zoom level and pan both follow smoothstep, 3x^2-2x^3.
 const ZOOM = 2;
-const LEAD = 0.3;
-const HOLD = 1.5;
-const EASE = 0.4;
-const PRE = 2;
+const EASE = 1.2; // zoom-in and zoom-out duration
+const HOLD = 3.0; // time held at full zoom after the click
+const PRE = 2; // lead-in kept before the first click
+const TAIL = 2; // video ends this long after the last zoom-out (or at recording end)
+// Clicks closer than this stay zoomed and the crop centre glides between them.
+const MERGE_GAP = HOLD + 2 * EASE;
 
-// Smooth 1 -> ZOOM -> 1 envelope for one click, as an ffmpeg expression in t.
-function envelope(c) {
-  const t0 = c.t / 1000 - LEAD;
-  const t1 = t0 + EASE;
-  const t2 = c.t / 1000 + HOLD;
-  const t3 = t2 + EASE;
-  const k = ZOOM - 1;
-  return `if(between(t,${t0},${t1}),${k}*(t-${t0})/${EASE},` +
-    `if(between(t,${t1},${t2}),${k},` +
-    `if(between(t,${t2},${t3}),${k}*(${t3}-t)/${EASE},0)))`;
+const ss = (a, d) => {
+  const x = `clip((t-(${a}))/${Math.max(d, 0.001)},0,1)`;
+  return `(${x}*${x}*(3-2*${x}))`;
+};
+
+// Seconds from the start of the output to the end of the last zoom-out.
+function zoomEnd(clicks) {
+  return clicks.length ? clicks[clicks.length - 1].t / 1000 + HOLD + EASE : 0;
 }
 
 // Returns an ffmpeg -vf filter string that zooms 2x centred on each click.
+// Click times (ms) are relative to the start of the trimmed output.
 function buildZoomFilter(clicks, { width = 1440, height = 900, fps = 30 } = {}) {
   const tail = `fps=${fps},scale=${width}:${height},format=yuv420p`;
-  // clicks are in source px; scale first so coordinates match the output size
   if (!clicks || clicks.length === 0) return tail;
-  // z(t) = 1 + sum of envelopes; centre follows the click nearest in time.
-  const z = `(1+${clicks.map(envelope).join('+')})`;
-  let cx = String(clicks[clicks.length - 1].x);
-  let cy = String(clicks[clicks.length - 1].y);
-  for (let i = clicks.length - 2; i >= 0; i--) {
-    const mid = (clicks[i].t + clicks[i + 1].t) / 2000;
-    cx = `if(lt(t,${mid}),${clicks[i].x},${cx})`;
-    cy = `if(lt(t,${mid}),${clicks[i].y},${cy})`;
+  const T = clicks.map((c) => c.t / 1000);
+  // Group clicks into clusters that share one zoom-in/zoom-out.
+  const clusters = [[0]];
+  for (let i = 1; i < T.length; i++) {
+    if (T[i] - T[i - 1] < MERGE_GAP) clusters[clusters.length - 1].push(i);
+    else clusters.push([i]);
   }
+  const k = ZOOM - 1;
+  const terms = clusters.map((cl) => {
+    const first = T[cl[0]];
+    const last = T[cl[cl.length - 1]];
+    return `(${ss(first - EASE, EASE)}-${ss(last + HOLD, EASE)})`;
+  });
+  const z = `(1+${k}*(${terms.join('+')}))`;
+  // Centre glides between clicks: during the zoom for close clicks, and while
+  // fully zoomed out between clusters.
+  const glides = [];
+  clusters.forEach((cl, ci) => {
+    for (let j = 0; j + 1 < cl.length; j++) glides.push([cl[j], cl[j + 1], T[cl[j]], T[cl[j + 1]]]);
+    if (ci + 1 < clusters.length) {
+      const i = cl[cl.length - 1];
+      const n = clusters[ci + 1][0];
+      glides.push([i, n, T[i] + HOLD + EASE, T[n] - EASE]);
+    }
+  });
+  const centre = (axis) => {
+    let e = String(clicks[0][axis]);
+    for (const [i, n, a, b] of glides) e += `+(${clicks[n][axis] - clicks[i][axis]})*${ss(a, b - a)}`;
+    return e;
+  };
+  const cx = centre('x');
+  const cy = centre('y');
   // crop() cannot vary its size per frame, so scale up per frame (eval=frame)
-  // and crop a fixed window whose offset follows the click.
+  // and crop a fixed window whose offset follows the centre, clamped to the frame.
   const sw = `${width}*(${z})`;
   const sh = `${height}*(${z})`;
   const x = `clip((${cx})*(${z})-${width}/2,0,${width}*((${z})-1))`;
@@ -68,7 +93,7 @@ function main(argv) {
     const out = path.join(REPO_ROOT, 'docs', 'images', 'setup', slug, `${slug}.mp4`);
     fs.mkdirSync(path.dirname(out), { recursive: true });
     const vf = buildZoomFilter(clicks, { width: VIEWPORT.width, height: VIEWPORT.height, fps: 30 });
-    const r = spawnSync('ffmpeg', ['-y', '-ss', String(start), '-i', raw, '-vf', vf, '-c:v', 'libx264', '-crf', '28', '-preset', 'medium', '-pix_fmt', 'yuv420p',
+    const r = spawnSync('ffmpeg', ['-y', '-ss', String(start), '-i', raw, '-vf', vf, '-t', String(zoomEnd(clicks) + TAIL), '-c:v', 'libx264', '-crf', '28', '-preset', 'medium', '-pix_fmt', 'yuv420p',
       '-movflags', '+faststart', '-an', out], { stdio: 'inherit' });
     if (r.status !== 0) { console.error(`ffmpeg failed for ${slug}`); process.exit(1); }
     console.log(`wrote ${out}`);
@@ -76,4 +101,4 @@ function main(argv) {
 }
 
 if (require.main === module) main(process.argv.slice(2));
-module.exports = { buildZoomFilter };
+module.exports = { buildZoomFilter, zoomEnd };

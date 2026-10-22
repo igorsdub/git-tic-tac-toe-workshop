@@ -32,6 +32,7 @@ npm run capture:video      # zoomed mp4 per step from the recordings
 - The saved login expires when GitHub logs you out or the session lapses. When `npm run capture:check` reports "signed out" or steps fail on login, rerun `npm run capture:login`.
 - Captures show your avatar and username.
 - Headless Chromium works for the Codespace editor; no `HEADLESS=0` needed. The new codespace opens in a new tab, which the script closes and reopens in the recorded page.
+- Video zoom timing (constants at the top of `zoom.js`): 2x zoom eases in over 1.2 s (reaching full zoom at the click), holds 3.0 s after the click, then eases out over 1.2 s, all with smoothstep (3x^2-2x^3) for both zoom level and pan. Clicks closer than 5.4 s (hold + 2 ease) stay zoomed and the crop centre glides smoothly from one click to the next, clamped to the frame. Each video starts 2 s before the first click and ends 2 s after the last zoom-out (or at the recording end).
 - `gh` without the `delete_repo` scope cannot delete the demo repo; `create-repo` then deletes it through the web UI (a 404 from `gh` means the repo is already gone). Deleting the repo also removes its codespaces, so `open-codespace` always starts clean.
 - The web editor currently offers only Agent mode in Copilot Chat (no Ask). `look-around` uses Ask when present and otherwise asks the question in Agent mode.
 - `gh codespace` needs the `codespace` scope; the scripts do not use it and stop the codespace through the web UI.
