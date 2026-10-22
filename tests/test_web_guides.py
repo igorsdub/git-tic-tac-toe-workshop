@@ -48,7 +48,7 @@ class TestWebGuides(unittest.TestCase):
         self.assertNotIn("setupTrack", by_id["2026-10-01-scda"])
         self.assertEqual(by_id["2026-11-06-sokedai"]["setupTrack"], "codespaces")
         self.assertEqual(by_id["2026-11-06-sokedai"]["surveyUrl"], "https://forms.gle/eo9pgChEGpdvdcQ67")
-        self.assertNotIn("setupTrack", by_id["2026-11-10-riken"])
+        self.assertEqual(by_id["2026-11-10-riken"]["setupTrack"], "codespaces")
         for item in catalog["workshops"]:
             if "setupTrack" in item:
                 self.assertIn(item["setupTrack"], {"codespaces", "local"})
@@ -59,8 +59,8 @@ class TestWebGuides(unittest.TestCase):
         catalog = json.loads((DOCS_DIR / "workshops.json").read_text(encoding="utf-8"))
         expected = {
             "2026-10-01-scda": ("SCDA Training Week", "2026-10-01"),
-            "2026-11-06-sokedai": ("Sokedai", "2026-11-06"),
-            "2026-11-10-riken": ("Riken", "2026-11-10"),
+            "2026-11-06-sokedai": ("SOKEDAI", "2026-11-06"),
+            "2026-11-10-riken": ("RIKEN", "2026-11-10"),
         }
         self.assertEqual(catalog["defaultWorkshopId"], "2026-11-06-sokedai")
         self.assertEqual({item["id"]: (item["name"], item["date"]) for item in catalog["workshops"]}, expected)
@@ -136,7 +136,7 @@ class TestWebGuides(unittest.TestCase):
 
     def test_quick_jump_links_target_real_guide_sections(self):
         for name, html, expected in (
-            ("learner", self.guide, ("turn", "rematch", "rewind")),
+            ("learner", self.guide, ("turn", "rematch")),
             ("setup", self.setup, ("step-survey", "step-account", "step-repo", "step-codespace", "step-look-around", "step-stop")),
         ):
             with self.subTest(page=name):
@@ -163,7 +163,9 @@ class TestWebGuides(unittest.TestCase):
             'id="setup-codespaces"',
             'data-setup-track="codespaces"',
             "This workshop has finished.",
-            "Setup instructions for this workshop will appear here.",
+            "Setup for this workshop is not published yet",
+            'id="setup-error"',
+            "Workshop details could not be loaded",
             'src="setup.js"',
         ):
             self.assertIn(requirement, self.setup)
@@ -192,22 +194,21 @@ class TestWebGuides(unittest.TestCase):
         self.assertEqual(expected, referenced)
 
     def test_learner_match_and_registration_use_the_workshop_contract(self):
-        for requirement in ("Source Control", "BOARD.txt", "match-01", "clean <code>main</code>", "Stage <code>BOARD.txt</code>", "complete the move manually"):
+        for requirement in ("Source Control", "BOARD.txt", "match-01", "clean <code>main</code>", "stage <code>BOARD.txt</code> with <strong>+</strong>", "make the move manually"):
             self.assertIn(requirement, self.guide)
         self.assertIn("Place X in the center of the board", self.guide)
-        ordered_sections = [self.guide.index(f'id="{section}"') for section in ("turn", "rematch", "rewind")]
+        ordered_sections = [self.guide.index(f'id="{section}"') for section in ("turn", "rematch")]
         self.assertEqual(ordered_sections, sorted(ordered_sections))
-        for heading in ("One move and repeat", "Rematch", "Rewind (optional)"):
+        for heading in ("One move and repeat", "Rematch"):
             self.assertIn(f"<h2>{heading}</h2>", self.guide)
-        self.assertEqual(self.guide.count('<section class="guide-section"'), 3)
+        self.assertEqual(self.guide.count('<section class="guide-section"'), 2)
         self.assertNotIn("Workshop setup", self.guide)
         self.assertNotIn("History as a time machine", self.guide)
-        self.assertIn("match-02</code> from clean <code>main</code>", self.guide)
-        self.assertIn("partner fetches <code>match-02</code>, checks it out, and pulls", self.guide)
+        self.assertIn("Start the next numbered match from clean <code>main</code>", self.guide)
+        self.assertNotIn("match-02", self.guide)
+        self.assertIn("partner fetches that branch, checks it out, and pulls", self.guide)
         self.assertIn("select an editing mode such as <strong>Agent</strong>", self.guide)
-        self.assertIn("match-01-rewind", self.guide)
-        self.assertIn("Checkout (Detached)", self.guide)
-        self.assertIn("Do not reset it or force-push", self.guide)
+        self.assertIn("follow the instructor’s Copilot demonstration", self.guide)
         for requirement in (
             "Register the shared repository once",
             "both player GitHub handles",
@@ -216,6 +217,8 @@ class TestWebGuides(unittest.TestCase):
             "separate cards",
         ):
             self.assertIn(requirement.casefold(), self.guide.casefold())
+        for old in ("Rewind", "rewind", "Checkout (Detached)", "force-push"):
+            self.assertNotIn(old, self.guide)
         self.assertNotIn("Register each match with its numbered branch", self.guide)
         self.assertNotIn("Existing branchless records cannot be replayed", self.guide)
 
@@ -225,7 +228,6 @@ class TestWebGuides(unittest.TestCase):
         facilitator = (REPO_ROOT / "FACILITATOR_GUIDE.md").read_text(encoding="utf-8")
         context = (REPO_ROOT / "CONTEXT.md").read_text(encoding="utf-8")
         for content in (learner, facilitator):
-            self.assertIn("workshop_id=2026-10-01-scda", content)
             self.assertIn("registers its shared repository once", content)
             self.assertIn("successful registration comment", content)
             self.assertIn("successful refresh", content)
@@ -235,6 +237,56 @@ class TestWebGuides(unittest.TestCase):
         self.assertIn("2026-10-01-scda", facilitator)
         self.assertIn("Register repository", context)
         self.assertIn("literal lowercase prefix `match`", context)
+
+    def test_turn_cycle_is_five_source_control_steps(self):
+        turn = self.guide[self.guide.index('id="turn"'):self.guide.index('id="rematch"')]
+        steps = re.findall(r"<li>(.*?)</li>", re.search(r"<ol>(.*?)</ol>", turn, re.S).group(1), re.S)
+        self.assertEqual(len(steps), 5)
+        for step, button in zip(steps, ("Pull", None, "+", "Commit", "Sync Changes")):
+            if button:
+                self.assertIn(f"<strong>{button}</strong>", step)
+        self.assertNotIn("Push", turn)
+        self.assertNotIn("push", turn)
+
+    def test_no_archived_workshop_in_page_html_and_fallbacks_use_default(self):
+        default = json.loads((DOCS_DIR / "workshops.json").read_text(encoding="utf-8"))["defaultWorkshopId"]
+        for path in DOCS_DIR.glob("*.html"):
+            self.assertNotIn("SCDA", path.read_text(encoding="utf-8"), path.name)
+        for name, html in (("wall", self.index), ("learner", self.guide)):
+            with self.subTest(page=name):
+                for link in re.findall(r"<a [^>]*data-workshop-registration[^>]*>", html):
+                    self.assertIn(f"workshop_id={default}", link)
+        form = (REPO_ROOT / ".github" / "ISSUE_TEMPLATE" / "register-game.yml").read_text(encoding="utf-8")
+        self.assertIn(f"placeholder: {default}", form)
+
+    def test_each_page_has_one_h1_and_no_skipped_heading_levels(self):
+        for name, html in (("wall", self.index), ("learner", self.guide), ("setup", self.setup)):
+            with self.subTest(page=name):
+                levels = [int(level) for level in re.findall(r"<h([1-6])[ >]", html)]
+                self.assertEqual(levels.count(1), 1)
+                self.assertEqual(levels[0], 1)
+                for previous, current in zip(levels, levels[1:]):
+                    self.assertLessEqual(current, previous + 1)
+
+    def test_pages_load_theme_init_first_and_avoid_dashboard_wording(self):
+        for name, html in (("wall", self.index), ("learner", self.guide), ("setup", self.setup)):
+            with self.subTest(page=name):
+                head = html[:html.index("</head>")]
+                self.assertIn('src="theme-init.js"', re.findall(r"<script[^>]*>", head)[0])
+                self.assertNotIn("dashboard", re.sub(r"<[^>]+>", "", html).lower())
+
+    def test_wall_filters_and_spinner_are_accessible(self):
+        self.assertNotIn('role="tablist"', self.index)
+        self.assertIn('aria-live="polite"', re.search(r'<div id="loading-indicator"[^>]*>', self.index).group(0))
+
+    def test_setup_has_skip_link_and_described_videos(self):
+        self.assertIn('<a class="skip-link" href="#main">Skip to content</a>', self.setup)
+        self.assertRegex(self.setup, r'<main[^>]*id="main"')
+        videos = re.findall(r"<video\b[^>]*>", self.setup)
+        self.assertEqual(len(videos), 4)
+        for tag in videos:
+            target = re.search(r'aria-describedby="([^"]+)"', tag).group(1)
+            self.assertIn(f'id="{target}"', self.setup)
 
     def test_guide_utility_keeps_theme_and_copy_fallback(self):
         self.assertIn("ttt_gamewall_theme", self.utils)
