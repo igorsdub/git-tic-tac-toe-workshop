@@ -45,6 +45,7 @@ function createStep(page, slug) {
   fs.mkdirSync(outDir, { recursive: true });
   const start = Date.now();
   const clicks = [];
+  const waits = [];
 
   function checkName(name) {
     if (!entry.screenshots.includes(name)) {
@@ -63,8 +64,8 @@ function createStep(page, slug) {
     await page.screenshot({ path: path.join(imgDir, name), mask: masks(), maskColor: '#222222' });
   }
 
-  async function click(locator, name) {
-    checkName(name);
+  async function perform(locator, action, { name, captureScreenshot = true, outlineMs = 400, afterActionMs = 0 } = {}) {
+    if (name && captureScreenshot) checkName(name);
     await locator.scrollIntoViewIfNeeded();
     await locator.evaluate((el) => {
       el.dataset.captureOutline = el.style.outline;
@@ -72,9 +73,9 @@ function createStep(page, slug) {
       el.style.outline = '3px solid #e5484d';
       el.style.outlineOffset = '3px';
     });
-    await page.waitForTimeout(400);
+    await page.waitForTimeout(outlineMs);
     const box = await locator.boundingBox();
-    await page.screenshot({ path: path.join(imgDir, name), mask: masks(), maskColor: '#222222' });
+    if (name && captureScreenshot) await page.screenshot({ path: path.join(imgDir, name), mask: masks(), maskColor: '#222222' });
     if (box) {
       clicks.push({
         t: Date.now() - start,
@@ -87,11 +88,17 @@ function createStep(page, slug) {
       el.style.outline = el.dataset.captureOutline || '';
       el.style.outlineOffset = el.dataset.captureOffset || '';
     }).catch(() => {});
-    await locator.click();
+    await action();
+    if (afterActionMs) await page.waitForTimeout(afterActionMs);
+  }
+
+  async function click(locator, name, { outlineMs = 400, afterClickMs = 0, captureScreenshot = true } = {}) {
+    return perform(locator, () => locator.click(), { name, outlineMs, afterActionMs: afterClickMs, captureScreenshot });
   }
 
   async function finish() {
     fs.writeFileSync(path.join(outDir, 'clicks.json'), JSON.stringify(clicks, null, 2));
+    fs.writeFileSync(path.join(outDir, 'waits.json'), JSON.stringify(waits, null, 2));
     const video = page.video();
     await page.context().close();
     if (!video) return null;
@@ -100,7 +107,13 @@ function createStep(page, slug) {
     return raw;
   }
 
-  return { shot, click, finish };
+  function recordWait(startMs, endMs) {
+    if (Number.isFinite(startMs) && Number.isFinite(endMs) && endMs > startMs) {
+      waits.push({ start: startMs - start, end: endMs - start, speed: 4 });
+    }
+  }
+
+  return { shot, click, perform, recordWait, finish };
 }
 
 module.exports = { AUTH_FILE, OUT_DIR, REPO_ROOT, VIEWPORT, launch, createStep, loadManifest };
