@@ -10,12 +10,23 @@
   let catalogLoad = null;
   let listenersInstalled = false;
 
-  function formatWorkshopOption(workshop) {
-    const [year, month, day] = String(workshop.date || '').split('-').map(Number);
-    if (!year || !month || !day) return `${String(workshop.name).toUpperCase()}`;
+  /**
+   * Format an ISO date (YYYY-MM-DD) with a short English month, independent of the
+   * viewer's time zone. Returns '' for a missing or malformed date.
+   * style 'year-first' gives "2026 Oct 1"; 'day-first' gives "1 Oct 2026".
+   */
+  function formatDate(iso, style = 'year-first') {
+    const [year, month, day] = String(iso || '').split('-').map(Number);
+    if (!year || !month || !day) return '';
     const monthName = new Intl.DateTimeFormat('en', { month: 'short', timeZone: 'UTC' })
       .format(new Date(Date.UTC(year, month - 1, 1)));
-    return `${year} ${monthName} ${day} · ${String(workshop.name).toUpperCase()}`;
+    return style === 'day-first' ? `${day} ${monthName} ${year}` : `${year} ${monthName} ${day}`;
+  }
+
+  function formatWorkshopOption(workshop) {
+    const name = String(workshop.name).toUpperCase();
+    const date = formatDate(workshop.date);
+    return date ? `${date} · ${name}` : name;
   }
 
   function navigationHref(href, workshopId) {
@@ -143,5 +154,6 @@
     get ready() { return loadCatalog(); },
     get selectedWorkshop() { return activeWorkshop; },
     selectWorkshop,
+    formatDate,
   };
 })();

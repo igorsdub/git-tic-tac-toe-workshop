@@ -13,7 +13,7 @@
     REPO_OWNER: 'igorsdub',
     REPO_NAME: 'git-tic-tac-toe-workshop',
     REFRESH_INTERVAL_SEC: 30,
-    STORAGE_KEY_THEME: 'ttt_gamewall_theme',
+    FETCH_TIMEOUT_MS: 10000,
   };
 
   const BOARD_REGISTRY_URL = `./board.json`;
@@ -192,7 +192,8 @@ State: Waiting for O
     activeWorkshopId: null,
     lastLoadError: null,
     currentFilter: 'all', // 'all', 'pending', 'finished', 'errors'
-    isLoading: false,
+    hasLoaded: false,
+    loadController: null,
     lastUpdated: null,
     timerId: null,
     historyByMatch: {},
@@ -224,93 +225,6 @@ State: Waiting for O
   // ==========================================
   // 1. Parsing & Board State Evaluation
   // ==========================================
-
-  /**
-   * Extracts repository owner and repository name from various GitHub URL formats.
-   */
-  function extractRepoInfo(urlOrText) {
-    if (!urlOrText) return null;
-    const match = urlOrText.match(/https?:\/\/github\.com\/([a-zA-Z0-9_\-\.]+)\/([a-zA-Z0-9_\-\.]+)/i);
-    if (!match) return null;
-
-    let owner = match[1].trim();
-    let repo = match[2].trim();
-
-    if (repo.endsWith('.git')) {
-      repo = repo.slice(0, -4);
-    }
-    repo = repo.replace(/\/+$/, '');
-
-    return {
-      owner,
-      repo,
-      cleanUrl: `https://github.com/${owner}/${repo}`,
-    };
-  }
-
-  /**
-   * Parses registration issue body and title.
-   */
-  function parseRegistrationIssue(body, title = '') {
-    const text = body || '';
-    let repoInfo = null;
-
-    // Check for "### Repository URL"
-    const formUrlMatch = text.match(/###\s*Repository\s*URL\s*\n+([^\n#]+)/i);
-    if (formUrlMatch) {
-      repoInfo = extractRepoInfo(formUrlMatch[1].trim());
-    }
-
-    // Fallback: check whole body
-    if (!repoInfo) {
-      repoInfo = extractRepoInfo(text);
-    }
-
-    // Fallback: check title
-    if (!repoInfo && title) {
-      repoInfo = extractRepoInfo(title);
-    }
-
-    if (!repoInfo) return null;
-
-    // Extract Player X
-    let playerX = null;
-    const xMatch = text.match(/###\s*Player\s*X(?:\s*Handle)?\s*\n+([^\n#]+)/i);
-    if (xMatch) {
-      const val = xMatch[1].trim().replace(/^@+/, '');
-      if (val && val !== '_No response_') playerX = val;
-    }
-
-    // Extract Player O
-    let playerO = null;
-    const oMatch = text.match(/###\s*Player\s*O(?:\s*Handle)?\s*\n+([^\n#]+)/i);
-    if (oMatch) {
-      const val = oMatch[1].trim().replace(/^@+/, '');
-      if (val && val !== '_No response_') playerO = val;
-    }
-
-    // Workshop assignment comes from the configured registry, never from a fallback label.
-    let eventId = null;
-    let workshopName = null;
-    const eventMatch = text.match(/###\s*(?:Workshop\s*Name|Event\s*ID|Session\s*Name|Event\s*ID\s*\/\s*Session\s*Name)\s*\n+([^\n#]+)/i);
-    if (eventMatch) {
-      const val = eventMatch[1].trim();
-      if (val && val !== '_No response_') {
-        eventId = val;
-        workshopName = val;
-      }
-    }
-
-    return {
-      owner: repoInfo.owner,
-      repo: repoInfo.repo,
-      repoUrl: repoInfo.cleanUrl,
-      playerX,
-      playerO,
-      eventId,
-      workshopName,
-    };
-  }
 
   /**
    * Helper to extract headers from board text.
@@ -626,20 +540,67 @@ State: Waiting for O
     }
   }
 
-  /** Load the generated branch snapshot; browser visitors make no GitHub API requests. */
-  async function loadGames() {
-    setLoading(true);
+  /** Reject with an AbortError as soon as `signal` aborts, even if `promise` never settles. */
+  function abortable(promise, signal) {
+    return new Promise((resolve, reject) => {
+      const abortError = () => new DOMException('The load was aborted.', 'AbortError');
+      if (signal.aborted) {
+        reject(abortError());
+        return;
+      }
+      const onAbort = () => reject(abortError());
+      signal.addEventListener('abort', onAbort, { once: true });
+      promise.then(resolve, reject).finally(() => signal.removeEventListener('abort', onAbort));
+    });
+  }
+
+  /**
+   * Load the generated branch snapshot; browser visitors make no GitHub API requests.
+   * A background tick is skipped while a load is running; a user-initiated load
+   * (`force`) supersedes it. The spinner shows on the first load only. Every step
+   * runs inside try so the in-flight guard is always cleared in finally.
+   */
+  async function loadGames({ force = false } = {}) {
+    if (state.loadController) {
+      if (!force) return;
+      state.loadController.abort();
+    }
+    const controller = new AbortController();
+    state.loadController = controller;
+    const isCurrent = () => state.loadController === controller;
+    // After every await: stop if a newer load took over, or if this one timed out.
+    const ensureCurrent = () => {
+      if (!isCurrent() || controller.signal.aborted) throw new DOMException('The load was aborted.', 'AbortError');
+    };
+    let timedOut = false;
+    let timer = null;
+    let showSpinner = false;
 
     try {
-      if (!state.catalog) await loadWorkshopCatalog();
+      timer = setTimeout(() => {
+        timedOut = true;
+        controller.abort();
+      }, CONFIG.FETCH_TIMEOUT_MS);
+      showSpinner = !state.hasLoaded;
+      if (showSpinner) setLoading(true);
+
+      if (!state.catalog) {
+        await abortable(loadWorkshopCatalog(), controller.signal);
+        ensureCurrent();
+      }
       if (state.useDemoData) {
         loadMockData();
         return;
       }
-      let response = await fetch(`${BOARD_REGISTRY_URL}?t=${Date.now()}`);
-      if (!response.ok) response = await fetch(`${RAW_BOARD_REGISTRY_URL}?t=${Date.now()}`);
+      let response = await fetch(`${BOARD_REGISTRY_URL}?t=${Date.now()}`, { signal: controller.signal });
+      ensureCurrent();
+      if (!response.ok) {
+        response = await fetch(`${RAW_BOARD_REGISTRY_URL}?t=${Date.now()}`, { signal: controller.signal });
+        ensureCurrent();
+      }
       if (!response.ok) throw new Error(`Match registry unavailable (HTTP ${response.status}).`);
       const records = await response.json();
+      ensureCurrent();
       if (!Array.isArray(records)) throw new Error('The match registry did not contain a list of records.');
 
       const registered = records.map((record) => MATCH_DATA.normalizeMatch(record));
@@ -655,13 +616,22 @@ State: Waiting for O
       updateWorkshopNotice();
       render();
     } catch (err) {
+      // A superseded load was aborted on purpose; the newer load owns the UI.
+      if (!isCurrent()) return;
       console.warn('Network or API failure fetching live games:', err);
       // Keep the last successful snapshot visible during a transient polling failure.
-      state.lastLoadError = err.message;
+      state.lastLoadError = timedOut
+        ? `Match registry did not respond within ${CONFIG.FETCH_TIMEOUT_MS / 1000} seconds.`
+        : err.message;
       updateWorkshopNotice();
       render();
     } finally {
-      setLoading(false);
+      if (timer) clearTimeout(timer);
+      if (isCurrent()) {
+        state.loadController = null;
+        state.hasLoaded = true;
+        if (showSpinner) setLoading(false);
+      }
     }
   }
 
@@ -743,28 +713,29 @@ State: Waiting for O
     return winningCells.some(([wr, wc]) => wr === r && wc === c);
   }
 
+  /** One role="row" wrapper per grid row; the wrapper is layout-neutral (display: contents). */
+  function renderBoardRows(grid, winningCells) {
+    let rowsHtml = '';
+    for (let r = 0; r < 3; r++) {
+      let cellsHtml = '';
+      for (let c = 0; c < 3; c++) {
+        const mark = grid && grid[r] ? grid[r][c] : ' ';
+        const markClass = mark === 'X' ? 'cell-x' : mark === 'O' ? 'cell-o' : 'cell-empty';
+        const winClass = isCellWinning(winningCells, r, c) ? 'cell-winning' : '';
+        cellsHtml += `<div class="board-cell ${markClass} ${winClass}" role="gridcell" aria-label="Row ${r + 1}, column ${c + 1}: ${mark === ' ' ? 'empty' : mark}" data-row="${r}" data-col="${c}">${mark !== ' ' ? mark : ''}</div>`;
+      }
+      rowsHtml += `<div class="board-row" role="row">${cellsHtml}</div>`;
+    }
+    return rowsHtml;
+  }
+
   function renderCard(game) {
     const badgeClass = getBadgeClass(game.state);
     const statusIcon = getStatusIcon(game.state);
     const playerX = cleanHandle(game.playerX);
     const playerO = cleanHandle(game.playerO);
 
-    // Board table cells
-    let cellsHtml = '';
-    for (let r = 0; r < 3; r++) {
-      for (let c = 0; c < 3; c++) {
-        const mark = game.grid && game.grid[r] ? game.grid[r][c] : ' ';
-        const isWin = isCellWinning(game.winningCells, r, c);
-        const markClass = mark === 'X' ? 'cell-x' : mark === 'O' ? 'cell-o' : 'cell-empty';
-        const winClass = isWin ? 'cell-winning' : '';
-
-        cellsHtml += `
-          <div class="board-cell ${markClass} ${winClass}" role="gridcell" aria-label="Row ${r + 1}, column ${c + 1}: ${mark === ' ' ? 'empty' : mark}" data-row="${r}" data-col="${c}">
-            ${mark !== ' ' ? mark : ''}
-          </div>
-        `;
-      }
-    }
+    const cellsHtml = renderBoardRows(game.grid, game.winningCells);
 
     // Errors HTML
     let errorsHtml = '';
@@ -864,15 +835,7 @@ State: Waiting for O
 
     const safeIndex = Math.max(0, Math.min(index, history.entries.length - 1));
     const entry = history.entries[safeIndex];
-    let cellsHtml = '';
-    for (let row = 0; row < 3; row++) {
-      for (let column = 0; column < 3; column++) {
-        const mark = entry.grid[row][column];
-        const winning = isCellWinning(entry.winningCells, row, column);
-        const markClass = mark === 'X' ? 'cell-x' : mark === 'O' ? 'cell-o' : 'cell-empty';
-        cellsHtml += `<div class="board-cell ${markClass} ${winning ? 'cell-winning' : ''}" role="gridcell" aria-label="Row ${row + 1}, column ${column + 1}: ${mark === ' ' ? 'empty' : mark}">${mark === ' ' ? '' : mark}</div>`;
-      }
-    }
+    const cellsHtml = renderBoardRows(entry.grid, entry.winningCells);
     const date = entry.date ? new Date(entry.date).toLocaleString() : 'Date unavailable';
     const content = `
       <div class="history-controls">
@@ -1046,14 +1009,8 @@ State: Waiting for O
   }
 
   function setLoading(loading) {
-    state.isLoading = loading;
-    if (loading) {
-      DOM.loadingIndicator.classList.remove('hidden');
-      if (DOM.liveIndicator) DOM.liveIndicator.classList.add('warning');
-    } else {
-      DOM.loadingIndicator.classList.add('hidden');
-      if (DOM.liveIndicator) DOM.liveIndicator.classList.remove('warning');
-    }
+    if (DOM.loadingIndicator) DOM.loadingIndicator.classList.toggle('hidden', !loading);
+    if (DOM.liveIndicator) DOM.liveIndicator.classList.toggle('warning', loading);
   }
 
   function showNotice(msg, type = 'notice-info') {
@@ -1070,52 +1027,38 @@ State: Waiting for O
   // 4. Auto-Refresh Polling
   // ==========================================
 
-  function startPolling() {
+  function stopPolling() {
     if (state.timerId) clearInterval(state.timerId);
+    state.timerId = null;
+  }
+
+  function startPolling() {
+    stopPolling();
+    if (document.hidden) return;
     state.timerId = setInterval(() => loadGames(), CONFIG.REFRESH_INTERVAL_SEC * 1000);
   }
 
-  // ==========================================
-  // 5. Theme Handling
-  // ==========================================
-
-  function initTheme() {
-    const savedTheme = localStorage.getItem(CONFIG.STORAGE_KEY_THEME);
-    if (savedTheme) {
-      setTheme(savedTheme);
-    } else {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      setTheme(prefersDark ? 'dark' : 'light');
+  /** Pause polling in hidden tabs; refresh immediately when the tab is visible again. */
+  function handleVisibilityChange() {
+    if (document.hidden) {
+      stopPolling();
+      return;
     }
-  }
-
-  function setTheme(theme) {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem(CONFIG.STORAGE_KEY_THEME, theme);
-    const logo = document.getElementById('brand-logo');
-    const favicon = document.getElementById('theme-favicon');
-    const asset = theme === 'dark' ? 'images/xo-logo-dark.svg' : 'images/xo-logo-light.svg';
-    if (logo) logo.setAttribute('src', asset);
-    if (favicon) favicon.setAttribute('href', asset);
-    if (DOM.themeToggle) {
-      DOM.themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
-    }
-  }
-
-  function toggleTheme() {
-    const current = document.documentElement.getAttribute('data-theme') || 'light';
-    setTheme(current === 'dark' ? 'light' : 'dark');
+    startPolling();
+    loadGames();
   }
 
   // ==========================================
-  // 6. Event Listeners
+  // 5. Event Listeners
   // ==========================================
 
   function setupEventListeners() {
-    // Theme toggle
-    if (DOM.themeToggle) {
-      DOM.themeToggle.addEventListener('click', toggleTheme);
+    // Theme toggle (window.Theme comes from theme-init.js and owns persistence)
+    if (DOM.themeToggle && window.Theme) {
+      DOM.themeToggle.addEventListener('click', () => window.Theme.toggle());
     }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     document.addEventListener('workshopchange', (event) => {
       if (!state.catalog || !state.catalog.workshops.some((workshop) => workshop.id === event.detail.workshopId)) return;
@@ -1183,17 +1126,16 @@ State: Waiting for O
         DOM.toggleDataModeBtn.textContent = state.useDemoData
           ? 'Switch to Live GitHub Data'
           : 'Switch to Demo Data';
-        loadGames();
+        loadGames({ force: true });
       });
     }
   }
 
   // ==========================================
-  // 7. Initialization
+  // 6. Initialization
   // ==========================================
 
   function init() {
-    initTheme();
     setupEventListeners();
     startPolling();
     loadGames();

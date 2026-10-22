@@ -17,6 +17,7 @@ class TestWebGuides(unittest.TestCase):
         self.setup = (DOCS_DIR / "setup.html").read_text(encoding="utf-8")
         self.guide = (DOCS_DIR / "guide.html").read_text(encoding="utf-8")
         self.utils = (DOCS_DIR / "guide-utils.js").read_text(encoding="utf-8")
+        self.theme_init = (DOCS_DIR / "theme-init.js").read_text(encoding="utf-8")
         self.context = (DOCS_DIR / "workshop-context.js").read_text(encoding="utf-8")
         self.styles = (DOCS_DIR / "styles.css").read_text(encoding="utf-8")
 
@@ -125,11 +126,15 @@ class TestWebGuides(unittest.TestCase):
             svg = (DOCS_DIR / "images" / asset).read_text(encoding="utf-8")
             self.assertIn(f'fill="{expected_fill}"', svg)
             self.assertIn(f'stroke="{expected_stroke}"', svg)
+        # theme-init.js owns the storage key and the logo/favicon swap; the page scripts only call it.
+        self.assertIn("ttt_gamewall_theme", self.theme_init)
+        self.assertIn("images/xo-logo-dark.svg", self.theme_init)
+        self.assertIn("images/xo-logo-light.svg", self.theme_init)
+        self.assertIn("logo.setAttribute('src',", self.theme_init)
+        self.assertIn("favicon.setAttribute('href', logoAsset)", self.theme_init)
         for script in (self.utils, (DOCS_DIR / "app.js").read_text(encoding="utf-8")):
-            self.assertIn("images/xo-logo-dark.svg", script)
-            self.assertIn("images/xo-logo-light.svg", script)
-            self.assertIn("setAttribute('src', asset)", script)
-            self.assertIn("setAttribute('href', asset)", script)
+            self.assertNotIn("ttt_gamewall_theme", script)
+            self.assertNotIn("xo-logo", script)
         self.assertIn(".brand-link:hover .brand-text h1", self.styles)
         self.assertIn('[data-theme="dark"] .brand-link:hover .brand-text h1', self.styles)
         self.assertIn(".nav-links {\n    width: auto;\n    order: 0;", self.styles)
@@ -288,11 +293,10 @@ class TestWebGuides(unittest.TestCase):
             target = re.search(r'aria-describedby="([^"]+)"', tag).group(1)
             self.assertIn(f'id="{target}"', self.setup)
 
-    def test_guide_utility_keeps_theme_and_copy_fallback(self):
-        self.assertIn("ttt_gamewall_theme", self.utils)
-        self.assertIn("navigator.clipboard.writeText", self.utils)
-        self.assertIn("execCommand", self.utils)
-        self.assertIn("Copy command to clipboard", self.utils)
+    def test_guide_utility_wires_theme_toggle(self):
+        self.assertNotIn("ttt_gamewall_theme", self.utils)
+        self.assertIn("getElementById('theme-toggle')", self.utils)
+        self.assertIn("window.Theme.toggle()", self.utils)
 
 
 if __name__ == "__main__":
