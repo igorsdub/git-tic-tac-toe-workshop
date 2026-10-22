@@ -89,7 +89,7 @@ Done: `npm test` passes; `node --check` on every file; no function in `docs/*.js
 
 #### WP6 CI and tooling
 Files owned: `.github/workflows/ci.yml` (new), `.github/workflows/sync-registrations.yml`, `.editorconfig`, `.nvmrc`, `package.json` scripts only, `pyproject.toml` (new, ruff config only).
-Do: CI workflow on pull_request and push to `main` running `npm test` with Chromium installed so the DOM tests run, Node 20, Python 3.12 (match `sync-registrations.yml` by raising it to 3.12 too); `ruff check` for `scripts/` and `tests/`; deploy job in the sync workflow skips when the sync commit made no change (output from the publish step); `.editorconfig` (2 spaces JS/HTML/CSS/JSON, 4 spaces Python, LF, final newline); `.nvmrc` 20.
+Do: CI workflow on pull_request and push to `main` running `npm test` with Chromium installed so the DOM tests run, Node 20, Python 3.12 (match `sync-registrations.yml` by raising it to 3.12 too); `ruff check` for `scripts/` and `tests/` with `[tool.ruff.lint] select = ["E4", "E7", "E9", "F"]` pinned in `pyproject.toml` (ruff 0.17 widened its defaults to 77 findings here; widening the set is a later decision); deploy job in the sync workflow skips when the sync commit made no change (output from the publish step); `.editorconfig` (2 spaces JS/HTML/CSS/JSON, 4 spaces Python, LF, final newline); `.nvmrc` 20.
 Don't: add branch protection; add ESLint or Prettier (keep tooling minimal); change Python source beyond what ruff flags as errors (report warnings, do not fix).
 Done: workflow YAML validates with `actionlint` if available, otherwise by a dry read; `npm test` still passes locally.
 
