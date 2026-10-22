@@ -69,6 +69,7 @@ function createStep(page, slug) {
   async function shot(locator, name) {
     checkName(name);
     if (locator) await locator.scrollIntoViewIfNeeded();
+    if (process.env.CAPTURE_VIDEO_ONLY === '1') return;
     await page.screenshot({ path: path.join(imgDir, name), mask: masks(), maskColor: '#222222' });
   }
 
@@ -83,7 +84,9 @@ function createStep(page, slug) {
     });
     await page.waitForTimeout(outlineMs);
     const box = await locator.boundingBox();
-    if (name && captureScreenshot) await page.screenshot({ path: path.join(imgDir, name), mask: masks(), maskColor: '#222222' });
+    if (name && captureScreenshot && process.env.CAPTURE_VIDEO_ONLY !== '1') {
+      await page.screenshot({ path: path.join(imgDir, name), mask: masks(), maskColor: '#222222' });
+    }
     if (box) {
       clicks.push({
         t: Date.now() - start,

@@ -1,5 +1,7 @@
 'use strict';
 const fs = require('fs');
+const crypto = require('crypto');
+const os = require('os');
 const path = require('path');
 const { spawnSync } = require('child_process');
 
@@ -12,6 +14,148 @@ const HOLD = 3.0; // time held at full zoom after the click
 const PRE = 2; // lead-in kept before the first click
 const MIN_HOLD = 1.0; // shortest hold when the next click comes soon
 const LOOK_AROUND = { intro: 3, action: 0.5, hold: 2.5, gap: 1 };
+
+// A storyboard is expressed in raw-recording time. Live segments preserve the
+// source, while freeze segments hold one source frame as the camera moves.
+// This lets the narrative clock move independently from the browser clock.
+function validateStoryboard(storyboard) {
+  if (!storyboard || storyboard.version !== 1 || !Array.isArray(storyboard.segments) || !storyboard.segments.length) {
+    throw new Error('Storyboard must have version 1 and a non-empty segments array.');
+  }
+  for (const [index, segment] of storyboard.segments.entries()) {
+    if (segment.kind === 'live') {
+      if (!(Number.isFinite(segment.start) && Number.isFinite(segment.end) && segment.start >= 0 && segment.end > segment.start)) {
+        throw new Error(`Storyboard live segment ${index} needs start >= 0 and end > start.`);
+      }
+      if (segment.speed !== undefined && ![1, 4].includes(segment.speed)) throw new Error(`Storyboard live segment ${index} speed must be 1 or 4.`);
+      if (segment.camera && (!(Number.isFinite(segment.camera.scale) && segment.camera.scale >= 1) ||
+        !segment.camera.focus || !Number.isFinite(segment.camera.focus.x) || !Number.isFinite(segment.camera.focus.y))) {
+        throw new Error(`Storyboard live segment ${index} camera needs scale >= 1 and a focus point.`);
+      }
+    } else if (segment.kind === 'freeze') {
+      if (!(Number.isFinite(segment.at) && segment.at >= 0 && Number.isFinite(segment.duration) && segment.duration > 0)) {
+        throw new Error(`Storyboard freeze segment ${index} needs at >= 0 and duration > 0.`);
+      }
+      const { focus, zoom } = segment;
+      if (!focus || !Number.isFinite(focus.x) || !Number.isFinite(focus.y) || !zoom ||
+        !Number.isFinite(zoom.from) || !Number.isFinite(zoom.to) || !Number.isFinite(zoom.ease) || zoom.ease <= 0) {
+        throw new Error(`Storyboard freeze segment ${index} needs focus and a valid zoom ramp.`);
+      }
+    } else {
+      throw new Error(`Storyboard segment ${index} has unsupported kind: ${segment.kind}`);
+    }
+    if (segment.label !== undefined && (typeof segment.label !== 'string' || !segment.label.trim())) {
+      throw new Error(`Storyboard segment ${index} label must be a non-empty string.`);
+    }
+  }
+  return storyboard;
+}
+
+function escapeXml(value) {
+  return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+}
+
+function buildStoryboardGraph(storyboard, { width = 1440, height = 900, fps = 30 } = {}) {
+  validateStoryboard(storyboard);
+  const chains = [];
+  const labels = [];
+  let labelInput = storyboard.segments.length;
+  storyboard.segments.forEach((segment, i) => {
+    const input = `[${i}:v]`;
+    const chain = [];
+    if (segment.kind === 'live') {
+      const speed = segment.speed || 1;
+      const scale = segment.camera?.scale || 1;
+      chain.push(`trim=start=${segment.start.toFixed(6)}:end=${segment.end.toFixed(6)}`);
+      chain.push(`setpts=(PTS-STARTPTS)/${speed}`);
+      chain.push(`fps=${fps}`);
+      if (scale > 1) {
+        const { focus } = segment.camera;
+        chain.push(`scale=w='${width}*${scale}':h='${height}*${scale}':flags=lanczos`);
+        chain.push(`crop=w=${width}:h=${height}:x='clip(${focus.x}*${scale}-${width}/2,0,iw-${width})':y='clip(${focus.y}*${scale}-${height}/2,0,ih-${height})'`);
+      } else {
+        chain.push(`scale=${width}:${height}:flags=lanczos`);
+      }
+    } else {
+      const { focus, zoom } = segment;
+      const z = `(${zoom.from}+(${zoom.to}-${zoom.from})*pow(clip(t/${zoom.ease},0,1),2)*(3-2*clip(t/${zoom.ease},0,1)))`;
+      const x = `clip(${focus.x}*${z}-${width}/2,0,iw-${width})`;
+      const y = `clip(${focus.y}*${z}-${height}/2,0,ih-${height})`;
+      chain.push(`trim=start=${segment.at.toFixed(6)}:end=${(segment.at + 0.05).toFixed(6)}`);
+      chain.push('setpts=PTS-STARTPTS');
+      chain.push('loop=loop=-1:size=1:start=0');
+      chain.push(`setpts=N/(${fps}*TB),trim=duration=${segment.duration.toFixed(6)}`);
+      chain.push(`scale=w='${width}*${z}':h='${height}*${z}':eval=frame:flags=lanczos`);
+      chain.push(`crop=w=${width}:h=${height}:x='${x}':y='${y}'`);
+      chain.push(`fps=${fps}`);
+    }
+    if (segment.label) {
+      const out = `v${i}label`;
+      chains.push(`${input}${chain.join(',')}[v${i}]`);
+      chains.push(`[v${i}][${labelInput++}:v]overlay=x=(W-w)/2:y=28:shortest=1[${out}]`);
+      labels.push(`[${out}]`);
+      return;
+    }
+    chain.push('format=yuv420p');
+    const out = `v${i}`;
+    chains.push(`${input}${chain.join(',')}[${out}]`);
+    labels.push(`[${out}]`);
+  });
+  chains.push(`${labels.join('')}concat=n=${labels.length}:v=1:a=0[outv]`);
+  return chains.join(';');
+}
+
+function renderStoryboard(raw, storyboardPath, outputPath, options = {}) {
+  const storyboard = validateStoryboard(JSON.parse(fs.readFileSync(storyboardPath, 'utf8')));
+  if (storyboard.rawSha256) {
+    const actual = crypto.createHash('sha256').update(fs.readFileSync(raw)).digest('hex');
+    if (actual !== storyboard.rawSha256) throw new Error(`Storyboard source mismatch for ${raw}; recapture or update the reviewed source timeline.`);
+  }
+  const { width = 1440, height = 900, fps = 30 } = options;
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'capture-storyboard-labels-'));
+  const args = ['-y', '-hide_banner', '-loglevel', 'error'];
+  for (let i = 0; i < storyboard.segments.length; i++) args.push('-i', raw);
+  try {
+    for (const [i, segment] of storyboard.segments.entries()) {
+      if (!segment.label) continue;
+      const svgPath = path.join(tempDir, `label-${i}.svg`);
+      const pngPath = path.join(tempDir, `label-${i}.png`);
+      const label = escapeXml(segment.label);
+      fs.writeFileSync(svgPath, `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="64"><rect x="0" y="0" width="800" height="64" rx="10" fill="#111" fill-opacity=".82"/><text x="400" y="43" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="600" fill="white">${label}</text></svg>`);
+      const converted = spawnSync('rsvg-convert', ['-o', pngPath, svgPath], { encoding: 'utf8' });
+      if (converted.status !== 0) throw new Error(`Storyboard labels require rsvg-convert: ${converted.stderr || converted.error}`);
+      args.push('-loop', '1', '-i', pngPath);
+    }
+  } catch (error) {
+    fs.rmSync(tempDir, { recursive: true, force: true });
+    throw error;
+  }
+  const graph = buildStoryboardGraph(storyboard, { width, height, fps });
+  const tempOutput = `${outputPath}.tmp.mp4`;
+  args.push('-filter_complex', graph, '-map', '[outv]', '-an', '-c:v', 'libx264', '-crf', '24', '-preset', 'medium',
+    '-pix_fmt', 'yuv420p', '-movflags', '+faststart', tempOutput);
+  const rendered = spawnSync('ffmpeg', args, { encoding: 'utf8' });
+  if (rendered.status !== 0) {
+    fs.rmSync(tempOutput, { force: true });
+    fs.rmSync(tempDir, { recursive: true, force: true });
+    throw new Error(`ffmpeg storyboard render failed: ${rendered.stderr || rendered.error}`);
+  }
+  const probe = spawnSync('ffprobe', ['-v', 'error', '-show_entries', 'stream=width,height', '-show_entries', 'format=duration', '-of', 'json', tempOutput], { encoding: 'utf8' });
+  if (probe.status !== 0) {
+    fs.rmSync(tempOutput, { force: true });
+    fs.rmSync(tempDir, { recursive: true, force: true });
+    throw new Error(`ffprobe rejected rendered storyboard: ${probe.stderr}`);
+  }
+  const details = JSON.parse(probe.stdout);
+  if (Number(details.streams?.[0]?.width) !== width || Number(details.streams?.[0]?.height) !== height || !(Number(details.format?.duration) > 0)) {
+    fs.rmSync(tempOutput, { force: true });
+    fs.rmSync(tempDir, { recursive: true, force: true });
+    throw new Error('Rendered storyboard failed output verification.');
+  }
+  fs.rmSync(tempDir, { recursive: true, force: true });
+  fs.renameSync(tempOutput, outputPath);
+  return Number(details.format.duration);
+}
 
 const ss = (a, d) => {
   const x = `clip((t-(${a}))/${Math.max(d, 0.001)},0,1)`;
@@ -99,6 +243,15 @@ function isCaptureComplete(slug, dir) {
   }
 }
 
+function isCreateCaptureComplete(dir) {
+  try {
+    const status = JSON.parse(fs.readFileSync(path.join(dir, 'capture-complete.json'), 'utf8'));
+    return status.status === 'complete' && status.repositoryVisible === true;
+  } catch {
+    return false;
+  }
+}
+
 function main(argv) {
   const { OUT_DIR, REPO_ROOT, VIEWPORT, loadManifest } = require('./lib');
   if (spawnSync('ffmpeg', ['-version'], { stdio: 'ignore' }).status !== 0) {
@@ -109,6 +262,30 @@ function main(argv) {
   for (const slug of slugs) {
     const dir = path.join(OUT_DIR, slug);
     const raw = path.join(dir, 'raw.webm');
+    const storyboardFile = path.join(__dirname, 'storyboards', `${slug}.json`);
+    if (fs.existsSync(storyboardFile)) {
+      if (slug === 'look-around' && !isCaptureComplete(slug, dir)) {
+        console.error('Look around capture is incomplete; refusing to render it as a finished video.');
+        process.exit(1);
+      }
+      if (slug === 'create-repo' && !isCreateCaptureComplete(dir)) {
+        console.error('Create repository capture is incomplete; refusing to render it as a finished video.');
+        process.exit(1);
+      }
+      if (!fs.existsSync(raw)) {
+        console.error(`Missing ${raw}; run \`npm run capture -- ${slug}\` first.`);
+        process.exit(1);
+      }
+      const out = path.join(REPO_ROOT, 'docs', 'images', 'setup', slug, `${slug}.mp4`);
+      try {
+        const duration = renderStoryboard(raw, storyboardFile, out, { width: VIEWPORT.width, height: VIEWPORT.height, fps: 30 });
+        console.log(`wrote ${out} (${duration.toFixed(2)}s)`);
+      } catch (error) {
+        console.error(error.message);
+        process.exit(1);
+      }
+      continue;
+    }
     const clicksFile = path.join(dir, 'clicks.json');
     if (!isCaptureComplete(slug, dir)) {
       console.error('Look around capture is incomplete; refusing to render it as a finished video.');
@@ -141,4 +318,4 @@ function main(argv) {
 }
 
 if (require.main === module) main(process.argv.slice(2));
-module.exports = { buildZoomFilter, buildWaitCompressionFilter, isCaptureComplete, zoomEnd };
+module.exports = { buildZoomFilter, buildStoryboardGraph, buildWaitCompressionFilter, isCaptureComplete, isCreateCaptureComplete, renderStoryboard, validateStoryboard, zoomEnd };

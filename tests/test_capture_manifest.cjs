@@ -90,3 +90,69 @@ test('the Look around renderer rejects a failed or incomplete Ask capture', (t) 
   assert.equal(isCaptureComplete('look-around', temp), true);
   assert.equal(isCaptureComplete('open-codespace', temp), true);
 });
+
+test('Create repository output requires a successful loaded-repository capture marker', (t) => {
+  const { isCreateCaptureComplete } = require(path.join(dir, 'zoom.js'));
+  const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'create-repo-completion-'));
+  t.after(() => fs.rmSync(temp, { recursive: true, force: true }));
+  assert.equal(isCreateCaptureComplete(temp), false);
+  fs.writeFileSync(path.join(temp, 'capture-complete.json'), JSON.stringify({ status: 'complete', repositoryVisible: false }));
+  assert.equal(isCreateCaptureComplete(temp), false);
+  fs.writeFileSync(path.join(temp, 'capture-complete.json'), JSON.stringify({ status: 'complete', repositoryVisible: true }));
+  assert.equal(isCreateCaptureComplete(temp), true);
+});
+
+test('storyboards preserve a focused camera across actions and transitions', () => {
+  const { buildStoryboardGraph, validateStoryboard } = require(path.join(dir, 'zoom.js'));
+  const storyboard = {
+    version: 1,
+    segments: [
+      { kind: 'freeze', at: 2, duration: 1.2, focus: { x: 950, y: 350 }, zoom: { from: 1, to: 2, ease: 1.2 } },
+      { kind: 'live', start: 2, end: 5, camera: { scale: 2, focus: { x: 950, y: 350 } } },
+      { kind: 'freeze', at: 5, duration: 1.2, focus: { x: 950, y: 350 }, zoom: { from: 2, to: 1, ease: 1.2 } },
+      { kind: 'live', start: 5, end: 6 },
+    ],
+  };
+  assert.equal(validateStoryboard(storyboard), storyboard);
+  const graph = buildStoryboardGraph(storyboard);
+  assert.match(graph, /scale=w='1440\*2':h='900\*2'/, 'focused live action stays at 2x');
+  assert.match(graph, /crop=w=1440:h=900:x='clip\(950\*2-1440\/2/, 'focused action crop stays centered on its target');
+  assert.match(graph, /scale=w='1440\*\(1\+\(2-1\)/, 'zoom-in begins at 1x and eases toward the focused action');
+  assert.match(graph, /scale=w='1440\*\(2\+\(1-2\)/, 'zoom-out starts from the live action camera');
+  assert.throws(() => validateStoryboard({ version: 1, segments: [{ kind: 'live', start: 0, end: 1, camera: { scale: 0.5, focus: { x: 1, y: 1 } } }] }), /camera needs scale/);
+});
+
+test('storyboard render keeps focused action pixels and compresses only a 4x wait', (t) => {
+  const { renderStoryboard } = require(path.join(dir, 'zoom.js'));
+  const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'capture-storyboard-'));
+  t.after(() => fs.rmSync(temp, { recursive: true, force: true }));
+  const raw = path.join(temp, 'raw.mp4');
+  const source = spawnSync('ffmpeg', [
+    '-hide_banner', '-loglevel', 'error', '-f', 'lavfi', '-i', 'color=c=black:s=1440x900:r=30:d=8',
+    '-vf', 'drawbox=x=900:y=300:w=100:h=100:color=red:t=fill', '-an', '-c:v', 'libx264', '-preset', 'ultrafast', '-pix_fmt', 'yuv420p', raw,
+  ], { encoding: 'utf8' });
+  assert.equal(source.status, 0, source.stderr);
+  const storyboard = path.join(temp, 'storyboard.json');
+  fs.writeFileSync(storyboard, JSON.stringify({ version: 1, segments: [
+    { kind: 'live', start: 0, end: 2, camera: { scale: 2, focus: { x: 950, y: 350 } } },
+    { kind: 'freeze', at: 2, duration: 1.2, focus: { x: 950, y: 350 }, zoom: { from: 2, to: 1, ease: 1.2 } },
+    { kind: 'live', start: 2, end: 6, speed: 4, label: 'Waiting for the workspace' },
+  ] }));
+  const output = path.join(temp, 'render.mp4');
+  const duration = renderStoryboard(raw, storyboard, output);
+  assert.ok(Math.abs(duration - 4.2) < 0.2, `2s + 1.2s freeze + 4s at 4x should render in 4.2s (got ${duration})`);
+  const frame = spawnSync('ffmpeg', [
+    '-hide_banner', '-loglevel', 'error', '-ss', '0.5', '-i', output,
+    '-vf', 'format=rgb24,crop=1:1:720:450', '-frames:v', '1', '-f', 'rawvideo', 'pipe:1',
+  ], { encoding: null });
+  assert.equal(frame.status, 0, frame.stderr?.toString());
+  assert.equal(frame.stdout.length, 3);
+  assert.ok(frame.stdout[0] > 180 && frame.stdout[1] < 80 && frame.stdout[2] < 80,
+    'the action frame keeps the red target centered under the focused camera');
+  const mismatched = path.join(temp, 'mismatched.json');
+  fs.writeFileSync(mismatched, JSON.stringify({ version: 1, rawSha256: '0'.repeat(64), segments: [
+    { kind: 'live', start: 0, end: 1 },
+  ] }));
+  assert.throws(() => renderStoryboard(raw, mismatched, output), /Storyboard source mismatch/,
+    'a reviewed timeline cannot silently render against a different recording');
+});
