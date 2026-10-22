@@ -122,7 +122,7 @@ Full `npm test` with Chromium; open each workshop URL (`?workshop=2026-11-06-sok
 ## Environment notes
 
 - `/opt/homebrew/bin/chromium` is a broken wrapper and makes the DOM tests skip silently. Run `CHROMIUM_BIN="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" npm test`.
-- Wave 1 branches: WP7 merged as c9142e0; WP2 `claude/charming-williamson-8121d5` (4470d71); WP3 `claude/mystifying-northcutt-7fc311` (d0ef727).
+- Wave 1 is merged into `main` as of 2779358 (WP7 c9142e0, WP2 ee1b2a2, WP3 fc77912, WP6 8379c1c, WP4 2779358); full suite and ruff green. Wave 2 may start.
 
 ## Session rules
 
