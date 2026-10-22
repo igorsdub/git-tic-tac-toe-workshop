@@ -89,6 +89,16 @@ function buildWaitCompressionFilter(waits, trimStartSeconds = 0) {
   return `setpts='PTS-(${saved})/TB'`;
 }
 
+function isCaptureComplete(slug, dir) {
+  if (slug !== 'look-around') return true;
+  try {
+    const status = JSON.parse(fs.readFileSync(path.join(dir, 'capture-complete.json'), 'utf8'));
+    return status.status === 'complete' && status.mode === 'Ask' && status.answerVisible === true;
+  } catch {
+    return false;
+  }
+}
+
 function main(argv) {
   const { OUT_DIR, REPO_ROOT, VIEWPORT, loadManifest } = require('./lib');
   if (spawnSync('ffmpeg', ['-version'], { stdio: 'ignore' }).status !== 0) {
@@ -100,6 +110,10 @@ function main(argv) {
     const dir = path.join(OUT_DIR, slug);
     const raw = path.join(dir, 'raw.webm');
     const clicksFile = path.join(dir, 'clicks.json');
+    if (!isCaptureComplete(slug, dir)) {
+      console.error('Look around capture is incomplete; refusing to render it as a finished video.');
+      process.exit(1);
+    }
     if (!fs.existsSync(raw) || !fs.existsSync(clicksFile)) {
       console.error(`Missing ${raw} or clicks.json; run \`npm run capture -- ${slug}\` first.`);
       process.exit(1);
@@ -127,4 +141,4 @@ function main(argv) {
 }
 
 if (require.main === module) main(process.argv.slice(2));
-module.exports = { buildZoomFilter, buildWaitCompressionFilter, zoomEnd };
+module.exports = { buildZoomFilter, buildWaitCompressionFilter, isCaptureComplete, zoomEnd };

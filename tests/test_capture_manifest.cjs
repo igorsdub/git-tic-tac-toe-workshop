@@ -71,3 +71,15 @@ test('4x wait retiming produces the expected rendered video duration', (t) => {
   assert.equal(probe.status, 0, probe.stderr);
   assert.ok(Math.abs(Number(probe.stdout.trim()) - 5) < 0.3, '8 seconds with a 4-second wait at 4x should render as 5 seconds');
 });
+
+test('the Look around renderer rejects a failed or incomplete Ask capture', (t) => {
+  const { isCaptureComplete } = require(path.join(dir, 'zoom.js'));
+  const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'look-around-completion-'));
+  t.after(() => fs.rmSync(temp, { recursive: true, force: true }));
+  assert.equal(isCaptureComplete('look-around', temp), false);
+  fs.writeFileSync(path.join(temp, 'capture-complete.json'), JSON.stringify({ status: 'complete', mode: 'Agent', answerVisible: true }));
+  assert.equal(isCaptureComplete('look-around', temp), false);
+  fs.writeFileSync(path.join(temp, 'capture-complete.json'), JSON.stringify({ status: 'complete', mode: 'Ask', answerVisible: true }));
+  assert.equal(isCaptureComplete('look-around', temp), true);
+  assert.equal(isCaptureComplete('open-codespace', temp), true);
+});

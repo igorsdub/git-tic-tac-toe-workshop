@@ -46,6 +46,8 @@ function createStep(page, slug) {
   const start = Date.now();
   const clicks = [];
   const waits = [];
+  const completionFile = path.join(outDir, 'capture-complete.json');
+  if (slug === 'look-around') fs.rmSync(completionFile, { force: true });
 
   function checkName(name) {
     if (!entry.screenshots.includes(name)) {
@@ -107,13 +109,17 @@ function createStep(page, slug) {
     return raw;
   }
 
+  function markComplete() {
+    fs.writeFileSync(completionFile, JSON.stringify({ status: 'complete', mode: 'Ask', answerVisible: true }, null, 2));
+  }
+
   function recordWait(startMs, endMs) {
     if (Number.isFinite(startMs) && Number.isFinite(endMs) && endMs > startMs) {
       waits.push({ start: startMs - start, end: endMs - start, speed: 4 });
     }
   }
 
-  return { shot, click, perform, recordWait, finish };
+  return { shot, click, perform, recordWait, markComplete, finish };
 }
 
 module.exports = { AUTH_FILE, OUT_DIR, REPO_ROOT, VIEWPORT, launch, createStep, loadManifest };

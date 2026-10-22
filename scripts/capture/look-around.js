@@ -81,6 +81,7 @@ async function run() {
   await removeWaitingLabel(page);
   await page.waitForTimeout(2500);
   await page.mouse.move(700, 300);
+  step.markComplete();
   return step.finish();
 }
 
