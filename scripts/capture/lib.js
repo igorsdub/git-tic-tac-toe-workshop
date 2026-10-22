@@ -11,6 +11,12 @@ function loadManifest() {
   return JSON.parse(fs.readFileSync(path.join(__dirname, 'captures.json'), 'utf8'));
 }
 
+function writeCaptureCompleteMarker(outDir, rawPath, answerText) {
+  if (!rawPath || !fs.existsSync(rawPath)) throw new Error('Cannot mark capture complete before its recording is finalized.');
+  if (typeof answerText !== 'string' || !answerText.trim()) throw new Error('Cannot mark capture complete without visible answer text.');
+  fs.writeFileSync(path.join(outDir, 'capture-complete.json'), JSON.stringify({ status: 'complete', mode: 'Ask', answerVisible: true }, null, 2));
+}
+
 function stepEntry(slug) {
   const entry = loadManifest().steps.find((s) => s.slug === slug);
   if (!entry) throw new Error(`Unknown step slug: ${slug}`);
@@ -45,6 +51,9 @@ function createStep(page, slug) {
   fs.mkdirSync(outDir, { recursive: true });
   const start = Date.now();
   const clicks = [];
+  const waits = [];
+  const completionFile = path.join(outDir, 'capture-complete.json');
+  if (slug === 'look-around') fs.rmSync(completionFile, { force: true });
 
   function checkName(name) {
     if (!entry.screenshots.includes(name)) {
@@ -60,11 +69,12 @@ function createStep(page, slug) {
   async function shot(locator, name) {
     checkName(name);
     if (locator) await locator.scrollIntoViewIfNeeded();
+    if (process.env.CAPTURE_VIDEO_ONLY === '1') return;
     await page.screenshot({ path: path.join(imgDir, name), mask: masks(), maskColor: '#222222' });
   }
 
-  async function click(locator, name) {
-    checkName(name);
+  async function perform(locator, action, { name, captureScreenshot = true, outlineMs = 400, afterActionMs = 0 } = {}) {
+    if (name && captureScreenshot) checkName(name);
     await locator.scrollIntoViewIfNeeded();
     await locator.evaluate((el) => {
       el.dataset.captureOutline = el.style.outline;
@@ -72,9 +82,11 @@ function createStep(page, slug) {
       el.style.outline = '3px solid #e5484d';
       el.style.outlineOffset = '3px';
     });
-    await page.waitForTimeout(400);
+    await page.waitForTimeout(outlineMs);
     const box = await locator.boundingBox();
-    await page.screenshot({ path: path.join(imgDir, name), mask: masks(), maskColor: '#222222' });
+    if (name && captureScreenshot && process.env.CAPTURE_VIDEO_ONLY !== '1') {
+      await page.screenshot({ path: path.join(imgDir, name), mask: masks(), maskColor: '#222222' });
+    }
     if (box) {
       clicks.push({
         t: Date.now() - start,
@@ -87,11 +99,17 @@ function createStep(page, slug) {
       el.style.outline = el.dataset.captureOutline || '';
       el.style.outlineOffset = el.dataset.captureOffset || '';
     }).catch(() => {});
-    await locator.click();
+    await action();
+    if (afterActionMs) await page.waitForTimeout(afterActionMs);
+  }
+
+  async function click(locator, name, { outlineMs = 400, afterClickMs = 0, captureScreenshot = true } = {}) {
+    return perform(locator, () => locator.click(), { name, outlineMs, afterActionMs: afterClickMs, captureScreenshot });
   }
 
   async function finish() {
     fs.writeFileSync(path.join(outDir, 'clicks.json'), JSON.stringify(clicks, null, 2));
+    fs.writeFileSync(path.join(outDir, 'waits.json'), JSON.stringify(waits, null, 2));
     const video = page.video();
     await page.context().close();
     if (!video) return null;
@@ -100,7 +118,17 @@ function createStep(page, slug) {
     return raw;
   }
 
-  return { shot, click, finish };
+  function markComplete(rawPath, answerText) {
+    writeCaptureCompleteMarker(outDir, rawPath, answerText);
+  }
+
+  function recordWait(startMs, endMs) {
+    if (Number.isFinite(startMs) && Number.isFinite(endMs) && endMs > startMs) {
+      waits.push({ start: startMs - start, end: endMs - start, speed: 4 });
+    }
+  }
+
+  return { shot, click, perform, recordWait, markComplete, finish };
 }
 
-module.exports = { AUTH_FILE, OUT_DIR, REPO_ROOT, VIEWPORT, launch, createStep, loadManifest };
+module.exports = { AUTH_FILE, OUT_DIR, REPO_ROOT, VIEWPORT, launch, createStep, loadManifest, writeCaptureCompleteMarker };

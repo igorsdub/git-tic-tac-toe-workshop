@@ -42,6 +42,9 @@ jobs:
           # Fail early if Playwright did not install a usable browser.
           test -x "$(node -e "console.log(require('playwright').chromium.executablePath())")"
 
+      - name: Install video rendering tools
+        run: sudo apt-get update && sudo apt-get install --yes ffmpeg librsvg2-bin
+
       - name: Run tests
         run: npm test
 

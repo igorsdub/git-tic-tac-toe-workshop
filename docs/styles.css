@@ -1629,6 +1629,11 @@ a.register-btn:focus-visible {
 .step-video-wrap { border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 0.5rem 0.75rem; max-width: 100%; }
 .step-video-wrap summary { cursor: pointer; font-weight: 600; }
 .step-video { display: block; width: 100%; max-width: 100%; margin-top: 0.6rem; border-radius: var(--radius-md); }
+.step-video-inline { padding: 0.65rem; }
+.step-video-inline .step-video { margin-top: 0; }
+.step-pictures { border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 0.65rem 0.85rem; }
+.step-pictures summary { cursor: pointer; font-weight: 600; color: var(--text-primary); }
+.step-pictures[open] { display: flex; flex-direction: column; gap: 0.9rem; }
 [hidden] { display: none !important; }
 @media (max-width: 600px) { .setup-step { padding: 1rem 0; } }
 

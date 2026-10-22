@@ -1,5 +1,7 @@
 'use strict';
 const { spawnSync } = require('child_process');
+const fs = require('fs');
+const path = require('path');
 const { launch, createStep } = require('./lib');
 
 const SLUG = 'create-repo';
@@ -48,11 +50,14 @@ async function deleteExisting(page) {
 }
 
 async function run() {
+  const outDir = path.join(__dirname, 'out', SLUG);
+  fs.mkdirSync(outDir, { recursive: true });
+  fs.rmSync(path.join(outDir, 'capture-complete.json'), { force: true });
   const context = await launch({ headless: true, recordVideo: true, slug: SLUG });
   const page = context.pages()[0] || (await context.newPage());
   const step = createStep(page, SLUG);
   await page.goto('https://github.com');
-  await deleteExisting(page);
+  if (process.env.CAPTURE_SKIP_DELETE !== '1') await deleteExisting(page);
   await page.goto(TEMPLATE_URL);
   await step.shot(null, '01-template-page.png');
   await step.click(SELECTORS.useTemplate(page), '02-use-this-template.png');
@@ -64,9 +69,29 @@ async function run() {
   await step.click(SELECTORS.visibility(page), '05-visibility-public.png');
   await SELECTORS.publicOption(page).click();
   await step.click(SELECTORS.create(page), '06-create-repository.png');
-  await page.waitForURL(new RegExp(`/${REPO}(\\?|$|/)`), { timeout: 60000 });
-  await page.waitForLoadState('domcontentloaded');
-  return step.finish();
+  // GitHub may leave the creation form in place after the repository exists.
+  // Preserve the visible creation state briefly, then open the resulting repo.
+  await page.waitForTimeout(3500);
+  const login = await page.locator('meta[name="user-login"]').getAttribute('content');
+  const repoUrl = `https://github.com/${login}/${REPO}`;
+  let created = false;
+  for (let attempt = 0; attempt < 60; attempt++) {
+    const status = spawnSync('gh', ['repo', 'view', `${login}/${REPO}`], { stdio: 'ignore' }).status;
+    if (status === 0) { created = true; break; }
+    await page.waitForTimeout(1000);
+  }
+  if (!created) throw new Error(`GitHub did not finish creating ${login}/${REPO} within 60 seconds.`);
+  if (!page.url().replace(/\/$/, '').endsWith(`/${REPO}`)) {
+    await page.goto(repoUrl, { waitUntil: 'domcontentloaded', timeout: 90000 });
+  }
+  await page.getByRole('heading', { name: REPO, exact: true }).waitFor({ timeout: 90000 });
+  await page.getByRole('link', { name: 'BOARD.txt', exact: true }).waitFor({ timeout: 90000 });
+  // Leave a clean, full-screen loaded-repository establishing view at the tail
+  // of the recording so the storyboard can show navigation completing.
+  await page.waitForTimeout(3000);
+  const raw = await step.finish();
+  fs.writeFileSync(path.join(outDir, 'capture-complete.json'), JSON.stringify({ status: 'complete', repositoryVisible: true }, null, 2));
+  return raw;
 }
 
 if (require.main === module) {

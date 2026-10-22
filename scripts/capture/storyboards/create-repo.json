@@ -1,0 +1,166 @@
+{
+  "version": 1,
+  "segments": [
+    {
+      "kind": "freeze",
+      "at": 8,
+      "duration": 3,
+      "focus": {
+        "x": 720,
+        "y": 450
+      },
+      "zoom": {
+        "from": 1,
+        "to": 1,
+        "ease": 1.2
+      }
+    },
+    {
+      "kind": "freeze",
+      "at": 8.45,
+      "duration": 0.5,
+      "focus": {
+        "x": 1260,
+        "y": 134
+      },
+      "zoom": {
+        "from": 1,
+        "to": 1,
+        "ease": 0.5
+      }
+    },
+    {
+      "kind": "freeze",
+      "at": 8.45,
+      "duration": 1.2,
+      "focus": {
+        "x": 1260,
+        "y": 134
+      },
+      "zoom": {
+        "from": 1,
+        "to": 1.45,
+        "ease": 1.2
+      }
+    },
+    {
+      "kind": "freeze",
+      "at": 8.45,
+      "duration": 0.5,
+      "focus": {
+        "x": 1260,
+        "y": 134
+      },
+      "zoom": {
+        "from": 1.45,
+        "to": 1.45,
+        "ease": 0.5
+      }
+    },
+    {
+      "kind": "live",
+      "start": 8.65,
+      "end": 10.76,
+      "camera": {
+        "scale": 1.45,
+        "focus": {
+          "x": 1260,
+          "y": 134
+        }
+      }
+    },
+    {
+      "kind": "freeze",
+      "at": 10.76,
+      "duration": 1.2,
+      "focus": {
+        "x": 1260,
+        "y": 134
+      },
+      "zoom": {
+        "from": 1.45,
+        "to": 1,
+        "ease": 1.2
+      }
+    },
+    {
+      "kind": "live",
+      "start": 10.76,
+      "end": 10.9
+    },
+    {
+      "kind": "freeze",
+      "at": 10.9,
+      "duration": 0.5,
+      "focus": {
+        "x": 900,
+        "y": 620
+      },
+      "zoom": {
+        "from": 1,
+        "to": 1,
+        "ease": 0.5
+      }
+    },
+    {
+      "kind": "freeze",
+      "at": 10.9,
+      "duration": 1.2,
+      "focus": {
+        "x": 900,
+        "y": 620
+      },
+      "zoom": {
+        "from": 1,
+        "to": 1.35,
+        "ease": 1.2
+      }
+    },
+    {
+      "kind": "freeze",
+      "at": 10.9,
+      "duration": 0.5,
+      "focus": {
+        "x": 900,
+        "y": 620
+      },
+      "zoom": {
+        "from": 1.35,
+        "to": 1.35,
+        "ease": 0.5
+      }
+    },
+    {
+      "kind": "live",
+      "start": 11.26,
+      "end": 14.3,
+      "camera": {
+        "scale": 1.35,
+        "focus": {
+          "x": 900,
+          "y": 620
+        }
+      }
+    },
+    {
+      "kind": "freeze",
+      "at": 14.3,
+      "duration": 1.2,
+      "focus": {
+        "x": 900,
+        "y": 620
+      },
+      "zoom": {
+        "from": 1.35,
+        "to": 1,
+        "ease": 1.2
+      }
+    },
+    {
+      "kind": "live",
+      "start": 15.5,
+      "end": 18.85
+    }
+  ],
+  "rawSha256": "50e0c71b150ea4ad0dcf63d1efb2f5d83dfabf31beb2a202fbe5fc823ccd469f"
+}
