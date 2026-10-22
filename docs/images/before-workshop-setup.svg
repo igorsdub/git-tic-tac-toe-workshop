@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="280" viewBox="0 0 1120 280" role="img" aria-labelledby="title description">
+  <title id="title">Before the workshop: account, repository, Codespace</title>
+  <desc id="description">Three numbered cards show the setup stages: sign in to GitHub, create your own copy of the game repository, and open it in a Codespace with VS Code.</desc>
+  <defs>
+    <style>
+      .card { fill: #fff; stroke: #d0d7de; stroke-width: 2; }
+      .number { font: 700 26px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #fff; text-anchor: middle; }
+      .heading { font: 700 27px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #1f2328; }
+      .detail { font: 18px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #59636e; }
+      .icon { stroke: #1f2328; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+      .icon-fill { fill: #1f2328; }
+    </style>
+  </defs>
+  <rect x="1" y="1" width="1118" height="278" rx="18" fill="#f6f8fa" stroke="#d0d7de" stroke-width="2"/>
+
+  <g transform="translate(18 20)">
+    <rect class="card" width="344" height="240" rx="16"/>
+    <circle cx="34" cy="36" r="24" fill="#0969da"/><text class="number" x="34" y="45">1</text>
+    <circle cx="172" cy="85" r="24" class="icon"/>
+    <path d="M126 151c5-24 21-36 46-36s41 12 46 36" class="icon"/>
+    <text class="heading" x="172" y="191" text-anchor="middle">GitHub account</text>
+    <text class="detail" x="172" y="218" text-anchor="middle">Sign in with your own account</text>
+  </g>
+
+  <g transform="translate(388 20)">
+    <rect class="card" width="344" height="240" rx="16"/>
+    <circle cx="34" cy="36" r="24" fill="#bf4b1a"/><text class="number" x="34" y="45">2</text>
+    <path d="M129 65h39l13 15h52v75H129z" class="icon"/>
+    <path d="M148 100h66M148 120h51" class="icon"/>
+    <text class="heading" x="172" y="191" text-anchor="middle">Your repository</text>
+    <text class="detail" x="172" y="218" text-anchor="middle">A personal copy of the game</text>
+  </g>
+
+  <g transform="translate(758 20)">
+    <rect class="card" width="344" height="240" rx="16"/>
+    <circle cx="34" cy="36" r="24" fill="#238636"/><text class="number" x="34" y="45">3</text>
+    <rect x="112" y="58" width="120" height="78" rx="8" class="icon"/>
+    <text class="heading" x="172" y="187" text-anchor="middle">Codespace + VS Code</text>
+    <text class="detail" x="172" y="214" text-anchor="middle">Your editor runs in the browser</text>
+  </g>
+</svg>

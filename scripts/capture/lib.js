@@ -52,10 +52,15 @@ function createStep(page, slug) {
     }
   }
 
+  const masks = () => [
+    page.locator('header [data-testid="user-menu-button"]'),
+    page.locator('header img.avatar'),
+  ];
+
   async function shot(locator, name) {
     checkName(name);
     if (locator) await locator.scrollIntoViewIfNeeded();
-    await page.screenshot({ path: path.join(imgDir, name) });
+    await page.screenshot({ path: path.join(imgDir, name), mask: masks(), maskColor: '#222222' });
   }
 
   async function click(locator, name) {
@@ -69,7 +74,7 @@ function createStep(page, slug) {
     });
     await page.waitForTimeout(400);
     const box = await locator.boundingBox();
-    await page.screenshot({ path: path.join(imgDir, name) });
+    await page.screenshot({ path: path.join(imgDir, name), mask: masks(), maskColor: '#222222' });
     if (box) {
       clicks.push({
         t: Date.now() - start,
