@@ -28,7 +28,7 @@ This plan turns the accepted decisions in [the design note](workshop-isolation-d
 
 ## 4. Update the learner and facilitator contract
 
-- Update `LEARNER_GUIDE.md`, `FACILITATOR_GUIDE.md`, `README.md`, and `CONTEXT.md` to say that a pair registers its repository once for a workshop, match branches beginning with `match` appear automatically, and each card represents one branch. Remove instructions to register every branch or provide a branch in the form.
+- Update `LEARNER_GUIDE.md`, `FACILITATOR_GUIDE.md`, `README.md`, and `CONTEXT.md` to say that a pair registers its repository once for a workshop, match branches beginning with `match` appear automatically, and each card represents one branch. Remove instructions to register every branch or provide a branch in the form. (since merged into GLOSSARY.md)
 - Explain that a successful registration comment confirms the repository/workshop link; the dashboard card appears after a successful refresh finds a matching branch. Include the workshop-specific registration link in the relevant guides.
 - Keep the legacy migration note accurate: five distinct SCDA repositories map to `2026-10-01-scda`; the unclassified record remains preserved and excluded pending review.
 
