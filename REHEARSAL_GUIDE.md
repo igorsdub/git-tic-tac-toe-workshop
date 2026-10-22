@@ -1,6 +1,6 @@
 # Workshop Rehearsal Guide
 
-> **Current status (2026-10-20):** The uppercase-board starter and branch-aware Game Wall are published. All six records currently in the Game Wall lack numbered match branches and show migration errors until re-registered. The complete two-account rehearsal remains incomplete; see the [original rehearsal evidence](docs/rehearsal-evidence-2026-10-20.md) and [compact-board addendum](docs/rehearsal-evidence-compact-board-2026-10-20.md) before treating this checklist as passed.
+> **Current status (2026-10-20):** The uppercase-board starter and branch-aware Game Wall are published. All six records currently in the Game Wall lack numbered match branches and show migration errors until re-registered. The complete two-account rehearsal remains incomplete; see the [original rehearsal evidence](planning/rehearsal-evidence-2026-10-20.md) and [compact-board addendum](planning/rehearsal-evidence-compact-board-2026-10-20.md) before treating this checklist as passed.
 
 ## Rehearse the participant path
 
@@ -30,7 +30,7 @@ Before using the dashboard demo, verify the deployed site against a public match
 - [ ] Brief helpers on the 120-minute schedule, the protected 25-minute Copilot rematch, and the recovery steps below.
 - [ ] Keep the [facilitator guide](FACILITATOR_GUIDE.md), [learner guide](LEARNER_GUIDE.md), and [pre-session checklist](PRE_SESSION_CHECK.md) available.
 
-Do not mark this rehearsal complete based on account settings or local tests. The current evidence and unresolved access requirements are in [the rehearsal record](docs/rehearsal-evidence-2026-10-20.md).
+Do not mark this rehearsal complete based on account settings or local tests. The current evidence and unresolved access requirements are in [the rehearsal record](planning/rehearsal-evidence-2026-10-20.md).
 
 ## Support and recovery
 

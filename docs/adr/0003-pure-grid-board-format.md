@@ -1,5 +1,7 @@
 # 3. Pure grid board format without in-file metadata or turn instructions
 
+Status: superseded by ADR 0004
+
 ## Context
 Originally, `board.md` included top-level title headings, `Player X / O:` metadata headers, a `State:` line (e.g. `State: Waiting for O`), and inline move instructions. Learners frequently encountered friction updating the `State:` line on every turn, causing syntax errors, merge conflict overhead, and confusion between gameplay moves and status reporting. Furthermore, the Game Wall and validator already compute turn parity, active player turn, and win conditions directly from the grid marks.
 

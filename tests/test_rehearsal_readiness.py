@@ -23,9 +23,9 @@ class TestDocumentationReadiness(unittest.TestCase):
         "docs/index.html",
         "docs/setup.html",
         "docs/guide.html",
-        "docs/delivery-status-2026-10-20.md",
-        "docs/rehearsal-evidence-2026-10-20.md",
-        "docs/rehearsal-evidence-compact-board-2026-10-20.md",
+        "planning/delivery-status-2026-10-20.md",
+        "planning/rehearsal-evidence-2026-10-20.md",
+        "planning/rehearsal-evidence-compact-board-2026-10-20.md",
         "template/README.md",
         "template/BOARD.txt",
         "template/AGENTS.md",
@@ -75,7 +75,7 @@ class TestDocumentationReadiness(unittest.TestCase):
             "docs/index.html",
             "docs/setup.html",
             "docs/guide.html",
-            "docs/delivery-status-2026-10-20.md",
+            "planning/delivery-status-2026-10-20.md",
         )
         for target in required:
             with self.subTest(target=target):
@@ -132,7 +132,7 @@ class TestApprovedWorkshopPath(unittest.TestCase):
         self.assertIn('"game-registration" in', sync_script)
 
     def test_rehearsal_record_marks_unrun_acceptance_and_draft_survey(self):
-        evidence = (REPO_ROOT / "docs/rehearsal-evidence-2026-10-20.md").read_text(encoding="utf-8")
+        evidence = (REPO_ROOT / "planning/rehearsal-evidence-2026-10-20.md").read_text(encoding="utf-8")
         self.assertIn("Failed game sequence", evidence)
         self.assertIn("Source Control manual match", evidence)
         self.assertIn("not verified", evidence)
