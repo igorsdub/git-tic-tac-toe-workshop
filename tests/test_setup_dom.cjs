@@ -112,6 +112,18 @@ test('codespaces track renders six steps and checkbox state persists per worksho
     document.body.dataset.result = six && stored && survived && localStorage.getItem('ttt_setup_ws-code_step-repo') === null ? 'PASS' : 'FAIL';`);
 });
 
+test('Look around pilot player is inline and its picture instructions start collapsed', opts, () => {
+  runSetup('', `
+    const player = document.querySelector('#step-look-around video.step-video-pilot');
+    const pictures = document.querySelector('#step-look-around details.step-pictures');
+    const ok = Boolean(player && player.controls && player.muted && player.loop && player.playsInline
+      && !player.hasAttribute('autoplay') && pictures && !pictures.open
+      && !document.querySelector('#step-look-around .step-video-inline summary')
+      && pictures.querySelector('ol')
+      && document.querySelector('#step-look-around .step-shot img[alt="Copilot Chat in Agent mode, with no question entered in the message box"]'));
+    document.body.dataset.result = ok ? 'PASS' : 'FAIL';`);
+});
+
 test('unknown workshop falls back to the default', opts, () => {
   runSetup('?workshop=nope', `
     document.body.dataset.result = vis('setup-codespaces')
@@ -120,9 +132,9 @@ test('unknown workshop falls back to the default', opts, () => {
 
 test('missing images and videos are hidden, not broken', opts, () => {
   runSetup('', `
-    for (let i = 0; i < 40 && document.querySelectorAll('figure.step-shot:not([hidden]), details.step-video-wrap:not([hidden])').length; i += 1) await wait(100);
+    for (let i = 0; i < 40 && document.querySelectorAll('figure.step-shot:not([hidden]), .step-video-wrap:not([hidden])').length; i += 1) await wait(100);
     const figures = Array.from(document.querySelectorAll('figure.step-shot'));
-    const wraps = Array.from(document.querySelectorAll('details.step-video-wrap'));
+    const wraps = Array.from(document.querySelectorAll('.step-video-wrap'));
     const ok = figures.length > 0 && figures.every((f) => f.hidden) && wraps.length === 4 && wraps.every((w) => w.hidden);
     document.body.dataset.result = ok ? 'PASS' : 'FAIL';`);
 });
@@ -133,7 +145,7 @@ test('a video whose file exists stays visible on a transient error', opts, () =>
     const videos = Array.from(document.querySelectorAll('video.step-video'));
     videos.forEach((v) => v.dispatchEvent(new Event('error')));
     await wait(300);
-    const wraps = Array.from(document.querySelectorAll('details.step-video-wrap'));
+    const wraps = Array.from(document.querySelectorAll('.step-video-wrap'));
     const ok = wraps.length === 4 && wraps.every((w) => !w.hidden && w.querySelector('.video-reload'));
     document.body.dataset.result = ok ? 'PASS' : 'FAIL';`, 200);
 });
