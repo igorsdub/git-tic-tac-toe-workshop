@@ -45,7 +45,7 @@ function writeStoryboard(clicks) {
   const wide = { scale: 1, focus: { x: 720, y: 450 } };
   // The setup page places this instruction near the lower fold. Bias the
   // camera down so the highlighted URL stays fully inside the zoomed frame.
-  const linkFocus = { x: link.x, y: Math.max(link.y, 800) };
+  const linkFocus = { x: link.x, y: Math.max(link.y, 900) };
   const menuCamera = { scale: 2, focus: { x: menu.x, y: menu.y } };
   const storyboard = {
     version: 1,
