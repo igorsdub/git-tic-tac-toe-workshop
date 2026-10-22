@@ -1,6 +1,6 @@
 # Facilitator Guide: Git Tic-Tac-Toe Workshop
 
-> **Delivery status (2026-10-20):** The starter and branch-aware Game Wall are published. Five legacy SCDA repositories map to workshop `2026-10-01-scda`; the `Default Event` record remains preserved and excluded from workshop dashboards pending review. The two-account rehearsal remains incomplete; see [the delivery record](docs/delivery-status-2026-10-20.md) and [rehearsal evidence](docs/rehearsal-evidence-2026-10-20.md).
+> **Delivery status (2026-10-20):** The starter and branch-aware Game Wall are published. Five legacy SCDA repositories map to workshop `2026-10-01-scda`; the `Default Event` record remains preserved and excluded from workshop dashboards pending review. The two-account rehearsal remains incomplete; see [the delivery record](planning/delivery-status-2026-10-20.md) and [rehearsal evidence](planning/rehearsal-evidence-2026-10-20.md).
 
 ## Purpose and outcomes
 

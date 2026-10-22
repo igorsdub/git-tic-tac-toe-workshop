@@ -1,5 +1,7 @@
 # Workshop isolation implementation plan
 
+Status: implemented in commit 8de66b8.
+
 This plan turns the accepted decisions in [the design note](workshop-isolation-design.md) into reviewable implementation slices. The work remains unimplemented. Future workshop names and date mappings are configuration data to add once confirmed.
 
 ## 1. Add workshop configuration and selection

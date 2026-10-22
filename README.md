@@ -5,7 +5,7 @@ This two-hour workshop teaches collaborative Git through a paired tic-tac-toe ga
 ## Workshop documents
 
 - [Current design handoff](WORKSHOP_DESIGN_HANDOFF.md)
-- [Local delivery status and blockers](docs/delivery-status-2026-10-20.md)
+- [Local delivery status and blockers](planning/delivery-status-2026-10-20.md)
 - [Learner guide](LEARNER_GUIDE.md) and [web guide](docs/guide.html)
 - [Facilitator guide](FACILITATOR_GUIDE.md)
 - [Pre-session setup and rehearsal](PRE_SESSION_CHECK.md) and [web setup guide](docs/setup.html)
@@ -89,4 +89,4 @@ Before the workshop, each learner creates a public repository from the starter t
 
 Each pair registers its shared repository once for the workshop and supplies both player GitHub handles. The registry discovers every lowercase `match…` branch on each successful refresh; each matching branch becomes its own Game Wall card, and the board is read from that branch. A successful registration comment confirms the repository/workshop link. A card appears after a successful refresh finds a matching branch. A repository can belong to only one workshop; use a fresh template copy for another workshop. Archived workshops remain visible and accept updates to existing repositories, including corrected handles, while rejecting new repository registrations.
 
-The five legacy SCDA repositories map to workshop `2026-10-01-scda`. The legacy `Default Event` record remains preserved outside workshop dashboards pending review. The two-account rehearsal remains incomplete, and the survey is an unpublished instructor draft. See the [delivery status](docs/delivery-status-2026-10-20.md) before the workshop.
+The five legacy SCDA repositories map to workshop `2026-10-01-scda`. The legacy `Default Event` record remains preserved outside workshop dashboards pending review. The two-account rehearsal remains incomplete, and the survey is an unpublished instructor draft. See the [delivery status](planning/delivery-status-2026-10-20.md) before the workshop.

@@ -1,5 +1,7 @@
 # 1. Decouple player identity from board markdown
 
+Status: superseded by ADR 0004
+
 ## Context
 In the initial design, learners were expected to declare `Player X: @handle` and `Player O: @handle` inside `board.md` before playing. This caused onboarding friction and syntax errors during early turns. Meanwhile, pairs already supply both GitHub handles when registering their repository on GitHub issues.
 
