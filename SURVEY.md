@@ -46,7 +46,7 @@ Please tick any choices that fit your experience; it is fine to leave a question
 
 ## Status and proposed additions (maintainer notes)
 
-The SOKEDAI survey is live; its link is the `surveyUrl` in `docs/workshops.json` and appears on the Setup page. The five questions above are its text. RIKEN has no survey link yet.
+The SOKEDAI survey is live; its link is the `surveyUrl` in `docs/workshops.json` and appears on the Setup page. The five questions above are the intended text of that form. RIKEN has no survey link yet.
 
 The RIKEN organiser drafted a ten-question survey in [`planning/riken-2026-11-10/survey-questions.md`](planning/riken-2026-11-10/survey-questions.md) (bilingual). Keep one survey text, here. The RIKEN questions are recorded below as proposed additions; none is live.
 

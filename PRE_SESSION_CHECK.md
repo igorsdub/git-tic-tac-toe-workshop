@@ -14,6 +14,6 @@ Please prepare once before the session, using the [tic-tac-toe starter template]
 
 No board edit is required during this check. Codespaces and Copilot access are separate; if Copilot Chat is unavailable, note that for the facilitator. The facilitator will help with access during the session.
 
-The SOKEDAI survey is live. Its link is on the Setup page. It is for instructor preparation and does not ask whether you completed this preparation.
+The SOKEDAI survey is live. Its link is on the Setup page. It is for instructor preparation; it is not part of the readiness check.
 
 For current GitHub instructions, see [creating a Codespace from a template](https://docs.github.com/en/codespaces/developing-in-a-codespace/creating-a-codespace-from-a-template). For help with Copilot in VS Code, see [chat with Copilot in your IDE](https://docs.github.com/en/copilot/how-tos/copilot-in-your-ide/chat-with-copilot/chat-in-ide).

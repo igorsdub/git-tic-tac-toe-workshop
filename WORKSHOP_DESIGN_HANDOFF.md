@@ -28,20 +28,12 @@ For the setup rehearsal, participants open the existing tic-tac-toe starter temp
 
 The activity moves from manual Git play to a timed agent-assisted rematch:
 
-1. Start `match-01` from `main`, register it, then play manually in the shared pair repository.
-2. Pairs that finish early may play an optional extra manual match before the timed transition. Use the next numbered match branch from `main` and register it.
-3. At the scheduled transition, every pair starts the agent-assisted rematch, even if its manual match is unfinished. Leave any unfinished match on its branch, then start and register a fresh rematch on the next numbered branch from `main`. If the optional match was skipped, this is `match-02`; otherwise it is the next number. This protects the Copilot practice slot.
+1. Start `match-01` from `main`, then play manually in the shared pair repository.
+2. Pairs that finish early may play an optional extra manual match before the timed transition. Use the next numbered match branch from `main`.
+3. At the scheduled transition, every pair starts the agent-assisted rematch, even if its manual match is unfinished. Leave any unfinished match on its branch, then start a fresh rematch on the next numbered branch from `main`. If the optional match was skipped, this is `match-02`; otherwise it is the next number. This protects the Copilot practice slot.
 4. Keep completed match branches for review. Do not merge them back into `main`.
 
-The approved agenda totals 120 minutes. The facilitator guide and web guides contain the agenda and learner workflow; they are published at workshop commit `ec91e03`:
-
-- 10 minutes: arrival and setup troubleshooting.
-- 15 minutes: Git/GitHub mental model and demonstration.
-- 15 minutes: form pairs, create the shared repository, and open Codespaces.
-- 30 minutes: manual match.
-- 10 minutes: Copilot demonstration.
-- 25 minutes: agent-assisted rematch.
-- 15 minutes: instructor demonstration of dashboard/history replay, research applications, and wrap up.
+The approved agenda totals 120 minutes; it is kept only in the [Facilitator guide](FACILITATOR_GUIDE.md#agenda-120-minutes). The web guides were published at workshop commit `ec91e03`.
 
 In the final segment, the instructor demonstrates a dashboard that shows public matches by outcome (win or draw) and lets viewers inspect committed board states from public repository histories as a “time machine.” This history replay is a demonstration, not a participant exercise. Exploring an alternative history by branching from an earlier move is an optional instructor extension if time allows; it is not part of the required learner workflow. The local dashboard implementation and its live publication status are recorded below.
 
@@ -49,7 +41,7 @@ In the final segment, the instructor demonstrates a dashboard that shows public 
 
 `main` is the clean starting point. It contains an uppercase, case-sensitive `BOARD.txt` with the initial board and no moves. The file is initialized board content, not a zero-byte file. The extension is `.txt`, not `.md`. Match branches are named `match-01`, `match-02`, and so on, and each starts from `main`.
 
-Register each match in its own issue with the pair repository, branch, and both players. Identify a match by `(repository, branch)` so multiple matches in one pair repository remain distinct. The game wall reads `BOARD.txt` from the registered branch and retains completed matches in its display. Recommended safeguard: show a clear error if the requested branch cannot be read instead of silently falling back to `main` or another branch.
+*Superseded:* a pair registers its repository once per workshop; match branches are discovered automatically (see the [Glossary](GLOSSARY.md)). Identify a match by `(repository, branch)` so multiple matches in one pair repository remain distinct. The game wall reads `BOARD.txt` from the registered branch and retains completed matches in its display. Recommended safeguard: show a clear error if the requested branch cannot be read instead of silently falling back to `main` or another branch.
 
 A registration issue identifies a match. Any instructional or progress issue is a separate design question. Do not assume the match registration issue is also the lesson workflow.
 

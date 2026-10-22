@@ -11,7 +11,7 @@ A particular scheduled delivery of the training. Current and archived workshops 
 A stable identifier for one workshop, written as `YYYY-MM-DD-short-lowercase-identifier`. Once registrations exist for a workshop, its ID remains unchanged. Its display name is separate from its ID.
 
 **Archived workshop**:
-A workshop explicitly marked archived by the organizer. It remains viewable and its Game Wall continues receiving repository and match updates. It accepts updates to existing registrations, including player handles, but rejects new repository registrations.
+A workshop explicitly marked archived by the organiser. It remains viewable and its Game Wall continues receiving repository and match updates. It accepts updates to existing registrations, including player handles, but rejects new repository registrations.
 
 **Repository**:
 The GitHub repository a pair shares, created from the template. A repository belongs to only one workshop; its branches are the source from which the Game Wall discovers matches.
@@ -27,7 +27,6 @@ _Avoid_: Register every match branch
 
 **Game**:
 The collaborative tic-tac-toe activity in general. Use *match* for one play-through.
-_Avoid_: Game 2, Rematch game
 
 **Match**:
 One play-through of tic-tac-toe between a pair, represented by a repository branch whose name starts with the literal lowercase prefix `match`. The teaching example is `match-01`, then `match-02`; each is created from clean `main` and never merged back. Each matching branch appears as a separate Game Wall card, identified by its full branch name. A pair may play several matches during a workshop.
@@ -44,7 +43,7 @@ _Avoid_: Sacred turn cycle, Game loop, Play cycle
 
 **Agent-assisted rematch**:
 The phase that follows the manual match. Every pair starts a fresh match on the next numbered branch from clean `main`, and the learner asks Copilot in agent mode to make their chosen board edit. The learner still reviews the diff and completes the Git workflow.
-_Avoid_: Branch rematch, Feature branch game
+_Avoid_: Game 2, Rematch game, Branch rematch, Feature branch game
 
 **Copilot demonstration**:
 The instructor's live demonstration of delegating one board edit to Copilot. A learner without Copilot access follows it and completes the rematch manually.
