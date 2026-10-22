@@ -1,0 +1,10 @@
+{
+  "description": "Status: is accepted in place of State:",
+  "content": "# Git Tic-Tac-Toe\nPlayer X: @alice\nPlayer O: @bob\nStatus: Ready for X\n\n```\n. . .\n. . .\n. . .\n```\n",
+  "expected": {
+    "valid": true,
+    "state": "Ready for X",
+    "reason": null,
+    "placeholderHandles": []
+  }
+}

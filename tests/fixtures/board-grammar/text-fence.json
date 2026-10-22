@@ -1,0 +1,15 @@
+{
+  "description": "Board inside a ```text fence",
+  "content": "# Git Tic-Tac-Toe\nPlayer X: @alice\nPlayer O: @bob\nState: Waiting for O\n\n```text\n. . .\n. X .\n. . .\n```\n",
+  "expected": {
+    "valid": true,
+    "state": "Waiting for O",
+    "reason": null,
+    "placeholderHandles": [],
+    "grid": [
+      [" ", " ", " "],
+      [" ", "X", " "],
+      [" ", " ", " "]
+    ]
+  }
+}

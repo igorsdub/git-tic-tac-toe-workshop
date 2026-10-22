@@ -1,0 +1,10 @@
+{
+  "description": "A notes fence before the board fence: compact search takes the first fence with any rows",
+  "content": "# Git Tic-Tac-Toe\nPlayer X: @alice\nPlayer O: @bob\nState: Ready for X\n\n```\nnotes go here\nsecond line\n```\n\n```\n. . .\n. . .\n. . .\n```\n",
+  "expected": {
+    "valid": false,
+    "state": "Invalid board",
+    "reason": "exactly 3 rows",
+    "placeholderHandles": []
+  }
+}

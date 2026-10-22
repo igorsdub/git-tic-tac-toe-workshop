@@ -91,6 +91,8 @@ class TestBoardValidator(unittest.TestCase):
                 )
                 self.assertEqual(placeholder_handles, sorted(expected["placeholderHandles"]))
 
+                if not expected["valid"]:
+                    self.assertNotIn("grid", expected, "grid is only allowed on valid boards")
                 if "grid" in expected:
                     self.assertEqual(res.grid, expected["grid"])
 

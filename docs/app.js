@@ -262,10 +262,40 @@ State: Waiting for O
     return /^[ \t\+\-\|\=]+$/.test(s) && s.includes('-');
   }
 
+  /**
+   * Bodies of every ``` / ```text fence, or the whole text when there are none.
+   * Mirrors the search areas used by scripts/validate_board.py.
+   */
+  function boardSearchAreas(text) {
+    const fences = Array.from(text.matchAll(/```(?:text)?\s*\n([\s\S]*?)\n```/g), (m) => m[1]);
+    return fences.length > 0 ? fences : [text];
+  }
+
+  /**
+   * Legacy pipe rows: the first area with exactly 3 rows, else the first area with any.
+   * Mirrors `_extract_grid_lines` in scripts/validate_board.py.
+   */
+  function extractLegacyGridLines(text) {
+    let gridLines = [];
+    for (const area of boardSearchAreas(text)) {
+      const candidates = area.split('\n').filter((line) => line.includes('|') && !isDividerLine(line));
+      if (candidates.length === 3) return candidates;
+      if (candidates.length > 0 && gridLines.length === 0) gridLines = candidates;
+    }
+    return gridLines;
+  }
+
+  /**
+   * Compact rows: every nonblank row of the first area that has any.
+   * Mirrors `_extract_compact_grid_lines` in scripts/validate_board.py. It can pick a
+   * different fence than the legacy search, as in Python.
+   */
   function extractCompactGridLines(text) {
-    const codeBlockMatch = text.match(/```(?:text)?\s*\n([\s\S]*?)\n```/);
-    const gridText = codeBlockMatch ? codeBlockMatch[1] : text;
-    return gridText.split(/\r?\n/).filter((line) => line.trim().length > 0);
+    for (const area of boardSearchAreas(text)) {
+      const rows = area.split('\n').filter((line) => line.trim().length > 0);
+      if (rows.length > 0) return rows;
+    }
+    return [];
   }
 
   /**
@@ -324,7 +354,7 @@ State: Waiting for O
     const errors = [];
     const warnings = [];
 
-    if (!content || typeof content !== 'string') {
+    if (typeof content !== 'string') {
       return {
         isValid: false,
         state: 'Invalid board',
@@ -343,9 +373,12 @@ State: Waiting for O
       };
     }
 
+    // Normalise line endings so CRLF boards parse like LF ones (Python does the same).
+    content = content.replace(/\r\n?/g, '\n');
+
     // 1. Players (optional metadata)
-    const playerX = extractBoardHeader(content, /^[ \t]*\*?\*?Player\s+X\*?\*?:\s*(.+)$/m);
-    const playerO = extractBoardHeader(content, /^[ \t]*\*?\*?Player\s+O\*?\*?:\s*(.+)$/m);
+    const playerX = extractBoardHeader(content, /^[ \t]*\*?\*?Player\s+X\*?\*?:\s*(.+)$/im);
+    const playerO = extractBoardHeader(content, /^[ \t]*\*?\*?Player\s+O\*?\*?:\s*(.+)$/im);
 
     if (isMissingOrPlaceholder(playerX)) {
       warnings.push("Missing or placeholder 'Player X:' header; handle will be sourced from registration.");
@@ -355,16 +388,12 @@ State: Waiting for O
     }
 
     // 2. Declared state
-    const declaredState = extractBoardHeader(content, /^[ \t]*\*?\*?Stat(?:e|us)\*?\*?:\s*(.+)$/m);
-    if (!declaredState) warnings.push("Missing 'State:' indicator line.");
+    const declaredState = extractBoardHeader(content, /^[ \t]*\*?\*?Stat(?:e|us)\*?\*?:\s*(.+)$/im);
+    if (!declaredState) warnings.push("Missing 'State:' or 'Status:' indicator line; state evaluated dynamically.");
 
     // 3. Grid
-    const codeBlockMatch = content.match(/```(?:text)?\s*\n([\s\S]*?)\n```/);
-    const gridText = codeBlockMatch ? codeBlockMatch[1] : content;
-
-    const rawLines = gridText.split(/\r?\n/);
-    const legacyLines = rawLines.filter(line => line.includes('|') && !isDividerLine(line));
-    const compactLines = extractCompactGridLines(gridText);
+    const legacyLines = extractLegacyGridLines(content);
+    const compactLines = extractCompactGridLines(content);
     const compactFormat = legacyLines.length === 0;
     const candidateLines = legacyLines.length > 0 ? legacyLines : compactLines;
 
@@ -1177,6 +1206,8 @@ State: Waiting for O
   }
 
   // Test seam: under Node (module defined) export the board grammar and skip browser init.
+  // Only works inside a sandbox that provides `window` and `document` stubs (the IIFE reads
+  // them before reaching this guard), so a plain `require('docs/app.js')` throws.
   const boardGrammar = { evaluateBoardContent, renderBoardRows };
   if (typeof module === 'object' && module.exports) {
     module.exports = boardGrammar;

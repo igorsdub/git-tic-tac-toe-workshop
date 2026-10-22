@@ -1,0 +1,15 @@
+{
+  "description": "A notes fence with one pipe row before a fence holding exactly 3 legacy rows: the 3-row fence wins",
+  "content": "# Git Tic-Tac-Toe\nPlayer X: @alice\nPlayer O: @bob\nState: Ready for X\n\n```\nuse | to separate cells\n```\n\n```\n [] | [] | []\n-----+-----+-----\n [] | [] | []\n-----+-----+-----\n [] | [] | []\n```\n",
+  "expected": {
+    "valid": true,
+    "state": "Ready for X",
+    "reason": null,
+    "placeholderHandles": [],
+    "grid": [
+      [" ", " ", " "],
+      [" ", " ", " "],
+      [" ", " ", " "]
+    ]
+  }
+}

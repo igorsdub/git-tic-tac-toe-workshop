@@ -56,7 +56,10 @@ for (const file of fixtureFiles) {
       .sort();
     assert.deepEqual(placeholderHandles, [...expected.placeholderHandles].sort(), `${file}: placeholder handles`);
 
-    if (expected.grid) {
+    if (!expected.valid) {
+      assert.ok(!('grid' in expected), `${file}: grid is only allowed on valid boards`);
+    }
+    if ('grid' in expected) {
       assert.deepEqual(JSON.parse(JSON.stringify(result.grid)), expected.grid, `${file}: grid`);
     }
   });
