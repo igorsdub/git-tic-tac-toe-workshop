@@ -1,0 +1,126 @@
+{
+  "version": 1,
+  "segments": [
+    {
+      "kind": "live",
+      "start": 0,
+      "end": 3.676,
+      "speed": 1,
+      "camera": {
+        "scale": 1,
+        "focus": {
+          "x": 720,
+          "y": 450
+        }
+      }
+    },
+    {
+      "kind": "freeze",
+      "at": 3.5260000000000002,
+      "duration": 1.2,
+      "focus": {
+        "x": 584,
+        "y": 800
+      },
+      "zoom": {
+        "from": 1,
+        "to": 2,
+        "ease": 1.2
+      }
+    },
+    {
+      "kind": "live",
+      "start": 3.676,
+      "end": 8.908,
+      "speed": 1,
+      "camera": {
+        "scale": 2,
+        "focus": {
+          "x": 584,
+          "y": 800
+        }
+      }
+    },
+    {
+      "kind": "freeze",
+      "at": 8.758,
+      "duration": 1.2,
+      "focus": {
+        "x": 584,
+        "y": 800
+      },
+      "zoom": {
+        "from": 2,
+        "to": 1,
+        "ease": 1.2
+      }
+    },
+    {
+      "kind": "live",
+      "start": 8.908,
+      "end": 11.989,
+      "speed": 1,
+      "camera": {
+        "scale": 1,
+        "focus": {
+          "x": 720,
+          "y": 450
+        }
+      }
+    },
+    {
+      "kind": "freeze",
+      "at": 11.839,
+      "duration": 1.2,
+      "focus": {
+        "x": 1383,
+        "y": 673
+      },
+      "zoom": {
+        "from": 1,
+        "to": 2,
+        "ease": 1.2
+      }
+    },
+    {
+      "kind": "live",
+      "start": 11.989,
+      "end": 18.2,
+      "speed": 1,
+      "camera": {
+        "scale": 2,
+        "focus": {
+          "x": 1383,
+          "y": 673
+        }
+      }
+    },
+    {
+      "kind": "freeze",
+      "at": 18.2,
+      "duration": 1.2,
+      "focus": {
+        "x": 1383,
+        "y": 673
+      },
+      "zoom": {
+        "from": 2,
+        "to": 1,
+        "ease": 1.2
+      }
+    },
+    {
+      "kind": "live",
+      "start": 18.2,
+      "end": 19.2,
+      "speed": 1,
+      "camera": {
+        "scale": 1,
+        "focus": {
+          "x": 720,
+          "y": 450
+        }
+      }
+    }
+  ]
+}
