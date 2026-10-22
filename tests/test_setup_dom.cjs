@@ -112,15 +112,20 @@ test('codespaces track renders six steps and checkbox state persists per worksho
     document.body.dataset.result = six && stored && survived && localStorage.getItem('ttt_setup_ws-code_step-repo') === null ? 'PASS' : 'FAIL';`);
 });
 
-test('Look around pilot player is inline and its picture instructions start collapsed', opts, () => {
+test('all four setup videos are inline and picture instructions start collapsed', opts, () => {
   runSetup('', `
-    const player = document.querySelector('#step-look-around video.step-video-pilot');
-    const pictures = document.querySelector('#step-look-around details.step-pictures');
-    const ok = Boolean(player && player.controls && player.muted && player.loop && player.playsInline
-      && !player.hasAttribute('autoplay') && pictures && !pictures.open
-      && !document.querySelector('#step-look-around .step-video-inline summary')
-      && pictures.querySelector('ol')
-      && document.querySelector('#step-look-around .step-shot img[alt="Copilot Chat in Agent mode, with no question entered in the message box"]'));
+    const steps = Array.from(document.querySelectorAll('#setup-codespaces .setup-step'))
+      .filter((step) => step.querySelector('video.step-video-primary'));
+    const ok = steps.length === 4 && steps.every((step) => {
+      const player = step.querySelector('video.step-video-primary');
+      const pictures = step.querySelector('details.step-pictures');
+      return player.controls && player.muted && player.loop && player.playsInline
+        && !player.hasAttribute('autoplay') && pictures && !pictures.open
+        && !pictures.contains(player) && pictures.querySelector('figure.step-shot img')
+        && pictures.querySelector('ol') && pictures.querySelector('summary').textContent === 'Step-by-step pictures';
+    }) && document.querySelectorAll('#setup-codespaces summary').length === 4
+      && !document.querySelector('#setup-codespaces summary').textContent.includes('Watch this step')
+      && document.querySelector('#step-look-around .step-shot img[alt="Copilot Chat in Agent mode, with no question entered in the message box"]');
     document.body.dataset.result = ok ? 'PASS' : 'FAIL';`);
 });
 

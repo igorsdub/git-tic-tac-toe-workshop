@@ -109,54 +109,51 @@
       });
     });
 
-    // The Look around pilot video plays only while its step is on screen.
-    // Native controls remain available when autoplay is blocked or reduced
-    // motion asks us to wait for an explicit play action.
-    const pilot = document.querySelector('video.step-video-pilot');
-    if (pilot) {
-      const step = pilot.closest('.setup-step');
+    // Each primary video plays only while its step is on screen. Native controls
+    // remain available when autoplay is blocked or reduced motion requires an
+    // explicit play action.
+    document.querySelectorAll('video.step-video-primary').forEach((video) => {
+      const step = video.closest('.setup-step');
       const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
       let inView = false;
       let autoStarted = false;
       const canPlay = () => {
         if (!inView || document.hidden || !step || step.hidden) return false;
-        for (let parent = pilot.parentElement; parent && parent !== step; parent = parent.parentElement) {
+        for (let parent = video.parentElement; parent && parent !== step; parent = parent.parentElement) {
           if (parent.hidden || (parent.tagName === 'DETAILS' && !parent.open)) return false;
         }
         return true;
       };
       const updatePlayback = () => {
         if (!canPlay()) {
-          pilot.pause();
+          video.pause();
           autoStarted = false;
         } else if (motionPreference.matches) {
-          if (autoStarted) pilot.pause();
+          if (autoStarted) video.pause();
           autoStarted = false;
-        } else if (pilot.paused) {
+        } else if (video.paused) {
           autoStarted = true;
-          const attempt = pilot.play();
+          const attempt = video.play();
           if (attempt && typeof attempt.catch === 'function') {
             attempt.catch(() => { autoStarted = false; });
           }
         }
       };
-      pilot.addEventListener('pause', () => { autoStarted = false; });
+      video.addEventListener('pause', () => { autoStarted = false; });
       if ('IntersectionObserver' in window) {
         new IntersectionObserver((entries) => {
-          inView = entries.some((entry) => entry.target === pilot && entry.isIntersecting && entry.intersectionRatio >= 0.25);
+          inView = entries.some((entry) => entry.target === video && entry.isIntersecting && entry.intersectionRatio >= 0.25);
           updatePlayback();
-        }, { threshold: [0, 0.25] }).observe(pilot);
+        }, { threshold: [0, 0.25] }).observe(video);
       }
       document.addEventListener('visibilitychange', updatePlayback);
-      document.querySelectorAll('#step-look-around details').forEach((details) => {
-        details.addEventListener('toggle', updatePlayback);
-      });
+      step.querySelectorAll('details').forEach((details) => details.addEventListener('toggle', updatePlayback));
       const visibilityObserver = new MutationObserver(updatePlayback);
       for (let parent = step; parent; parent = parent.parentElement) {
         visibilityObserver.observe(parent, { attributes: true, attributeFilter: ['hidden', 'open'] });
       }
       motionPreference.addEventListener?.('change', updatePlayback);
-    }
+    });
     document.addEventListener('workshopchange', (event) => {
       renderSetup(event.detail && event.detail.workshop);
     });
