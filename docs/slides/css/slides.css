@@ -46,6 +46,11 @@ body {
   background-color: var(--bg);
 }
 
+.slide-stage:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 4px;
+}
+
 .slide {
   width: 100%;
   height: 100%;
@@ -173,9 +178,33 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #30363d;
+  color: #6e7681; /* about 4.1:1 on --bg (#0d1117) */
   font-family: ui-monospace, monospace;
   font-size: clamp(12px, 1.4cqw, 18px);
+}
+
+.card-pane.recap-pane {
+  justify-content: flex-start;
+}
+
+.recap-text {
+  color: var(--text-muted);
+  font-size: clamp(12px, 1.25cqw, 17px);
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8cqw;
+}
+
+.recap-text s {
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  text-decoration-color: #ff7b72;
+}
+
+.recap-stat {
+  font-size: clamp(20px, 2.6cqw, 38px);
+  font-weight: 700;
+  color: #ff7b72;
 }
 
 .pane-header {
@@ -349,8 +378,8 @@ body {
   line-height: 1.35;
 }
 
-.stage-cmd-box {
-  font-family: ui-monospace, monospace;
+.stage-action-box {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   background: #000000;
   border: 2px solid var(--accent);
   color: #ffffff;
