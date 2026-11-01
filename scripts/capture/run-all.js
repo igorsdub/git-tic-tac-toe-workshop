@@ -1,7 +1,7 @@
 'use strict';
 const { loadManifest } = require('./lib');
 
-const ORDER = ['create-repo', 'open-codespace', 'look-around', 'stop-codespace'];
+const ORDER = ['create-repo', 'open-codespace', 'look-around', 'delete-codespace'];
 
 async function main(argv) {
   const known = loadManifest().steps.map((s) => s.slug);

@@ -6,7 +6,8 @@ const { launch, createStep } = require('./lib');
 
 const SLUG = 'create-repo';
 const TEMPLATE_URL = 'https://github.com/igorsdub/git-tic-tac-toe-template';
-const REPO = process.env.CAPTURE_REPO || 'tic-tac-toe-demo';
+const REPO = process.env.CAPTURE_REPO;
+const DESCRIPTION = 'SOKENDAI Git and GitHub collaboration workshop';
 
 const SELECTORS = {
   useTemplate: (p) => p.getByRole('button', { name: 'Use this template' }),
@@ -14,7 +15,9 @@ const SELECTORS = {
   owner: (p) => p.getByRole('button', { name: /Owner|Choose an owner/ }),
   ownerOption: (p, login) => p.getByRole('menuitemradio', { name: login, exact: true }),
   name: (p) => p.locator('#repository-name-input'),
-  visibility: (p) => p.getByRole('button', { name: /Choose visibility/ }),
+  includeBranches: (p) => p.getByLabel('Include all branches', { exact: true }),
+  description: (p) => p.getByLabel('Description', { exact: true }),
+  visibility: (p) => p.getByRole('button', { name: /Choose visibility|Public/ }),
   publicOption: (p) => p.getByRole('menuitemradio', { name: /Public/ }),
   create: (p) => p.getByRole('button', { name: 'Create repository' }),
   // UI delete fallback
@@ -23,6 +26,16 @@ const SELECTORS = {
   confirmInput: (p) => p.locator('#verification_field'),
   confirmDelete: (p) => p.getByRole('dialog').getByRole('button', { name: 'Delete this repository' }),
 };
+
+function requireCaptureRepo() {
+  if (!REPO || !/^[A-Za-z0-9._-]+$/.test(REPO)) {
+    throw new Error('Set CAPTURE_REPO to the exact disposable repository name; this script can delete and recreate that repository.');
+  }
+}
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
 
 function ghAvailable() {
   return spawnSync('gh', ['--version'], { stdio: 'ignore' }).status === 0;
@@ -50,6 +63,10 @@ async function deleteExisting(page) {
 }
 
 async function run() {
+  requireCaptureRepo();
+  if (process.env.CAPTURE_SKIP_DELETE !== '1' && process.env.CAPTURE_RECREATE !== '1') {
+    throw new Error('Set CAPTURE_RECREATE=1 to allow deletion of an existing repository named by CAPTURE_REPO, or CAPTURE_SKIP_DELETE=1 for a confirmed-new repository.');
+  }
   const outDir = path.join(__dirname, 'out', SLUG);
   fs.mkdirSync(outDir, { recursive: true });
   fs.rmSync(path.join(outDir, 'capture-complete.json'), { force: true });
@@ -59,36 +76,33 @@ async function run() {
   await page.goto('https://github.com');
   if (process.env.CAPTURE_SKIP_DELETE !== '1') await deleteExisting(page);
   await page.goto(TEMPLATE_URL);
-  await step.shot(null, '01-template-page.png');
-  await step.click(SELECTORS.useTemplate(page), '02-use-this-template.png');
-  await step.click(SELECTORS.createNewRepo(page), '03-create-new-repository.png');
-  await step.shot(SELECTORS.owner(page), '04-owner-and-name.png');
+  await step.click(SELECTORS.useTemplate(page), '01-template-page.png');
+  await step.click(SELECTORS.createNewRepo(page), '02-use-this-template.png');
+  await step.shot(null, '03-create-new-repository.png');
+  const includeBranches = SELECTORS.includeBranches(page);
+  if (await includeBranches.isChecked()) throw new Error('Expected Include all branches to start Off so the capture can show the required toggle action.');
+  await step.click(includeBranches, '04-include-all-branches-off.png');
+  if (!(await includeBranches.isChecked())) throw new Error('Include all branches did not switch On.');
+  await step.shot(includeBranches, '05-include-all-branches-on.png');
   await SELECTORS.owner(page).click();
-  await SELECTORS.ownerOption(page, await page.locator('meta[name="user-login"]').getAttribute('content')).click();
-  await SELECTORS.name(page).fill(REPO);
-  await step.click(SELECTORS.visibility(page), '05-visibility-public.png');
-  await SELECTORS.publicOption(page).click();
-  await step.click(SELECTORS.create(page), '06-create-repository.png');
-  // GitHub may leave the creation form in place after the repository exists.
-  // Preserve the visible creation state briefly, then open the resulting repo.
-  await page.waitForTimeout(3500);
   const login = await page.locator('meta[name="user-login"]').getAttribute('content');
+  if (!login) throw new Error('Could not identify the signed-in GitHub account.');
+  await SELECTORS.ownerOption(page, login).click();
+  await SELECTORS.name(page).fill(REPO);
+  await page.getByText(new RegExp(`${escapeRegExp(REPO)} is available`, 'i')).waitFor({ timeout: 30000 });
+  await step.shot(SELECTORS.name(page), '06-owner-and-name.png');
+  await SELECTORS.description(page).fill(DESCRIPTION);
+  await step.shot(SELECTORS.description(page), '07-description.png');
+  await SELECTORS.visibility(page).click();
+  await step.click(SELECTORS.publicOption(page), '08-public.png', { captureScreenshot: true });
+  if (!/Public/i.test(await SELECTORS.visibility(page).innerText())) {
+    throw new Error('Repository visibility is not Public; refusing to create the capture repository.');
+  }
+  await step.click(SELECTORS.create(page), '09-create-repository.png');
   const repoUrl = `https://github.com/${login}/${REPO}`;
-  let created = false;
-  for (let attempt = 0; attempt < 60; attempt++) {
-    const status = spawnSync('gh', ['repo', 'view', `${login}/${REPO}`], { stdio: 'ignore' }).status;
-    if (status === 0) { created = true; break; }
-    await page.waitForTimeout(1000);
-  }
-  if (!created) throw new Error(`GitHub did not finish creating ${login}/${REPO} within 60 seconds.`);
-  if (!page.url().replace(/\/$/, '').endsWith(`/${REPO}`)) {
-    await page.goto(repoUrl, { waitUntil: 'domcontentloaded', timeout: 90000 });
-  }
+  await page.waitForURL((url) => url.pathname.replace(/\/$/, '').endsWith(`/${REPO}`), { timeout: 90000 }).catch(() => {});
+  if (!page.url().replace(/\/$/, '').endsWith(`/${REPO}`)) await page.goto(repoUrl, { waitUntil: 'domcontentloaded', timeout: 90000 });
   await page.getByRole('heading', { name: REPO, exact: true }).waitFor({ timeout: 90000 });
-  await page.getByRole('link', { name: 'BOARD.txt', exact: true }).waitFor({ timeout: 90000 });
-  // Leave a clean, full-screen loaded-repository establishing view at the tail
-  // of the recording so the storyboard can show navigation completing.
-  await page.waitForTimeout(3000);
   const raw = await step.finish();
   fs.writeFileSync(path.join(outDir, 'capture-complete.json'), JSON.stringify({ status: 'complete', repositoryVisible: true }, null, 2));
   return raw;

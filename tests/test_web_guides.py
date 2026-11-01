@@ -166,19 +166,29 @@ class TestWebGuides(unittest.TestCase):
 
     def test_setup_repository_and_chat_actions_follow_rehearsal_sequence(self):
         repository = self.setup[self.setup.index('id="step-repo"'):self.setup.index('id="step-codespace"')]
-        repo_actions = (
-            "04-include-all-branches.png",
-            "05-owner-and-name.png",
-            "06-description.png",
-            "07-visibility-public.png",
-            "08-create-repository.png",
-            "SOKENDAI Git and GitHub collaboration workshop",
+        repo_screenshots = (
+            "04-include-all-branches-off.png",
+            "05-include-all-branches-on.png",
+            "06-owner-and-name.png",
+            "07-description.png",
+            "08-public.png",
         )
-        positions = [repository.index(action) for action in repo_actions]
+        positions = [repository.index(screenshot) for screenshot in repo_screenshots]
         self.assertEqual(positions, sorted(positions))
+        repo_actions = (
+            "Turn on <strong>Include all branches</strong> before entering the repository name or description",
+            "Enter a repository name",
+            "Enter the exact description",
+            "Choose <strong>Public</strong> visibility",
+            "Click <strong>Create repository</strong>",
+        )
+        instructions_start = repository.index("<ol>")
+        instructions = repository[instructions_start:repository.index("</ol>", instructions_start)]
+        action_positions = [instructions.index(action) for action in repo_actions]
+        self.assertEqual(action_positions, sorted(action_positions))
 
         chat = self.setup[self.setup.index('id="step-look-around"'):self.setup.index('id="step-delete"')]
-        for action in ("loaded <strong>Chat</strong>", "<strong>Ask</strong>", "What does this repository do?", "<strong>Send</strong>", "complete answer"):
+        for action in ("loaded <strong>Chat</strong>", "<strong>Sign In</strong>", "complete the GitHub Copilot sign-in and connection", "for <strong>Ask</strong> to appear", "What does this repository do?", "<strong>Send</strong>", "complete answer"):
             self.assertIn(action, chat)
         self.assertNotIn("Source Control", chat)
         self.assertNotIn("BOARD.txt", chat)
@@ -206,6 +216,11 @@ class TestWebGuides(unittest.TestCase):
         referenced = set(re.findall(r'(?:src)="(images/setup/[^"]+)"', self.setup))
         self.assertTrue(referenced <= expected)
         self.assertTrue(referenced)
+        for asset in referenced:
+            with self.subTest(asset=asset):
+                path = DOCS_DIR / asset
+                self.assertTrue(path.is_file(), f"missing setup image: {asset}")
+                self.assertTrue(path.read_bytes().startswith(b"\x89PNG\r\n\x1a\n"), f"invalid PNG: {asset}")
 
     def test_learner_match_and_registration_use_the_workshop_contract(self):
         for requirement in ("Source Control", "BOARD.txt", "match-01", "clean <code>main</code>", "stage <code>BOARD.txt</code> with <strong>+</strong>", "make the move manually"):

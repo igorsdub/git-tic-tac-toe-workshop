@@ -2,74 +2,90 @@
 const fs = require('fs');
 const path = require('path');
 const { launch, createStep, OUT_DIR } = require('./lib');
+const { requireCaptureIdentity, requireCaptureRow } = require('./delete-codespace');
 
 const SLUG = 'look-around';
-const REPO = process.env.CAPTURE_REPO || 'tic-tac-toe-demo';
 const QUESTION = 'What does this repository do?';
-const FOCUS_TIMING = { outlineMs: 500, afterClickMs: 6400, captureScreenshot: false };
 
 const SELECTORS = {
-  boardFile: (p) => p.getByRole('treeitem', { name: 'BOARD.txt' }),
-  sourceControl: (p) => p.getByRole('tab', { name: /Source Control/ }),
-  // The chat panel is open by default in the web editor; its input is the click target.
-  modePicker: (p) => p.getByRole('button', { name: /^Agent/ }).first(),
-  modeAsk: (p) => p.getByRole('menuitemcheckbox', { name: /^Ask/ }).or(p.getByRole('menuitemradio', { name: /^Ask/ })).or(p.getByRole('option', { name: /^Ask/ })).or(p.getByRole('menuitem', { name: /^Ask/ })).first(),
-  modeAskSelected: (p) => p.getByRole('button', { name: /^Ask/ }).first(),
+  signIn: (p) => p.getByRole('button', { name: /^Sign In$/i }),
+  copilotConnected: (p) => p.getByText(/Copilot status|Sessions/i).first(),
+  modePicker: (p) => p.getByRole('button', { name: /^(Agent|Ask)(\s|$)/ }).first(),
+  modeAsk: (p) => p.getByRole('menuitemcheckbox', { name: /^Ask$/i }).or(p.getByRole('menuitemradio', { name: /^Ask$/i })).or(p.getByRole('option', { name: /^Ask$/i })).or(p.getByRole('menuitem', { name: /^Ask$/i })).first(),
+  modeAskSelected: (p) => p.getByRole('button', { name: /^Ask(\s|$)/i }).first(),
   chatInput: (p) => p.getByRole('textbox', { name: /Chat Input/ }),
-  trust: (p) => p.getByRole('button', { name: 'Trust Folder & Continue' }),
+  send: (p) => p.getByRole('button', { name: /^Send$/i }),
   completedAnswers: (p) => p.locator('.chat-response-completed-at'),
   answer: (p) => p.locator('.chat-response-completed-at').last(),
   workbench: (p) => p.locator('.monaco-workbench'),
 };
 
 async function run() {
+  requireCaptureIdentity();
   const context = await launch({ headless: true, recordVideo: true, slug: SLUG });
   const page = context.pages()[0] || (await context.newPage());
   const step = createStep(page, SLUG);
-  // Codespace URL is taken from the codespaces list (most recent one).
   await page.goto('https://github.com/codespaces');
-  // Only the codespace of the demo repo: find its row via the repository link, never the first tic-tac-toe match.
-  const href = await page.evaluate((repo) => {
-    const a = [...document.querySelectorAll('a')].find((e) => /^\/[^/]+\/(.+)$/.test(e.getAttribute('href') || '') && e.getAttribute('href').endsWith(`/${repo}`));
-    for (let n = a; n; n = n.parentElement) {
-      const l = [...n.querySelectorAll('a')].find((x) => /\/codespaces\/[^/?#]+$/.test(x.href));
-      if (l) return l.href;
-    }
-    return null;
-  }, REPO);
-  if (!href) throw new Error(`No codespace found for ${REPO}`);
+  const { row } = await requireCaptureRow(page);
+  const codespaceLink = row.locator('a[href*="/codespaces/"]');
+  if (await codespaceLink.count() !== 1) {
+    throw new Error('Expected one Codespace link inside the exact configured name and repository row; refusing to open a different Codespace.');
+  }
+  const href = new URL(await codespaceLink.getAttribute('href'), 'https://github.com').href;
   await page.goto(href);
   await SELECTORS.workbench(page).waitFor({ timeout: 180000 });
-  await SELECTORS.trust(page).click({ timeout: 60000 }).catch(() => {});
-  await page.locator('.monaco-dialog-modal-block').waitFor({ state: 'hidden', timeout: 30000 }).catch(() => {});
-  await page.waitForTimeout(10000);
-  await step.click(SELECTORS.boardFile(page), '01-explorer-board.png', FOCUS_TIMING);
-  await step.click(SELECTORS.sourceControl(page), '02-source-control.png', FOCUS_TIMING);
-  await step.click(SELECTORS.modePicker(page), '03-copilot-chat.png', FOCUS_TIMING);
-  // Do not send the prompt unless Ask mode is actually available and selected.
-  if (!(await SELECTORS.modeAsk(page).waitFor({ state: 'visible', timeout: 15000 }).then(() => true).catch(() => false))) {
-    await page.screenshot({ path: path.join(OUT_DIR, 'look-around', 'debug-ask-unavailable.png') });
-    const options = await page.locator('[role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"], [role="option"]').evaluateAll((els) =>
-      els.filter((el) => el.getClientRects().length && getComputedStyle(el).visibility !== 'hidden')
-        .map((el) => el.innerText.trim()).filter(Boolean));
-    fs.writeFileSync(path.join(OUT_DIR, 'look-around', 'debug-ask-options.json'), JSON.stringify(options, null, 2));
+  await SELECTORS.chatInput(page).waitFor({ state: 'visible', timeout: 60000 });
+  await step.shot(null, '01-chat.png');
+
+  const signIn = SELECTORS.signIn(page);
+  if (await signIn.count() !== 1) {
+    await page.screenshot({ path: path.join(OUT_DIR, 'look-around', 'debug-sign-in-unavailable.png') });
     await step.finish();
-    throw new Error('Ask mode is unavailable after waiting for the menu to load (visible options: ' + (options.join(' | ') || 'none') + '); refusing to submit the prompt in Agent mode.');
+    throw new Error('The expected Copilot Sign In button is not visible in the new Codespace. Refusing to claim a completed sign-in capture.');
   }
-  await step.perform(SELECTORS.modeAsk(page), () => SELECTORS.modeAsk(page).click(), {
-    outlineMs: 500,
-    afterActionMs: 6400,
+  await step.click(signIn, '02-sign-in.png', { afterClickMs: 1000 });
+
+  // GitHub authentication can open an authorization page or require user action.
+  // This capture script never approves an OAuth request or enters credentials.
+  const authPage = context.pages().find((candidate) => candidate !== page && /github\.com\/(login|login\/oauth|sessions\/two-factor)/i.test(candidate.url()));
+  if (authPage) {
+    await step.finish();
+    throw new Error('Copilot opened a GitHub authorization page. Complete and review the connection manually, then recapture; this script will not authorize it.');
+  }
+
+  await SELECTORS.copilotConnected(page).waitFor({ state: 'visible', timeout: 60000 }).catch(async () => {
+    await page.screenshot({ path: path.join(OUT_DIR, 'look-around', 'debug-copilot-connection.png') });
+    await step.finish();
+    throw new Error('Copilot did not show its connected status after Sign In. Complete any account connection manually and recapture.');
   });
+  await step.shot(null, '03-connect-copilot.png');
+  await SELECTORS.modeAsk(page).waitFor({ state: 'visible', timeout: 120000 }).catch(async () => {
+    await page.screenshot({ path: path.join(OUT_DIR, 'look-around', 'debug-ask-unavailable.png') });
+    await step.finish();
+    throw new Error('Ask did not appear after Copilot connected. No prompt was sent.');
+  });
+  // The authentication state is external to the Codespace editor. Continue only
+  // after Ask is visible; this wait never submits in Agent mode.
+  await step.shot(SELECTORS.modeAsk(page), '04-wait-for-ask.png');
+
+  await step.perform(SELECTORS.modePicker(page), () => SELECTORS.modePicker(page).click(), {
+    name: 'open-mode-selector', captureScreenshot: false, outlineMs: 500, afterActionMs: 500,
+  });
+  await step.click(SELECTORS.modeAsk(page), '05-mode-selector.png', { afterClickMs: 500 });
   await SELECTORS.modeAskSelected(page).waitFor({ state: 'visible', timeout: 10000 });
-  const selectedMode = await SELECTORS.modeAskSelected(page).innerText();
-  if (!/^Ask\b/.test(selectedMode.trim())) throw new Error('Expected Ask mode after selection, found "' + selectedMode.trim() + '".');
-  const priorAnswerCount = await SELECTORS.completedAnswers(page).count();
+  if (!/^Ask\b/.test((await SELECTORS.modeAskSelected(page).innerText()).trim())) {
+    throw new Error('Ask was not selected; refusing to send the readiness question.');
+  }
+  await step.shot(SELECTORS.modeAskSelected(page), '06-ask-mode.png');
+
   const chatInput = SELECTORS.chatInput(page);
-  await step.perform(chatInput, async () => {
-    await chatInput.click();
-    await page.keyboard.insertText(QUESTION);
-    await page.keyboard.press('Enter');
-  }, { outlineMs: 500 });
+  await chatInput.click();
+  await page.keyboard.insertText(QUESTION);
+  await step.shot(chatInput, '07-question-typed.png');
+  const priorAnswerCount = await SELECTORS.completedAnswers(page).count();
+  const send = SELECTORS.send(page);
+  await step.click(send, '08-send-target.png', { afterClickMs: 0 });
+  await SELECTORS.modeAskSelected(page).waitFor({ state: 'visible', timeout: 10000 });
   const waitStarted = Date.now();
   await showWaitingLabel(page);
   const answerText = await waitForNewCompletedAnswer(page, priorAnswerCount).catch(() => '');
@@ -82,6 +98,7 @@ async function run() {
   }
   await removeWaitingLabel(page);
   await page.waitForTimeout(2500);
+  await step.shot(null, '09-answer-complete.png');
   await page.mouse.move(700, 300);
   const rawPath = await step.finish();
   step.markComplete(rawPath, answerText);
