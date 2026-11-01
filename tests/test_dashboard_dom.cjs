@@ -240,14 +240,14 @@ test('in-content route CTA opens the learner guide for the selected workshop', {
         { id: 'scda', name: 'SCDA Test', date: '2026-10-01', status: 'active', registrationUrl: 'https://example.test/register?workshop_id=scda' },
         { id: 'sokedai', name: 'Sokedai Test', date: '2026-11-06', status: 'active', registrationUrl: 'https://example.test/register?workshop_id=sokedai' },
       ] }), { status: 200, headers: { 'Content-Type': 'application/json' } });
-    </script><script src="${contextScript}"></script><script>
+    </script><script src="${path.join(repo, 'docs/stage-strip.js')}"></script><script src="${contextScript}"></script><script>
       (async () => {
         await window.WorkshopContext.ready;
         if (location.pathname.endsWith('/setup.html')) {
           const select = document.getElementById('workshop-select');
           select.value = 'sokedai';
           select.dispatchEvent(new Event('change', { bubbles: true }));
-          document.querySelector('[data-workshop-route]').click();
+          document.querySelector('.stage-next [data-workshop-route]').click();
           return;
         }
         const selected = document.getElementById('workshop-select').value;
