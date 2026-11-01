@@ -62,7 +62,7 @@ Run `npm run preview` and open [http://127.0.0.1:8765/docs/setup.html](http://12
 
 - [`template/`](template/README.md) is the local reference for the learner starter repository: its current `BOARD.txt`, editing conventions, and canonical empty-board example. Publish changes to the separate template repository explicitly.
 - [`scripts/`](scripts/) contains board validation, registration parsing, and registry synchronization.
-- [`scripts/capture/`](scripts/capture/README.md) is the Playwright pipeline that regenerates the Setup page's screenshots and videos; `captures.json` there lists every step slug and screenshot name.
+- [`scripts/capture/`](scripts/capture/README.md) is the Playwright pipeline that regenerates the Setup page's screenshots; `captures.json` there lists every step slug and screenshot name.
 - [`tests/`](tests/) covers the workshop guides, parser, Game Wall, and slides. `tests/fixtures/legacy-board/` preserves older board formats as compatibility fixtures.
 - [`docs/`](docs/) contains the Pages site and instructor Game Wall. The separate [`docs/slides/`](docs/slides/) directory contains the workshop presentation.
 

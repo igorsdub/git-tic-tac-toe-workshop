@@ -37,11 +37,6 @@
       });
     }
 
-    function hideWrap(video) {
-      const wrap = video.closest('.step-video-wrap');
-      if (wrap) wrap.hidden = true;
-    }
-
     function renderSetup(workshop) {
       if (!workshop) return;
       currentId = workshop.id;
@@ -70,89 +65,6 @@
 
     document.querySelectorAll('.step-check').forEach((box) => {
       box.addEventListener('change', () => writeChecked(box.dataset.step, box.checked));
-    });
-    // Hide a step video only when its file is genuinely absent. A transient
-    // media error (interrupted download) keeps it visible with a reload link.
-    async function videoMissing(src) {
-      try {
-        const head = await fetch(src, { method: 'HEAD' });
-        if (head.ok) return false;
-        if (head.status === 404 || head.status === 410) return true;
-        const ranged = await fetch(src, { headers: { Range: 'bytes=0-0' } });
-        return !ranged.ok;
-      } catch (error) {
-        return false;
-      }
-    }
-    document.querySelectorAll('video.step-video').forEach((video) => {
-      const src = video.getAttribute('src');
-      let present = false;
-      const checked = videoMissing(src).then((missing) => {
-        if (missing) hideWrap(video); else present = true;
-      });
-      video.addEventListener('error', () => {
-        checked.then(() => {
-          const wrap = video.closest('.step-video-wrap');
-          if (!present || !wrap || wrap.querySelector('.video-reload')) return;
-          const link = document.createElement('a');
-          link.href = '#';
-          link.className = 'video-reload';
-          link.textContent = 'Reload video';
-          link.addEventListener('click', (event) => {
-            event.preventDefault();
-            video.setAttribute('src', src);
-            video.load();
-            link.remove();
-          });
-          wrap.appendChild(link);
-        });
-      });
-    });
-
-    // Each primary video plays only while its step is on screen. Native controls
-    // remain available when autoplay is blocked or reduced motion requires an
-    // explicit play action.
-    document.querySelectorAll('video.step-video-primary').forEach((video) => {
-      const step = video.closest('.setup-step');
-      const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
-      let inView = false;
-      let autoStarted = false;
-      const canPlay = () => {
-        if (!inView || document.hidden || !step || step.hidden) return false;
-        for (let parent = video.parentElement; parent && parent !== step; parent = parent.parentElement) {
-          if (parent.hidden || (parent.tagName === 'DETAILS' && !parent.open)) return false;
-        }
-        return true;
-      };
-      const updatePlayback = () => {
-        if (!canPlay()) {
-          video.pause();
-          autoStarted = false;
-        } else if (motionPreference.matches) {
-          if (autoStarted) video.pause();
-          autoStarted = false;
-        } else if (video.paused) {
-          autoStarted = true;
-          const attempt = video.play();
-          if (attempt && typeof attempt.catch === 'function') {
-            attempt.catch(() => { autoStarted = false; });
-          }
-        }
-      };
-      video.addEventListener('pause', () => { autoStarted = false; });
-      if ('IntersectionObserver' in window) {
-        new IntersectionObserver((entries) => {
-          inView = entries.some((entry) => entry.target === video && entry.isIntersecting && entry.intersectionRatio >= 0.25);
-          updatePlayback();
-        }, { threshold: [0, 0.25] }).observe(video);
-      }
-      document.addEventListener('visibilitychange', updatePlayback);
-      step.querySelectorAll('details').forEach((details) => details.addEventListener('toggle', updatePlayback));
-      const visibilityObserver = new MutationObserver(updatePlayback);
-      for (let parent = step; parent; parent = parent.parentElement) {
-        visibilityObserver.observe(parent, { attributes: true, attributeFilter: ['hidden', 'open'] });
-      }
-      motionPreference.addEventListener?.('change', updatePlayback);
     });
     document.addEventListener('workshopchange', (event) => {
       renderSetup(event.detail && event.detail.workshop);
