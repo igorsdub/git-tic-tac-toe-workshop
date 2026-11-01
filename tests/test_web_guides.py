@@ -126,7 +126,7 @@ class TestWebGuides(unittest.TestCase):
     def test_quick_jump_links_target_real_guide_sections(self):
         for name, html, expected in (
             ("learner", self.guide, ("turn", "rematch")),
-            ("setup", self.setup, ("step-survey", "step-account", "step-repo", "step-codespace", "step-look-around", "step-stop")),
+            ("setup", self.setup, ("step-survey", "step-account", "step-repo", "step-codespace", "step-look-around", "step-delete")),
         ):
             with self.subTest(page=name):
                 nav = html[html.index('class="jump-nav"'):]
@@ -159,7 +159,7 @@ class TestWebGuides(unittest.TestCase):
         ):
             self.assertIn(requirement, self.setup)
         self.assertLess(self.setup.index('src="workshop-context.js"'), self.setup.index('src="setup.js"'))
-        for step in ("step-survey", "step-account", "step-repo", "step-codespace", "step-look-around", "step-stop"):
+        for step in ("step-survey", "step-account", "step-repo", "step-codespace", "step-look-around", "step-delete"):
             self.assertIn(f'<input type="checkbox" class="step-check" data-step="{step}" id="check-{step}">', self.setup)
         for old in ("docs.google.com/forms", "Keep the public repository and Codespace"):
             self.assertNotIn(old, self.setup)
@@ -177,11 +177,17 @@ class TestWebGuides(unittest.TestCase):
         positions = [repository.index(action) for action in repo_actions]
         self.assertEqual(positions, sorted(positions))
 
-        chat = self.setup[self.setup.index('id="step-look-around"'):self.setup.index('id="step-stop"')]
+        chat = self.setup[self.setup.index('id="step-look-around"'):self.setup.index('id="step-delete"')]
         for action in ("loaded <strong>Chat</strong>", "<strong>Ask</strong>", "What does this repository do?", "<strong>Send</strong>", "complete answer"):
             self.assertIn(action, chat)
         self.assertNotIn("Source Control", chat)
         self.assertNotIn("BOARD.txt", chat)
+
+    def test_setup_delete_actions_follow_complete_confirmation_sequence(self):
+        cleanup = self.setup[self.setup.index('id="step-delete"'):self.setup.index("</article>", self.setup.index('id="step-delete"'))]
+        for action in ("https://github.com", "left navigation", "<strong>Codespaces</strong>", "<strong>...</strong>", "<strong>Delete</strong>", "confirmation dialog", "no longer listed"):
+            self.assertIn(action, cleanup)
+        self.assertNotIn("Stop", cleanup)
 
     def test_setup_media_never_shows_broken_icons(self):
         for tag in re.findall(r"<(?:img|video)\b[^>]*>", self.setup[self.setup.index("<main"):]):

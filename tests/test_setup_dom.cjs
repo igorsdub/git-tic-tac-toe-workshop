@@ -106,7 +106,7 @@ test('codespaces track renders six steps and checkbox state persists per worksho
     const stored = localStorage.getItem('ttt_setup_ws-code_step-repo') === '1';
     await choose('ws-pend');
     await choose('ws-code');
-    const survived = document.getElementById('check-step-repo').checked && !document.getElementById('check-step-stop').checked;
+    const survived = document.getElementById('check-step-repo').checked && !document.getElementById('check-step-delete').checked;
     box.checked = false;
     box.dispatchEvent(new Event('change', { bubbles: true }));
     document.body.dataset.result = six && stored && survived && localStorage.getItem('ttt_setup_ws-code_step-repo') === null ? 'PASS' : 'FAIL';`);
