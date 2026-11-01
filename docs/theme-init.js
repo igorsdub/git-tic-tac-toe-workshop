@@ -51,7 +51,7 @@
     var logoAsset = theme === 'dark' ? 'images/xo-logo-dark.svg' : 'images/xo-logo-light.svg';
     if (logo) logo.setAttribute('src', logo.getAttribute('data-' + theme + '-src') || logoAsset);
     if (favicon) favicon.setAttribute('href', logoAsset);
-    if (toggle) toggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+    if (toggle) toggle.setAttribute("aria-label", theme === "dark" ? "Switch to light theme" : "Switch to dark theme");
   }
 
   function apply(theme) {

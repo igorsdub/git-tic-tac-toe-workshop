@@ -28,7 +28,7 @@ class TestWebGuides(unittest.TestCase):
                 html = (DOCS_DIR / name).read_text(encoding="utf-8")
                 marker = f'data-stage-strip="{stage}"'
                 self.assertIn(marker, html)
-                self.assertGreater(html.index(marker), html.index("</header>"))
+                self.assertLess(html.index(marker), html.index("</header>"))
                 self.assertIn('src="stage-strip.js"', html)
                 self.assertLess(html.index('src="stage-strip.js"'), html.index('src="workshop-context.js"'))
         setup = (DOCS_DIR / "setup.html").read_text(encoding="utf-8")
@@ -76,16 +76,7 @@ class TestWebGuides(unittest.TestCase):
                 self.assertNotIn('id="current-workshop-date"', html)
                 self.assertNotIn('id="current-workshop-note"', html)
                 self.assertIn('src="workshop-context.js"', html)
-                if name == "setup":
-                    continue
-                self.assertIn('data-workshop-registration', html)
-                self.assertIn('data-workshop-dashboard', html)
-                actions_start = html.index('<section class="workshop-actions"')
-                actions_end = html.index('</section>', actions_start)
-                actions = html[actions_start:actions_end]
-                self.assertIn('data-workshop-registration', actions)
-                self.assertIn('data-workshop-dashboard', actions)
-                self.assertIn('View all games', actions)
+                self.assertNotIn('class="workshop-actions"', html)
         self.assertIn("function formatWorkshopOption(workshop)", self.context)
         self.assertIn("month: 'short'", self.context)
         self.assertIn("String(workshop.name).toUpperCase()", self.context)
@@ -98,18 +89,11 @@ class TestWebGuides(unittest.TestCase):
         repo_url = "https://github.com/igorsdub/git-tic-tac-toe-workshop"
         for name, html in (("wall", self.index), ("setup", self.setup), ("learner", self.guide)):
             with self.subTest(page=name):
-                nav_start = html.index('class="nav-links"')
-                nav_end = html.index("</nav>", nav_start)
-                nav = html[nav_start:nav_end]
-                self.assertIn('href="setup.html"', nav)
-                self.assertIn('href="guide.html"', nav)
-                self.assertIn('id="theme-toggle"', html)
-                header_navigation = html[html.index('<div class="header-navigation">'):]
-                header_navigation = header_navigation.split('</div>', 1)[0]
-                self.assertIn('class="nav-links"', header_navigation)
-                self.assertIn('id="theme-toggle"', header_navigation)
-                self.assertIn('>How to play</a>', nav)
-                self.assertIn('>Setup</a>', nav)
+                header = html[:html.index('</header>')]
+                self.assertIn('data-stage-strip=', header)
+                self.assertIn('id="theme-toggle"', header)
+                self.assertNotIn('class="nav-links"', header)
+                self.assertNotIn('🌙', header)
                 self.assertNotIn('🎮', html[:html.index('</header>')])
                 self.assertIn('id="brand-logo"', html)
                 self.assertIn('id="theme-favicon"', html)

@@ -22,25 +22,16 @@
         </a>
       </div>
       <div class="header-actions">
-        <div class="header-navigation">
-          <nav class="nav-links" aria-label="Workshop Navigation">
-            <a href="guide.html" class="btn btn-outline nav-btn">How to play</a>
-            <a href="setup.html" class="btn btn-outline nav-btn">Setup</a>
-          </nav>
-          <button id="theme-toggle" class="btn btn-icon" title="Toggle dark/light theme" aria-label="Toggle theme">
-            🌙
-          </button>
-        </div>
         <div class="header-workshop-picker">
           <label for="workshop-select" class="header-workshop-label">Workshop</label>
           <select id="workshop-select" aria-describedby="workshop-context-status"></select>
           <span id="workshop-context-status" class="visually-hidden" role="status">Choose a workshop to update the registration link and Game Wall.</span>
         </div>
-        <a href="https://github.com/igorsdub/git-tic-tac-toe-workshop" 
-           target="_blank" 
-           rel="noopener noreferrer" 
-           class="btn btn-icon" 
-           aria-label="View repository on GitHub" 
+        <button id="theme-toggle" class="header-icon" title="Toggle dark/light theme" aria-label="Toggle theme"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg></button><a href="https://github.com/igorsdub/git-tic-tac-toe-workshop"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="header-icon"
+           aria-label="View repository on GitHub"
            title="View repository on GitHub">
           <svg class="github-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
             <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
@@ -48,16 +39,10 @@
         </a>
       </div>
     </div>
-  </header>
   <div data-stage-strip="wall"></div>
+  </header>
 
   <main class="wall-main">
-    <section class="workshop-actions" aria-label="Workshop actions">
-      <div class="workshop-context-actions">
-        <a id="register-link" data-workshop-registration class="btn btn-primary" href="https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&amp;workshop_id=2026-11-06-sokedai" target="_blank" rel="noopener noreferrer">Register repository</a>
-        <a data-workshop-dashboard class="btn btn-outline" href="index.html">View all games</a>
-      </div>
-    </section>
     <!-- Notice / Alert Banner -->
     <div id="notice-banner" class="notice-banner hidden" role="alert">
       <span id="notice-icon" class="notice-icon" aria-hidden="true"><svg class="wall-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5m0-8h.01"/></svg></span>

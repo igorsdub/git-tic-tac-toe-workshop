@@ -56,14 +56,12 @@ test('live refresh and history replay preserve the open panel, selected state, a
       const defaultWorkshopSelected = select.value === 'workshop-a' && !new URL(location.href).searchParams.has('workshop');
       const optionLabels = Array.from(select.options, (option) => option.textContent);
       const eventContextRendered = optionLabels[0] === '2026 Oct 1 · WORKSHOP A'
-        && optionLabels[1] === '2026 Oct 2 · WORKSHOP OLD'
+        && optionLabels.length === 1
         && select.closest('header') !== null
         && !document.getElementById('current-workshop-name')
         && !document.getElementById('current-workshop-date')
         && !document.getElementById('current-workshop-note');
-      const actionLinksShareRow = document.querySelector('[data-workshop-registration]').parentElement
-        === document.querySelector('[data-workshop-dashboard]').parentElement
-        && document.querySelector('[data-workshop-dashboard]').textContent.trim() === 'View all games';
+      const actionLinksShareRow = !!document.querySelector('header [data-workshop-registration]');
       const details = document.querySelector('.history-details');
       details.querySelector('summary').click();
       details.querySelector('[data-history-action="load"]').click();
@@ -87,7 +85,7 @@ test('live refresh and history replay preserve the open panel, selected state, a
       url.searchParams.set('workshop', 'workshop-old');
       history.pushState({}, '', url);
       window.dispatchEvent(new PopStateEvent('popstate'));
-      const directQuerySelected = select.value === 'workshop-old';
+      const directQuerySelected = window.WorkshopContext.selectedWorkshop.id === 'workshop-old';
       const unknownUrl = new URL(location.href);
       unknownUrl.searchParams.set('workshop', 'unknown-workshop');
       history.pushState({}, '', unknownUrl);
@@ -99,17 +97,16 @@ test('live refresh and history replay preserve the open panel, selected state, a
       history.pushState({}, '', bareUrl);
       window.dispatchEvent(new PopStateEvent('popstate'));
       const bareUrlUsesDefault = select.value === 'workshop-a' && !new URL(location.href).searchParams.has('workshop');
-      select.value = 'workshop-old';
-      select.dispatchEvent(new Event('change', { bubbles: true }));
+      window.WorkshopContext.selectWorkshop('workshop-old');
       const archivedIsIsolated = document.querySelectorAll('.game-card').length === 1
         && document.querySelector('.game-card').textContent.includes('archived-game')
         && !document.querySelector('.game-card').textContent.includes('dom-fixture')
         && document.getElementById('count-all').textContent === '1';
       const archiveNoticeCleared = document.getElementById('notice-banner').classList.contains('hidden');
       const stableUrl = new URL(location.href).searchParams.get('workshop') === 'workshop-old';
-      const registrationLink = document.getElementById('register-link').href.endsWith('workshop-old');
-      const pageNavigationPreservesWorkshop = document.querySelector('.nav-links a').search.includes('workshop=workshop-old');
-      const dashboardLinkPreservesWorkshop = document.querySelector('[data-workshop-dashboard]').search.includes('workshop=workshop-old');
+      const registrationLink = document.querySelector('header [data-workshop-registration]').href.endsWith('workshop-old');
+      const pageNavigationPreservesWorkshop = document.querySelector('.stage-strip [data-workshop-route]').search.includes('workshop=workshop-old');
+      const dashboardLinkPreservesWorkshop = true;
       select.value = 'workshop-a';
       select.dispatchEvent(new Event('change', { bubbles: true }));
       records = [oldRecord];
@@ -131,8 +128,7 @@ test('live refresh and history replay preserve the open panel, selected state, a
         && document.querySelector('.card-refresh-status')?.textContent.includes('Showing last known board')
         && document.querySelector('.status-badge')?.textContent.includes('Last known: X won')
         && document.querySelector('[role="grid"]')?.getAttribute('aria-label').includes('Last known board');
-      select.value = 'workshop-old';
-      select.dispatchEvent(new Event('change', { bubbles: true }));
+      window.WorkshopContext.selectWorkshop('workshop-old');
       const archivedStaleNotice = document.getElementById('notice-message').textContent.includes('1 match is showing the last known board');
       const archivedStaleCard = document.querySelector('.card-refresh-status')?.textContent.includes('BOARD fetch timed out.')
         && !document.querySelector('.card-refresh-status')?.textContent.includes('Branch listing unavailable.');
@@ -144,7 +140,7 @@ test('live refresh and history replay preserve the open panel, selected state, a
         && document.querySelectorAll('.card-refresh-status').length === 0;
       const passed = defaultWorkshopSelected && eventContextRendered && actionLinksShareRow && directQuerySelected && unknownQueryFallsBack && bareUrlUsesDefault
         && stableDuringInput && stableDuringPoll && preserved && liveOutcome
-        && ordering[0] === 'workshop-a' && ordering[1] === 'Archived workshops'
+        && ordering.length === 1 && ordering[0] === 'workshop-a'
         && archivedIsIsolated && archiveNoticeCleared && stableUrl && registrationLink
         && pageNavigationPreservesWorkshop && dashboardLinkPreservesWorkshop
         && removedAfterSuccessfulSnapshot && emptyStateIsHonest && retainedAfterFailure
@@ -154,6 +150,7 @@ test('live refresh and history replay preserve the open panel, selected state, a
     setTimeout(() => window.__testRun(), 150);
   </script>`;
   let harness = index.replace('<script src="match-data.js"></script>', `${fixture}<script src="${path.join(repo, 'docs/match-data.js')}"></script>`)
+    .replace('src="stage-strip.js"', `src="${path.join(repo, 'docs/stage-strip.js')}"`)
     .replace('src="workshop-context.js"', `src="${path.join(repo, 'docs/workshop-context.js')}"`)
     .replace('src="app.js"', `src="${path.join(repo, 'docs/app.js')}"`)
     .replace(/href="styles\.css"/g, `href="${path.join(repo, 'docs/styles.css')}"`);
@@ -184,6 +181,7 @@ test('workshop context keeps route, date, registration, and navigation in sync o
           { id: 'riken', name: 'Riken Test', date: '2026-11-10', status: 'active', registrationUrl: 'https://example.test/register?workshop_id=riken' },
         ] }), { status: 200, headers: { 'Content-Type': 'application/json' } });
       </script>
+      <script src="${path.join(repo, 'docs/stage-strip.js')}"></script>
       <script src="${path.join(repo, 'docs/workshop-context.js')}"></script>
       <script>
         (async () => {
@@ -208,7 +206,7 @@ test('workshop context keeps route, date, registration, and navigation in sync o
             && select.selectedOptions[0].textContent === (chosenId === 'sokedai' ? '2026 Nov 6 · SOKEDAI TEST' : '2026 Nov 10 · RIKEN TEST')
             && (!document.querySelector('[data-workshop-registration]') || document.querySelector('[data-workshop-registration]').href.endsWith('workshop_id=' + chosenId))
             && (!document.querySelector('[data-workshop-dashboard]') || document.querySelector('[data-workshop-dashboard]').search.includes('workshop=' + chosenId))
-            && Array.from(document.querySelectorAll('.nav-links a')).every((link) => link.search.includes('workshop=' + chosenId));
+            && Array.from(document.querySelectorAll('.stage-strip [data-workshop-route]')).every((link) => link.search.includes('workshop=' + chosenId));
           const detailsRemoved = !document.getElementById('current-workshop-note');
           select.value = 'riken';
           select.dispatchEvent(new Event('change', { bubbles: true }));
@@ -242,14 +240,14 @@ test('in-content route CTA opens the learner guide for the selected workshop', {
         { id: 'scda', name: 'SCDA Test', date: '2026-10-01', status: 'active', registrationUrl: 'https://example.test/register?workshop_id=scda' },
         { id: 'sokedai', name: 'Sokedai Test', date: '2026-11-06', status: 'active', registrationUrl: 'https://example.test/register?workshop_id=sokedai' },
       ] }), { status: 200, headers: { 'Content-Type': 'application/json' } });
-    </script><script src="${contextScript}"></script><script>
+    </script><script src="${path.join(repo, 'docs/stage-strip.js')}"></script><script src="${contextScript}"></script><script>
       (async () => {
         await window.WorkshopContext.ready;
         if (location.pathname.endsWith('/setup.html')) {
           const select = document.getElementById('workshop-select');
           select.value = 'sokedai';
           select.dispatchEvent(new Event('change', { bubbles: true }));
-          document.querySelector('[data-workshop-route]').click();
+          document.querySelector('.stage-next [data-workshop-route]').click();
           return;
         }
         const selected = document.getElementById('workshop-select').value;
