@@ -1353,6 +1353,18 @@ a.skip-link:hover {
   gap: 1.25rem;
 }
 
+.turn-cycle {
+  margin: 1.25rem 0;
+  padding: 1rem 1.25rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-medium);
+  border-left: 4px solid var(--border-dark);
+  border-radius: var(--radius-md);
+}
+
+.turn-cycle h3 { margin: 0 0 0.5rem; }
+.guide-section .turn-cycle ol { margin-bottom: 0; }
+
 .guide-section h2 {
   font-size: 1.35rem;
   font-weight: 700;

@@ -209,13 +209,12 @@ class TestWebGuides(unittest.TestCase):
         self.assertEqual(self.guide.count('<section class="guide-section"'), 2)
         self.assertNotIn("Workshop setup", self.guide)
         self.assertNotIn("History as a time machine", self.guide)
-        self.assertIn("Start the next numbered match from clean <code>main</code>", self.guide)
-        self.assertNotIn("match-02", self.guide)
-        self.assertIn("partner fetches that branch, checks it out, and pulls", self.guide)
-        self.assertIn("select an editing mode such as <strong>Agent</strong>", self.guide)
+        self.assertIn("create a branch named <code>match-02</code>", self.guide)
+        self.assertIn("partner fetches <code>match-02</code>, switches to it, and pulls", self.guide)
+        self.assertIn("select <strong>Agent</strong> mode", self.guide)
         self.assertIn("follow the instructor’s Copilot demonstration", self.guide)
         for requirement in (
-            "Register the shared repository once",
+            "register it once",
             "both player GitHub handles",
             "successful registration comment confirms",
             "lowercase <code>match</code>",
@@ -249,7 +248,8 @@ class TestWebGuides(unittest.TestCase):
 
     def test_turn_cycle_is_five_source_control_steps(self):
         turn = self.guide[self.guide.index('id="turn"'):self.guide.index('id="rematch"')]
-        steps = re.findall(r"<li>(.*?)</li>", re.search(r"<ol>(.*?)</ol>", turn, re.S).group(1), re.S)
+        detailed_turn = turn[turn.index("</aside>"):]
+        steps = re.findall(r"<li>(.*?)</li>", re.search(r"<ol>(.*?)</ol>", detailed_turn, re.S).group(1), re.S)
         self.assertEqual(len(steps), 5)
         for step, button in zip(steps, ("Pull", None, "+", "Commit", "Sync Changes")):
             if button:
