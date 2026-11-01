@@ -704,6 +704,12 @@ a.skip-link:hover {
   opacity: 0.8;
 }
 
+.wall-icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+}
+
 .empty-state h2 {
   font-size: 1.3rem;
   color: var(--text-primary);
