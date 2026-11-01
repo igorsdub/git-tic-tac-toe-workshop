@@ -745,11 +745,11 @@ State: Waiting for O
   function getStatusIcon(stateName) {
     switch (stateName) {
       case 'Ready for X': return '▶️';
-      case 'Waiting for X': return '⏳';
-      case 'Waiting for O': return '⏳';
+      case 'Waiting for X':
+      case 'Waiting for O': return '<svg class="wall-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12M6 21h12M7 3v3c0 3 2 4 5 6-3 2-5 3-5 6v3m10-18v3c0 3-2 4-5 6 3 2 5 3 5 6v3"/></svg>';
       case 'X won': return '🏆';
       case 'O won': return '🏆';
-      case 'Draw': return '🤝';
+      case 'Draw': return '<svg class="wall-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12l4-5 4 1 2-1 4 1 3-1 3 5-3 3-2-1-4 4-2-1-1 1-2-2-1 1-3-3-2-2zm4-5 3 3m10-3-3 4-4-2-3 2c-1 1 0 2 1 2l3-1 4 3"/></svg>';
       default: return '⚠️';
     }
   }
