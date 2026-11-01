@@ -1,6 +1,6 @@
 # Facilitator Guide: Git Tic-Tac-Toe Workshop
 
-> **Delivery status (2026-10-20):** The starter and branch-aware Game Wall are published. Existing registrations map to workshop `2026-10-01-scda`; the `Default Event` record remains preserved and excluded from workshop Game Walls pending review. The two-account rehearsal remains incomplete; see [the delivery record](planning/delivery-status-2026-10-20.md) and [rehearsal evidence](planning/rehearsal-evidence-2026-10-20.md).
+The two-account rehearsal remains incomplete; see the [historical delivery record](planning/delivery-status-2026-10-20.md) and [rehearsal evidence](planning/rehearsal-evidence-2026-10-20.md).
 
 ## Purpose and outcomes
 
@@ -30,14 +30,14 @@ Use the [Rehearsal guide](REHEARSAL_GUIDE.md) to verify the live starter, Codesp
 
 Before the session, each learner:
 
-1. Creates a public repository from the template under their own account.
+1. Creates a public repository from the template under their own account, fills in **Description**, and ticks **Include all branches** to get `match-01`.
 2. Opens it in a Codespace.
 3. Runs the readiness check: open Copilot Chat, type exactly "What does this repository do?", and press Enter. It passes when the answer mentions tic-tac-toe and `BOARD.txt`.
-4. Stops the Codespace (stop, not delete) and keeps both the repository and the Codespace.
+4. Deletes the Codespace at [github.com/codespaces](https://github.com/codespaces) and keeps the repository. A running Codespace uses the limited free monthly allowance; a deleted one costs nothing.
 
-No board edit is required during preparation. During pair setup, each pair chooses one prepared repository, invites the partner, and opens that repository in separate Codespaces.
+No board edit is required during preparation. During pair setup, each pair chooses one prepared repository; its owner invites the partner, plays X and moves first, and both open fresh separate Codespaces.
 
-Each pair registers its shared repository once for the workshop, with both player GitHub handles, using the **Register repository** button on the Game Wall. The Game Wall and `docs/workshops.json` list each workshop's form. SCDA Training Week is archived and no longer accepts new repositories.
+Each pair registers its shared repository once for the workshop, with both player GitHub handles, using **Register repository** in the header stage strip. Use the strip to navigate Setup, How to play and the Game Wall. `docs/workshops.json` lists each workshop's form. SCDA Training Week is archived and no longer accepts new repositories.
 
 ## Facilitation
 
@@ -47,7 +47,7 @@ Use the shared-board analogy: each learner's Codespace is their own working copy
 
 ### Pair setup and manual match (25–70)
 
-Each pair chooses one prepared public repository and adds the partner as a collaborator. Each learner opens that same repository in their own Codespace. Assign X and O, then play numbered moves in order. `BOARD.txt` has three rows of three single-space-separated cells (`.`, `X`, or `O`); a move replaces one `.`.
+Each pair chooses one prepared public repository and the owner invites the partner as a collaborator. The partner accepts, and each learner opens that repository in their own Codespace. The owner plays X and moves first; the partner plays O. Both switch to the existing `match-01` in Source Control and pull, then play numbered moves in order. `BOARD.txt` has three rows of three single-space-separated cells (`.`, `X`, or `O`); a move replaces one `.`.
 
 Every turn has five steps, named after the Source Control buttons:
 
@@ -57,13 +57,13 @@ Every turn has five steps, named after the Source Control buttons:
 4. **Commit** with a clear message.
 5. **Sync Changes**.
 
-The next player pulls before editing. Keep the first full manual workflow as the shared foundation for Copilot practice. Match branches start from clean `main`; any branch whose name begins with literal lowercase `match` qualifies, with `match-01` the teaching example and `match-02` next. Match branches are never merged back.
+The next player pulls before editing. Keep the first full manual workflow as the shared foundation for Copilot practice. The template supplies `match-01`; the rematch branch `match-02` starts from clean `main`. Any branch whose name begins with literal lowercase `match` qualifies. Match branches are never merged back.
 
 ### Copilot demonstration and rematch (70–105)
 
 For the Copilot demonstration, show the accepted first-move example with the exact learner request: "Place X in the center of the board." Select agent mode in Copilot Chat. For an O move or a later turn, learners name the square they chose. They inspect the diff, then stage, commit, and sync the change through Source Control. Copilot choosing a legal move is an optional later extension, not the core activity.
 
-Create a fresh rematch branch (the next numbered match) from clean `main`. Repeat the same Source Control workflow; only the board edit is delegated. If a learner cannot use Copilot, they can complete the rematch manually and follow the instructor's Copilot demonstration. Keep the protected rematch time by moving everyone together at the scheduled transition.
+Create and publish `match-02` from clean `main`; the partner switches to it. Repeat the same Source Control workflow; only the board edit is delegated. If a learner cannot use Copilot, they can complete the rematch manually and follow the instructor's Copilot demonstration. Keep the protected rematch time by moving everyone together at the scheduled transition.
 
 ### History demonstration and wrap-up (105–120)
 
