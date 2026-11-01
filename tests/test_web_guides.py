@@ -164,6 +164,25 @@ class TestWebGuides(unittest.TestCase):
         for old in ("docs.google.com/forms", "Keep the public repository and Codespace"):
             self.assertNotIn(old, self.setup)
 
+    def test_setup_repository_and_chat_actions_follow_rehearsal_sequence(self):
+        repository = self.setup[self.setup.index('id="step-repo"'):self.setup.index('id="step-codespace"')]
+        repo_actions = (
+            "04-include-all-branches.png",
+            "05-owner-and-name.png",
+            "06-description.png",
+            "07-visibility-public.png",
+            "08-create-repository.png",
+            "SOKENDAI Git and GitHub collaboration workshop",
+        )
+        positions = [repository.index(action) for action in repo_actions]
+        self.assertEqual(positions, sorted(positions))
+
+        chat = self.setup[self.setup.index('id="step-look-around"'):self.setup.index('id="step-stop"')]
+        for action in ("loaded <strong>Chat</strong>", "<strong>Ask</strong>", "What does this repository do?", "<strong>Send</strong>", "complete answer"):
+            self.assertIn(action, chat)
+        self.assertNotIn("Source Control", chat)
+        self.assertNotIn("BOARD.txt", chat)
+
     def test_setup_media_never_shows_broken_icons(self):
         for tag in re.findall(r"<(?:img|video)\b[^>]*>", self.setup[self.setup.index("<main"):]):
             if tag.startswith("<img"):

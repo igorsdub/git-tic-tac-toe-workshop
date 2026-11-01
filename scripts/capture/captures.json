@@ -7,9 +7,11 @@
         "01-template-page.png",
         "02-use-this-template.png",
         "03-create-new-repository.png",
-        "04-owner-and-name.png",
-        "05-visibility-public.png",
-        "06-create-repository.png"
+        "04-include-all-branches.png",
+        "05-owner-and-name.png",
+        "06-description.png",
+        "07-visibility-public.png",
+        "08-create-repository.png"
       ]
     },
     {
@@ -18,16 +20,19 @@
         "01-code-button.png",
         "02-codespaces-tab.png",
         "03-create-codespace.png",
-        "04-editor-ready.png"
+        "04-trust-prompt.png",
+        "05-editor-ready.png"
       ]
     },
     {
       "slug": "look-around",
       "screenshots": [
-        "01-explorer-board.png",
-        "02-source-control.png",
-        "03-copilot-chat.png",
-        "04-copilot-answer.png"
+        "01-chat.png",
+        "02-mode-selector.png",
+        "03-ask-mode.png",
+        "04-question.png",
+        "05-send.png",
+        "06-answer.png"
       ]
     },
     {

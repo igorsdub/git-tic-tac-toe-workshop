@@ -74,4 +74,4 @@ One step of a learner's path through the training, shown in the header stage str
 The variant of the Setup page a workshop uses, determined by how learners get a working environment. The Codespaces track needs only a browser; the local track needs software installed on the learner's own computer. Every active workshop has a track; for a workshop without one the Setup page says "Setup for this workshop is not published yet".
 
 **Readiness check**:
-Open Copilot Chat, type exactly "What does this repository do?", and check that the answer mentions tic-tac-toe and `BOARD.txt`. The learner then deletes the Codespace and keeps the repository.
+Wait for the Codespace editor to load, open Chat, select Ask mode, and send exactly "What does this repository do?". Wait for the complete answer. The learner then deletes the Codespace and keeps the repository.
