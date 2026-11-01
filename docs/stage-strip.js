@@ -3,9 +3,9 @@
   'use strict';
 
   const STAGES = [
-    { id: 'setup', number: 1, name: 'Setup', when: 'before the session', href: 'setup.html' },
-    { id: 'guide', number: 2, name: 'How to play', when: 'in the session', href: 'guide.html' },
-    { id: 'wall', number: 3, name: 'Game Wall', when: 'watch the matches', href: 'index.html' },
+    { id: 'setup', number: 1, name: 'Setup', href: 'setup.html' },
+    { id: 'guide', number: 2, name: 'How to play', href: 'guide.html' },
+    { id: 'wall', number: 3, name: 'Game Wall', href: 'index.html' },
   ];
 
   function render(container) {
@@ -25,7 +25,7 @@
         link.setAttribute('aria-current', 'step');
         link.classList.add('is-current');
       }
-      [['stage-number', String(stage.number)], ['stage-name', stage.name], ['stage-when', stage.when]]
+      [['stage-number', String(stage.number)], ['stage-name', stage.name]]
         .forEach(([cls, text], index) => {
           if (index) link.appendChild(document.createTextNode(' '));
           const span = document.createElement('span');
@@ -36,6 +36,15 @@
       item.appendChild(link);
       list.appendChild(item);
     });
+    const item = document.createElement('li');
+    const registration = document.createElement('a');
+    registration.setAttribute('data-workshop-registration', '');
+    registration.href = 'https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&workshop_id=2026-11-06-sokedai';
+    registration.target = '_blank';
+    registration.rel = 'noopener noreferrer';
+    registration.textContent = 'Register repository';
+    item.appendChild(registration);
+    list.appendChild(item);
     nav.appendChild(list);
     container.appendChild(nav);
   }

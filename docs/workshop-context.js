@@ -105,7 +105,6 @@
     }
     if (select) {
       const active = catalog.workshops.filter((workshop) => workshop.status === 'active');
-      const archived = catalog.workshops.filter((workshop) => workshop.status === 'archived');
       const appendOption = (workshop, parent = select) => {
         const option = document.createElement('option');
         option.value = workshop.id;
@@ -114,12 +113,7 @@
       };
       select.replaceChildren();
       active.forEach((workshop) => appendOption(workshop));
-      if (archived.length) {
-        const group = document.createElement('optgroup');
-        group.label = 'Archived workshops';
-        archived.forEach((workshop) => appendOption(workshop, group));
-        select.appendChild(group);
-      }
+
     }
     const requestedWorkshopId = new URL(window.location.href).searchParams.get('workshop');
     const selectedId = workshopIds.has(requestedWorkshopId) ? requestedWorkshopId : catalog.defaultWorkshopId;
