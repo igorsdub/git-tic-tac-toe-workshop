@@ -6,3 +6,4 @@ node_modules/
 .playwright-profile/
 .playwright-auth.json
 scripts/capture/out/
+.context/
