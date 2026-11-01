@@ -1,6 +1,6 @@
 # Git Tic-Tac-Toe: Learner Guide
 
-> **Workshop registration:** Your pair registers its shared repository once for this workshop and enters both player GitHub handles. Select **Register repository** on the Game Wall to open your workshop's registration form. A successful registration comment confirms the repository/workshop link. The Game Wall shows a card after a successful refresh finds a branch whose name starts with lowercase `match`.
+> **Workshop registration:** Your pair registers its shared repository once for this workshop and enters both player GitHub handles. Select **Register repository** in the header stage strip to open your workshop's registration form. A successful registration comment confirms the repository/workshop link. The Game Wall shows a card after a successful refresh finds a branch whose name starts with lowercase `match`.
 
 In this workshop, you and a partner collaborate in one shared public GitHub repository. You will play one match by hand, then use Copilot to make a board edit you already know how to make. You remain responsible for reviewing and publishing every change.
 
@@ -10,12 +10,12 @@ Each person works in their own GitHub Codespace, opened in the browser-based VS 
 
 Before the session, follow the [Setup page](docs/setup.html) or the [Pre-session checklist](PRE_SESSION_CHECK.md):
 
-1. Create a public repository from the starter template under your own account.
+1. Create a public repository from the starter template under your own account, fill in **Description**, and tick **Include all branches** to get `match-01`.
 2. Open it in a Codespace.
 3. Run the readiness check: open Copilot Chat, type exactly "What does this repository do?", and press Enter. It passes when the answer mentions tic-tac-toe and `BOARD.txt`.
-4. Stop the Codespace (do not delete it). Keep both the repository and the Codespace.
+4. Delete the Codespace at [github.com/codespaces](https://github.com/codespaces) and keep the repository. A running Codespace uses your limited free monthly allowance; a deleted one costs nothing.
 
-At the session, choose one repository for your pair, invite your partner, and each open that repository in a separate Codespace. Start each match branch from `main`; `match-01` is a clear example. Any branch beginning with the exact lowercase text `match` qualifies, including `match01`, `match-01`, `match02`, and `match-test`. Keep match branches separate; do not merge them back into `main`.
+At the session, choose one prepared repository. Its owner invites the partner, plays X and moves first; the partner accepts and plays O. Both open fresh separate Codespaces, switch to the existing `match-01` in Source Control, and pull. Use the header stage strip for Setup, How to play, the Game Wall and **Register repository**. Any branch beginning with the exact lowercase text `match` qualifies. Keep match branches separate; do not merge them back into `main`.
 
 Register the repository once for this workshop; do not submit a separate registration for each branch. Each qualifying branch becomes its own Game Wall card, with the full branch name shown as its label. The Game Wall reads `BOARD.txt` from that exact branch. A repository belongs to one workshop only; use a fresh copy of the template when participating in another workshop. If you need to correct player handles, submit the form again for the same repository and workshop. Archived workshops remain viewable and accept updates to already registered repositories, including handles, but they do not accept new repositories.
 
@@ -37,7 +37,7 @@ Saving a file, staging it, committing it, and syncing it are separate actions. T
 
 ## Agent-assisted rematch
 
-At the scheduled transition, every pair begins a fresh rematch, even if its manual match is unfinished. Leave the unfinished match on its branch. Start the next numbered match from `main` and use the same VS Code web workflow.
+At the scheduled transition, every pair begins a fresh rematch, even if its manual match is unfinished. Leave the unfinished match on its branch. Create and publish `match-02` from clean `main`; your partner switches to it. Use the same VS Code web workflow.
 
 You choose a legal move and ask Copilot to place your mark. Select agent mode in Copilot Chat. For the demonstration's first move, say exactly: "Place X in the center of the board." If you play O or make a later move, name the square you chose. Then:
 

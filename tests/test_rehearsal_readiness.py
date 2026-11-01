@@ -98,7 +98,10 @@ class TestApprovedWorkshopPath(unittest.TestCase):
         for requirement in (
             "Use this template → Create a new repository",
             "Make your repository public",
-            "Keep your public repository and Codespace",
+            "Include all branches",
+            "Description",
+            "Delete the Codespace",
+            "Keep your public repository",
             "separate Codespaces",
             "Describe what to build",
             "What does this repository do?",
@@ -117,7 +120,7 @@ class TestApprovedWorkshopPath(unittest.TestCase):
 
     def test_learner_match_uses_board_and_source_control_contract(self):
         learner = (REPO_ROOT / "LEARNER_GUIDE.md").read_text(encoding="utf-8")
-        for requirement in ("Source Control", "BOARD.txt", "match-01", "from `main`", "rematch"):
+        for requirement in ("Source Control", "BOARD.txt", "match-01", "from clean `main`", "rematch"):
             self.assertIn(requirement, learner)
         self.assertIn("complete the rematch manually", learner)
         self.assertIn("instructor's Copilot demonstration", learner)

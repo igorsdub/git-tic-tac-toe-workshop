@@ -1,0 +1,3 @@
+# 6. Ship the first match and delete the preparation Codespace
+
+Creating the first match branch is difficult for beginners, and a running Codespace consumes a learner's limited free monthly allowance. The template ships `match-01` as an empty copy of `main`, so learners create their own public repository with **Include all branches** and a description, then switch to that existing branch during the session. After checking Copilot before the session, learners delete the Codespace rather than stop it, keeping their repository and opening a fresh Codespace for the chosen pair repository. The pair still creates and publishes `match-02` from clean `main` for the rematch.

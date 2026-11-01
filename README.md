@@ -29,15 +29,15 @@ The shared event context on the Game Wall, Setup page, and How to play reads eve
 
 ## Staged learner path
 
-Learners move through three pages, linked by a shared stage strip and Next links: Setup page (`docs/setup.html`), How to play (`docs/guide.html`), then the Game Wall (`docs/index.html`). The Game Wall is the plain-URL landing page.
+Learners move through three pages using the shared header stage strip: Setup page (`docs/setup.html`), How to play (`docs/guide.html`), then the Game Wall (`docs/index.html`). The strip ends with an unnumbered **Register repository** link. The Game Wall is the plain-URL landing page.
 
 The Setup page adapts to the selected workshop (`?workshop=<id>`):
 
-- **Archived** (for example SCDA Training Week): the setup steps are replaced by a notice that the workshop is archived, and no Next link is shown.
-- **`setupTrack: "codespaces"`** (SOKENDAI and RIKEN): the step-by-step Codespaces track with screenshots and videos, per-step checkboxes remembered in the browser, and the workshop's `surveyUrl` when set.
+- **Archived** (for example SCDA Training Week): archived workshops are omitted from the workshop selector.
+- **`setupTrack: "codespaces"`** (SOKENDAI and RIKEN): the step-by-step Codespaces track with screenshots, per-step checkboxes remembered in the browser, and the workshop's `surveyUrl` when set.
 - A workshop with no `setupTrack` shows "Setup for this workshop is not published yet".
 
-The Setup page has no Register button; registration is the **Register repository** button on the Game Wall.
+Use **Register repository** in the stage strip to open the selected workshop's registration form.
 
 ## How to run tests
 
@@ -76,7 +76,7 @@ Each learner uses their own Codespace in the browser-based VS Code editor. Each 
 
 `BOARD.txt` is three rows of three single-space-separated cells (`.`, `X`, `O`); a move replaces one `.`. The manual match teaches the whole workflow. In the agent-assisted rematch, learners ask Copilot in agent mode "Place X in the center of the board" for X's first move, inspect the diff, then stage, commit, and sync the change themselves. O players and later turns name their chosen square.
 
-Before the workshop, each learner creates a public repository from the template under their own account, opens it in a Codespace, runs the readiness check, stops the Codespace, and keeps both. The readiness check: open Copilot Chat, type exactly "What does this repository do?", and expect an answer that mentions tic-tac-toe and `BOARD.txt`. See the [Pre-session checklist](PRE_SESSION_CHECK.md) and the [Setup page](docs/setup.html). At the session each pair chooses one prepared repository and opens it in separate Codespaces.
+Before the workshop, each learner creates a public repository from the template under their own account, fills in **Description**, and ticks **Include all branches** to get the template's empty `match-01`. They open it in a Codespace, run the readiness check, delete the Codespace at [github.com/codespaces](https://github.com/codespaces), and keep the repository. A running Codespace uses the limited free monthly allowance; a deleted one costs nothing. The readiness check: open Copilot Chat, type exactly "What does this repository do?", and expect an answer that mentions tic-tac-toe and `BOARD.txt`. See the [Pre-session checklist](PRE_SESSION_CHECK.md) and the [Setup page](docs/setup.html). At the session each pair chooses one prepared repository; its owner invites the partner, plays X and moves first. Both open fresh separate Codespaces, switch to `match-01`, and pull. For the rematch they create and publish `match-02` from clean `main`.
 
 ## Registration and delivery status
 

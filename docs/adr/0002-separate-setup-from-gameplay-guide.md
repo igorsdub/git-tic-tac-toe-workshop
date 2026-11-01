@@ -5,10 +5,10 @@ Initial discussion considered placing the pre-session environment setup and the 
 
 ## Decision
 We decouple pre-session environment configuration from live gameplay by providing two distinct web pages:
-1. `docs/setup.html` (**Setup page**): the Codespaces track. Nothing is installed on the learner's computer. The steps are the pre-workshop survey (when the workshop has one), creating a GitHub account, creating a public repository from the template, opening it in a Codespace, the readiness check (Copilot Chat answers "What does this repository do?" and mentions tic-tac-toe and `BOARD.txt`), and stopping the Codespace.
+1. `docs/setup.html` (**Setup page**): the Codespaces track. Nothing is installed on the learner's computer. The steps are the pre-workshop survey (when the workshop has one), creating a GitHub account, creating a public repository from the template with a description and **Include all branches** (which brings `match-01`), opening it in a Codespace, the readiness check (Copilot Chat answers "What does this repository do?" and mentions tic-tac-toe and `BOARD.txt`), and deleting the Codespace while keeping the repository.
 2. `docs/guide.html` (**How to play**): the five-step turn cycle in Source Control (Pull, edit one cell and save, stage with +, Commit with a clear message, Sync Changes) and the agent-assisted rematch.
 
-The Game Wall (`docs/index.html`) links to both pages, and all three pages share a stage strip; the Setup page and How to play end with a Next link.
+All three pages share the header stage strip as their page navigation: Setup, How to play and the Game Wall (`docs/index.html`), followed by an unnumbered **Register repository** link.
 
 ## Consequences
 Learners during the game phase have a focused, lightweight page without setup clutter. Learners can complete and verify setup before arriving. The catalog's `setupTrack` selects the Setup page content per workshop.

@@ -20,7 +20,7 @@ The GitHub repository a pair shares, created from the template. A repository bel
 A connection between a repository and a workshop, with two player GitHub handles supplied for avatars. The Game Wall watches the registered repository. Repeating registration for the same repository and workshop updates the existing registration and its handles rather than creating another entry. Among valid registration issues for that repository and workshop, the newest issue supplies the handles; corrections are submitted through a new form entry.
 
 **Register repository**:
-The button on the Game Wall that opens the registration form for the selected workshop. A pair registers its shared repository once per workshop, with both GitHub handles; match branches are discovered automatically.
+The link in the header stage strip that opens the registration form for the selected workshop. A pair registers its shared repository once per workshop, with both GitHub handles; match branches are discovered automatically.
 _Avoid_: Register every match branch
 
 ## The game
@@ -29,7 +29,7 @@ _Avoid_: Register every match branch
 The collaborative tic-tac-toe activity in general. Use *match* for one play-through.
 
 **Match**:
-One play-through of tic-tac-toe between a pair, represented by a repository branch whose name starts with the literal lowercase prefix `match`. The teaching example is `match-01`, then `match-02`; each is created from clean `main` and never merged back. Each matching branch appears as a separate Game Wall card, identified by its full branch name. A pair may play several matches during a workshop.
+One play-through of tic-tac-toe between a pair, represented by a repository branch whose name starts with the literal lowercase prefix `match`. The template supplies `match-01`; the pair creates `match-02` from clean `main` for the rematch. Neither is merged back. Each matching branch appears as a separate Game Wall card, identified by its full branch name. A pair may play several matches during a workshop.
 
 **Board**:
 The uppercase `BOARD.txt` file whose current version records a match's 3×3 squares: three rows of three single-space-separated cells, `.` (empty), `X`, or `O`. Game state is evaluated from the grid marks.
@@ -51,7 +51,7 @@ The instructor's live demonstration of delegating one board edit to Copilot. A l
 ## Pages and documents
 
 **Setup page**:
-The pre-session web page (`docs/setup.html`). For the Codespaces track it covers the pre-workshop survey, creating a GitHub account, creating a public repository from the template, opening it in a Codespace, the readiness check, and stopping the Codespace.
+The pre-session web page (`docs/setup.html`). For the Codespaces track it covers the pre-workshop survey, creating a GitHub account, creating a public repository from the template with a description and all branches, opening it in a Codespace, the readiness check, and deleting the Codespace while keeping the repository.
 _Avoid_: Setup guide, Prerequisites, Installation guide
 
 **How to play**:
@@ -59,7 +59,7 @@ The in-session web page (`docs/guide.html`) explaining the turn cycle and the re
 _Avoid_: Handout, Cheat sheet, Playbook, Instructions
 
 **Game Wall**:
-The public workshop page (`docs/index.html`) that displays the current board and state of each discovered match branch for the selected workshop, and carries the **Register repository** button.
+The public workshop page (`docs/index.html`) that displays the current board and state of each discovered match branch for the selected workshop.
 _Avoid_: Leaderboard, Dashboard
 
 **Learner guide**, **Facilitator guide**, **Pre-session checklist**, **Rehearsal guide**:
@@ -68,10 +68,10 @@ The markdown documents `LEARNER_GUIDE.md`, `FACILITATOR_GUIDE.md`, `PRE_SESSION_
 ## Learner path
 
 **Stage**:
-One step of a learner's path through the training, shown on every learner page and ordered Setup page (before the session), How to play (in the session), Game Wall (watching matches). Not to be confused with staging a file in Git.
+One step of a learner's path through the training, shown in the header stage strip on every learner page and ordered Setup, How to play, Game Wall. The strip also carries the unnumbered **Register repository** link. Not to be confused with staging a file in Git.
 
 **Setup track**:
 The variant of the Setup page a workshop uses, determined by how learners get a working environment. The Codespaces track needs only a browser; the local track needs software installed on the learner's own computer. Every active workshop has a track; for a workshop without one the Setup page says "Setup for this workshop is not published yet".
 
 **Readiness check**:
-The single observable result that tells a learner the Setup page is complete. Open Copilot Chat, type exactly "What does this repository do?", and check that the answer mentions tic-tac-toe and `BOARD.txt`. The learner then stops (does not delete) the Codespace and keeps both it and the repository.
+Open Copilot Chat, type exactly "What does this repository do?", and check that the answer mentions tic-tac-toe and `BOARD.txt`. The learner then deletes the Codespace and keeps the repository.
