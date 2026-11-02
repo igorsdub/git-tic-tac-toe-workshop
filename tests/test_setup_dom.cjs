@@ -176,7 +176,7 @@ test('setup page renders the new section and completion structure', opts, () => 
       cleanupInstructions: text.includes('Open the top-left navigation.') && text.includes('Open the ··· menu for the Codespace you created.'),
       doneBox: cleanup.querySelector('.setup-completion-callout h2').textContent === 'Done!' && cleanup.querySelector('.setup-completion-callout .setup-section-conclusion'),
       conclusionCopy: text.includes('During the workshop, you’ll work with a partner in a shared repository. You’ll each use your own Codespace, take turns changing files, and try asking a coding agent—an AI assistant—to make changes for you.'),
-      images: images.length === 28 && images.every(image => image.getAttribute('src') === image.closest('a').getAttribute('href')),
+      images: images.length === 28 && images.every(image => image.closest('a.step-image-link')?.getAttribute('href')),
       onwardHidden: getComputedStyle(document.getElementById('setup-next')).display === 'none'
     };
     const failed = Object.entries(checks).filter(([, passed]) => !passed).map(([name]) => name);
