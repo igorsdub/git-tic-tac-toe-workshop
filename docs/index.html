@@ -1,106 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="setup-only">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Git Tic-Tac-Toe Game Wall</title>
-  <meta name="description" content="Live paired-game activity wall for the Git Tic-Tac-Toe Workshop. Displays real-time game status and 3x3 board representations for all registered pairs.">
-  <link id="theme-favicon" rel="icon" type="image/svg+xml" href="images/xo-logo-light.svg">
-  <script src="theme-init.js"></script>
-  <link rel="stylesheet" href="styles.css">
+  <title>Git Tic-Tac-Toe Workshop</title>
+  <meta name="description" content="Open the Git Tic-Tac-Toe workshop setup guide.">
+  <script src="site-config.js"></script>
+  <script src="home-route.js"></script>
 </head>
 <body>
-  <header class="wall-header">
-    <div class="header-container">
-      <div class="brand">
-        <a href="index.html" class="brand-link">
-          <img id="brand-logo" class="brand-icon" src="images/xo-logo-light.svg" data-light-src="images/xo-logo-light.svg" data-dark-src="images/xo-logo-dark.svg" alt="X and O">
-          <div class="brand-text">
-            <h1>Git Tic-Tac-Toe</h1>
-            <p class="subtitle">Collaboration with Git and GitHub</p>
-          </div>
-        </a>
-      </div>
-      <div class="header-actions">
-        <div class="header-workshop-picker">
-          <label for="workshop-select" class="header-workshop-label">Workshop</label>
-          <select id="workshop-select" aria-describedby="workshop-context-status"></select>
-          <span id="workshop-context-status" class="visually-hidden" role="status">Choose a workshop to update the registration link and Game Wall.</span>
-        </div>
-        <button id="theme-toggle" class="header-icon" title="Toggle dark/light theme" aria-label="Toggle theme"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg></button><a href="https://github.com/igorsdub/git-tic-tac-toe-workshop"
-           target="_blank"
-           rel="noopener noreferrer"
-           class="header-icon"
-           aria-label="View repository on GitHub"
-           title="View repository on GitHub">
-          <svg class="github-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
-          </svg>
-        </a>
-      </div>
-    </div>
-  <div data-stage-strip="wall"></div>
-  </header>
-
-  <main class="wall-main">
-    <!-- Notice / Alert Banner -->
-    <div id="notice-banner" class="notice-banner hidden" role="alert">
-      <span id="notice-icon" class="notice-icon" aria-hidden="true">ℹ️</span>
-      <span id="notice-message" class="notice-message"></span>
-      <button id="notice-action-btn" class="btn btn-sm btn-outline notice-action-btn hidden"></button>
-    </div>
-
-    <!-- Top Filter & Status Bar -->
-    <section class="toolbar-section" aria-label="Game Filters and Status">
-      <div class="filter-tabs" role="group" aria-label="Filter games">
-        <button class="filter-tab active" data-filter="all" aria-pressed="true">All <span id="count-all" class="tab-count">0</span></button>
-        <button class="filter-tab" data-filter="pending" aria-pressed="false">In progress <span id="count-pending" class="tab-count">0</span></button>
-        <button class="filter-tab" data-filter="finished" aria-pressed="false">Completed <span id="count-finished" class="tab-count">0</span></button>
-        <button class="filter-tab" data-filter="errors" id="tab-errors" aria-pressed="false" style="display:none;">Issues <span id="count-errors" class="tab-count">0</span></button>
-      </div>
-
-      <div class="status-indicator">
-        <span class="pulse-dot" id="live-indicator"></span>
-        <span id="last-updated">Updating...</span>
-      </div>
-    </section>
-
-    <aside class="history-note" aria-label="Instructor history demonstration">
-      <strong>Instructor demonstration:</strong> open a match card’s history replay to step through valid committed board states. If GitHub history access is unavailable, use the linked commit history on that pair repository.
-    </aside>
-
-    <!-- Game Card Grid -->
-    <section class="grid-section" aria-label="Game Wall Boards">
-      <div id="loading-indicator" class="loading-state hidden" aria-live="polite">
-        <div class="spinner"></div>
-        <p>Loading registered matches and board states...</p>
-      </div>
-
-      <div id="empty-state" class="empty-state hidden">
-        <div class="empty-icon" aria-hidden="true">🎲</div>
-        <h2>No games found</h2>
-        <p id="empty-message">No pair games match the selected filters.</p>
-        <a id="empty-register-link" data-workshop-registration href="https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&amp;workshop_id=2026-11-06-sokedai"
-           target="_blank" rel="noopener noreferrer" class="btn btn-primary register-btn">
-          Register a repository
-        </a>
-      </div>
-
-      <div id="game-grid" class="game-grid"></div>
-    </section>
-    <p class="stage-next"><a data-workshop-route href="setup.html">Back to start: Setup</a></p>
+  <main>
+    <h1>Git Tic-Tac-Toe Workshop</h1>
+    <p>Opening the workshop…</p>
+    <noscript><p><a href="setup.html">Open the setup guide</a></p></noscript>
   </main>
-
-  <footer class="wall-footer">
-    <div class="footer-container">
-      <span>Git Tic-Tac-Toe Workshop</span>
-      <button id="toggle-data-mode-btn" class="footer-btn">Switch to Demo Data</button>
-    </div>
-  </footer>
-
-  <script src="match-data.js"></script>
-  <script src="stage-strip.js"></script>
-  <script src="workshop-context.js"></script>
-  <script src="app.js"></script>
 </body>
 </html>

@@ -59,7 +59,7 @@ The in-session web page (`docs/guide.html`) explaining the turn cycle and the re
 _Avoid_: Handout, Cheat sheet, Playbook, Instructions
 
 **Game Wall**:
-The public workshop page (`docs/index.html`) that displays the current board and state of each discovered match branch for the selected workshop.
+The public workshop page (`docs/wall.html`) that displays the current board and state of each discovered match branch for the selected workshop.
 _Avoid_: Leaderboard, Dashboard
 
 **Learner guide**, **Facilitator guide**, **Pre-session checklist**, **Rehearsal guide**:
@@ -68,7 +68,7 @@ The markdown documents `LEARNER_GUIDE.md`, `FACILITATOR_GUIDE.md`, `PRE_SESSION_
 ## Learner path
 
 **Stage**:
-One step of a learner's path through the training, shown in the header stage strip on every learner page and ordered Setup, How to play, Game Wall. The strip also carries the unnumbered **Register repository** link. Not to be confused with staging a file in Git.
+One step of a learner's path through the training, shown in the header stage strip in full mode and ordered Setup, How to play, Game Wall. The strip also carries the unnumbered **Register repository** link. Setup-only mode hides the strip. Not to be confused with staging a file in Git.
 
 **Setup track**:
 The variant of the Setup page a workshop uses, determined by how learners get a working environment. The Codespaces track needs only a browser; the local track needs software installed on the learner's own computer. Every active workshop has a track; for a workshop without one the Setup page says "Setup for this workshop is not published yet".

@@ -116,6 +116,32 @@ test('screenshots are visible without video', opts, () => {
   runSetup('', `const pictures = [...document.querySelectorAll('.step-pictures')]; document.body.dataset.result = pictures.length === 4 && pictures.every(p => p.querySelector('figure img') && !p.closest('details')) && !document.querySelector('video') ? 'PASS' : 'FAIL';`);
 });
 
+test('setup page uses the approved 0–4 copy and keeps all 28 manual images', opts, () => {
+  runSetup('', `
+    const text = document.querySelector('#setup-codespaces').textContent;
+    const headings = [...document.querySelectorAll('#setup-codespaces .setup-section-heading')].map(h => h.textContent.replace(/\\s+/g, ' ').trim());
+    const images = [...document.querySelectorAll('#setup-codespaces .step-pictures img')];
+    const ok = document.querySelector('#setup-codespaces > .lead').textContent === 'In this workshop, you’ll practise sharing code and collaborating through GitHub by playing tic-tac-toe with a partner. You’ll also try asking an AI coding agent to carry out tasks.'
+      && document.querySelector('#step-survey .step-heading').textContent.replace(/\\s+/g, ' ').trim() === '0 Fill in the survey'
+      && document.querySelector('#step-account .step-heading').textContent.replace(/\\s+/g, ' ').trim() === '1 Create a GitHub account'
+      && document.querySelector('#step-survey').textContent.includes('Tell us how you usually work so we can tailor the workshop to you.')
+      && document.querySelector('#step-account').textContent.includes('GitHub is a platform for storing code, tracking changes, and collaborating with others.')
+      && document.querySelector('#step-account .student-pack-callout h3').textContent === 'Recommended: GitHub Student Developer Pack'
+      && document.querySelector('#step-account').lastElementChild.classList.contains('student-pack-callout')
+      && headings.includes('2 Create a repository from the template') && headings.includes('3 Test Codespaces and GitHub Copilot') && headings.includes('4 Clean up')
+      && document.querySelector('#guide-template').textContent.includes('A repository is a project’s home: it holds its files and their change history.')
+      && !document.querySelector('#guide-template').textContent.includes('match-01')
+      && text.includes('Codespaces gives everyone a consistent development environment in their browser, whether they use Windows, Mac, or Linux. This saves setup time and helps facilitators troubleshoot problems.')
+      && text.includes('GitHub Copilot is an AI coding assistant. You may already use another AI tool; for this workshop, we’ll use Copilot so everyone can follow the same steps.')
+      && text.includes('Your Codespace runs on GitHub’s servers. Closing the browser tab does not stop it immediately; it can keep running until it times out. Codespaces usage is limited, so delete the Codespace you created for this setup when you finish.')
+      && text.includes('Open the top-left navigation.') && text.includes('Open the ··· menu for the Codespace you created.')
+      && document.querySelector('#guide-cleanup .setup-completion-callout h2').textContent === 'Done!'
+      && document.querySelector('#guide-cleanup .setup-completion-callout .setup-section-conclusion')
+      && text.includes('During the workshop, you’ll work with a partner in a shared repository. You’ll each use your own Codespace, take turns changing files, and try asking a coding agent—an AI assistant—to make changes for you.')
+      && images.length === 28 && images.every((image, index) => image.getAttribute('src') === image.closest('a').getAttribute('href'));
+    document.body.dataset.result = ok ? 'PASS' : 'FAIL';`);
+});
+
 test('unknown workshop falls back to the default', opts, () => {
   runSetup('?workshop=nope', `
     document.body.dataset.result = vis('setup-codespaces')

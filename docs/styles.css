@@ -1680,6 +1680,24 @@ a.register-btn:focus-visible {
 .setup-guide-section > h2 { font-size: 1.35rem; margin: 1.5rem 0 0.25rem; }
 .setup-guide-section .setup-step { border-top: 0; padding-top: 0.5rem; }
 .setup-step h3.step-heading { font-size: 1rem; font-weight: 700; color: var(--text-primary); margin: 0; }
+.setup-section-heading { display: flex; align-items: center; gap: 0.65rem; }
+.setup-section-intro { margin: 0.5rem 0; max-width: 72ch; color: var(--text-secondary); }
+.setup-section-conclusion { margin: 1.25rem 0 0; max-width: 72ch; }
+.setup-completion-callout { margin: 1.25rem 0 0; max-width: 72ch; }
+.setup-completion-callout h2 { margin: 0; border-bottom: 0; padding-bottom: 0; font-size: 1.15rem; }
+.template-repository-link { font-size: 1.05rem; font-weight: 700; }
+.student-pack-callout { margin-top: 1rem; padding: 1rem 1.1rem; border: 1px solid var(--border-light); border-left: 4px solid #3b82f6; border-radius: var(--radius-md); background: color-mix(in srgb, #3b82f6 7%, var(--bg-surface)); }
+.student-pack-callout h3 { margin: 0 0 0.4rem; font-size: 1rem; }
+.student-pack-callout p { margin: 0; }
 .shot-instruction { margin: 0; color: var(--text-primary); font-weight: 600; }
 .step-image-link { display: block; max-width: 100%; }
 .step-image-link img { cursor: zoom-in; }
+
+/* Setup-only site mode hides gameplay navigation even when a page renders directly. */
+html.setup-only .stage-strip,
+html.setup-only [data-stage-strip],
+html.setup-only .stage-next,
+html.setup-only [data-workshop-registration],
+html.setup-only .register-btn {
+  display: none !important;
+}

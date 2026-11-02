@@ -13,7 +13,8 @@ DOCS_DIR = REPO_ROOT / "docs"
 
 class TestWebGuides(unittest.TestCase):
     def setUp(self):
-        self.index = (DOCS_DIR / "index.html").read_text(encoding="utf-8")
+        self.index = (DOCS_DIR / "wall.html").read_text(encoding="utf-8")
+        self.home = (DOCS_DIR / "index.html").read_text(encoding="utf-8")
         self.setup = (DOCS_DIR / "setup.html").read_text(encoding="utf-8")
         self.guide = (DOCS_DIR / "guide.html").read_text(encoding="utf-8")
         self.utils = (DOCS_DIR / "guide-utils.js").read_text(encoding="utf-8")
@@ -22,7 +23,7 @@ class TestWebGuides(unittest.TestCase):
         self.styles = (DOCS_DIR / "styles.css").read_text(encoding="utf-8")
 
     def test_stage_strip_on_all_learner_pages(self):
-        pages = {"index.html": "wall", "guide.html": "guide", "setup.html": "setup"}
+        pages = {"wall.html": "wall", "guide.html": "guide", "setup.html": "setup"}
         for name, stage in pages.items():
             with self.subTest(page=name):
                 html = (DOCS_DIR / name).read_text(encoding="utf-8")
@@ -33,10 +34,10 @@ class TestWebGuides(unittest.TestCase):
                 self.assertLess(html.index('src="stage-strip.js"'), html.index('src="workshop-context.js"'))
         setup = (DOCS_DIR / "setup.html").read_text(encoding="utf-8")
         guide = (DOCS_DIR / "guide.html").read_text(encoding="utf-8")
-        index = (DOCS_DIR / "index.html").read_text(encoding="utf-8")
+        wall = (DOCS_DIR / "wall.html").read_text(encoding="utf-8")
         self.assertIn('<a data-workshop-route href="guide.html">Next: How to play</a>', setup)
-        self.assertIn('<a data-workshop-route href="index.html">Next: Game Wall</a>', guide)
-        self.assertIn('<a data-workshop-route href="setup.html">Back to start: Setup</a>', index)
+        self.assertIn('<a data-workshop-route href="wall.html">Next: Game Wall</a>', guide)
+        self.assertIn('<a data-workshop-route href="setup.html">Back to start: Setup</a>', wall)
 
     def test_guide_assets_exist(self):
         for path in (DOCS_DIR / "setup.html", DOCS_DIR / "guide.html", DOCS_DIR / "guide-utils.js", DOCS_DIR / "workshop-context.js", DOCS_DIR / "styles.css"):
@@ -299,7 +300,8 @@ class TestWebGuides(unittest.TestCase):
         for name, html in (("wall", self.index), ("learner", self.guide), ("setup", self.setup)):
             with self.subTest(page=name):
                 head = html[:html.index("</head>")]
-                self.assertIn('src="theme-init.js"', re.findall(r"<script[^>]*>", head)[0])
+                self.assertIn('src="site-config.js"', re.findall(r"<script[^>]*>", head)[0])
+                self.assertIn('src="theme-init.js"', re.findall(r"<script[^>]*>", head)[1])
                 self.assertNotIn("dashboard", re.sub(r"<[^>]+>", "", html).lower())
 
     def test_wall_filters_and_spinner_are_accessible(self):

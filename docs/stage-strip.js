@@ -5,7 +5,7 @@
   const STAGES = [
     { id: 'setup', number: 1, name: 'Setup', href: 'setup.html' },
     { id: 'guide', number: 2, name: 'How to play', href: 'guide.html' },
-    { id: 'wall', number: 3, name: 'Game Wall', href: 'index.html' },
+    { id: 'wall', number: 3, name: 'Game Wall', href: 'wall.html' },
   ];
 
   function render(container) {
