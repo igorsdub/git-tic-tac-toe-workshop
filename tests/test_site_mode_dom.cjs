@@ -41,7 +41,7 @@ test('direct setup, guide, and wall pages respect both modes, workshop query, lo
         const source = fs.readFileSync(path.join(repo, 'docs', entry.page), 'utf8');
         const pagePath = path.join(tempDir, entry.page);
         const scripts = [
-          `window.fetch = async () => new Response(JSON.stringify({ defaultWorkshopId: 'ws-code', workshops: [{ id: 'ws-code', name: 'Code Day', date: '2026-11-06', status: 'active', setupTrack: 'codespaces', surveyUrl: 'https://example.test/survey', registrationUrl: 'https://example.test/register?workshop_id=ws-code' }] }), { status: 200, headers: { 'Content-Type': 'application/json' } });`,
+          `<script>window.fetch = async () => new Response(JSON.stringify({ defaultWorkshopId: 'ws-code', workshops: [{ id: 'ws-code', name: 'Code Day', date: '2026-11-06', status: 'active', setupTrack: 'codespaces', surveyUrl: 'https://example.test/survey', registrationUrl: 'https://example.test/register?workshop_id=ws-code' }] }), { status: 200, headers: { 'Content-Type': 'application/json' } });</script>`,
           `<script src="${path.join(repo, 'docs/stage-strip.js')}"></script>`,
           `<script src="${path.join(repo, 'docs/workshop-context.js')}"></script>`,
           entry.page === 'setup.html' ? `<script src="${path.join(repo, 'docs/setup.js')}"></script>` : '',
