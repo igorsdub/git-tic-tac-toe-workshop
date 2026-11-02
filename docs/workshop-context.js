@@ -50,7 +50,7 @@
       link.setAttribute('aria-label', `Register a repository for ${workshop.name}`);
     });
     document.querySelectorAll('[data-workshop-dashboard]').forEach((link) => {
-      link.href = navigationHref('index.html', workshop.id);
+      link.href = navigationHref('wall.html', workshop.id);
     });
     updateNavigation(workshop.id);
   }

@@ -24,7 +24,7 @@ if (explicitChromium && !chromiumHeadlessUsable) {
 test('live refresh and history replay preserve the open panel, selected state, and active slider', { skip: !chromiumHeadlessUsable }, () => {
   const repo = path.resolve(__dirname, '..');
   const htmlPath = path.join(os.tmpdir(), `game-wall-dom-${process.pid}.html`);
-  const index = fs.readFileSync(path.join(repo, 'docs/index.html'), 'utf8');
+  const wall = fs.readFileSync(path.join(repo, 'docs/wall.html'), 'utf8');
   const fixture = `<script>
     const historyBoard = '# Git Tic-Tac-Toe\\nState: Waiting for O\\n\\n [X] | [ ] | [ ]\\n-----+-----+-----\\n [ ] | [ ] | [ ]\\n-----+-----+-----\\n [ ] | [ ] | [ ]';
     const catalog = { defaultWorkshopId: 'workshop-a', workshops: [
@@ -149,7 +149,7 @@ test('live refresh and history replay preserve the open panel, selected state, a
     };
     setTimeout(() => window.__testRun(), 150);
   </script>`;
-  let harness = index.replace('<script src="match-data.js"></script>', `${fixture}<script src="${path.join(repo, 'docs/match-data.js')}"></script>`)
+  let harness = wall.replace('<script src="match-data.js"></script>', `${fixture}<script src="${path.join(repo, 'docs/match-data.js')}"></script>`)
     .replace('src="stage-strip.js"', `src="${path.join(repo, 'docs/stage-strip.js')}"`)
     .replace('src="workshop-context.js"', `src="${path.join(repo, 'docs/workshop-context.js')}"`)
     .replace('src="app.js"', `src="${path.join(repo, 'docs/app.js')}"`)
@@ -167,7 +167,7 @@ test('live refresh and history replay preserve the open panel, selected state, a
 test('workshop context keeps route, date, registration, and navigation in sync on all pages', { skip: !chromiumHeadlessUsable }, () => {
   const repo = path.resolve(__dirname, '..');
   const htmlPath = path.join(os.tmpdir(), `workshop-context-dom-${process.pid}.html`);
-  const pages = ['index.html', 'guide.html', 'setup.html'];
+  const pages = ['wall.html', 'guide.html', 'setup.html'];
   for (const page of pages) {
     const source = fs.readFileSync(path.join(repo, 'docs', page), 'utf8');
     const pageHtml = source

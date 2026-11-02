@@ -11,25 +11,26 @@ This two-hour workshop teaches collaborative Git through a paired tic-tac-toe ga
 - [Pre-session checklist](PRE_SESSION_CHECK.md) and [Setup page](docs/setup.html)
 - [Rehearsal guide](REHEARSAL_GUIDE.md)
 - [Survey text](SURVEY.md). The [SOKENDAI survey](https://forms.gle/eo9pgChEGpdvdcQ67) is live; its link is the `surveyUrl` in the catalog.
-- [Game Wall](docs/index.html)
+- [Game Wall](docs/wall.html)
+- [Site mode setting](docs/site-config.js)
 - [Capture pipeline](scripts/capture/README.md)
 - [Glossary](GLOSSARY.md)
 
 ## Workshop links
 
-The main Game Wall opens the organiser-designated default workshop, SOKENDAI (2026-11-06). SCDA Training Week is archived. Use a workshop-specific link to open its Game Wall or prefilled registration form directly.
+The plain site URL follows the single `setupOnly` setting in [`docs/site-config.js`](docs/site-config.js): when true, it opens Setup; when false, it opens the Game Wall. Open [`docs/wall.html`](docs/wall.html) directly for the Game Wall. The default workshop is SOKENDAI (2026-11-06); SCDA Training Week is archived. Use a workshop-specific `?workshop=<id>` link to select an event.
 
 The shared event context on the Game Wall, Setup page, and How to play reads event names, ISO dates, status, registration links, and optional `note` text from [`docs/workshops.json`](docs/workshops.json). Each workshop may also set `setupTrack` (`"codespaces"` or `"local"`) and `surveyUrl`. Change the catalog's `defaultWorkshopId` to designate a different plain-URL default; stable workshop links continue using their own `?workshop=<id>` value.
 
 | Workshop | Game Wall | Register a pair repository |
 |---|---|---|
-| SCDA Training Week (2026-10-01) | [Game Wall](https://igorsdub.github.io/git-tic-tac-toe-workshop/?workshop=2026-10-01-scda) | [Registration form](https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&workshop_id=2026-10-01-scda) |
-| SOKENDAI (2026-11-06) | [Game Wall](https://igorsdub.github.io/git-tic-tac-toe-workshop/?workshop=2026-11-06-sokedai) | [Registration form](https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&workshop_id=2026-11-06-sokedai) |
-| RIKEN (2026-11-10) | [Game Wall](https://igorsdub.github.io/git-tic-tac-toe-workshop/?workshop=2026-11-10-riken) | [Registration form](https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&workshop_id=2026-11-10-riken) |
+| SCDA Training Week (2026-10-01) | [Game Wall](https://igorsdub.github.io/git-tic-tac-toe-workshop/wall.html?workshop=2026-10-01-scda) | [Registration form](https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&workshop_id=2026-10-01-scda) |
+| SOKENDAI (2026-11-06) | [Game Wall](https://igorsdub.github.io/git-tic-tac-toe-workshop/wall.html?workshop=2026-11-06-sokedai) | [Registration form](https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&workshop_id=2026-11-06-sokedai) |
+| RIKEN (2026-11-10) | [Game Wall](https://igorsdub.github.io/git-tic-tac-toe-workshop/wall.html?workshop=2026-11-10-riken) | [Registration form](https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&workshop_id=2026-11-10-riken) |
 
 ## Staged learner path
 
-Learners move through three pages using the shared header stage strip: Setup page (`docs/setup.html`), How to play (`docs/guide.html`), then the Game Wall (`docs/index.html`). The strip ends with an unnumbered **Register repository** link. The Game Wall is the plain-URL landing page.
+In full mode, learners move through Setup (`docs/setup.html`), How to play (`docs/guide.html`), and the Game Wall (`docs/wall.html`) using the stage strip, which ends with **Register repository**. In setup-only mode, the strip, registration controls, and onward links are hidden across all three pages; the plain site URL opens Setup. Set `setupOnly` to `false` in `docs/site-config.js` to restore full mode.
 
 The Setup page adapts to the selected workshop (`?workshop=<id>`):
 
@@ -37,7 +38,7 @@ The Setup page adapts to the selected workshop (`?workshop=<id>`):
 - **`setupTrack: "codespaces"`** (SOKENDAI and RIKEN): the step-by-step Codespaces track with screenshots, per-step checkboxes remembered in the browser, and the workshop's `surveyUrl` when set.
 - A workshop with no `setupTrack` shows "Setup for this workshop is not published yet".
 
-Use **Register repository** in the stage strip to open the selected workshop's registration form.
+In full mode, use **Register repository** in the stage strip to open the selected workshop's registration form.
 
 ## How to run tests
 
@@ -52,7 +53,7 @@ node --test tests/*.cjs tests/*.js
 python3 -m unittest discover -s tests -p 'test_*.py'
 ```
 
-The DOM tests (`tests/test_dashboard_dom.cjs`, `tests/test_setup_dom.cjs`) need Chrome or Chromium and are skipped if none is found. Set `CHROMIUM_BIN` to point at a specific binary.
+The DOM tests (`tests/test_dashboard_dom.cjs`, `tests/test_setup_dom.cjs`, `tests/test_site_mode_dom.cjs`) need Chrome or Chromium and are skipped if none is found. Set `CHROMIUM_BIN` to point at a specific binary.
 
 ## Local preview
 
@@ -64,7 +65,7 @@ Run `npm run preview` and open [http://127.0.0.1:8765/docs/setup.html](http://12
 - [`scripts/`](scripts/) contains board validation, registration parsing, and registry synchronization.
 - [`scripts/capture/`](scripts/capture/README.md) is the Playwright pipeline that regenerates the Setup page's screenshots; `captures.json` there lists every step slug and screenshot name.
 - [`tests/`](tests/) covers the workshop guides, parser, Game Wall, and slides. `tests/fixtures/legacy-board/` preserves older board formats as compatibility fixtures.
-- [`docs/`](docs/) contains the Pages site and instructor Game Wall. The separate [`docs/slides/`](docs/slides/) directory contains the workshop presentation.
+- [`docs/`](docs/) contains the Pages site. `index.html` routes according to `setupOnly`; `wall.html` is the instructor Game Wall. The separate [`docs/slides/`](docs/slides/) directory contains the workshop presentation.
 
 ## Agenda
 

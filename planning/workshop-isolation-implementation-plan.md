@@ -7,7 +7,7 @@ This plan turns the accepted decisions in [the design note](workshop-isolation-d
 ## 1. Add workshop configuration and selection
 
 - Add a static workshop catalog under `docs/`, which is the GitHub Pages publishing root. Give each workshop its stable ID, display name, active or archived status, and registration-form URL. Keep the organizer-designated default explicit. Add only the confirmed `2026-10-01-scda` mapping initially.
-- In `docs/index.html` and `docs/app.js`, add one accessible selector with active workshops first and archived workshops grouped below. Use a stable workshop-specific URL (recommended: a `workshop` query parameter) so a selected workshop remains selected if the main URL's default changes. Filter every card and count by that workshop; never render a cross-workshop default.
+- In `docs/wall.html` and `docs/app.js`, add one accessible selector with active workshops first and archived workshops grouped below. Use a stable workshop-specific URL (recommended: a `workshop` query parameter) so a selected workshop remains selected if the main URL's default changes. Filter every card and count by that workshop; never render a cross-workshop default.
 - Build each workshop's issue-form link to prefill its stable ID. Remove the fixed SCDA label from the page footer and demo data paths where it is presented as the current workshop. Keep demo records clearly confined to demo mode.
 
 ## 2. Change registration from match submissions to repository submissions

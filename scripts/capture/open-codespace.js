@@ -9,7 +9,7 @@ const SELECTORS = {
   codeButton: (p) => p.getByRole('button', { name: 'Code', exact: true }),
   codespacesTab: (p) => p.getByRole('button', { name: 'Codespaces', exact: true }),
   createCodespace: (p) => p.getByRole('button', { name: 'Create codespace on main' }),
-  editorReady: (p) => p.getByRole('tab', { name: /BOARD\.txt|README/ }).first(),
+  editorReady: (p) => p.getByRole('tab', { name: /README/ }).first(),
   workbench: (p) => p.locator('.monaco-workbench'),
   trust: (p) => p.getByRole('button', { name: 'Trust Folder & Continue' }),
 };
@@ -37,10 +37,11 @@ async function run() {
     await page.goto(target);
   }
   await SELECTORS.workbench(page).waitFor({ timeout: 180000 });
-  await SELECTORS.editorReady(page).waitFor({ timeout: 180000 }).catch(() => {});
-  await SELECTORS.trust(page).click({ timeout: 15000 }).catch(() => {});
+  await SELECTORS.trust(page).waitFor({ state: 'visible', timeout: 60000 });
+  await step.click(SELECTORS.trust(page), '04-trust-prompt.png', { afterClickMs: 1000 });
+  await SELECTORS.editorReady(page).waitFor({ state: 'visible', timeout: 180000 });
   await page.waitForTimeout(3000);
-  await step.shot(null, '04-editor-ready.png');
+  await step.shot(null, '05-editor-ready.png');
   return step.finish();
 }
 

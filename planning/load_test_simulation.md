@@ -1,6 +1,6 @@
 # Game Wall Scalability & Load Test Simulation
 
-This document provides technical analysis, load simulation specifications, rate limit budget models, and error handling verification procedures for the **Git Tic-Tac-Toe Game Wall** (`docs/index.html` + `docs/app.js`).
+This document provides technical analysis, load simulation specifications, rate limit budget models, and error handling verification procedures for the **Git Tic-Tac-Toe Game Wall** (`docs/wall.html` + `docs/app.js`).
 
 ---
 
@@ -112,7 +112,7 @@ The Game Wall is engineered with defensive parsing to guarantee that invalid or 
 Before hosting a session with 10–20 pairs, facilitators should execute this 5-minute pre-session load simulation on the presentation laptop.
 
 ### Phase 1: Browser DevTools Network Simulation
-1. Open `docs/index.html` in Chrome, Firefox, or Safari.
+1. Open `docs/wall.html` in Chrome, Firefox, or Safari.
 2. Open **Developer Tools** (`Cmd + Option + I` or `Ctrl + Shift + I`) &rarr; **Network** tab.
 3. Select **Throttling: Fast 3G** to simulate congested classroom Wi-Fi.
 4. Click **Refresh Now**.

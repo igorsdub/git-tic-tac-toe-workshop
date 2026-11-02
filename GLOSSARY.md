@@ -51,7 +51,7 @@ The instructor's live demonstration of delegating one board edit to Copilot. A l
 ## Pages and documents
 
 **Setup page**:
-The pre-session web page (`docs/setup.html`). For the Codespaces track it covers the pre-workshop survey, creating a GitHub account, creating a public repository from the template with a description and all branches, opening it in a Codespace, the readiness check, and deleting the Codespace while keeping the repository.
+The pre-session web page (`docs/setup.html`). For the Codespaces track it covers the pre-workshop survey, creating a GitHub account, creating a public repository from the template with a description and all branches, opening and checking a Codespace, and deleting the Codespace while keeping the repository.
 _Avoid_: Setup guide, Prerequisites, Installation guide
 
 **How to play**:
@@ -59,7 +59,7 @@ The in-session web page (`docs/guide.html`) explaining the turn cycle and the re
 _Avoid_: Handout, Cheat sheet, Playbook, Instructions
 
 **Game Wall**:
-The public workshop page (`docs/index.html`) that displays the current board and state of each discovered match branch for the selected workshop.
+The public workshop page (`docs/wall.html`) that displays the current board and state of each discovered match branch for the selected workshop.
 _Avoid_: Leaderboard, Dashboard
 
 **Learner guide**, **Facilitator guide**, **Pre-session checklist**, **Rehearsal guide**:
@@ -68,10 +68,10 @@ The markdown documents `LEARNER_GUIDE.md`, `FACILITATOR_GUIDE.md`, `PRE_SESSION_
 ## Learner path
 
 **Stage**:
-One step of a learner's path through the training, shown in the header stage strip on every learner page and ordered Setup, How to play, Game Wall. The strip also carries the unnumbered **Register repository** link. Not to be confused with staging a file in Git.
+One step of a learner's path through the training, shown in the header stage strip in full mode and ordered Setup, How to play, Game Wall. The strip also carries the unnumbered **Register repository** link. Setup-only mode hides the strip. Not to be confused with staging a file in Git.
 
 **Setup track**:
 The variant of the Setup page a workshop uses, determined by how learners get a working environment. The Codespaces track needs only a browser; the local track needs software installed on the learner's own computer. Every active workshop has a track; for a workshop without one the Setup page says "Setup for this workshop is not published yet".
 
 **Readiness check**:
-Open Copilot Chat, type exactly "What does this repository do?", and check that the answer mentions tic-tac-toe and `BOARD.txt`. The learner then deletes the Codespace and keeps the repository.
+Wait until the Codespace editor is fully loaded, open Chat, select Ask mode, enter exactly "What does this repository do?", click Send, and wait for the complete answer. The learner then deletes the Codespace from the GitHub Codespaces page and keeps the repository.
