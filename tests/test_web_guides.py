@@ -166,9 +166,13 @@ class TestWebGuides(unittest.TestCase):
             self.assertNotIn(old, self.setup)
 
     def test_setup_manual_picture_sections_follow_user_sequence(self):
-        headings = ("Create a repository from the template", "Use Codespaces and Copilot", "Clean up Codespaces")
-        for heading in headings:
-            self.assertIn(f"<h2>{heading}</h2>", self.setup)
+        headings = (
+            ("2", "Create a repository from the template"),
+            ("3", "Test Codespaces and GitHub Copilot"),
+            ("4", "Clean up"),
+        )
+        for number, heading in headings:
+            self.assertIn(f'<span class="step-num">{number}</span> {heading}', self.setup)
         self.assertEqual(self.setup.count('class="setup-guide-section"'), 3)
 
         manual = self.setup[self.setup.index('id="guide-template"'):self.setup.index('id="setup-next"')]
@@ -187,11 +191,15 @@ class TestWebGuides(unittest.TestCase):
             self.assertIn('target="_blank"', figure)
 
     def test_setup_cleanup_actions_match_manual_screenshots(self):
-        cleanup = self.setup[self.setup.index('id="step-delete"'):self.setup.index('</article></section>', self.setup.index('id="step-delete"'))]
+        start = self.setup.index('id="step-delete"')
+        cleanup = self.setup[start:self.setup.index('</section>', self.setup.index('id="guide-cleanup"'))]
         for asset in ("00-home.png", "01-menu.png", "02-select-codespace.png", "03-codespace-actions.png", "04-select-delete.png", "05-delete.png", "06-done.png"):
             self.assertIn(asset, cleanup)
         for action in ("GitHub home", "left navigation", "Codespaces", "Delete", "deleted"):
             self.assertIn(action, cleanup)
+        self.assertIn("Open the top-left navigation.", cleanup)
+        self.assertIn("Open the ··· menu for the Codespace you created.", cleanup)
+        self.assertIn('<h2 id="setup-completion-heading">Done!</h2>', cleanup)
 
     def test_setup_media_never_shows_broken_icons(self):
         for tag in re.findall(r"<(?:img|video)\b[^>]*>", self.setup[self.setup.index("<main"):]):
