@@ -1,9 +1,7 @@
 # Setup picture refresh
 
-The repository creation screenshots show the required order: enable all branches, choose the owner and repository name, enter the exact workshop description, choose Public, then create the repository. The owner/name frame waits until GitHub says the name is available. The focused pre-click Create repository frame is still pending; it is listed in the capture contract but must not be referenced until the PNG exists.
+The learner-facing setup page now uses the user-provided manual screenshot sequence in `docs/images/setup/manual-images/`: 9 template images, 12 Codespaces and Copilot images, and 7 cleanup images. These images are the main guide inventory and are separate from the automated capture contract.
 
-The Codespace sequence has genuine 200% frames for the trust prompt and loaded editor. The Chat sequence has genuine 200% frames for the loaded Chat view, Sign In control, connected state, Ask becoming available, and the open mode menu with Ask highlighted as the next choice. Ask-selected, typed-unsent question, Send target, and completed-answer images remain pending; do not reference those files until captured. Keep the guide free of BOARD.txt and Source Control navigation.
+The automated capture contract remains in `scripts/capture/captures.json` and is unchanged. Its capture targets and any pending capture work apply only to that automated workflow; they do not block or replace the manual screenshot sequence shown to learners.
 
-Cleanup is deletion, not stopping. Capture the explicit path from GitHub home through opening the left navigation and selecting Codespaces, finding this newly created Codespace, opening its menu, selecting Delete, confirming deletion, and verifying that it has disappeared from the list. Do not substitute screenshots of stopping a Codespace.
-
-The deletion sequence has no verified screenshot frames yet. A stopped Codespace and earlier deletion attempts do not satisfy the required fresh GitHub home → left navigation → Codespaces → exact instance menu → Delete → confirmation → disappearance path. Recapture that sequence when the browser is available. The same exact Codespace name must be used for look-around and deletion.
+The manual guide was reviewed in the in-app browser at 1440 px desktop and 390 px mobile widths: all 28 images loaded, with no horizontal overflow. The static guide tests pass. The seven headless DOM tests were skipped because no usable Chromium binary is available in this environment.

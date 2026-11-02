@@ -1674,3 +1674,12 @@ a.register-btn:focus-visible {
 }
 
 #setup-codespaces { background: none; border: 0; border-radius: 0; padding: 0; box-shadow: none; }
+
+/* The setup guide keeps each manual instruction directly above its screenshot. */
+.setup-guide-section { margin-top: 1.5rem; }
+.setup-guide-section > h2 { font-size: 1.35rem; margin: 1.5rem 0 0.25rem; }
+.setup-guide-section .setup-step { border-top: 0; padding-top: 0.5rem; }
+.setup-step h3.step-heading { font-size: 1rem; font-weight: 700; color: var(--text-primary); margin: 0; }
+.shot-instruction { margin: 0; color: var(--text-primary); font-weight: 600; }
+.step-image-link { display: block; max-width: 100%; }
+.step-image-link img { cursor: zoom-in; }

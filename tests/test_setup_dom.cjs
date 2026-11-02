@@ -113,7 +113,7 @@ test('codespaces track renders six steps and checkbox state persists per worksho
 });
 
 test('screenshots are visible without video', opts, () => {
-  runSetup('', `const pictures = [...document.querySelectorAll('.step-pictures')]; document.body.dataset.result = pictures.length === 3 && pictures.every(p => p.querySelector('figure img') && !p.closest('details')) && !document.querySelector('video') ? 'PASS' : 'FAIL';`);
+  runSetup('', `const pictures = [...document.querySelectorAll('.step-pictures')]; document.body.dataset.result = pictures.length === 4 && pictures.every(p => p.querySelector('figure img') && !p.closest('details')) && !document.querySelector('video') ? 'PASS' : 'FAIL';`);
 });
 
 test('unknown workshop falls back to the default', opts, () => {

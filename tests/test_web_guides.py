@@ -143,7 +143,7 @@ class TestWebGuides(unittest.TestCase):
             "Use this template",
             "Create codespace on main",
             "<strong>Delete</strong>",
-            "What does this repository do?",
+            "What is this project?",
             "Codespaces and Copilot access are separate",
             "manual rematch path",
             "https://github.com/signup",
@@ -164,40 +164,33 @@ class TestWebGuides(unittest.TestCase):
         for old in ("docs.google.com/forms", "Keep the public repository and Codespace"):
             self.assertNotIn(old, self.setup)
 
-    def test_setup_repository_and_chat_actions_follow_rehearsal_sequence(self):
-        repository = self.setup[self.setup.index('id="step-repo"'):self.setup.index('id="step-codespace"')]
-        repo_screenshots = (
-            "04-include-all-branches-off.png",
-            "05-include-all-branches-on.png",
-            "06-owner-and-name.png",
-            "07-description.png",
-            "08-public.png",
-        )
-        positions = [repository.index(screenshot) for screenshot in repo_screenshots]
-        self.assertEqual(positions, sorted(positions))
-        repo_actions = (
-            "Turn on <strong>Include all branches</strong> before entering the repository name or description",
-            "Enter a repository name",
-            "Enter the exact description",
-            "Choose <strong>Public</strong> visibility",
-            "Click <strong>Create repository</strong>",
-        )
-        instructions_start = repository.index("<ol>")
-        instructions = repository[instructions_start:repository.index("</ol>", instructions_start)]
-        action_positions = [instructions.index(action) for action in repo_actions]
-        self.assertEqual(action_positions, sorted(action_positions))
+    def test_setup_manual_picture_sections_follow_user_sequence(self):
+        headings = ("Create a repository from the template", "Use Codespaces and Copilot", "Clean up Codespaces")
+        for heading in headings:
+            self.assertIn(f"<h2>{heading}</h2>", self.setup)
+        self.assertEqual(self.setup.count('class="setup-guide-section"'), 3)
 
-        chat = self.setup[self.setup.index('id="step-look-around"'):self.setup.index('id="step-delete"')]
-        for action in ("loaded <strong>Chat</strong>", "<strong>Sign In</strong>", "complete the GitHub Copilot sign-in and connection", "for <strong>Ask</strong> to appear", "What does this repository do?", "<strong>Send</strong>", "complete answer"):
-            self.assertIn(action, chat)
-        self.assertNotIn("Source Control", chat)
-        self.assertNotIn("BOARD.txt", chat)
+        manual = self.setup[self.setup.index('id="guide-template"'):self.setup.index('id="setup-next"')]
+        files = re.findall(r'src="(images/setup/manual-images/[^"]+\.png)"', manual)
+        self.assertEqual(len(files), 28)
+        self.assertEqual(sum("/01-template/" in name for name in files), 9)
+        self.assertEqual(sum("/02-codepaces/" in name for name in files), 12)
+        self.assertEqual(sum("/03-cleaning-up/" in name for name in files), 7)
+        self.assertEqual(files, sorted(files))
+        self.assertIn("Autopilot", manual)
+        self.assertIn("What is this project?", manual)
+        self.assertIn("Copilot", manual)
+        self.assertNotIn("Codex", manual)
+        for figure in re.findall(r'<figure class="step-shot">(.*?)</figure>', manual):
+            self.assertLess(figure.index("shot-instruction"), figure.index("<img"))
+            self.assertIn('target="_blank"', figure)
 
-    def test_setup_delete_actions_follow_complete_confirmation_sequence(self):
-        cleanup = self.setup[self.setup.index('id="step-delete"'):self.setup.index("</article>", self.setup.index('id="step-delete"'))]
-        for action in ("https://github.com", "left navigation", "<strong>Codespaces</strong>", "<strong>...</strong>", "<strong>Delete</strong>", "confirmation dialog", "no longer listed"):
+    def test_setup_cleanup_actions_match_manual_screenshots(self):
+        cleanup = self.setup[self.setup.index('id="step-delete"'):self.setup.index('</article></section>', self.setup.index('id="step-delete"'))]
+        for asset in ("00-home.png", "01-menu.png", "02-select-codespace.png", "03-codespace-actions.png", "04-select-delete.png", "05-delete.png", "06-done.png"):
+            self.assertIn(asset, cleanup)
+        for action in ("GitHub home", "left navigation", "Codespaces", "Delete", "deleted"):
             self.assertIn(action, cleanup)
-        self.assertNotIn("Stop", cleanup)
 
     def test_setup_media_never_shows_broken_icons(self):
         for tag in re.findall(r"<(?:img|video)\b[^>]*>", self.setup[self.setup.index("<main"):]):
@@ -206,20 +199,21 @@ class TestWebGuides(unittest.TestCase):
             else:
                 self.assertNotIn("onerror=", tag, tag)
 
-    def test_capture_manifest_matches_setup_page(self):
+    def test_automated_capture_contract_is_separate_from_manual_setup_images(self):
         manifest = json.loads((REPO_ROOT / "scripts" / "capture" / "captures.json").read_text(encoding="utf-8"))
-        root = manifest["imageRoot"]
-        expected = set()
-        for step in manifest["steps"]:
-            for shot in step["screenshots"]:
-                expected.add(f"{root}/{step['slug']}/{shot}")
-        referenced = set(re.findall(r'(?:src)="(images/setup/[^"]+)"', self.setup))
-        self.assertTrue(referenced <= expected)
-        self.assertTrue(referenced)
+        self.assertEqual(manifest["imageRoot"], "images/setup")
+        self.assertEqual([step["slug"] for step in manifest["steps"]], ["create-repo", "open-codespace", "look-around", "delete-codespace"])
+
+        manual_root = DOCS_DIR / "images" / "setup" / "manual-images"
+        expected = {f"images/setup/manual-images/{folder.name}/{image.name}"
+                    for folder in sorted(manual_root.iterdir()) for image in sorted(folder.glob("*.png"))}
+        referenced = set(re.findall(r'src="(images/setup/manual-images/[^"]+\.png)"', self.setup))
+        self.assertEqual(referenced, expected)
+        self.assertEqual(len(referenced), 28)
         for asset in referenced:
             with self.subTest(asset=asset):
                 path = DOCS_DIR / asset
-                self.assertTrue(path.is_file(), f"missing setup image: {asset}")
+                self.assertTrue(path.is_file(), f"missing manual setup image: {asset}")
                 self.assertTrue(path.read_bytes().startswith(b"\x89PNG\r\n\x1a\n"), f"invalid PNG: {asset}")
 
     def test_learner_match_and_registration_use_the_workshop_contract(self):
