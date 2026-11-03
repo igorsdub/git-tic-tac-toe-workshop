@@ -1683,7 +1683,8 @@ a.register-btn:focus-visible {
 .setup-section-heading { display: flex; align-items: center; gap: 0.65rem; }
 .setup-section-intro { margin: 0.5rem 0; max-width: 72ch; color: var(--text-secondary); }
 .setup-section-conclusion { margin: 1.25rem 0 0; max-width: 72ch; }
-.setup-completion-callout { margin: 1.25rem 0 0; max-width: 72ch; }
+.setup-completion-callout { margin: 1.25rem 0 0; }
+.setup-completion-callout .setup-section-conclusion { max-width: none; }
 .setup-completion-callout h2 { margin: 0; border-bottom: 0; padding-bottom: 0; font-size: 1.15rem; }
 .template-repository-link { font-size: 1.05rem; font-weight: 700; }
 .student-pack-callout { margin-top: 1rem; padding: 1rem 1.1rem; border: 1px solid var(--border-light); border-left: 4px solid #3b82f6; border-radius: var(--radius-md); background: color-mix(in srgb, #3b82f6 7%, var(--bg-surface)); }
