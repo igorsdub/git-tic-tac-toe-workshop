@@ -393,7 +393,9 @@ class TestWebGuides(unittest.TestCase):
     def test_copy_button_shares_row_with_code(self):
         css = self.styles[self.styles.index(".code-window {"):]
         self.assertIn("display: flex;", css.split("}", 1)[0])
-        self.assertIn("align-items: flex-start;", css.split("}", 1)[0])
+        self.assertIn("align-items: center;", css.split("}", 1)[0])
+        pre = css[css.index(".code-window pre {"):].split("}", 1)[0]
+        self.assertIn("padding: 0.35rem 0.75rem;", pre)
         bar = css[css.index(".code-window-bar {"):].split("}", 1)[0]
         self.assertIn("order: 2;", bar)
         self.assertNotIn("border-bottom", bar)

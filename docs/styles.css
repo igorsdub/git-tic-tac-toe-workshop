@@ -1706,7 +1706,7 @@ html.setup-only .register-btn {
 /* Code windows with a Copy button for copy-paste prompts and commands */
 .code-window {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 0.5rem;
   margin: 0.75rem 0;
   padding: 0.5rem 0.5rem 0.5rem 0;
@@ -1715,7 +1715,7 @@ html.setup-only .register-btn {
   background: var(--bg-surface);
   overflow: hidden;
 }
-/* The bar holds only the Copy button; it sits to the right of the text, level with the first line. */
+/* The bar holds only the Copy button; it sits to the right of the text, vertically centred with it. */
 .code-window-bar {
   order: 2;
   flex: none;
@@ -1727,7 +1727,7 @@ html.setup-only .register-btn {
   flex: 1 1 auto;
   min-width: 0;
   margin: 0;
-  padding: 0.1rem 0.75rem;
+  padding: 0.35rem 0.75rem;
   overflow-x: auto;
   white-space: pre-wrap;
   word-break: break-word;
