@@ -47,6 +47,8 @@ Use the shared-board analogy: each learner's Codespace is their own working copy
 
 ### Pair setup and manual match (25–70)
 
+The invitation happens inside the 25–40 pair-setup slot; the agenda timing is unchanged. Walk the room asking "Has O accepted?" Learners follow Step 1 on the How to play page. Register on the Game Wall only after the partner has accepted, with both handles. The partner's check is that the invitation banner is gone; the real proof is the first Sync Changes succeeding. Repositories owned by an organisation need organisation permission and are out of scope: use public repositories on personal accounts only.
+
 Each pair chooses one prepared public repository and the owner invites the partner as a collaborator. The partner accepts, and each learner opens that repository in their own Codespace. The owner plays X and moves first; the partner plays O. Both switch to the existing `match-01` in Source Control and pull, then play numbered moves in order. `BOARD.txt` has three rows of three single-space-separated cells (`.`, `X`, or `O`); a move replaces one `.`.
 
 Every turn has five steps, named after the Source Control buttons:
