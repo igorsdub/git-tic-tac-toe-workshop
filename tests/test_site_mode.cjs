@@ -7,8 +7,8 @@ const { homeTarget, routeHome } = require('../docs/home-route.js');
 
 const repo = path.resolve(__dirname, '..');
 
-test('setup-only is one shared default and has no query override', () => {
-  assert.equal(config.setupOnly, true);
+test('full site mode is the shared setting and has no query override', () => {
+  assert.equal(config.setupOnly, false);
   assert.match(fs.readFileSync(path.join(repo, 'docs/home-route.js'), 'utf8'), /config\.setupOnly/);
   assert.doesNotMatch(fs.readFileSync(path.join(repo, 'docs/home-route.js'), 'utf8'), /searchParams.*setupOnly/i);
 });

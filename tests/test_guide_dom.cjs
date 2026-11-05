@@ -60,8 +60,7 @@ test('turn and rematch figures use the how-to-play storyboard', () => {
   assert.deepEqual(turnImages.map((image) => image.src), expectedSources(turnGroup));
   assert.deepEqual(rematchImages.map((image) => image.src), expectedSources(rematchGroup));
   for (const image of [...turnImages, ...rematchImages]) assertLinkedPng(image);
-  assert.equal(linkedImages(guide).length, 17);
-  assert.equal(linkedImages(section(guide, 'conflict', 'copilot')).length, 0);
+  assert.equal(linkedImages(guide).length, 26);
   assert.match(turn, new RegExp(turnGroup.caption.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   assert.match(rematch, new RegExp(rematchGroup.caption.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   assert.doesNotMatch(turn, /Push|push/);
@@ -88,6 +87,46 @@ test('invite figures show the owner collaborator flow', () => {
   const partner = guide.slice(guide.indexOf('O (partner)'), guide.indexOf('Step 2: Start together'));
   assert.equal(linkedImages(partner).length, 0);
   assert.match(partner, /Accept invitation/);
+});
+
+const CONFLICT_SHOTS = [
+  '01-merge-changes.png',
+  '02-merge-editor.png',
+  '03-complete-merge.png',
+  '04-commit-sync.png',
+];
+const COPILOT_SHOTS = [
+  '01-ask-mode.png',
+  '02-ask-reply.png',
+  '03-agent-mode.png',
+  '04-agent-diff.png',
+  '05-plan-mode.png',
+];
+
+test('conflict and copilot figures follow the how-to-play shot pattern', () => {
+  const conflict = section(guide, 'conflict', 'copilot');
+  const copilot = section(guide, 'copilot', 'terminal');
+  const conflictImages = linkedImages(conflict);
+  const copilotImages = linkedImages(copilot);
+  assert.deepEqual(conflictImages.map((image) => image.src), CONFLICT_SHOTS.map((name) => `images/guide/conflict/${name}`));
+  assert.deepEqual(copilotImages.map((image) => image.src), COPILOT_SHOTS.map((name) => `images/guide/copilot/${name}`));
+  for (const image of [...conflictImages, ...copilotImages]) assertLinkedPng(image);
+  assert.ok(conflict.indexOf('</details>') < conflict.indexOf('images/guide/conflict/01-merge-changes.png'));
+  assert.ok(conflict.indexOf('04-commit-sync.png') < conflict.indexOf('time-machine.html'));
+  const ask = copilot.slice(copilot.indexOf('<h3>Ask mode</h3>'), copilot.indexOf('<h3>Agent mode</h3>'));
+  const agent = copilot.slice(copilot.indexOf('<h3>Agent mode</h3>'), copilot.indexOf('<h3>Plan mode</h3>'));
+  const plan = copilot.slice(copilot.indexOf('<h3>Plan mode</h3>'));
+  assert.deepEqual(linkedImages(ask).map((image) => image.src), COPILOT_SHOTS.slice(0, 2).map((name) => `images/guide/copilot/${name}`));
+  assert.deepEqual(linkedImages(agent).map((image) => image.src), COPILOT_SHOTS.slice(2, 4).map((name) => `images/guide/copilot/${name}`));
+  assert.deepEqual(linkedImages(plan).map((image) => image.src), [`images/guide/copilot/${COPILOT_SHOTS[4]}`]);
+  assert.ok(ask.indexOf('copy-src-1') < ask.indexOf('01-ask-mode.png'));
+  assert.ok(agent.indexOf('copy-src-2') < agent.indexOf('03-agent-mode.png'));
+  assert.ok(agent.indexOf('04-agent-diff.png') < agent.indexOf('copy-src-3'));
+  assert.ok(plan.indexOf('copy-src-4') < plan.indexOf('05-plan-mode.png'));
+  assert.match(ask, /Interactive/);
+  assert.match(ask, /Ask-style explain-only mode/);
+  assert.match(agent, /Keep/);
+  assert.match(plan, /<strong>Plan<\/strong>/);
 });
 
 function findBrowser() {
@@ -135,4 +174,17 @@ test('guide figures stay linked inside their sections', { skip: !browser }, () =
   assert.ok(landing >= 0 && scrollBeat > landing && scrollBeat < addPeople);
   assert.match(renderedTurn, /Your partner \(O\) now does the same steps/);
   assert.match(renderedRematch, /Now play exactly the same way as before/);
+  const renderedConflict = section(result.stdout, 'conflict', 'copilot');
+  const renderedCopilot = section(result.stdout, 'copilot', 'terminal');
+  for (const name of CONFLICT_SHOTS) {
+    const src = `images/guide/conflict/${name}`;
+    assert.ok(renderedConflict.includes(`href="${src}"`), src);
+    assert.ok(renderedConflict.includes(`src="${src}"`), src);
+  }
+  for (const name of COPILOT_SHOTS) {
+    const src = `images/guide/copilot/${name}`;
+    assert.ok(renderedCopilot.includes(`href="${src}"`), src);
+    assert.ok(renderedCopilot.includes(`src="${src}"`), src);
+  }
+  assert.ok(renderedConflict.indexOf('</details>') < renderedConflict.indexOf('01-merge-changes.png'));
 });

@@ -23,6 +23,7 @@ test('direct setup, guide, and wall pages respect both modes, workshop query, lo
   const repo = path.resolve(__dirname, '..');
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'site-mode-dom-'));
   const configSource = fs.readFileSync(path.join(repo, 'docs/site-config.js'), 'utf8');
+  const configFor = (mode) => configSource.replace(/setupOnly:\s*(true|false)/, `setupOnly: ${mode}`);
   const configPath = path.join(tempDir, 'site-config.js');
   const configUrl = `file://${configPath}`;
   const cases = [
@@ -35,7 +36,7 @@ test('direct setup, guide, and wall pages respect both modes, workshop query, lo
   ];
   try {
     for (const mode of [true, false]) {
-      fs.writeFileSync(configPath, configSource.replace('setupOnly: true', `setupOnly: ${mode}`));
+      fs.writeFileSync(configPath, configFor(mode));
       for (const entry of cases.filter((item) => item.setupOnly === mode)) {
         const contentSelector = entry.page === 'setup.html' ? '#setup-codespaces' : entry.page === 'guide.html' ? '#turn' : '#game-grid';
         const source = fs.readFileSync(path.join(repo, 'docs', entry.page), 'utf8');
@@ -49,7 +50,7 @@ test('direct setup, guide, and wall pages respect both modes, workshop query, lo
           `<script>(async()=>{await window.WorkshopContext.ready;await new Promise(r=>setTimeout(r,40));const css=(node)=>node?getComputedStyle(node).display:'missing';const nav=css(document.querySelector('.stage-strip'));const next=css(document.querySelector('.stage-next'));const registration=document.querySelector('.stage-strip [data-workshop-registration]');const hiddenRegister=registration&&css(registration.closest('.stage-strip'))==='none';const logo=new URL(document.querySelector('.brand-link').href);const setupDone=document.querySelector('#setup-next');if(setupDone){document.querySelector('#check-step-repo').checked=true;document.querySelector('#check-step-repo').dispatchEvent(new Event('change',{bubbles:true}));await new Promise(r=>setTimeout(r,20));}const result=nav==='${entry.expectedNav}'&&next==='${entry.expectedNext}'&&hiddenRegister===${mode}&&logo.pathname.endsWith('/${entry.expectedLogo}')&&logo.searchParams.get('workshop')==='ws-code'&&logo.hash==='#rematch'&&(!setupDone||css(setupDone)==='${entry.expectedNext}')&&!!document.querySelector('main')&&!!document.querySelector('${contentSelector}');document.body.dataset.modeResult=result?'PASS':'FAIL';})();</script>`,
         ].join('\n');
         const pageHtml = source
-          .replace(/<script src="site-config\.js"><\/script>/, `<script>${configSource.replace('setupOnly: true', `setupOnly: ${mode}`)}</script>`)
+          .replace(/<script src="site-config\.js"><\/script>/, `<script>${configFor(mode)}</script>`)
           .replace(/<script src="[^"]+"><\/script>/g, '')
           .replace(/href="styles\.css"/, `href="${path.join(repo, 'docs/styles.css')}"`)
           .replace('</body>', `${scripts}</body>`);
