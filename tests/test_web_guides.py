@@ -345,6 +345,46 @@ class TestWebGuides(unittest.TestCase):
                 self.assertFalse(branch.startswith("match"), branch)
         self.assertIn("what-if-01", page)
         self.assertNotIn("git switch -c match", page)
+        sections = (
+            ("look", "detached", (
+                "01-pull-control.png",
+                "02-graph-expanded.png",
+                "03-older-commit-files.png",
+                "04-board-diff.png",
+            )),
+            ("detached", "what-if", ("05-detached-head.png",)),
+            ("what-if", "return", (
+                "06-create-branch-menu.png",
+                "07-create-branch-input.png",
+                "08-whatif-board-edit.png",
+                "09-stage-commit-ready.png",
+                "10-publish-branch.png",
+            )),
+            ("return", "terminal", ("11-back-on-match-01.png",)),
+        )
+        for start, end, names in sections:
+            section = page[page.index(f'id="{start}"'):page.index(f'id="{end}"')]
+            expected = [f"images/time-machine/{name}" for name in names]
+            self.assertEqual(re.findall(r'src="(images/time-machine/[^"]+\.png)"', section), expected)
+            figures = re.findall(r'<figure class="step-shot">(.*?)</figure>', section)
+            self.assertEqual(len(figures), len(names))
+            for figure in figures:
+                self.assertLess(figure.index("shot-instruction"), figure.index("<img"))
+                self.assertIn('class="step-image-link"', figure)
+                self.assertIn('target="_blank"', figure)
+                self.assertEqual(
+                    re.search(r'href="([^"]+)"', figure).group(1),
+                    re.search(r'<img src="([^"]+)"', figure).group(1),
+                )
+                self.assertIn("onerror=\"this.closest('figure').hidden=true\"", figure)
+        terminal = page[page.index('id="terminal"'):]
+        self.assertNotIn("<figure", terminal)
+        self.assertNotIn("images/time-machine/", terminal)
+        self.assertEqual(page.count('<figure class="step-shot">'), 11)
+        for src in re.findall(r'src="(images/time-machine/[^"]+\.png)"', page):
+            image = DOCS_DIR / src
+            self.assertTrue(image.is_file(), src)
+            self.assertTrue(image.read_bytes().startswith(b"\x89PNG\r\n\x1a\n"), src)
 
     def test_copilot_prompts_and_guardrails(self):
         prompts = ("Explain the current board in BOARD.txt and whose turn it is.",

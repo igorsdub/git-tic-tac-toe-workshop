@@ -6,10 +6,10 @@ A post-workshop activity, not part of the session. Look back through your match 
 
 Every commit is a saved snapshot of `BOARD.txt`. The *commit graph* draws these snapshots as a line, newest at the top.
 
-1. In your Codespace, switch to your match branch (for example `match-01`) and select **Pull** in **Source Control**.
+1. In your Codespace, switch to your match branch (for example `match-01`). In **Source Control**, select **Pull** on the **Graph** toolbar.
 2. Expand the **Graph** section. Each dot is one commit.
 3. Select an older commit. VS Code lists the files it changed.
-4. Select `BOARD.txt` to open the diff: left is the board before that commit, right is after it.
+4. Select `BOARD.txt` to open the diff. The removed line is the board before that commit, and the added line is the board after it.
 
 Looking at a diff changes nothing.
 
