@@ -41,6 +41,30 @@ One player's change to one empty square, saved as a commit and shared with the o
 The five steps a player follows to make a move, named after the Source Control buttons: Pull, edit one cell and save, stage with +, Commit with a clear message, Sync Changes. "Sync Changes" is used everywhere; never "Push" as a step name.
 _Avoid_: Sacred turn cycle, Game loop, Play cycle
 
+**Conflict**:
+Two partners changed the same part of `BOARD.txt` and Git cannot combine the versions alone. The pair resolves it in the merge editor, keeping all published moves and one legal next move.
+
+**Merge editor**:
+The VS Code view that shows both versions of a conflicted file and a combined result the learner edits, then completes with **Complete Merge**.
+
+**Commit graph**:
+The Source Control **Graph** section, which draws a branch's commits as a line, newest first. Selecting a commit shows its diff.
+
+**Detached HEAD**:
+The state after checking out an old commit directly instead of a branch. Safe for reading; leave it by switching back to a branch. Commits made there belong to no branch.
+
+**Experiment branch**:
+A published branch started from a past commit for a take-home what-if move. Its name never starts with `match`, so the Game Wall ignores it, and it is never merged into `main` or a match branch.
+
+**Ask mode**:
+Copilot Chat mode that only explains. Used for the first rematch move; the learner does all edits and Git steps.
+
+**Agent mode**:
+Copilot Chat mode that can edit files and, when explicitly asked, commit and push. Used for the next rematch move, one cell per request; the learner reviews the diff first.
+
+**Plan mode**:
+Copilot Chat mode that shows a plan before acting. Used for a later rematch move with one goal (pull, plan, place); the learner approves the plan, reviews the diff, then asks for the commit and push as a separate request.
+
 **Agent-assisted rematch**:
 The phase that follows the manual match. Every pair starts a fresh match on the next numbered branch from clean `main`, and the learner asks Copilot in agent mode to make their chosen board edit. The learner still reviews the diff and completes the Git workflow.
 _Avoid_: Game 2, Rematch game, Branch rematch, Feature branch game

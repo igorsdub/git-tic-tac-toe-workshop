@@ -20,7 +20,7 @@ Use Codespaces with the VS Code web interface throughout. Teach the Source Contr
 | 80–105 | 25 | Agent-assisted rematch: learner chooses move; Copilot edits; learner reviews and completes the Git workflow |
 | 105–120 | 15 | Instructor demonstrates public match outcomes and history on the Game Wall; connect to research and wrap up |
 
-Pair play is 55 minutes: the 30-minute manual match plus the 25-minute rematch. At minute 80, transition the room together even if a manual match is unfinished. Preserve its branch and begin a fresh rematch branch so every learner gets the Copilot practice slot. Early finishers may play one optional extra manual match before minute 80. The alternative-history branch exercise is an instructor extension only if time allows; it is not required learner work.
+Pair play is 55 minutes: the 30-minute manual match plus the 25-minute rematch. At minute 80, transition the room together even if a manual match is unfinished. Preserve its branch and begin a fresh rematch branch so every learner gets the Copilot practice slot. Early finishers may play one optional extra manual match before minute 80. The alternative-history branch exercise is a post-workshop take-home only (see [Time machine](TIME_MACHINE.md)); it is not used in the session.
 
 This is the only place the agenda is written down. Other documents link here.
 
@@ -78,12 +78,16 @@ Registration facts to have ready:
 - Verify registration acceptance, and that at least one branch has appeared, before the session.
 - Existing registrations map to `2026-10-01-scda`; the preserved `Default Event` record remains unclassified and excluded pending review.
 
+At wrap-up, mention the take-home [Time machine](TIME_MACHINE.md) page ([web version](docs/time-machine.html)), which is not used in the session.
+
 Connect the workflow to research files, analysis code, and shared manuscripts. Ask what becomes easier when changes have clear authorship, messages, and reviewable history.
 
 ## Optional facilitator appendix: recovery
 
 Keep this reference for support when a learner asks for help. First inspect the exact changed files and commits with the learner, and preserve changes belonging to other people.
 
-An unwanted local change that has not been shared can be undone after confirming which edit belongs to the learner. A synced change is part of shared history; correct it with a new commit that restores the intended board state. Preserve other learners' changes in either case. If Sync Changes is rejected or a conflict appears naturally, inspect incoming work with the pair, resolve the board together, review the diff, and complete the offered Source Control action. The [merge-conflict guide for VS Code](https://code.visualstudio.com/docs/sourcecontrol/merge-conflicts) explains the editor controls.
+An unwanted local change that has not been shared can be undone after confirming which edit belongs to the learner. A synced change is part of shared history; correct it with a new commit that restores the intended board state. Preserve other learners' changes in either case. If Sync Changes is rejected or a conflict appears naturally, point learners to the conflict box in the [Learner guide](LEARNER_GUIDE.md#taking-turns-and-fixing-a-conflict) and inspect incoming work with the pair, resolve the board together, review the diff, and complete the offered Source Control action. The [merge-conflict guide for VS Code](https://code.visualstudio.com/docs/sourcecontrol/merge-conflicts) explains the editor controls.
+
+Copilot quotas: free plans have a limited monthly allowance of AI credits (no fixed published request count), and the docs list agents as limited on Free, so some learners may lack Agent or Plan mode. Ask learners not to chat at length beforehand. Verified teachers get free Copilot Pro through GitHub Education; verified students get the free Copilot Student plan. Progression in the rematch: Ask (explain, learner does Git), Agent (one cell; learner reviews the diff, then asks it to commit and push), Plan (short goal: pull, plan, place; learner approves the plan, reviews the diff, then sends a separate commit-and-push request). The agent commits or pushes only on explicit request and never merges, force-pushes or switches branches unasked. Spot-check diffs and commits. Fallback: play manually and watch the instructor demonstration.
 
 If Copilot is unavailable, continue with the manual rematch and let the learner observe the instructor's Copilot demonstration. Codespaces access does not itself guarantee Copilot access; check both during rehearsal and help learners with account or organization settings without delaying the pair's Git work.

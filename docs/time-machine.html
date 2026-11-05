@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" class="setup-only">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Time machine - Git Tic-Tac-Toe Workshop</title>
+  <meta name="description" content="Take-home: explore the history of your tic-tac-toe match and try an alternative move on a separate branch.">
+  <link id="theme-favicon" rel="icon" type="image/svg+xml" href="images/xo-logo-light.svg">
+  <script src="site-config.js"></script>
+  <script src="theme-init.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="wall-header"><div class="header-container">
+    <div class="brand"><a href="wall.html" class="brand-link"><img id="brand-logo" class="brand-icon" src="images/xo-logo-light.svg" data-light-src="images/xo-logo-light.svg" data-dark-src="images/xo-logo-dark.svg" alt="X and O"><div class="brand-text"><span class="brand-title" style="display:block;font-size:1.35rem;font-weight:700;letter-spacing:-0.02em;color:var(--text-primary)">Git Tic-Tac-Toe</span><p class="subtitle">Collaboration with Git and GitHub</p></div></a></div>
+    <div class="header-actions"><div class="header-workshop-picker"><label for="workshop-select" class="header-workshop-label">Workshop</label><select id="workshop-select" aria-describedby="workshop-context-status"></select><span id="workshop-context-status" class="visually-hidden" role="status">Choose a workshop to update the registration link and Game Wall.</span></div><button id="theme-toggle" class="header-icon" title="Toggle dark/light theme" aria-label="Toggle theme"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg></button><a href="https://github.com/igorsdub/git-tic-tac-toe-workshop" target="_blank" rel="noopener noreferrer" class="header-icon" aria-label="View repository on GitHub" title="View repository on GitHub"><svg class="github-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+          </svg></a></div>
+  </div><div data-stage-strip="guide"></div>
+  </header>
+  <main class="guide-main"><div class="guide-container">
+    <header class="guide-hero"><h1>Time machine</h1><p class="lead">A take-home activity for after the workshop: look back through your match history and try a different move without changing the original match.</p></header>
+    <nav class="jump-nav" aria-label="Quick jump to section"><span class="jump-nav-label">Jump to:</span><a href="#look" class="jump-pill">Look at the past</a><a href="#detached" class="jump-pill">Detached HEAD</a><a href="#what-if" class="jump-pill">Try a what-if</a><a href="#return" class="jump-pill">Return to your match</a><a href="#terminal" class="jump-pill">Terminal equivalent</a></nav>
+    <section class="guide-section" id="look"><h2>Look at the past</h2><p>Every commit is a saved snapshot of <code>BOARD.txt</code>. The <em>commit graph</em> draws these snapshots as a line, newest at the top. Open your repository in a Codespace and work in <strong>Source Control</strong>.</p><ol><li>Switch to your match branch (for example <code>match-01</code>) and click <strong>Pull</strong>.</li><li>In the Source Control view, expand the <strong>Graph</strong> section. Each dot is one commit.</li><li>Click an older commit. VS Code lists the files it changed.</li><li>Click <code>BOARD.txt</code> to open the diff: the left side is the board before that commit, the right side is the board after it.</li></ol><p>Looking at a diff changes nothing. You can click around freely.</p></section>
+    <section class="guide-section" id="detached"><h2>Detached HEAD</h2><p><em>HEAD</em> is Git’s name for the commit your files currently show. Normally HEAD follows a branch. If you check out an old commit directly, HEAD is <em>detached</em>: your files show the old board, and the status bar shows a commit code instead of a branch name. This is safe for reading, but a commit made here belongs to no branch and is easy to lose.</p><p><strong>To leave a detached HEAD:</strong> click the branch name in the status bar (or the branch picker in Source Control), choose your match branch, and your files return to the latest board. If you have not committed anything, nothing is lost.</p></section>
+    <section class="guide-section" id="what-if"><h2>Try a what-if</h2><p>An <em>experiment branch</em> is a new branch that starts from a past commit, so you can play a different move there. Name it so that it does <strong>not</strong> start with <code>match</code> (for example <code>what-if-01</code>); the Game Wall ignores such branches, so your experiment will not appear as a match.</p><ol><li>In the commit graph, right-click the old commit where you want to change history and choose <strong>Create Branch...</strong>.</li><li>Type a name such as <code>what-if-01</code> and press Enter. VS Code switches to the new branch.</li><li>Open <code>BOARD.txt</code>, replace one dot with a different legal move, and save.</li><li>Check the diff, stage <code>BOARD.txt</code> with <strong>+</strong>, enter a clear message, and click <strong>Commit</strong>.</li><li>Click <strong>Publish Branch</strong> so your experiment is saved on GitHub.</li></ol><p>Never merge an experiment branch into <code>main</code> or into a match branch. Keep it as a separate record of the what-if.</p></section>
+    <section class="guide-section" id="return"><h2>Return to your match</h2><p>Click the branch name in the status bar and choose your match branch (for example <code>match-01</code>). Your board shows the original game again. Your experiment stays on its own branch, and you can switch back to it any time.</p></section>
+    <section class="guide-section" id="terminal"><h2>Terminal equivalent</h2><details><summary>Optional: the same steps in the terminal</summary><div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-src-1" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-src-1">git log --oneline                  # list commits, newest first
+git diff abc1234 HEAD              # compare an old commit with now
+git switch --detach abc1234        # look at the old board (detached HEAD)
+git switch match-01                # leave detached HEAD, return to the match
+git switch -c what-if-01 abc1234   # new branch from a past commit
+git push -u origin what-if-01      # publish it</code></pre></div><p>Replace <code>abc1234</code> with a commit code from <code>git log --oneline</code>.</p></details><p class="stage-next"><a href="guide.html">Back to How to play</a></p></section>
+  </div></main>
+  <script src="stage-strip.js"></script>
+  <script src="workshop-context.js"></script>
+  <script src="guide-utils.js"></script>
+  <script src="copy-code.js"></script>
+</body>
+</html>

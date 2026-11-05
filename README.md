@@ -7,6 +7,7 @@ This two-hour workshop teaches collaborative Git through a paired tic-tac-toe ga
 - [Design history](WORKSHOP_DESIGN_HANDOFF.md) (historical record; the guides below are current)
 - [Local delivery status and blockers](planning/delivery-status-2026-10-20.md)
 - [Learner guide](LEARNER_GUIDE.md) and [How to play](docs/guide.html)
+- [Time machine](TIME_MACHINE.md) take-home page ([web version](docs/time-machine.html))
 - [Facilitator guide](FACILITATOR_GUIDE.md), which holds the only copy of the agenda
 - [Pre-session checklist](PRE_SESSION_CHECK.md) and [Setup page](docs/setup.html)
 - [Rehearsal guide](REHEARSAL_GUIDE.md)
