@@ -233,7 +233,14 @@ class TestWebGuides(unittest.TestCase):
         self.assertEqual(ordered_sections, sorted(ordered_sections))
         for heading in ("One move and repeat", "Rematch"):
             self.assertIn(f"<h2>{heading}</h2>", self.guide)
-        self.assertEqual(self.guide.count('<section class="guide-section"'), 2)
+        self.assertEqual(self.guide.count('<section class="guide-section"'), 5)
+        self.assertNotIn("then commit and push.", self.guide)
+        for cmd in ("git pull --no-rebase", "git add BOARD.txt", "git fetch", "git switch match-01", "git switch -c match-02", "git push -u origin match-02"):
+            self.assertIn(cmd, self.guide)
+            self.assertIn(cmd, (REPO_ROOT / "LEARNER_GUIDE.md").read_text(encoding="utf-8"))
+        self.assertLess(self.guide.index('id="terminal"'), self.guide.index('class="stage-next"'))
+        self.assertIn("<h2>Taking turns and fixing a conflict</h2>", self.guide)
+        self.assertIn('href="time-machine.html"', self.guide)
         self.assertNotIn("Workshop setup", self.guide)
         self.assertNotIn("History as a time machine", self.guide)
         self.assertIn("create a branch named <code>match-02</code>", self.guide)
@@ -311,6 +318,77 @@ class TestWebGuides(unittest.TestCase):
                 self.assertIn('src="site-config.js"', re.findall(r"<script[^>]*>", head)[0])
                 self.assertIn('src="theme-init.js"', re.findall(r"<script[^>]*>", head)[1])
                 self.assertNotIn("dashboard", re.sub(r"<[^>]+>", "", html).lower())
+
+    def test_time_machine_page_and_links(self):
+        page = (DOCS_DIR / "time-machine.html").read_text(encoding="utf-8")
+        md = (REPO_ROOT / "TIME_MACHINE.md").read_text(encoding="utf-8")
+        levels = [int(level) for level in re.findall(r"<h([1-6])[ >]", page)]
+        self.assertEqual(levels.count(1), 1)
+        for term in ("Graph", "Detached HEAD", "experiment branch", "Create Branch", "Publish Branch",
+                     "git log --oneline", "git switch", "git diff", "git switch -c", "git push -u"):
+            self.assertIn(term.casefold(), page.casefold(), term)
+        for term in ("Graph", "Detached HEAD", "what-if-01", "git push -u"):
+            self.assertIn(term, md)
+        for name in ("README.md", "LEARNER_GUIDE.md", "FACILITATOR_GUIDE.md"):
+            self.assertIn("TIME_MACHINE.md", (REPO_ROOT / name).read_text(encoding="utf-8"), name)
+        for href in re.findall(r'href="([^"#:]+\.html)"', page):
+            self.assertTrue((DOCS_DIR / href).is_file(), href)
+        for content in (page, md):
+            for branch in re.findall(r"(?:switch -c|Create Branch[^`]*`|named? )`?([\w.-]+)", content):
+                self.assertFalse(branch.startswith("match"), branch)
+        self.assertIn("what-if-01", page)
+        self.assertNotIn("git switch -c match", page)
+
+    def test_copilot_prompts_and_guardrails(self):
+        prompts = ("Explain the current board in BOARD.txt and whose turn it is.",
+                   "Place O in the top-right cell of BOARD.txt. Change only that cell.",
+                   "Commit this move with message 'O plays top-right' and push it.",
+                   "Pull, plan my next legal move as O, and place it. Then stop so I can review the diff.")
+        learner = (REPO_ROOT / "LEARNER_GUIDE.md").read_text(encoding="utf-8")
+        for prompt in prompts:
+            self.assertIn(prompt, self.guide)
+            self.assertIn(prompt, learner)
+        for mode in ("Ask", "Agent", "Plan"):
+            self.assertIn(f"<h3>{mode} mode</h3>", self.guide)
+        self.assertNotIn("code-window-label", self.guide)
+        copilot = self.guide[self.guide.index('id="copilot"'):self.guide.index('id="terminal"')]
+        self.assertLess(copilot.index('callout-box warning'), copilot.index("<h3>Ask mode</h3>"))
+        self.assertIn("Some learners may lack Agent or Plan mode", copilot)
+        self.assertLess(self.guide.index('id="copilot"'), self.guide.index('id="terminal"'))
+        agents = (REPO_ROOT / "template" / "AGENTS.md").read_text(encoding="utf-8")
+        for rule in ("commit or push only on the learner's explicit request", "force-push", "switch branches unasked", "Edit only `BOARD.txt`", "one cell per move"):
+            self.assertIn(rule, agents)
+        self.assertFalse((REPO_ROOT / "template" / ".github" / "prompts").exists())
+
+    def test_copy_blocks_have_buttons_and_copy_visible_text(self):
+        self.assertTrue((DOCS_DIR / "copy-code.js").is_file())
+        script = (DOCS_DIR / "copy-code.js").read_text(encoding="utf-8")
+        for needle in ("navigator.clipboard.writeText", "execCommand('copy')", "source.textContent", "'Copied'"):
+            self.assertIn(needle, script)
+        for name in ("guide.html", "time-machine.html"):
+            html = (DOCS_DIR / name).read_text(encoding="utf-8")
+            self.assertIn('src="copy-code.js"', html)
+            windows = re.findall(r'<div class="code-window">(.*?)</pre></div>', html, re.S)
+            self.assertGreater(len(windows), 0, name)
+            self.assertEqual(html.count('<pre>'), len(windows), name)
+            self.assertNotRegex(html, r"<pre><code>", name)
+            for window in windows:
+                button = re.search(r'<button type="button" class="copy-button" data-copy-target="([^"]+)"', window)
+                self.assertIsNotNone(button, window[:80])
+                self.assertIn('role="status" aria-live="polite"', window)
+                code = re.search(rf'<code id="{button.group(1)}">(.*?)</code>', window, re.S)
+                self.assertIsNotNone(code)
+                self.assertNotIn("<", code.group(1))
+        guide = (DOCS_DIR / "guide.html").read_text(encoding="utf-8")
+        for prompt in ("Explain the current board in BOARD.txt and whose turn it is.",
+                       "Place O in the top-right cell of BOARD.txt. Change only that cell.",
+                       "Pull, plan my next legal move as O, and place it. Then stop so I can review the diff."):
+            self.assertRegex(guide, rf'<code id="copy-src-\d+">{re.escape(prompt)}</code>')
+        self.assertIn("git pull --no-rebase", guide)
+        self.assertNotRegex(guide, r"git pull\s+#")
+        self.assertIn('Unmerged paths', guide)
+        for cmd in ("git pull --no-rebase", "git switch -c match-02", "git push -u origin match-02"):
+            self.assertRegex(guide, rf'<code id="copy-src-\d+">[^<]*{re.escape(cmd)}')
 
     def test_wall_filters_and_spinner_are_accessible(self):
         self.assertNotIn('role="tablist"', self.index)

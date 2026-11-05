@@ -1702,3 +1702,52 @@ html.setup-only [data-workshop-registration],
 html.setup-only .register-btn {
   display: none !important;
 }
+
+/* Code windows with a Copy button for copy-paste prompts and commands */
+.code-window {
+  margin: 0.75rem 0;
+  border: 1px solid var(--border-medium);
+  border-radius: 8px;
+  background: var(--bg-surface);
+  overflow: hidden;
+}
+.code-window-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding: 0.35rem 0.75rem;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-light);
+  font-size: 0.85rem;
+  color: var(--text-secondary, var(--text-primary));
+}
+.code-window pre {
+  margin: 0;
+  padding: 0.75rem;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: transparent;
+  color: var(--text-primary);
+}
+.code-window code { background: transparent; padding: 0; }
+.copy-button {
+  font: inherit;
+  padding: 0.2rem 0.75rem;
+  border: 1px solid var(--border-medium);
+  border-radius: 6px;
+  background: var(--bg-card);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+.copy-button:hover { background: var(--bg-tertiary); }
+.copy-button:focus-visible { outline: 2px solid var(--text-primary); outline-offset: 2px; }
+
+.callout-box.warning {
+  border-left-color: #d97706;
+  background-color: color-mix(in srgb, #d97706 12%, var(--bg-surface));
+  border-color: color-mix(in srgb, #d97706 45%, var(--border-light));
+  color: var(--text-primary);
+}
+.callout-box.warning p { margin: 0; }

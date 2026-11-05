@@ -35,18 +35,40 @@ Your partner starts their turn with **Pull**, checks the board and commit, and t
 
 Saving a file, staging it, committing it, and syncing it are separate actions. The facilitator will show where each action appears in Source Control before the match starts.
 
+## Taking turns and fixing a conflict
+
+Only one partner changes `BOARD.txt` at a time. **Pull** at the start of every turn, make your one move, **Sync Changes**, and tell your partner. Wait for them to pull before they move.
+
+<details>
+<summary>If Sync Changes is rejected or you see a conflict</summary>
+
+A *conflict* means you and your partner changed the same line of `BOARD.txt` and Git cannot combine the two versions alone. Nothing is lost. Do not discard your partner's move, and ask your facilitator if unsure.
+
+1. Stop editing. In **Source Control**, select **Pull**.
+2. Under **Merge Changes**, select `BOARD.txt` to open the *merge editor*, the VS Code view that shows both versions with the combined result below.
+3. Talk with your partner and agree the board. Keep every move already published, then keep only one legal next move. Decide together who plays it now.
+4. Edit the result so `BOARD.txt` is three rows of three cells with no conflict markers, then select **Complete Merge**.
+5. Stage `BOARD.txt` with **+**, enter a clear message, and select **Commit**.
+6. Select **Sync Changes**. Tell your partner to **Pull** and check the board before the next turn.
+
+If you cannot agree on a legal board, stop and ask the facilitator.
+
+</details>
+
+After the workshop, explore your match history on your own with the [Time machine](TIME_MACHINE.md) ([web version](docs/time-machine.html)).
+
 ## Agent-assisted rematch
 
 At the scheduled transition, every pair begins a fresh rematch, even if its manual match is unfinished. Leave the unfinished match on its branch. Create and publish `match-02` from clean `main`; your partner switches to it. Use the same VS Code web workflow.
 
-You choose a legal move and ask Copilot to place your mark. Select agent mode in Copilot Chat. For the demonstration's first move, say exactly: "Place X in the center of the board." If you play O or make a later move, name the square you chose. Then:
+You choose a legal move and ask Copilot to place your mark. Follow the Ask, Agent, Plan progression in [Using Copilot](#using-copilot). For the demonstration's first move, say exactly: "Place X in the center of the board." If you play O or make a later move, name the square you chose. Then:
 
 1. Inspect the diff yourself and understand the board change.
 2. Check the branch and Git state in Source Control.
-3. Stage the board with **+**, write the commit message, and **Commit** it yourself.
-4. Sync the change with **Sync Changes**. Your partner pulls it and checks the resulting board and history.
+3. Only after that review, tell Copilot to commit and push, or stage with **+**, write the message and **Commit** yourself.
+4. If you committed by hand, sync the change with **Sync Changes**. Sync the change before your partner moves. Your partner pulls it and checks the resulting board and history.
 
-Copilot makes the board edit; you make the decisions and complete the Git workflow. Later, you may ask Copilot to choose an individual legal move, but that is optional.
+Copilot makes the board edit; you decide each move, review every diff, and approve before anything is committed or pushed. Later, you may ask Copilot to choose an individual legal move, but that is optional.
 
 If Copilot is unavailable to you, complete the rematch manually and follow the instructor's Copilot demonstration.
 
@@ -57,3 +79,73 @@ Ask your partner or facilitator to look at the board and Source Control with you
 ## Closing demonstration
 
 The instructor will review repository history and connect the workflow to research files. The Game Wall shows one entry per discovered match branch and replays valid committed board states. If a registration has no matching branch yet, its successful registration comment confirms acceptance; its card appears after a later successful refresh discovers a matching branch.
+
+## Using Copilot
+
+> **Warning: free Copilot plans are limited.** Free plans have a limited monthly allowance of AI credits (GitHub no longer publishes a fixed request count), so keep chats short and do not use Copilot before the session. Some learners may lack Agent or Plan mode on a free plan. Verified teachers get free Copilot Pro through GitHub Education; verified students get the free Copilot Student plan. If Copilot is unavailable, play manually and watch the instructor’s demonstration.
+
+Use Copilot only in the rematch, and only for one cell in `BOARD.txt` per move. Copilot commits or pushes only when you explicitly ask. It never merges, overwrites shared history or switches branches unasked. You still check every diff and commit. If the mode names differ in your VS Code, pick the chat option that explains only (Ask), edits and runs steps (Agent) or shows a plan first (Plan).
+
+### Ask mode
+
+Get Copilot to explain the board while you place your mark and do every Git step by hand.
+
+```
+Explain the current board in BOARD.txt and whose turn it is.
+```
+
+### Agent mode
+
+Let Copilot place one mark, then review the diff and tell it to commit and push.
+
+```
+Place O in the top-right cell of BOARD.txt. Change only that cell.
+```
+
+```
+Commit this move with message 'O plays top-right' and push it.
+```
+
+### Plan mode
+
+Give Copilot a short goal (pull, plan, place), approve its plan, review the diff, then send the commit prompt above as a separate request.
+
+```
+Pull, plan my next legal move as O, and place it. Then stop so I can review the diff.
+```
+
+## Terminal equivalent (optional)
+
+The Source Control view is the teaching path. These commands do the same things.
+
+<details>
+<summary>Show terminal commands</summary>
+
+```
+# gameplay loop
+git pull --no-rebase
+# edit and save BOARD.txt, then check the change
+git diff
+git add BOARD.txt
+git commit -m "X plays center"
+git push
+
+# conflict recovery
+# if git push was rejected, pull first; if git status already says "Unmerged paths", skip the pull
+git pull --no-rebase      # reports a conflict in BOARD.txt
+# edit BOARD.txt: agree the board with your partner, remove the <<<<<<< ======= >>>>>>> marker lines
+git add BOARD.txt
+git commit -m "Resolve board conflict"
+git push
+
+# switch to a match branch
+git fetch
+git switch match-01
+
+# create and publish the rematch branch from clean main
+git switch main
+git switch -c match-02
+git push -u origin match-02
+```
+
+</details>
