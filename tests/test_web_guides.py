@@ -212,6 +212,13 @@ class TestWebGuides(unittest.TestCase):
         manifest = json.loads((REPO_ROOT / "scripts" / "capture" / "captures.json").read_text(encoding="utf-8"))
         self.assertEqual(manifest["imageRoot"], "images/setup")
         self.assertEqual([step["slug"] for step in manifest["steps"]], ["create-repo", "open-codespace", "look-around", "delete-codespace"])
+        storyboard = manifest["storyboards"][0]
+        self.assertEqual(storyboard["slug"], "how-to-play")
+        self.assertEqual(storyboard["imageRoot"], "images/guide")
+        self.assertNotEqual(storyboard["imageRoot"], manifest["imageRoot"])
+        self.assertEqual(storyboard["pageZoom"], 2)
+        self.assertEqual(storyboard["colorTheme"], "Default Dark Modern")
+        self.assertEqual(storyboard["outlineColor"], "#0969da")
 
         manual_root = DOCS_DIR / "images" / "setup" / "manual-images"
         expected = {f"images/setup/manual-images/{folder.name}/{image.name}"

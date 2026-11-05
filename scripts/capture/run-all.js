@@ -3,13 +3,24 @@ const { loadManifest } = require('./lib');
 
 const ORDER = ['create-repo', 'open-codespace', 'look-around', 'delete-codespace'];
 
+function knownSlugs() {
+  const manifest = loadManifest();
+  return [
+    ...manifest.steps.map((step) => step.slug),
+    ...(manifest.storyboards || []).map((storyboard) => storyboard.slug),
+  ];
+}
+
 async function main(argv) {
-  const known = loadManifest().steps.map((s) => s.slug);
+  const known = knownSlugs();
   const wanted = argv.length ? argv : ORDER;
   for (const slug of wanted) {
     if (!known.includes(slug)) throw new Error(`Unknown step "${slug}". Known: ${known.join(', ')}`);
   }
-  for (const slug of ORDER.filter((s) => wanted.includes(s))) {
+  const queue = argv.length
+    ? [...ORDER.filter((slug) => wanted.includes(slug)), ...wanted.filter((slug) => !ORDER.includes(slug))]
+    : ORDER;
+  for (const slug of queue) {
     console.log(`== ${slug}`);
     await require(`./${slug}.js`).run();
   }

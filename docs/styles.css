@@ -1407,6 +1407,11 @@ a.skip-link:hover {
   font-size: 0.95rem;
 }
 
+.guide-section .shot-instruction {
+  color: var(--text-primary);
+  margin: 0;
+}
+
 .guide-section ul,
 .guide-section ol {
   padding-left: 1.5rem;

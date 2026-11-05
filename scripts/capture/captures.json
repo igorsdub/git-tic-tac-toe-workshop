@@ -51,5 +51,40 @@
         "07-deleted.png"
       ]
     }
+  ],
+  "storyboards": [
+    {
+      "slug": "how-to-play",
+      "imageRoot": "images/guide",
+      "viewport": { "width": 1100, "height": 700 },
+      "deviceScaleFactor": 2,
+      "pageZoom": 2,
+      "colorTheme": "Default Dark Modern",
+      "outlineColor": "#0969da",
+      "groups": [
+        {
+          "id": "turn",
+          "caption": "Your partner (O) now does the same steps in their own Codespace, starting with Pull.",
+          "screenshots": [
+            "01-pull.png",
+            "02-edit-cell.png",
+            "03-saved.png",
+            "04-stage.png",
+            "05-commit.png",
+            "06-sync.png"
+          ]
+        },
+        {
+          "id": "rematch",
+          "caption": "Now play exactly the same way as before.",
+          "screenshots": [
+            "01-switch-main.png",
+            "02-create-branch.png",
+            "03-name-branch.png",
+            "04-on-match-02.png"
+          ]
+        }
+      ]
+    }
   ]
 }
