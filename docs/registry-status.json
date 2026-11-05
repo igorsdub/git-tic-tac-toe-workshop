@@ -29,6 +29,13 @@
       "repoUrl": "https://github.com/yuteis/git-tic-tac-toe",
       "status": "success",
       "matchBranches": []
+    },
+    {
+      "repoUrl": "https://github.com/igorsdub/git-tic-tac-toe",
+      "status": "success",
+      "matchBranches": [
+        "match-01"
+      ]
     }
   ]
 }
