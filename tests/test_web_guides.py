@@ -390,6 +390,15 @@ class TestWebGuides(unittest.TestCase):
         for cmd in ("git pull --no-rebase", "git switch -c match-02", "git push -u origin match-02"):
             self.assertRegex(guide, rf'<code id="copy-src-\d+">[^<]*{re.escape(cmd)}')
 
+    def test_copy_button_shares_row_with_code(self):
+        css = self.styles[self.styles.index(".code-window {"):]
+        self.assertIn("display: flex;", css.split("}", 1)[0])
+        self.assertIn("align-items: flex-start;", css.split("}", 1)[0])
+        bar = css[css.index(".code-window-bar {"):].split("}", 1)[0]
+        self.assertIn("order: 2;", bar)
+        self.assertNotIn("border-bottom", bar)
+        self.assertNotIn("background", bar)
+
     def test_wall_filters_and_spinner_are_accessible(self):
         self.assertNotIn('role="tablist"', self.index)
         self.assertIn('aria-live="polite"', re.search(r'<div id="loading-indicator"[^>]*>', self.index).group(0))
