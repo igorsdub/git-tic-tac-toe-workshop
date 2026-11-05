@@ -413,6 +413,26 @@ class TestWebGuides(unittest.TestCase):
         for text in ("Add people", "Accept invitation", "/invitations", "Step 1: Invite your partner", "7 days"):
             self.assertIn(text, turn)
         self.assertLess(turn.index("Add people"), turn.index("match-01"))
+        invite = turn[turn.index('id="invite"'):turn.index("O (partner)")]
+        files = re.findall(r'src="(images/guide/invite/[^"]+\.png)"', invite)
+        self.assertEqual(files, [
+            "images/guide/invite/01-settings.png",
+            "images/guide/invite/02-collaborators.png",
+            "images/guide/invite/03-add-people.png",
+            "images/guide/invite/04-username.png",
+            "images/guide/invite/05-result.png",
+            "images/guide/invite/06-add.png",
+            "images/guide/invite/07-pending.png",
+        ])
+        landing = invite.index("02-collaborators.png")
+        add_people = invite.index("03-add-people.png")
+        scroll = invite.index("Scroll down until <strong>Add people</strong> is fully visible", landing)
+        self.assertLess(landing, scroll)
+        self.assertLess(scroll, add_people)
+        self.assertIn("Add &lt;username&gt;", invite)
+        self.assertIn("you have not invited any collaborators", invite)
+        self.assertLess(turn.index("07-pending.png"), turn.index("Accept invitation"))
+        self.assertNotIn("images/guide/invite/08", turn)
         learner = (REPO_ROOT / "LEARNER_GUIDE.md").read_text(encoding="utf-8")
         for text in ("Add people", "Accept invitation", "/invitations", "Step 1: Invite your partner"):
             self.assertIn(text, learner)
