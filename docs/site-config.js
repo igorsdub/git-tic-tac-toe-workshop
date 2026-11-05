@@ -2,7 +2,7 @@
 (function (root) {
   'use strict';
 
-  const config = { setupOnly: true };
+  const config = { setupOnly: false };
 
   function applyMode(documentRef, setupOnly, location) {
     if (!documentRef) return;
