@@ -15,9 +15,39 @@ Before the session, follow the [Setup page](docs/setup.html) or the [Pre-session
 3. Run the readiness check: open Copilot Chat, type exactly "What does this repository do?", and press Enter. It passes when the answer mentions tic-tac-toe and `BOARD.txt`.
 4. Delete the Codespace at [github.com/codespaces](https://github.com/codespaces) and keep the repository. A running Codespace uses your limited free monthly allowance; a deleted one costs nothing.
 
-At the session, choose one prepared repository. Its owner invites the partner, plays X and moves first; the partner accepts and plays O. Both open fresh separate Codespaces, switch to the existing `match-01` in Source Control, and pull. When the site is in full mode, use the header stage strip for Setup, How to play, the Game Wall and **Register repository**. Any branch beginning with the exact lowercase text `match` qualifies. Keep match branches separate; do not merge them back into `main`.
+### Step 1: Invite your partner
 
-Register the repository once for this workshop; do not submit a separate registration for each branch. Each qualifying branch becomes its own Game Wall card, with the full branch name shown as its label. The Game Wall reads `BOARD.txt` from that exact branch. A repository belongs to one workshop only; use a fresh copy of the template when participating in another workshop. If you need to correct player handles, submit the form again for the same repository and workshop. Archived workshops remain viewable and accept updates to already registered repositories, including handles, but they do not accept new repositories.
+Do this once, at the start. X owns the repository; O is the partner. Both of you need a GitHub account.
+
+X (owner):
+
+1. Open your repository on GitHub and select **Settings**.
+2. In the sidebar, select **Collaborators** (some pages call it **Manage access**).
+3. Select **Add people** and type your partner's GitHub username.
+4. Pick the right person, then select **Add ... to this repository**. This sends the invitation.
+
+O (partner):
+
+1. Open the invitation email from GitHub, or look at [github.com/notifications](https://github.com/notifications), or open the repository link X shares.
+2. Select **Accept invitation**. The invitation banner disappears and you now have write access, which means you can share changes to the repository.
+
+<details>
+<summary>No invitation?</summary>
+
+- Check your spam folder, and that you can sign in to the email account linked to your GitHub account.
+- X: check the spelling of the username you invited.
+- X: paste `https://github.com/OWNER/REPO/invitations` (with the real owner and repository names) into the chat. O opens it and selects **Accept invitation**.
+- Invitations expire after 7 days. If it expired, X removes the old invitation under **Collaborators** and invites again.
+
+</details>
+
+You will know it worked when your first **Sync Changes** succeeds.
+
+### Step 2: Start together
+
+Choose one prepared repository. Its owner plays X and moves first; the partner plays O and has accepted the invitation. Both open fresh separate Codespaces, switch to the existing `match-01` in Source Control, and pull. When the site is in full mode, use the header stage strip for Setup, How to play, the Game Wall and **Register repository**. Any branch beginning with the exact lowercase text `match` qualifies. Keep match branches separate; do not merge them back into `main`.
+
+Register the repository once for this workshop, after the partner has accepted; do not submit a separate registration for each branch. Each qualifying branch becomes its own Game Wall card, with the full branch name shown as its label. The Game Wall reads `BOARD.txt` from that exact branch. A repository belongs to one workshop only; use a fresh copy of the template when participating in another workshop. If you need to correct player handles, submit the form again for the same repository and workshop. Archived workshops remain viewable and accept updates to already registered repositories, including handles, but they do not accept new repositories.
 
 ## Manual match: make and share a move
 

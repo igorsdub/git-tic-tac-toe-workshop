@@ -10,7 +10,7 @@ Please prepare once before the session, using the [tic-tac-toe starter template]
 2. Open your new repository in a Codespace.
 3. Run the readiness check. Open Copilot Chat, type exactly **"What does this repository do?"** in the box that says "Describe what to build", and press Enter. It passes when the answer mentions tic-tac-toe and `BOARD.txt`.
 4. Delete the Codespace at [github.com/codespaces](https://github.com/codespaces). A running Codespace uses your limited free monthly allowance; a deleted one costs nothing.
-5. Keep your public repository. At the session, your pair chooses one prepared repository; its owner invites the partner and plays X first, and both open fresh separate Codespaces. In full mode, use the header stage strip to navigate Setup, How to play and the Game Wall, or select **Register repository** there.
+5. Make sure you can sign in to the email account linked to your GitHub account, because GitHub emails the invitation. Keep your public repository. At the session, your pair chooses one prepared repository; its owner invites the partner (see Step 1 of [How to play](docs/guide.html#invite)) and plays X first, and both open fresh separate Codespaces. In full mode, use the header stage strip to navigate Setup, How to play and the Game Wall, or select **Register repository** there.
 
 No board edit is required during this check. Codespaces and Copilot access are separate; if Copilot Chat is unavailable, note that for the facilitator. The facilitator will help with access during the session.
 

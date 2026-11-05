@@ -16,6 +16,12 @@ A workshop explicitly marked archived by the organiser. It remains viewable and 
 **Repository**:
 The GitHub repository a pair shares, created from the template. A repository belongs to only one workshop; its branches are the source from which the Game Wall discovers matches.
 
+**Collaborator**:
+A GitHub user who has been given access to someone else's repository. On a personal repository the partner becomes a collaborator with write access once they accept the owner's invitation.
+
+**Invitation**:
+The request the owner sends from Settings → Collaborators → Add people. The partner accepts it from the email, github.com/notifications, or the repository's `/invitations` page. It expires after 7 days.
+
 **Registration**:
 A connection between a repository and a workshop, with two player GitHub handles supplied for avatars. The Game Wall watches the registered repository. Repeating registration for the same repository and workshop updates the existing registration and its handles rather than creating another entry. Among valid registration issues for that repository and workshop, the newest issue supplies the handles; corrections are submitted through a new form entry.
 

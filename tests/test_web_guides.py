@@ -401,6 +401,18 @@ class TestWebGuides(unittest.TestCase):
         self.assertNotIn("border-bottom", bar)
         self.assertNotIn("background", bar)
 
+    def test_invite_step_comes_first_in_turn_section(self):
+        turn = self.guide[self.guide.index('id="turn"'):self.guide.index('id="rematch"')]
+        for text in ("Add people", "Accept invitation", "/invitations", "Step 1: Invite your partner", "7 days"):
+            self.assertIn(text, turn)
+        self.assertLess(turn.index("Add people"), turn.index("match-01"))
+        learner = (REPO_ROOT / "LEARNER_GUIDE.md").read_text(encoding="utf-8")
+        for text in ("Add people", "Accept invitation", "/invitations", "Step 1: Invite your partner"):
+            self.assertIn(text, learner)
+        self.assertLess(learner.index("Add people"), learner.index("Manual match"))
+        self.assertIn('href="guide.html#invite"', self.setup)
+        self.assertIn("email account linked to your GitHub account", (REPO_ROOT / "PRE_SESSION_CHECK.md").read_text(encoding="utf-8"))
+
     def test_wall_filters_and_spinner_are_accessible(self):
         self.assertNotIn('role="tablist"', self.index)
         self.assertIn('aria-live="polite"', re.search(r'<div id="loading-indicator"[^>]*>', self.index).group(0))
