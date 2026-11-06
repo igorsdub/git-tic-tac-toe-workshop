@@ -60,7 +60,7 @@ test('turn and rematch figures use the how-to-play storyboard', () => {
   assert.deepEqual(turnImages.map((image) => image.src), expectedSources(turnGroup));
   assert.deepEqual(rematchImages.map((image) => image.src), expectedSources(rematchGroup));
   for (const image of [...turnImages, ...rematchImages]) assertLinkedPng(image);
-  assert.equal(linkedImages(guide).length, 26);
+  assert.equal(linkedImages(guide).length, 29);
   assert.match(turn, new RegExp(turnGroup.caption.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   assert.match(rematch, new RegExp(rematchGroup.caption.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   assert.doesNotMatch(turn, /Push|push/);
@@ -75,6 +75,19 @@ test('turn and rematch figures use the how-to-play storyboard', () => {
   assert.match(rematch, /status bar shows <code>match-03<\/code>/);
   assert.doesNotMatch(setup, /images\/guide\//);
   assert.equal(linkedImages(setup).length, 28);
+  const start = turn.slice(turn.indexOf('Start the match'), turn.indexOf('Your turn at a glance'));
+  assert.deepEqual(linkedImages(start).map((image) => image.src), [
+    'images/guide/start-together/01-on-main.png',
+    'images/guide/start-together/02-select-match-01.png',
+    'images/guide/start-together/03-on-match-01.png',
+  ]);
+  for (const image of linkedImages(start)) assertLinkedPng(image);
+  assert.match(start, /not the <strong>Codespaces<\/strong> button/);
+  assert.match(start, /origin\/match-01/);
+  assert.match(start, /Do not choose <strong>Create new branch/);
+  assert.match(start, /<strong>Fetch<\/strong>/);
+  assert.match(start, /Then <strong>Pull<\/strong>/);
+  assert.doesNotMatch(start, /Push|push/);
 });
 
 function pngSize(file) {
@@ -87,6 +100,7 @@ function pngSize(file) {
 test('Codespace guide and time-machine shots keep the full 1920x1200 frame', () => {
   const dirs = [
     'docs/images/guide/turn',
+    'docs/images/guide/start-together',
     'docs/images/guide/rematch',
     'docs/images/guide/conflict',
     'docs/images/guide/copilot',
