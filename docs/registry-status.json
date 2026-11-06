@@ -38,6 +38,13 @@
       ]
     },
     {
+      "repoUrl": "https://github.com/mskt430/work-shop-262206",
+      "status": "success",
+      "matchBranches": [
+        "match-01"
+      ]
+    },
+    {
       "repoUrl": "https://github.com/SatsukiHirasawa/git-tic-tac-toe",
       "status": "success",
       "matchBranches": [
