@@ -70,10 +70,10 @@
     "playerO": "harulico",
     "branch": "match-02",
     "matchKey": "harulico/oistworkshop#match-02",
-    "status": "error",
-    "state": "Invalid board",
+    "status": "in_progress",
+    "state": "Waiting for X",
     "outcome": null,
-    "boardValid": false,
+    "boardValid": true,
     "board": [
       [
         "X",
@@ -82,7 +82,7 @@
       ],
       [
         " ",
-        "X",
+        "O",
         " "
       ],
       [
@@ -91,10 +91,8 @@
         " "
       ]
     ],
-    "errors": [
-      "Invalid BOARD.txt: Invalid turn parity: Player X has 2 moves, Player O has 0. Difference between X and O moves cannot exceed 1."
-    ],
-    "failureKind": "invalid_board",
+    "errors": [],
+    "failureKind": null,
     "refreshStatus": "fresh"
   },
   {
@@ -217,7 +215,7 @@
     "branch": "match-01",
     "matchKey": "SatsukiHirasawa/git-tic-tac-toe#match-01",
     "status": "in_progress",
-    "state": "Ready for X",
+    "state": "Waiting for O",
     "outcome": null,
     "boardValid": true,
     "board": [
@@ -228,7 +226,7 @@
       ],
       [
         " ",
-        " ",
+        "X",
         " "
       ],
       [
@@ -253,23 +251,23 @@
     "branch": "match-01",
     "matchKey": "TamaoMaeda/tictactoe_tamao#match-01",
     "status": "in_progress",
-    "state": "Waiting for O",
+    "state": "Waiting for X",
     "outcome": null,
     "boardValid": true,
     "board": [
       [
         " ",
         "X",
-        " "
+        "O"
       ],
       [
-        " ",
+        "O",
         "X",
-        " "
+        "X"
       ],
       [
-        " ",
-        " ",
+        "X",
+        "O",
         "O"
       ]
     ],
