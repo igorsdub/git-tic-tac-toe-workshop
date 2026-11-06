@@ -407,7 +407,7 @@
     "branch": "match03",
     "matchKey": "TamaoMaeda/tictactoe_tamao#match03",
     "status": "in_progress",
-    "state": "Ready for X",
+    "state": "Waiting for O",
     "outcome": null,
     "boardValid": true,
     "board": [
@@ -418,7 +418,7 @@
       ],
       [
         " ",
-        " ",
+        "X",
         " "
       ],
       [
@@ -443,7 +443,7 @@
     "branch": "match-01",
     "matchKey": "y-ogita/git-tic-tac-toe#match-01",
     "status": "in_progress",
-    "state": "Waiting for O",
+    "state": "Waiting for X",
     "outcome": null,
     "boardValid": true,
     "board": [
@@ -454,7 +454,7 @@
       ],
       [
         " ",
-        " ",
+        "O",
         " "
       ],
       [
