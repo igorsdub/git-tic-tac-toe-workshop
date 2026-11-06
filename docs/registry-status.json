@@ -71,7 +71,8 @@
       "repoUrl": "https://github.com/SatsukiHirasawa/git-tic-tac-toe",
       "status": "success",
       "matchBranches": [
-        "match-01"
+        "match-01",
+        "match-02"
       ]
     },
     {
@@ -79,7 +80,8 @@
       "status": "success",
       "matchBranches": [
         "match-01",
-        "match02"
+        "match02",
+        "match03"
       ]
     },
     {
