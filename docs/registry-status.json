@@ -31,6 +31,13 @@
       "matchBranches": []
     },
     {
+      "repoUrl": "https://github.com/Asurain2023/OISTRCIESMMBS",
+      "status": "success",
+      "matchBranches": [
+        "match-01"
+      ]
+    },
+    {
       "repoUrl": "https://github.com/harulico/oistworkshop",
       "status": "success",
       "matchBranches": [
