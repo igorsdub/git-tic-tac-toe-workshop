@@ -11,7 +11,7 @@
     "branch": "match-01",
     "matchKey": "igorsdub/git-tic-tac-toe#match-01",
     "status": "in_progress",
-    "state": "Waiting for X",
+    "state": "Waiting for O",
     "outcome": null,
     "boardValid": true,
     "board": [
@@ -21,7 +21,7 @@
         "X"
       ],
       [
-        " ",
+        "X",
         "X",
         " "
       ],
