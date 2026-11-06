@@ -38,6 +38,13 @@
       ]
     },
     {
+      "repoUrl": "https://github.com/SatsukiHirasawa/git-tic-tac-toe",
+      "status": "success",
+      "matchBranches": [
+        "match-01"
+      ]
+    },
+    {
       "repoUrl": "https://github.com/y-ogita/git-tic-tac-toe",
       "status": "success",
       "matchBranches": [

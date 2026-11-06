@@ -79,6 +79,17 @@
     },
     {
       "workshopId": "2026-11-06-sokedai",
+      "owner": "SatsukiHirasawa",
+      "repo": "git-tic-tac-toe",
+      "repoUrl": "https://github.com/SatsukiHirasawa/git-tic-tac-toe",
+      "playerX": "Aleksandra",
+      "playerO": "Tomoya",
+      "issueNumber": 55,
+      "issueUrl": "https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/55",
+      "createdAt": "2026-11-06T07:30:36Z"
+    },
+    {
+      "workshopId": "2026-11-06-sokedai",
       "owner": "y-ogita",
       "repo": "git-tic-tac-toe",
       "repoUrl": "https://github.com/y-ogita/git-tic-tac-toe",
