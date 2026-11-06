@@ -119,13 +119,13 @@
     "branch": "match-01",
     "matchKey": "hnakamura-67/git-tic-tac-toe#match-01",
     "status": "in_progress",
-    "state": "Waiting for X",
+    "state": "Waiting for O",
     "outcome": null,
     "boardValid": true,
     "board": [
       [
         " ",
-        " ",
+        "X",
         "O"
       ],
       [
@@ -229,17 +229,17 @@
     "branch": "match-02",
     "matchKey": "mskt430/work-shop-262206#match-02",
     "status": "in_progress",
-    "state": "Ready for X",
+    "state": "Waiting for X",
     "outcome": null,
     "boardValid": true,
     "board": [
       [
         " ",
-        " ",
+        "X",
         " "
       ],
       [
-        " ",
+        "O",
         " ",
         " "
       ],
@@ -372,25 +372,25 @@
     "playerO": "shimatomoya-tech",
     "branch": "match-03",
     "matchKey": "SatsukiHirasawa/git-tic-tac-toe#match-03",
-    "status": "completed",
-    "state": "Draw",
-    "outcome": "Draw",
+    "status": "in_progress",
+    "state": "Waiting for X",
+    "outcome": null,
     "boardValid": true,
     "board": [
       [
-        "X",
+        " ",
         "O",
         "X"
       ],
       [
-        "O",
-        "X",
-        "X"
+        " ",
+        " ",
+        " "
       ],
       [
-        "O",
-        "X",
-        "O"
+        " ",
+        " ",
+        " "
       ]
     ],
     "errors": [],
@@ -516,15 +516,15 @@
     "playerO": "ema1020",
     "branch": "match-01",
     "matchKey": "y-ogita/git-tic-tac-toe#match-01",
-    "status": "in_progress",
-    "state": "Waiting for X",
-    "outcome": null,
+    "status": "completed",
+    "state": "X won",
+    "outcome": "X won",
     "boardValid": true,
     "board": [
       [
         "X",
         "X",
-        " "
+        "X"
       ],
       [
         " ",
