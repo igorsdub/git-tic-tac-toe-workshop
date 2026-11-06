@@ -1760,3 +1760,75 @@ html.setup-only .register-btn {
   color: var(--text-primary);
 }
 .callout-box.warning p { margin: 0; }
+
+/* In-page enlargement for guide and time-machine screenshots. The image scales inside the viewport and is not cropped. */
+html.shot-lightbox-open,
+html.shot-lightbox-open body { overflow: hidden; }
+.shot-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  display: grid;
+  place-items: center;
+  padding: max(0.75rem, env(safe-area-inset-top)) max(0.75rem, env(safe-area-inset-right)) max(0.75rem, env(safe-area-inset-bottom)) max(0.75rem, env(safe-area-inset-left));
+  background: rgba(13, 17, 23, 0.88);
+}
+.shot-lightbox[hidden] { display: none !important; }
+.shot-lightbox-dialog {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 0.6rem;
+  width: fit-content;
+  max-width: 100%;
+  max-height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+.shot-lightbox-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem 0.75rem;
+}
+.shot-lightbox-title {
+  flex: 1 1 12rem;
+  margin: 0;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+.shot-lightbox-original,
+.shot-lightbox-close {
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 0.4rem 0.85rem;
+  cursor: pointer;
+}
+.shot-lightbox-original {
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+}
+.shot-lightbox-close {
+  border: 0;
+  background: #fff;
+  color: #111;
+}
+.shot-lightbox-original:focus-visible,
+.shot-lightbox-close:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.shot-lightbox-image {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  min-height: 0;
+  object-fit: contain;
+  justify-self: center;
+  background: #0d1117;
+  border-radius: var(--radius-md);
+}
