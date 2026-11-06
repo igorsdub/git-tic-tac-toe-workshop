@@ -78,7 +78,8 @@
       "repoUrl": "https://github.com/TamaoMaeda/tictactoe_tamao",
       "status": "success",
       "matchBranches": [
-        "match-01"
+        "match-01",
+        "match02"
       ]
     },
     {
