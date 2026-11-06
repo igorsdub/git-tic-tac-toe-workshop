@@ -64,8 +64,49 @@ test('turn and rematch figures use the how-to-play storyboard', () => {
   assert.match(turn, new RegExp(turnGroup.caption.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   assert.match(rematch, new RegExp(rematchGroup.caption.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   assert.doesNotMatch(turn, /Push|push/);
+  assert.doesNotMatch(turn, /centre cell|before the edit|X takes centre/);
+  assert.match(turn, /bottom-right/);
+  assert.match(turn, /Auto Save/);
+  assert.match(turn, /Sync Changes 1↑/);
+  assert.match(turn, /X takes bottom-right/);
+  assert.match(rematch, /create a branch named <code>match-02<\/code>/);
+  assert.match(rematch, /next unused name, such as <code>match-03<\/code>/);
+  assert.match(rematch, /04-on-match-02\.png/);
+  assert.match(rematch, /status bar shows <code>match-03<\/code>/);
   assert.doesNotMatch(setup, /images\/guide\//);
   assert.equal(linkedImages(setup).length, 28);
+});
+
+function pngSize(file) {
+  const buf = fs.readFileSync(file);
+  assert.equal(buf.subarray(0, 8).toString('hex'), '89504e470d0a1a0a', file);
+  assert.equal(buf.subarray(12, 16).toString(), 'IHDR', file);
+  return { width: buf.readUInt32BE(16), height: buf.readUInt32BE(20) };
+}
+
+test('Codespace guide and time-machine shots keep the full 1920x1200 frame', () => {
+  const dirs = [
+    'docs/images/guide/turn',
+    'docs/images/guide/rematch',
+    'docs/images/guide/conflict',
+    'docs/images/guide/copilot',
+    'docs/images/time-machine',
+  ];
+  for (const dir of dirs) {
+    const files = fs.readdirSync(path.join(repo, dir)).filter((name) => name.endsWith('.png')).sort();
+    assert.ok(files.length > 0, dir);
+    for (const name of files) {
+      const size = pngSize(path.join(repo, dir, name));
+      assert.deepEqual(size, { width: 1920, height: 1200 }, `${dir}/${name}`);
+    }
+  }
+  const styles = fs.readFileSync(path.join(repo, 'docs/styles.css'), 'utf8');
+  const rule = styles.slice(styles.indexOf('.step-shot img'), styles.indexOf('}', styles.indexOf('.step-shot img')));
+  assert.match(rule, /max-width:\s*100%/);
+  assert.match(rule, /height:\s*auto/);
+  assert.match(rule, /max-height:\s*none/);
+  assert.match(rule, /object-fit:\s*contain/);
+  assert.doesNotMatch(rule, /object-fit:\s*cover|height:\s*\d|max-height:\s*\d/);
 });
 
 test('invite figures show the owner collaborator flow', () => {

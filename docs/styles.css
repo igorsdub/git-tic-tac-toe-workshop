@@ -1665,7 +1665,8 @@ a.register-btn:focus-visible {
 .username-tips-title { font-weight: 700; margin-bottom: 0.4rem; }
 .username-tips ul { padding-left: 1.25rem; display: flex; flex-direction: column; gap: 0.4rem; }
 .step-shot { margin: 0; display: flex; flex-direction: column; gap: 0.4rem; max-width: 100%; }
-.step-shot img { display: block; max-width: 100%; height: auto; border: 1px solid var(--border-medium); border-radius: var(--radius-md); }
+/* Full Codespace frames stay intact: scale to the column, never crop the window chrome. */
+.step-shot img { display: block; width: auto; max-width: 100%; height: auto; max-height: none; object-fit: contain; border: 1px solid var(--border-medium); border-radius: var(--radius-md); }
 .step-shot figcaption { font-size: 0.875rem; color: var(--text-secondary); }
 .step-pictures { display: flex; flex-direction: column; gap: 0.9rem; }
 [hidden] { display: none !important; }
