@@ -31,6 +31,13 @@
       "matchBranches": []
     },
     {
+      "repoUrl": "https://github.com/hnakamura-67/git-tic-tac-toe",
+      "status": "success",
+      "matchBranches": [
+        "match-01"
+      ]
+    },
+    {
       "repoUrl": "https://github.com/igorsdub/git-tic-tac-toe",
       "status": "success",
       "matchBranches": [
