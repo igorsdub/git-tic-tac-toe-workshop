@@ -84,14 +84,14 @@
     "playerO": "harulico",
     "branch": "match-02",
     "matchKey": "harulico/oistworkshop#match-02",
-    "status": "in_progress",
-    "state": "Waiting for O",
-    "outcome": null,
+    "status": "completed",
+    "state": "O won",
+    "outcome": "O won",
     "boardValid": true,
     "board": [
       [
         "X",
-        " ",
+        "O",
         " "
       ],
       [
@@ -273,7 +273,7 @@
     "board": [
       [
         "O",
-        " ",
+        "X",
         " "
       ],
       [
@@ -283,7 +283,7 @@
       ],
       [
         "O",
-        " ",
+        "O",
         "X"
       ]
     ],
