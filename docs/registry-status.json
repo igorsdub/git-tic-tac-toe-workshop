@@ -34,8 +34,7 @@
       "repoUrl": "https://github.com/igorsdub/git-tic-tac-toe",
       "status": "success",
       "matchBranches": [
-        "match-01",
-        "match-02"
+        "match-01"
       ]
     }
   ]
