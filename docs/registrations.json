@@ -76,6 +76,17 @@
       "issueNumber": 50,
       "issueUrl": "https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/50",
       "createdAt": "2026-11-05T16:00:29Z"
+    },
+    {
+      "workshopId": "2026-11-06-sokedai",
+      "owner": "y-ogita",
+      "repo": "git-tic-tac-toe",
+      "repoUrl": "https://github.com/y-ogita/git-tic-tac-toe",
+      "playerX": "y-ogita",
+      "playerO": "ema1020",
+      "issueNumber": 54,
+      "issueUrl": "https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/54",
+      "createdAt": "2026-11-06T07:28:32Z"
     }
   ]
 }
