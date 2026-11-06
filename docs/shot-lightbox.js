@@ -1,5 +1,6 @@
 /**
  * In-page enlargement for instructional screenshots.
+ * Click a picture to enlarge it, then click the enlarged picture to close.
  * Without JavaScript, each .step-image-link still opens the original PNG in a new tab.
  */
 (function (root) {
@@ -19,43 +20,30 @@
     overlay.className = 'shot-lightbox';
     overlay.hidden = true;
     overlay.innerHTML = [
-      '<div class="shot-lightbox-dialog" role="dialog" aria-modal="true" aria-labelledby="shot-lightbox-title">',
-      '<div class="shot-lightbox-bar">',
-      '<p id="shot-lightbox-title" class="shot-lightbox-title"></p>',
-      '<a class="shot-lightbox-original" target="_blank" rel="noopener noreferrer">Open original size</a>',
-      '<button type="button" class="shot-lightbox-close">Close</button>',
-      '</div>',
+      '<div class="shot-lightbox-dialog" role="dialog" aria-modal="true" tabindex="-1">',
       '<img class="shot-lightbox-image" alt="">',
       '</div>',
     ].join('');
     documentRef.body.appendChild(overlay);
 
     const dialog = overlay.querySelector('.shot-lightbox-dialog');
-    const title = overlay.querySelector('.shot-lightbox-title');
-    const original = overlay.querySelector('.shot-lightbox-original');
-    const closeButton = overlay.querySelector('.shot-lightbox-close');
     const image = overlay.querySelector('.shot-lightbox-image');
     const view = windowRef || null;
     let opener = null;
     let savedScroll = 0;
 
-    function focusables() {
-      return [closeButton, original];
-    }
-
     function open(link, sourceImage) {
-      const alt = sourceImage.getAttribute('alt') || '';
+      const alt = sourceImage.getAttribute('alt') || 'Enlarged screenshot';
       const href = link.getAttribute('href') || sourceImage.getAttribute('src') || '';
-      title.textContent = alt;
+      dialog.setAttribute('aria-label', alt);
       image.alt = alt;
       image.src = sourceImage.currentSrc || sourceImage.getAttribute('src') || href;
-      original.href = href;
       opener = link;
       savedScroll = view ? view.scrollY || documentRef.documentElement.scrollTop || 0 : 0;
       link.setAttribute('aria-expanded', 'true');
       overlay.hidden = false;
       documentRef.documentElement.classList.add('shot-lightbox-open');
-      closeButton.focus();
+      dialog.focus();
     }
 
     function close() {
@@ -72,29 +60,16 @@
 
     function onKeyDown(event) {
       if (overlay.hidden) return;
-      if (event.key === 'Escape') {
+      if (event.key === 'Escape' || event.key === 'Tab') {
         event.preventDefault();
-        close();
-        return;
-      }
-      if (event.key !== 'Tab') return;
-      const items = focusables();
-      const first = items[0];
-      const last = items[items.length - 1];
-      const active = documentRef.activeElement;
-      if (event.shiftKey && active === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && (active === last || !dialog.contains(active))) {
-        event.preventDefault();
-        first.focus();
+        if (event.key === 'Escape') close();
+        else dialog.focus();
       }
     }
 
     overlay.addEventListener('click', (event) => {
-      if (event.target === overlay) close();
+      if (event.target === overlay || event.target === image || event.target === dialog) close();
     });
-    closeButton.addEventListener('click', close);
     documentRef.addEventListener('keydown', onKeyDown);
     documentRef.addEventListener('click', (event) => {
       const link = event.target && event.target.closest && event.target.closest('a.step-image-link');
@@ -110,7 +85,7 @@
       link.setAttribute('aria-expanded', 'false');
     });
 
-    return { overlay, open, close, image, closeButton, original, title };
+    return { overlay, open, close, image, dialog };
   }
 
   const api = { shouldExpandClick, mount };

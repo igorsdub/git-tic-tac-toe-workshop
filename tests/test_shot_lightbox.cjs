@@ -32,6 +32,7 @@ test('guide and time machine share the lightbox and keep the no-JS image links',
   assert.match(rule, /max-height:\s*100%/);
   assert.doesNotMatch(rule, /object-fit:\s*cover/);
   assert.match(css, /html\.shot-lightbox-open/);
+  assert.doesNotMatch(css, /shot-lightbox-close|shot-lightbox-original|shot-lightbox-title|Open original size/);
   for (const page of ['guide.html', 'time-machine.html']) {
     const html = fs.readFileSync(path.join(repo, 'docs', page), 'utf8');
     assert.match(html, /src="shot-lightbox\.js"/);
@@ -105,12 +106,14 @@ test('enlarged screenshot keeps its frame, alt, focus, and scroll position', { s
         const box = image.getBoundingClientRect();
         const style = getComputedStyle(image);
         const ratio = box.width / box.height;
+        const labelled = dialog.querySelector('[role="dialog"]');
         const openOk = dialog.hidden === false
-          && dialog.querySelector('[role="dialog"]').getAttribute('aria-modal') === 'true'
+          && labelled.getAttribute('aria-modal') === 'true'
+          && labelled.getAttribute('aria-label').includes('main outlined')
+          && !dialog.querySelector('button, a, .shot-lightbox-close, .shot-lightbox-original, .shot-lightbox-title')
           && image.alt.includes('main outlined')
           && image.getAttribute('src').endsWith('01-on-main.png')
-          && dialog.querySelector('.shot-lightbox-original').href.endsWith('01-on-main.png')
-          && document.activeElement.classList.contains('shot-lightbox-close')
+          && document.activeElement === labelled
           && style.objectFit === 'contain'
           && box.width > 40 && box.height > 40
           && box.top >= -1 && box.left >= -1
@@ -118,15 +121,18 @@ test('enlarged screenshot keeps its frame, alt, focus, and scroll position', { s
           && box.right <= window.innerWidth + 1
           && ratio > 1.55 && ratio < 1.65
           && image.naturalWidth === 1920 && image.naturalHeight === 1200;
-        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+        image.click();
         const closed = dialog.hidden === true
           && document.activeElement === link
           && Math.abs(window.scrollY - before) < 3
           && link.getAttribute('aria-expanded') === 'false';
         link.click();
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+        const escaped = dialog.hidden === true && document.activeElement === link && Math.abs(window.scrollY - before) < 3;
+        link.click();
         document.querySelector('.shot-lightbox').dispatchEvent(new MouseEvent('click', { bubbles: true }));
         const outside = document.querySelector('.shot-lightbox').hidden === true;
-        const pass = stayed && openOk && closed && outside;
+        const pass = stayed && openOk && closed && escaped && outside;
         document.body.dataset.lightboxResult = pass ? 'PASS' : 'FAIL';
         document.body.dataset.lightboxDetail = JSON.stringify({
           stayed, openOk, closed, outside, before, after: window.scrollY,
