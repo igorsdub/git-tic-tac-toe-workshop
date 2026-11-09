@@ -443,7 +443,8 @@
     ],
     "errors": [],
     "failureKind": null,
-    "refreshStatus": "fresh"
+    "refreshStatus": "stale",
+    "boardRefreshError": "Could not read BOARD.txt from branch 'match-03': The read operation timed out."
   },
   {
     "workshopId": "2026-11-06-sokedai",
