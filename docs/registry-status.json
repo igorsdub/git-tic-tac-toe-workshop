@@ -23,12 +23,16 @@
     {
       "repoUrl": "https://github.com/WLomics/sqcccccccccc",
       "status": "success",
-      "matchBranches": []
+      "matchBranches": [
+        "rematch!"
+      ]
     },
     {
       "repoUrl": "https://github.com/yuteis/git-tic-tac-toe",
       "status": "success",
-      "matchBranches": []
+      "matchBranches": [
+        "rematch"
+      ]
     },
     {
       "repoUrl": "https://github.com/Asurain2023/OISTRCIESMMBS",

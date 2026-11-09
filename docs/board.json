@@ -1,5 +1,49 @@
 [
   {
+    "workshopId": "2026-10-01-scda",
+    "workshopName": "SCDA Training Week",
+    "eventId": "2026-10-01-scda",
+    "owner": "WLomics",
+    "repo": "sqcccccccccc",
+    "repoUrl": "https://github.com/WLomics/sqcccccccccc",
+    "playerX": "WLomics",
+    "playerO": "mayukawa",
+    "branch": "rematch!",
+    "matchKey": "WLomics/sqcccccccccc#rematch!",
+    "status": "error",
+    "state": "Error",
+    "outcome": null,
+    "boardValid": false,
+    "board": null,
+    "errors": [
+      "Could not read BOARD.txt from branch 'rematch!': the branch or BOARD.txt is missing, or the repository is private."
+    ],
+    "failureKind": "transport",
+    "refreshStatus": "error"
+  },
+  {
+    "workshopId": "2026-10-01-scda",
+    "workshopName": "SCDA Training Week",
+    "eventId": "2026-10-01-scda",
+    "owner": "yuteis",
+    "repo": "git-tic-tac-toe",
+    "repoUrl": "https://github.com/yuteis/git-tic-tac-toe",
+    "playerX": "yutei",
+    "playerO": "Latentlin",
+    "branch": "rematch",
+    "matchKey": "yuteis/git-tic-tac-toe#rematch",
+    "status": "error",
+    "state": "Error",
+    "outcome": null,
+    "boardValid": false,
+    "board": null,
+    "errors": [
+      "Could not read BOARD.txt from branch 'rematch': the branch or BOARD.txt is missing, or the repository is private."
+    ],
+    "failureKind": "transport",
+    "refreshStatus": "error"
+  },
+  {
     "workshopId": "2026-11-06-sokedai",
     "workshopName": "SOKENDAI",
     "eventId": "2026-11-06-sokedai",
