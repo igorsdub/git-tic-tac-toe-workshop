@@ -22,13 +22,13 @@
   <main class="guide-main" id="main"><div class="guide-container">
     <header class="guide-hero">
       <h1>Agentic Coding</h1>
-      <p class="lead">In this section we will think about how to get what you expect from the model, so its output matches the plan in your head.</p>
+      <p class="lead">In this section we will think about how to get what you expect from Copilot, so its output matches the plan in your head.</p>
     </header>
     <ol class="page-checklist" data-checklist="agentic">
       <li data-item="1"><label><input type="checkbox"><span>1. What can go wrong. Your pair wrote at least two cases.</span></label></li>
       <li data-item="2"><label><input type="checkbox"><span>2. Grilling. You and Copilot agreed the rules for a valid board.</span></label></li>
       <li data-item="3"><label><input type="checkbox"><span>3. After the plan: the other roles. You started a new chat for the implementer, the reviewer, and the docs writer.</span></label></li>
-      <li data-item="4"><label><input type="checkbox"><span>4. Reproducibility. You can name the manifest, the lock file, the runner, and the test module.</span></label></li>
+      <li data-item="4"><label><input type="checkbox"><span>4. Reproducibility. You can name the virtual environment, uv, <code>pyproject.toml</code>, and <code>uv.lock</code>.</span></label></li>
       <li data-item="5"><label><input type="checkbox"><span>5. Let Copilot write the check. You ran <code>uv run pytest</code>. It passes, and it fails when you break the board.</span></label></li>
       <li data-item="6"><label><input type="checkbox"><span>6. Reference repository. You opened the reference repository after your own work.</span></label></li>
     </ol>
@@ -52,7 +52,7 @@
 
     <section class="guide-section" id="grilling">
       <h2><span class="step-num">2</span> Grilling</h2>
-      <p class="section-subtitle">The planner does this job. It matters most. A wrong agreement here makes every later role build the wrong thing.</p>
+      <p class="section-subtitle">Agree the rules with Copilot before anyone writes a test. A wrong agreement makes the later roles build the wrong thing.</p>
       <h3>Three ideas</h3>
       <p><strong>PRD</strong> (product requirements document). A PRD is one document of what you are trying to achieve.</p>
       <p><strong>Grilling.</strong> Align the plan by letting the agent interview you.</p>
@@ -75,22 +75,34 @@ Before writing anything, ask me one question at a time until we agree exactly wh
 
     <section class="guide-section" id="roles">
       <h2><span class="step-num">3</span> After the plan: the other roles</h2>
-      <p class="section-subtitle">Each role starts in its own new chat. Paste one prompt, then read the result before you commit.</p>
+      <p class="section-subtitle">Read the prompts now. You paste them in step 5, after branch <code>feature/testing</code> exists. Each role starts in a new chat, so paste the agreed rules into the prompt.</p>
       <h3>Implementer</h3>
-      <p>New chat. Paste:</p>
-      <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-implementer" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-implementer">Write pytest tests for these rules and a pyproject.toml so `uv run pytest` works.</code></pre></div>
+      <p>New chat in step 5. Paste:</p>
+      <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-implementer" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-implementer">You are the implementer. Paste the agreed rules here, then follow them.
+
+PASTE THE AGREED RULES HERE
+
+Write pytest tests for these rules and a pyproject.toml so `uv run pytest` works. Put the tests in tests/test_board.py.</code></pre></div>
       <h3>Reviewer</h3>
-      <p>New chat. Paste:</p>
-      <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-reviewer" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-reviewer">You are the reviewer. Run `uv run pytest` and read the diff. Say what does not match the agreed rules. Do not change files.</code></pre></div>
+      <p>New chat in step 5. Paste:</p>
+      <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-reviewer" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-reviewer">You are the reviewer. Paste the agreed rules here.
+
+PASTE THE AGREED RULES HERE
+
+Run `uv run pytest` and read the diff. Say what does not match the agreed rules. Do not change files.</code></pre></div>
       <h3>Docs writer</h3>
-      <p>New chat. Paste:</p>
-      <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-docs" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-docs">You are the docs writer. Update README.md for people and AGENTS.md for agents so both match the agreed rules. Do not change the tests.</code></pre></div>
-      <p>README.md is the file for people. AGENTS.md is the file for agents and language models. It tells them how to work in this repository so they stay on the plan.</p>
+      <p>New chat in step 5. Paste:</p>
+      <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-docs" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-docs">You are the docs writer. Paste the agreed rules here.
+
+PASTE THE AGREED RULES HERE
+
+Create or update README.md for people and AGENTS.md for agents so both match the agreed rules. Do not change the tests.</code></pre></div>
+      <p><code>README.md</code> is the file for people. <code>AGENTS.md</code> is the file for agents and language models. It tells them how to work in this repository so they stay on the plan. The template does not include <code>AGENTS.md</code>, so this role creates it.</p>
     </section>
 
     <section class="guide-section repro-box" id="reproducibility">
       <h2><span class="step-num">4</span> Reproducibility</h2>
-      <p>The tests need uv, so this comes before Copilot writes them. The same setup then runs on another machine.</p>
+      <p>The same setup runs on any machine.</p>
       <ul>
         <li>A <strong>virtual environment</strong> is an isolated set of packages for one project, so it runs the same on any machine.</li>
         <li>A virtual environment manager creates it. Ours is <a href="https://docs.astral.sh/uv/" target="_blank" rel="noopener noreferrer">uv</a>.</li>
@@ -102,19 +114,26 @@ Before writing anything, ask me one question at a time until we agree exactly wh
 
     <section class="guide-section" id="checks">
       <h2><span class="step-num">5</span> Let Copilot write the check</h2>
-      <p class="section-subtitle">Write the tests on a feature branch, for example <code>feature/testing</code>. That name does not contain "match", so the branch stays off the Game Wall. Leave <code>main</code> unchanged.</p>
+      <p class="section-subtitle">One partner drives. The other watches the diff. Write the tests on <code>feature/testing</code>. That name does not contain "match", so the branch stays off the Game Wall. Leave <code>main</code> unchanged.</p>
+      <h3>Create the branch</h3>
+      <p>On github.com, open the branch dropdown and create <code>feature/testing</code> from <code>main</code>. Or ask Copilot in Agent mode. Paste:</p>
+      <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-feature" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-feature">Create a branch named feature/testing from main, switch to it, and publish it to GitHub. Do not change any files.</code></pre></div>
+      <p>Check that the status bar says <code>feature/testing</code> before anyone edits.</p>
       <aside class="pytest-box">
         <h3>How pytest finds tests</h3>
         <p>Tests usually live in a <code>tests/</code> folder. Use one test file per function or file, named <code>test_&lt;name&gt;.py</code>, with functions that start with <code>test_</code>. <code>uv run pytest</code> finds and runs them.</p>
       </aside>
       <h3>Run it, break it, restore it</h3>
-      <p>Create branch <code>feature/testing</code> from <code>main</code> and switch to it before these steps.</p>
+      <p>Use the prompts from step 3. Each one starts in a new chat. Paste the agreed rules into the prompt.</p>
       <ol>
-        <li>Ask Copilot, in Agent mode, to add <code>test_board.py</code> and <code>pyproject.toml</code> from the PRD.</li>
-        <li>In the terminal, run <code>uv run pytest</code>.</li>
+        <li>New chat. Paste the implementer prompt. Copilot adds <code>tests/test_board.py</code> and <code>pyproject.toml</code>.</li>
+        <li>In the terminal, run <code>uv run pytest</code>. uv also writes <code>uv.lock</code>.</li>
         <li>Break <code>BOARD.txt</code> on purpose: a lowercase mark, or a digit 0 where a letter O belongs.</li>
         <li>Run <code>uv run pytest</code> again and watch it fail.</li>
         <li>Restore the board and run <code>uv run pytest</code> once more.</li>
+        <li>Commit and Sync <code>tests/test_board.py</code>, <code>pyproject.toml</code>, and <code>uv.lock</code> on <code>feature/testing</code>.</li>
+        <li>New chat. Paste the reviewer prompt and the agreed rules.</li>
+        <li>New chat. Paste the docs writer prompt and the agreed rules.</li>
       </ol>
       <details id="pre-commit">
         <summary>Run the check before every commit</summary>

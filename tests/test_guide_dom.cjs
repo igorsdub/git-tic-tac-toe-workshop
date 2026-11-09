@@ -62,7 +62,8 @@ test('slot 1 reuses accurate screenshots and does not relabel match-01 as match'
   assert.doesNotMatch(guide, /images\/guide\/copilot\/05-plan-mode\.png/);
   assert.doesNotMatch(guide, /<h3>Plan mode<\/h3>/);
   assert.doesNotMatch(setup, /images\/guide\//);
-  assert.match(guide, /main is sacred\. Don't touch it\./);
+  assert.match(guide, /Main branch is sacred: don't modify it/);
+  assert.doesNotMatch(guide, /main is sacred\. Don't touch it\./);
   assert.match(guide, /creates branch <code>match<\/code> on github\.com/);
 });
 

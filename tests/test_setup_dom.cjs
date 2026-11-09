@@ -112,11 +112,21 @@ test('codespaces track keeps four detail steps and the checklist hides a ticked 
     box.checked = true;
     box.dispatchEvent(new Event('change', { bubbles: true }));
     const hidden = item.classList.contains('is-done') && getComputedStyle(item).display === 'none';
-    const stored = localStorage.getItem('ttt_checklist_setup_1') === '1';
+    const stored = localStorage.getItem('ttt_checklist_ws-code_setup_1') === '1';
+    const toggle = document.querySelector('.checklist-completed');
+    const canShow = toggle && !toggle.hidden && toggle.textContent === 'Show completed (1)';
+    toggle.click();
+    const revealed = getComputedStyle(item).display !== 'none';
+    toggle.click();
+    const hiddenAgain = item.classList.contains('is-done') && getComputedStyle(item).display === 'none';
+    await choose('ws-pend');
+    const otherWorkshop = !item.classList.contains('is-done') && localStorage.getItem('ttt_checklist_ws-pend_setup_1') === null;
+    await choose('ws-code');
+    const restored = item.classList.contains('is-done');
     box.checked = false;
     box.dispatchEvent(new Event('change', { bubbles: true }));
-    const cleared = !item.classList.contains('is-done') && localStorage.getItem('ttt_checklist_setup_1') === null;
-    document.body.dataset.result = four && three && hidden && stored && cleared ? 'PASS' : 'FAIL';`);
+    const cleared = !item.classList.contains('is-done') && localStorage.getItem('ttt_checklist_ws-code_setup_1') === null;
+    document.body.dataset.result = four && three && hidden && stored && canShow && revealed && hiddenAgain && otherWorkshop && restored && cleared ? 'PASS' : 'FAIL';`);
 });
 
 test('screenshots are visible without video', opts, () => {
@@ -131,7 +141,7 @@ test('setup page opens each section with its goal and keeps the template and cod
   assert.match(html, /Before we get started, we need to go through the following:/);
   assert.match(html, /1\. GitHub account\. You can sign in to GitHub with 2FA on\./);
   assert.match(html, /2\. Repository\. You have a public copy of the template\./);
-  assert.match(html, /3\. Checking Codespaces and agentic coding with GitHub Copilot\. Copilot answers "what does this repository do\?"/);
+  assert.match(html, /3\. Checking Codespaces and GitHub Copilot\. Copilot answers "what does this repository do\?"/);
   assert.doesNotMatch(html, /class="section-goal"/);
   assert.doesNotMatch(html, /id="setup-workshop"/);
   assert.match(html, /<span class="step-num">1<\/span> Create a GitHub account/);
