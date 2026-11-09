@@ -51,6 +51,9 @@
       </div>
       <h3>O (partner): accept the invitation</h3>
       <p>While you are signed in to GitHub, open <code>https://github.com/&lt;owner&gt;/&lt;repo&gt;</code> or search <code>owner/repo</code> in GitHub search, and accept the invitation banner. You can also open the invitation email on that same signed-in device and select <strong>Accept invitation</strong>.</p>
+      <div class="step-pictures">
+        <figure class="step-shot"><p class="shot-instruction">Type <code>owner/repo</code> in GitHub's top search bar and open the repository to find the invitation banner. This picture uses the demo account <code>igorsdub/git-tic-tac-toe</code>.</p><a class="step-image-link" href="images/guide/invite/08-github-search-repo.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-size image: GitHub search for igorsdub/git-tic-tac-toe"><img src="images/guide/invite/08-github-search-repo.png" alt="GitHub search bar with igorsdub/git-tic-tac-toe typed, and that repository listed in the results" loading="lazy" onerror="this.closest('figure').hidden=true"></a></figure>
+      </div>
       <p>If the banner is missing, search <code>owner/repo</code> again, or open the invitation email on the same device that is signed in to GitHub. The owner checks the username and sends the invitation again if it is still missing. Invitations expire after 7 days. The owner can also paste <code>https://github.com/OWNER/REPO/invitations</code> for the partner to open.</p>
     </section>
 
@@ -61,9 +64,12 @@
       <h3>Use the branch dropdown</h3>
       <ol>
         <li>On github.com, open the owner's repository. The branch menu still says <code>main</code>.</li>
-        <li>Open the branch dropdown and create a branch named <code>match</code> from <code>main</code>.</li>
+        <li>Open the branch dropdown that shows <code>main</code>, type <code>match</code>, and click <strong>Create branch match from main</strong>.</li>
         <li>Leave <code>main</code> unchanged. Do not commit on it.</li>
       </ol>
+      <div class="step-pictures">
+        <figure class="step-shot"><p class="shot-instruction">Open the branch dropdown that shows <code>main</code>, type <code>match</code>, and click <strong>Create branch match from main</strong>. This picture also lists the old demo branch <code>match-01</code>. Your new branch is <code>match</code>.</p><a class="step-image-link" href="images/guide/create-match/01-github-create-match-branch.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-size image: create branch match from main in the GitHub branch dropdown"><img src="images/guide/create-match/01-github-create-match-branch.png" alt="GitHub branch dropdown on main, with match typed, match-01 listed, and Create branch match from main" loading="lazy" onerror="this.closest('figure').hidden=true"></a></figure>
+      </div>
       <h3 id="open-codespaces">Open Codespaces on match</h3>
       <p>Each person uses a separate Codespace, and only after <code>match</code> exists on GitHub.com. Confirm the status bar says <code>match</code> before anyone edits the board.</p>
       <h3>Select the existing branch</h3>
