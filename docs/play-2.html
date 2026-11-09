@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Slot 2 - How to play - Git Tic-Tac-Toe Workshop</title>
-  <meta name="description" content="Decide what can go wrong on the board, then plan, implement, review, and run the checks on branch rematch.">
+  <title>Agentic Coding - Git Tic-Tac-Toe Workshop</title>
+  <meta name="description" content="Agree what a legal board is, then let Copilot write the checks on a feature branch.">
   <link id="theme-favicon" rel="icon" type="image/svg+xml" href="images/xo-logo-light.svg">
   <script src="site-config.js"></script>
   <script src="theme-init.js"></script>
@@ -21,59 +21,94 @@
   </header>
   <main class="guide-main" id="main"><div class="guide-container">
     <header class="guide-hero">
-      <h1>Slot 2</h1>
-      <p class="lead">Agree what a legal board is, write that down, and only then ask an agent to build the check.</p>
+      <h1>Agentic Coding</h1>
+      <p class="lead">In this section we will think about how to get what you expect from the model, so its output matches the plan in your head.</p>
     </header>
-    <nav class="jump-nav" aria-label="Quick jump to section"><span class="jump-nav-label">Jump to:</span><a href="#what-can-go-wrong" class="jump-pill">What can go wrong</a><a href="#skills" class="jump-pill">Skills</a><a href="#planner" class="jump-pill">Planner</a><a href="#checks" class="jump-pill">Checks</a><a href="#rematch" class="jump-pill">Rematch</a><a href="#reproducibility" class="jump-pill">Reproducibility</a><a href="#reference" class="jump-pill">Reference</a></nav>
+    <ol class="page-checklist" data-checklist="agentic">
+      <li data-item="1"><label><input type="checkbox"><span>1. What can go wrong. Your pair wrote at least two cases.</span></label></li>
+      <li data-item="2"><label><input type="checkbox"><span>2. Grilling. You and Copilot agreed the rules for a valid board.</span></label></li>
+      <li data-item="3"><label><input type="checkbox"><span>3. After the plan: the other roles. You started a new chat for the implementer, the reviewer, and the docs writer.</span></label></li>
+      <li data-item="4"><label><input type="checkbox"><span>4. Reproducibility. You can name the manifest, the lock file, the runner, and the test module.</span></label></li>
+      <li data-item="5"><label><input type="checkbox"><span>5. Let Copilot write the check. You ran <code>uv run pytest</code>. It passes, and it fails when you break the board.</span></label></li>
+      <li data-item="6"><label><input type="checkbox"><span>6. Reference repository. You opened the reference repository after your own work.</span></label></li>
+    </ol>
+    <nav class="jump-nav" aria-label="Quick jump to section"><span class="jump-nav-label">Jump to:</span><a href="#what-can-go-wrong" class="jump-pill">What can go wrong</a><a href="#grilling" class="jump-pill">Grilling</a><a href="#roles" class="jump-pill">Other roles</a><a href="#reproducibility" class="jump-pill">Reproducibility</a><a href="#checks" class="jump-pill">Checks</a><a href="#reference" class="jump-pill">Reference</a></nav>
 
     <section class="guide-section" id="what-can-go-wrong">
-      <p class="section-goal">your pair wrote at least two cases</p>
-      <h2>What can go wrong when you update the board?</h2>
-      <p class="section-subtitle">With your partner, write at least two cases. Finish your own list before you open the hint.</p>
+      <h2><span class="step-num">1</span> What can go wrong when you update the board?</h2>
+      <p class="section-subtitle">With your partner or on your own, come up with at least two cases. Finish your own list before you open the hint.</p>
       <h3>Your cases</h3>
-      <p>Look at <code>BOARD.txt</code>. What would make an update the wrong board? Write two or more cases in your own words. Do not scroll to the hint until both of you have named them.</p>
-      <aside class="hint-box" id="board-hint">
-        <h3>Hint, after your own cases</h3>
+      <p>Look at <code>BOARD.txt</code>. What would make an update the wrong board? Write two or more cases in your own words.</p>
+      <details class="hint-box" id="board-hint">
+        <summary>Hint, after your own cases</summary>
         <ul>
           <li>X/O count difference (X moves first, so X−O is 0 or 1).</li>
           <li>Lowercase <code>x</code>/<code>o</code> vs uppercase.</li>
           <li>The digit <code>0</code> typed instead of the letter <code>O</code> (this actually happened before).</li>
           <li>Plus others the pairs find themselves.</li>
         </ul>
-      </aside>
+      </details>
     </section>
 
-    <section class="guide-section" id="planner">
-      <p class="section-goal">you and Copilot agreed the rules for a valid board</p>
-      <h2>Planner, then everyone else</h2>
-      <p class="section-subtitle">The planner matters most. A wrong agreement here makes every later role build the wrong thing.</p>
-      <h3 id="skills">Skills, then grill the plan</h3>
-      <p>A skill is a <code>SKILL.md</code> file the agent reads before it acts. That file format is called Agent Skills. Matt Pocock's grill-me skill is one of them. A pstack-style collection is a folder of those <code>SKILL.md</code> files you keep and reuse.</p>
-      <p>Paste this Grill Me prompt:</p>
+    <section class="guide-section" id="grilling">
+      <h2><span class="step-num">2</span> Grilling</h2>
+      <p class="section-subtitle">The planner does this job. It matters most. A wrong agreement here makes every later role build the wrong thing.</p>
+      <h3>Three ideas</h3>
+      <p><strong>PRD</strong> (product requirements document). A PRD is one document of what you are trying to achieve.</p>
+      <p><strong>Grilling.</strong> Align the plan by letting the agent interview you.</p>
+      <p><strong>TDD</strong> (test-driven development). Write the tests first, watch them fail, then have the agent write code until they pass.</p>
+      <h3 id="skills">Skills</h3>
+      <p>A skill is a reusable set of prompts stored as a <code>SKILL.md</code> file. You do not have to retype the same instructions in every chat. The grill-me skill is one example. pstack is a bigger example: a set of skills for a whole workflow.</p>
+      <p>Paste this Grill Me prompt into the planner chat:</p>
       <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-grill" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-grill">Interview me relentlessly about every aspect of this plan until we reach a shared understanding. Walk down each branch of the design tree, resolving dependencies between decisions one by one.</code></pre></div>
-      <p>Talk: <a href="https://ai.engineer/talks/v4F1gFy-hqg-software-fundamentals-for-ai-coding" target="_blank" rel="noopener noreferrer">Software fundamentals for AI coding</a>. Optional longer source: <a href="https://talksintel.ai/ai-ml/conferences/aie-eu-2026/full-walkthrough-workflow-for-ai-coding-matt-pocock/" target="_blank" rel="noopener noreferrer">full walkthrough of Matt Pocock's AI coding workflow</a>. He says implementation and review should never share a context, which is why the review happens in a fresh chat.</p>
-      <h3>The order of the chats</h3>
-      <ol>
-        <li><strong>Planner.</strong> Paste the planner prompt. Agree the rules before any code.</li>
-        <li><strong>Implementer.</strong> Paste the implementer prompt.</li>
-        <li><strong>Reviewer, in a fresh chat.</strong> Implementation and review should never share a context.</li>
-        <li><strong>Docs writer.</strong> It updates <code>README.md</code> and <code>AGENTS.md</code>.</li>
-      </ol>
-      <h3>Planner prompt</h3>
+      <p>Want more? Watch <a href="https://ai.engineer/talks/v4F1gFy-hqg-software-fundamentals-for-ai-coding" target="_blank" rel="noopener noreferrer">Software Fundamentals for AI Coding</a>.</p>
+      <h3 id="planner">Planner prompt</h3>
+      <p>Stay in this same chat. Replace the cases with the ones you wrote. Paste:</p>
       <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-planner" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-planner">You are the planner. When we update BOARD.txt, these things can go wrong:
 - case 1
 - case 2
 - case 3 (optional)
 Before writing anything, ask me one question at a time until we agree exactly which boards are valid. Then list the agreed rules as checks a test could make. Don't write code yet.</code></pre></div>
-      <h3>Implementer prompt</h3>
+      <h3>Same chat or a new chat</h3>
+      <p>Keep the planner grilling and the PRD in this same chat. Start a new chat for the implementer, a new chat for the reviewer, and a new chat for the docs writer.</p>
+    </section>
+
+    <section class="guide-section" id="roles">
+      <h2><span class="step-num">3</span> After the plan: the other roles</h2>
+      <p class="section-subtitle">Each role starts in its own new chat. Paste one prompt, then read the result before you commit.</p>
+      <h3>Implementer</h3>
+      <p>New chat. Paste:</p>
       <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-implementer" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-implementer">Write pytest tests for these rules and a pyproject.toml so `uv run pytest` works.</code></pre></div>
+      <h3>Reviewer</h3>
+      <p>New chat. Paste:</p>
+      <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-reviewer" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-reviewer">You are the reviewer. Run `uv run pytest` and read the diff. Say what does not match the agreed rules. Do not change files.</code></pre></div>
+      <h3>Docs writer</h3>
+      <p>New chat. Paste:</p>
+      <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-docs" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-docs">You are the docs writer. Update README.md for people and AGENTS.md for agents so both match the agreed rules. Do not change the tests.</code></pre></div>
+      <p>README.md is the file for people. AGENTS.md is the file for agents and language models. It tells them how to work in this repository so they stay on the plan.</p>
+    </section>
+
+    <section class="guide-section repro-box" id="reproducibility">
+      <h2><span class="step-num">4</span> Reproducibility</h2>
+      <p>The tests need uv, so this comes before Copilot writes them. The same setup then runs on another machine.</p>
+      <ul>
+        <li>A <strong>virtual environment</strong> is an isolated set of packages for one project, so it runs the same on any machine.</li>
+        <li>A virtual environment manager creates it. Ours is <a href="https://docs.astral.sh/uv/" target="_blank" rel="noopener noreferrer">uv</a>.</li>
+        <li><code>pyproject.toml</code> is the project manifest. It holds the package info, dependencies, versions, and a description. This is what you reinstall the environment from.</li>
+        <li><code>uv.lock</code> locks the exact versions.</li>
+        <li>Other languages do the same thing. Julia uses <code>Project.toml</code> and <code>Manifest.toml</code>. R uses <code>renv</code>.</li>
+      </ul>
     </section>
 
     <section class="guide-section" id="checks">
-      <p class="section-goal"><code>uv run pytest</code> passes, and fails when you break the board</p>
-      <h2>Let Copilot write the check</h2>
-      <p class="section-subtitle">Copilot adds <code>test_board.py</code> and <code>pyproject.toml</code>. You run the check, break the board on purpose, and put the board back.</p>
+      <h2><span class="step-num">5</span> Let Copilot write the check</h2>
+      <p class="section-subtitle">Write the tests on a feature branch, for example <code>feature/testing</code>. That name does not contain "match", so the branch stays off the Game Wall. Leave <code>main</code> unchanged.</p>
+      <aside class="pytest-box">
+        <h3>How pytest finds tests</h3>
+        <p>Tests usually live in a <code>tests/</code> folder. Use one test file per function or file, named <code>test_&lt;name&gt;.py</code>, with functions that start with <code>test_</code>. <code>uv run pytest</code> finds and runs them.</p>
+      </aside>
       <h3>Run it, break it, restore it</h3>
+      <p>Create branch <code>feature/testing</code> from <code>main</code> and switch to it before these steps.</p>
       <ol>
         <li>Ask Copilot, in Agent mode, to add <code>test_board.py</code> and <code>pyproject.toml</code> from the PRD.</li>
         <li>In the terminal, run <code>uv run pytest</code>.</li>
@@ -81,14 +116,6 @@ Before writing anything, ask me one question at a time until we agree exactly wh
         <li>Run <code>uv run pytest</code> again and watch it fail.</li>
         <li>Restore the board and run <code>uv run pytest</code> once more.</li>
       </ol>
-    </section>
-
-    <section class="guide-section" id="rematch">
-      <p class="section-goal">every rematch commit had passing tests first</p>
-      <h2>Create branch rematch</h2>
-      <p class="section-subtitle"><strong>main is sacred. Don't touch it.</strong> Create <code>rematch</code> from <code>main</code> on github.com, the same way the owner created <code>match</code>.</p>
-      <h3>Use the branch dropdown again</h3>
-      <p>On github.com, open the branch dropdown and create <code>rematch</code> from <code>main</code>. Leave <code>main</code> untouched. Then both of you open Codespaces on <code>rematch</code>. Run <code>uv run pytest</code> and see it pass before every commit on this branch.</p>
       <details id="pre-commit">
         <summary>Run the check before every commit</summary>
         <p>A pre-commit hook is a small program Git runs before it records a commit. In the Codespace, save this as <code>.git/hooks/pre-commit</code> and make it executable with <code>chmod +x .git/hooks/pre-commit</code>.</p>
@@ -98,26 +125,16 @@ uv run pytest</code></pre></div>
       </details>
     </section>
 
-    <section class="guide-section" id="reproducibility">
-      <p class="section-goal">you can name the manifest, lock file, runner, and test module</p>
-      <h2>Reproducibility</h2>
-      <p class="section-subtitle">Someone else can rebuild the same check when the project records what it needs and the exact versions.</p>
-      <h3>Four names in this project</h3>
-      <ul>
-        <li><strong>Manifest:</strong> <code>pyproject.toml</code> says what the project needs.</li>
-        <li><strong>Lock file:</strong> <code>uv.lock</code> records the exact versions.</li>
-        <li><strong>Runner:</strong> <code>uv</code> builds the environment and runs the command.</li>
-        <li><strong>Test module:</strong> <code>pytest</code> runs <code>test_board.py</code>.</li>
-      </ul>
-      <p>Julia records the same idea in <code>Project.toml</code> and <code>Manifest.toml</code>. R records it with <code>renv</code>.</p>
-      <h3 id="reference">Reference repository</h3>
-      <p>Look at this only after your own rules, check, and docs exist. The reference repository is <a href="https://github.com/igorsdub/git-tic-tac-toe-reference" target="_blank" rel="noopener noreferrer">github.com/igorsdub/git-tic-tac-toe-reference</a>. Open it at the end and see how its board check, lock file, and docs compare with yours.</p>
+    <section class="guide-section" id="reference">
+      <h2><span class="step-num">6</span> Reference repository</h2>
+      <p>Open this only after your own rules, check, and docs exist. The reference repository is <a href="https://github.com/igorsdub/git-tic-tac-toe-reference" target="_blank" rel="noopener noreferrer">github.com/igorsdub/git-tic-tac-toe-reference</a>.</p>
     </section>
 
     <p class="stage-next"><a data-workshop-route href="wall.html">Next: Game Wall</a></p>
   </div></main>
   <script src="stage-strip.js"></script>
   <script src="workshop-context.js"></script>
+  <script src="page-checklist.js"></script>
   <script src="guide-utils.js"></script>
   <script src="copy-code.js"></script>
   <script src="shot-lightbox.js"></script>

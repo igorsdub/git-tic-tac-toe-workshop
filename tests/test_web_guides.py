@@ -36,8 +36,8 @@ class TestWebGuides(unittest.TestCase):
         setup = (DOCS_DIR / "setup.html").read_text(encoding="utf-8")
         guide = (DOCS_DIR / "guide.html").read_text(encoding="utf-8")
         wall = (DOCS_DIR / "wall.html").read_text(encoding="utf-8")
-        self.assertIn('<a data-workshop-route href="guide.html">Next: Slot 1</a>', setup)
-        self.assertIn('<a data-workshop-route href="play-2.html">Next: Slot 2</a>', guide)
+        self.assertIn('<a data-workshop-route href="guide.html">Next: Git Collaboration</a>', setup)
+        self.assertIn('<a data-workshop-route href="play-2.html">Next: Agentic Coding</a>', guide)
         slot2 = (DOCS_DIR / "play-2.html").read_text(encoding="utf-8")
         self.assertIn('<a data-workshop-route href="wall.html">Next: Game Wall</a>', slot2)
         self.assertIn('<a data-workshop-route href="setup.html">Back to start: Setup</a>', wall)
@@ -134,7 +134,7 @@ class TestWebGuides(unittest.TestCase):
     def test_quick_jump_links_target_real_guide_sections(self):
         for name, html, expected in (
             ("learner", self.guide, ("invite", "create-match", "turn", "copilot")),
-            ("slot2", self.slot2, ("what-can-go-wrong", "planner", "checks", "reference")),
+            ("slot2", self.slot2, ("what-can-go-wrong", "grilling", "checks", "reference")),
             ("setup", self.setup, ("step-account", "step-repo", "step-codespace")),
         ):
             with self.subTest(page=name):
@@ -166,8 +166,12 @@ class TestWebGuides(unittest.TestCase):
         ):
             self.assertIn(requirement, self.setup)
         self.assertLess(self.setup.index('src="workshop-context.js"'), self.setup.index('src="setup.js"'))
-        for step in ("step-account", "step-repo", "step-codespace", "step-look-around"):
-            self.assertIn(f'<input type="checkbox" class="step-check" data-step="{step}" id="check-{step}">', self.setup)
+        self.assertIn('class="page-checklist"', self.setup)
+        self.assertIn("Before we get started, we need to go through the following:", self.setup)
+        self.assertNotIn('class="step-check"', self.setup)
+        self.assertNotIn('class="step-done"', self.setup)
+        self.assertNotIn('class="section-goal"', self.setup)
+        self.assertNotIn('id="setup-workshop"', self.setup)
         for removed in ("step-survey", "step-delete", "03-cleaning-up", "Fill in the survey"):
             self.assertNotIn(removed, self.setup)
         for old in ("docs.google.com/forms", "Keep the public repository and Codespace"):
@@ -238,11 +242,11 @@ class TestWebGuides(unittest.TestCase):
                 self.assertTrue(path.read_bytes().startswith(b"\x89PNG\r\n\x1a\n"), f"invalid PNG: {asset}")
 
     def test_learner_match_and_registration_use_the_workshop_contract(self):
-        for requirement in ("Source Control", "BOARD.txt", "match-01", "<strong>main is sacred. Don't touch it.</strong>", "Commit and Sync"):
+        for requirement in ("Source Control", "BOARD.txt", "match-01", "Main branch is sacred: don't modify it", "Commit and Sync"):
             self.assertIn(requirement, self.guide)
         ordered_sections = [self.guide.index(f'id="{section}"') for section in ("invite", "create-match", "turn", "copilot", "register")]
         self.assertEqual(ordered_sections, sorted(ordered_sections))
-        self.assertIn("<h2>Take a turn</h2>", self.guide)
+        self.assertIn("Take a turn</h2>", self.guide)
         self.assertNotIn("<h3>Plan mode</h3>", self.guide)
         self.assertNotIn("follow the instructor", self.guide.casefold())
         self.assertNotIn("play manually", self.guide.casefold())

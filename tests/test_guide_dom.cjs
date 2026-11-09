@@ -144,19 +144,26 @@ test('conflict and copilot figures follow the shot pattern without Plan mode', (
   assert.doesNotMatch(slot2, /stop-the-prompts|Plan mode/);
 });
 
-test('slot 2 discusses the board before any check and ends on the reference repository', () => {
-  const discussion = section(slot2, 'what-can-go-wrong', 'skills');
+test('agentic coding discusses the board before any check and ends on the reference repository', () => {
+  const discussion = section(slot2, 'what-can-go-wrong', 'grilling');
   assert.doesNotMatch(discussion, /test/i);
   assert.match(discussion, /at least two cases/i);
   assert.match(discussion, /X−O is 0 or 1/);
   assert.match(discussion, /Lowercase/);
   assert.match(discussion, /this actually happened before/);
+  assert.match(discussion, /<details class="hint-box" id="board-hint">/);
   assert.ok(slot2.indexOf('id="board-hint"') < slot2.indexOf('id="checks"'));
+  assert.ok(slot2.indexOf('id="reproducibility"') < slot2.indexOf('id="checks"'));
   assert.match(slot2, /https:\/\/ai\.engineer\/talks\/v4F1gFy-hqg-software-fundamentals-for-ai-coding/);
+  assert.doesNotMatch(slot2, /talksintel\.ai/);
   assert.match(slot2, /Interview me relentlessly about every aspect of this plan/);
-  assert.match(slot2, /you and Copilot agreed the rules for a valid board/);
+  assert.match(slot2, /You and Copilot agreed the rules for a valid board/);
   assert.match(slot2, /id="copy-planner"/);
+  assert.match(slot2, /id="copy-reviewer"/);
+  assert.match(slot2, /id="copy-docs"/);
   assert.match(slot2, /Write pytest tests for these rules and a pyproject.toml so `uv run pytest` works\./);
+  assert.match(slot2, /feature\/testing/);
+  assert.doesNotMatch(slot2, /rematch/i);
   assert.match(slot2, /uv run pytest/);
   assert.match(slot2, /GitHub Actions can run the same tests on every push\./);
   assert.match(slot2, /https:\/\/github\.com\/igorsdub\/git-tic-tac-toe-reference/);

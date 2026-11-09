@@ -20,21 +20,26 @@
   </div><div data-stage-strip="setup"></div>
   </header>
   <main class="guide-main" id="main"><div class="guide-container">
-    <header class="guide-hero"><h1>Setup</h1><p id="setup-workshop" class="setup-workshop"></p><p class="lead">Three checks before the session: a GitHub account, your own public repository, and a Codespace where Copilot can say what the repository does.</p></header>
+    <header class="guide-hero"><h1>Setup</h1></header>
     <noscript><p class="setup-notice">JavaScript is needed to show the setup steps for your workshop.</p></noscript>
     <section id="setup-error" class="guide-section setup-notice" role="alert" hidden><p>Workshop details could not be loaded. Check your connection and reload the page.</p></section>
     <section id="setup-archived" class="guide-section setup-notice" hidden><p>This workshop has finished.</p></section>
     <section id="setup-pending" class="guide-section setup-notice" hidden><p>Setup for this workshop is not published yet.</p></section>
     <section id="setup-codespaces" class="guide-section" data-setup-track="codespaces" hidden>
+      <p class="lead">Before we get started, we need to go through the following:</p>
       <figure class="step-shot quick-map"><img src="images/before-workshop-setup.svg" alt="Three numbered cards: GitHub account, your repository, and the cloud editor (Codespace with VS Code)" loading="lazy" onerror="this.closest('figure').hidden=true"><figcaption>Your account, your repository, and the cloud editor.</figcaption></figure>
+      <ol class="page-checklist" data-checklist="setup">
+        <li data-item="1"><label><input type="checkbox" aria-label="GitHub account"><span>1. GitHub account. You can sign in to GitHub with 2FA on.</span></label></li>
+        <li data-item="2"><label><input type="checkbox" aria-label="Repository"><span>2. Repository. You have a public copy of the template.</span></label></li>
+        <li data-item="3"><label><input type="checkbox" aria-label="Checking Codespaces and agentic coding with GitHub Copilot"><span>3. Checking Codespaces and agentic coding with GitHub Copilot. Copilot answers "what does this repository do?"</span></label></li>
+      </ol>
       <nav class="jump-nav" aria-label="Quick jump to setup section"><span class="jump-nav-label">Jump to:</span><a href="#step-account" class="jump-pill">Account</a><a href="#step-repo" class="jump-pill">Repository</a><a href="#step-codespace" class="jump-pill">Codespace</a></nav>
 
       <section class="setup-guide-section" id="step-account">
-        <p class="section-goal">you can sign in to GitHub with 2FA on</p>
         <h2 class="setup-section-heading"><span class="step-num">1</span> Create a GitHub account</h2>
         <p class="section-subtitle">Skip this if you already have an account you can sign in with.</p>
         <article class="setup-step" id="step-account-body">
-          <div class="step-head"><h3 class="step-heading">Open the sign-up page</h3><label class="step-done" for="check-step-account"><input type="checkbox" class="step-check" data-step="step-account" id="check-step-account"> Done</label></div>
+          <h3 class="step-heading">Open the sign-up page</h3>
           <p>GitHub stores the project and the history of its changes. <a href="https://github.com/signup" target="_blank" rel="noopener noreferrer">Create a GitHub account</a> if you need one.</p>
           <aside class="username-tips" aria-label="Username tips"><p class="username-tips-title">Choosing a username</p><ul>
             <li>Pick something you will still like at 60. It appears on every commit you ever make.</li>
@@ -54,11 +59,11 @@
       </section>
 
       <section class="setup-guide-section" id="guide-template">
-        <p class="section-goal">you have a public copy of the template</p>
         <h2 class="setup-section-heading"><span class="step-num">2</span> Create a repository from the template</h2>
         <p class="section-subtitle">A repository is the project's home: the files and the history of changes. <strong>Include all branches</strong> may stay on. The template now has only <code>main</code>, so the copy is just <code>main</code>.</p>
+        <p>README.md is the file for people.</p>
         <article class="setup-step" id="step-repo">
-          <div class="step-head"><h3 class="step-heading">Create your repository</h3><label class="step-done" for="check-step-repo"><input type="checkbox" class="step-check" data-step="step-repo" id="check-step-repo"> Done</label></div>
+          <h3 class="step-heading">Create your repository</h3>
           <p class="template-repository-link">Template repository: <a href="https://github.com/igorsdub/git-tic-tac-toe-template" target="_blank" rel="noopener noreferrer">igorsdub/git-tic-tac-toe-template</a>.</p>
           <div class="step-pictures">
             <figure class="step-shot"><p class="shot-instruction">Open the workshop template repository.</p><a class="step-image-link" href="images/setup/manual-images/01-template/00-landing-page.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-size image: GitHub template repository page"><img src="images/setup/manual-images/01-template/00-landing-page.png" alt="GitHub template repository page" loading="lazy" onerror="this.closest('figure').hidden=true"></a></figure>
@@ -75,11 +80,10 @@
       </section>
 
       <section class="setup-guide-section" id="guide-codespaces">
-        <p class="section-goal">Copilot answers 'what does this repository do?'</p>
         <h2 class="setup-section-heading"><span class="step-num">3</span> Check Codespaces and GitHub Copilot</h2>
         <p class="section-subtitle">Codespaces is the editor in the browser. Copilot is the assistant in that editor. The check passes when an answer mentions tic-tac-toe and <code>BOARD.txt</code>.</p>
         <article class="setup-step" id="step-codespace">
-          <div class="step-head"><h3 class="step-heading">Open a Codespace</h3><label class="step-done" for="check-step-codespace"><input type="checkbox" class="step-check" data-step="step-codespace" id="check-step-codespace"> Done</label></div>
+          <h3 class="step-heading">Open a Codespace</h3>
           <p>Open the repository in a browser-based Codespace. Nothing needs to be installed on your computer.</p>
           <div class="step-pictures">
             <figure class="step-shot"><p class="shot-instruction">On your new repository, click <strong>Code</strong>.</p><a class="step-image-link" href="images/setup/manual-images/02-codepaces/01-code-button.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-size image: Code button on the repository"><img src="images/setup/manual-images/02-codepaces/01-code-button.png" alt="Code button on the repository" loading="lazy" onerror="this.closest('figure').hidden=true"></a></figure>
@@ -88,7 +92,7 @@
           </div>
         </article>
         <article class="setup-step" id="step-look-around">
-          <div class="step-head"><h3 class="step-heading">Ask Copilot what the repository does</h3><label class="step-done" for="check-step-look-around"><input type="checkbox" class="step-check" data-step="step-look-around" id="check-step-look-around"> Done</label></div>
+          <h3 class="step-heading">Ask Copilot what the repository does</h3>
           <p>Open Copilot Chat, choose <strong>Ask</strong>, and type exactly: what does this repository do? Wait until the answer finishes. Do not edit or commit anything during this check.</p>
           <div class="step-pictures">
             <figure class="step-shot"><p class="shot-instruction">Open Copilot Chat and sign in if prompted.</p><a class="step-image-link" href="images/setup/manual-images/02-codepaces/04-copilot-sing-in.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-size image: Copilot Chat sign-in prompt"><img src="images/setup/manual-images/02-codepaces/04-copilot-sing-in.png" alt="Copilot Chat sign-in prompt" loading="lazy" onerror="this.closest('figure').hidden=true"></a></figure>
@@ -104,12 +108,13 @@
         </article>
       </section>
     </section>
-    <p>At the session, the owner adds a collaborator and creates branch <code>match</code> before anyone opens a Codespace. See <a data-workshop-route href="guide.html#invite">Slot 1</a>.</p>
-    <p class="stage-next" id="setup-next"><a data-workshop-route href="guide.html">Next: Slot 1</a></p>
+    <p>At the session, the owner adds a collaborator and creates branch <code>match</code> before anyone opens a Codespace. See <a data-workshop-route href="guide.html#invite">Git Collaboration</a>.</p>
+    <p class="stage-next" id="setup-next"><a data-workshop-route href="guide.html">Next: Git Collaboration</a></p>
   </div></main>
   <script src="stage-strip.js"></script>
   <script src="workshop-context.js"></script>
   <script src="setup.js"></script>
+  <script src="page-checklist.js"></script>
   <script src="guide-utils.js"></script>
 </body>
 </html>

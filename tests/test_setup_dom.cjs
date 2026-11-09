@@ -43,6 +43,7 @@ function runSetup(query, script, mp4Status = 404, catalogStatus = 200) {
     </script>
     <script src="${path.join(repo, 'docs/workshop-context.js')}"></script>
     <script src="${path.join(repo, 'docs/setup.js')}"></script>
+    <script src="${path.join(repo, 'docs/page-checklist.js')}"></script>
     <script>
       (async () => {
         const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -73,8 +74,11 @@ const opts = { skip: !chromiumHeadlessUsable };
 
 test('bare URL picks the catalog default and shows its track', opts, () => {
   runSetup('', `
+    const select = document.getElementById('workshop-select');
     const ok = vis('setup-codespaces') && !vis('setup-archived') && !vis('setup-pending')
-      && document.getElementById('setup-workshop').textContent === 'Code Day \\u00b7 6 Nov 2026'
+      && !document.getElementById('setup-workshop')
+      && select.value === 'ws-code'
+      && select.selectedOptions[0].textContent.includes('CODE DAY')
       && !document.querySelector('[data-survey-link]')
       && !document.getElementById('step-survey')
       && !document.getElementById('guide-cleanup');
@@ -98,20 +102,21 @@ test('workshop without a track shows the pending notice and no survey', opts, ()
     document.body.dataset.result = pending && stillPending ? 'PASS' : 'FAIL';`);
 });
 
-test('codespaces track renders four steps and checkbox state persists per workshop', opts, () => {
+test('codespaces track keeps four detail steps and the checklist hides a ticked item', opts, () => {
   runSetup('', `
-    const boxes = document.querySelectorAll('#setup-codespaces .step-check');
-    const four = boxes.length === 4 && document.querySelectorAll('#setup-codespaces .setup-step').length === 4;
-    const box = document.getElementById('check-step-repo');
+    const boxes = document.querySelectorAll('#setup-codespaces .page-checklist input[type="checkbox"]');
+    const four = document.querySelectorAll('#setup-codespaces .setup-step').length === 4;
+    const three = boxes.length === 3 && !document.querySelector('.step-check') && !document.querySelector('.step-done');
+    const item = document.querySelector('#setup-codespaces .page-checklist [data-item="1"]');
+    const box = item.querySelector('input');
     box.checked = true;
     box.dispatchEvent(new Event('change', { bubbles: true }));
-    const stored = localStorage.getItem('ttt_setup_ws-code_step-repo') === '1';
-    await choose('ws-pend');
-    await choose('ws-code');
-    const survived = document.getElementById('check-step-repo').checked && !document.getElementById('check-step-look-around').checked;
+    const hidden = item.classList.contains('is-done') && getComputedStyle(item).display === 'none';
+    const stored = localStorage.getItem('ttt_checklist_setup_1') === '1';
     box.checked = false;
     box.dispatchEvent(new Event('change', { bubbles: true }));
-    document.body.dataset.result = four && stored && survived && localStorage.getItem('ttt_setup_ws-code_step-repo') === null ? 'PASS' : 'FAIL';`);
+    const cleared = !item.classList.contains('is-done') && localStorage.getItem('ttt_checklist_setup_1') === null;
+    document.body.dataset.result = four && three && hidden && stored && cleared ? 'PASS' : 'FAIL';`);
 });
 
 test('screenshots are visible without video', opts, () => {
@@ -123,9 +128,12 @@ test('setup page opens each section with its goal and keeps the template and cod
   const account = html.match(/<section class="setup-guide-section" id="step-account">([\s\S]*?)<\/section>/)?.[1];
   const template = html.match(/<section class="setup-guide-section" id="guide-template">([\s\S]*?)<\/section>/)?.[1];
   const images = [...html.matchAll(/<a class="step-image-link" href="([^"]+)"[^>]*><img src="([^"]+)"/g)];
-  assert.match(html, /Copilot answers 'what does this repository do\?'/);
-  assert.match(html, /you can sign in to GitHub with 2FA on/);
-  assert.match(html, /you have a public copy of the template/);
+  assert.match(html, /Before we get started, we need to go through the following:/);
+  assert.match(html, /1\. GitHub account\. You can sign in to GitHub with 2FA on\./);
+  assert.match(html, /2\. Repository\. You have a public copy of the template\./);
+  assert.match(html, /3\. Checking Codespaces and agentic coding with GitHub Copilot\. Copilot answers "what does this repository do\?"/);
+  assert.doesNotMatch(html, /class="section-goal"/);
+  assert.doesNotMatch(html, /id="setup-workshop"/);
   assert.match(html, /<span class="step-num">1<\/span> Create a GitHub account/);
   assert.ok(account, 'account section exists');
   assert.match(account, /<aside class="student-pack-callout"[\s\S]*?<h3 id="student-pack-heading">Recommended: GitHub Student Developer Pack<\/h3>/);
@@ -151,7 +159,7 @@ test('setup page renders the new section and completion structure', opts, () => 
     const heading = selector => document.querySelector(selector).textContent.replace(/\\s+/g, ' ').trim();
     const images = [...document.querySelectorAll('#setup-codespaces .step-pictures img')];
     const checks = {
-      opening: document.querySelector('#step-account .section-goal').textContent === 'you can sign in to GitHub with 2FA on',
+      opening: document.querySelector('#setup-codespaces .page-checklist').textContent.includes('You can sign in to GitHub with 2FA on.'),
       noSurvey: !survey && !document.querySelector('[data-survey-link]'),
       accountHeading: heading('#step-account .setup-section-heading') === '1 Create a GitHub account',
       accountCopy: account.textContent.includes('GitHub stores the project and the history of its changes.'),
@@ -161,7 +169,8 @@ test('setup page renders the new section and completion structure', opts, () => 
       templateCopy: template.textContent.includes('The template now has only main, so the copy is just main.'),
       templateLink: template.querySelector('.template-repository-link a')?.href === 'https://github.com/igorsdub/git-tic-tac-toe-template',
       noMatchReference: !template.textContent.includes('match-01'),
-      codespacesGoal: document.querySelector('#guide-codespaces .section-goal').textContent === "Copilot answers 'what does this repository do?'",
+      codespacesGoal: document.querySelector('#setup-codespaces .page-checklist').textContent.includes('Copilot answers "what does this repository do?"'),
+      noSectionGoals: !document.querySelector('.section-goal'),
       codespacesHeading: heading('#guide-codespaces .setup-section-heading') === '3 Check Codespaces and GitHub Copilot',
       noCleanup: !cleanup && !text.includes('Delete the Codespace'),
       images: images.length === 21 && images.every(image => image.closest('a.step-image-link')?.getAttribute('href')),
@@ -180,7 +189,7 @@ test('setup page renders the new section and completion structure', opts, () => 
 test('unknown workshop falls back to the default', opts, () => {
   runSetup('?workshop=nope', `
     document.body.dataset.result = vis('setup-codespaces')
-      && document.getElementById('setup-workshop').textContent.startsWith('Code Day') ? 'PASS' : 'FAIL';`);
+      && document.getElementById('workshop-select').value === 'ws-code' ? 'PASS' : 'FAIL';`);
 });
 
 test('catalog load failure shows a visible message instead of an empty page', opts, () => {

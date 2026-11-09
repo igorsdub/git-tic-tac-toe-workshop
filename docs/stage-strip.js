@@ -4,8 +4,8 @@
 
   const STAGES = [
     { id: 'setup', number: 1, name: 'Setup', href: 'setup.html' },
-    { id: 'play-1', number: 2, name: 'Slot 1', href: 'guide.html' },
-    { id: 'play-2', number: 3, name: 'Slot 2', href: 'play-2.html' },
+    { id: 'play-1', number: 2, name: 'Git Collaboration', href: 'guide.html' },
+    { id: 'play-2', number: 3, name: 'Agentic Coding', href: 'play-2.html' },
     { id: 'wall', number: 4, name: 'Game Wall', href: 'wall.html' },
   ];
 

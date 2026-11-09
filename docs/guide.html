@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Slot 1 - How to play - Git Tic-Tac-Toe Workshop</title>
-  <meta name="description" content="Add a collaborator, create branch match on GitHub.com, then take turns and ask Copilot in Agent mode.">
+  <title>Git Collaboration - Git Tic-Tac-Toe Workshop</title>
+  <meta name="description" content="Add a collaborator, create branch match on GitHub.com, take turns, and ask Copilot to play a rematch.">
   <link id="theme-favicon" rel="icon" type="image/svg+xml" href="images/xo-logo-light.svg">
   <script src="site-config.js"></script>
   <script src="theme-init.js"></script>
@@ -21,16 +21,26 @@
   </header>
   <main class="guide-main" id="main"><div class="guide-container">
     <header class="guide-hero">
-      <h1>Slot 1</h1>
-      <p class="lead">Share one repository, play on branch <code>match</code>, then let Copilot edit one square.</p>
+      <h1>Git Collaboration</h1>
+      <p class="lead">In this session we will share one repository with a partner, take turns on a branch named <code>match</code>, and ask Copilot to play a second game on a branch named <code>rematch</code>.</p>
     </header>
-    <p class="sacred-callout"><strong>main is sacred. Don't touch it.</strong></p>
+    <ol class="page-checklist" data-checklist="collaboration">
+      <li data-item="1"><label><input type="checkbox"><span>1. Add a collaborator. You invited your partner to the repository.</span></label></li>
+      <li data-item="2"><label><input type="checkbox"><span>2. Partner accepts the invitation. Your partner accepted the invitation by searching for owner/repo and accepting the banner, or by using the email.</span></label></li>
+      <li data-item="3"><label><input type="checkbox"><span>3. Create branch match. Branch <code>match</code> exists, created on GitHub.com, and <code>main</code> is untouched.</span></label></li>
+      <li data-item="4"><label><input type="checkbox"><span>4. Take a turn. You pulled, edited one cell, and did Commit and Sync.</span></label></li>
+      <li data-item="5"><label><input type="checkbox"><span>5. Ask Copilot for one square. Copilot made your move, and you checked the diff before committing.</span></label></li>
+      <li data-item="6"><label><input type="checkbox"><span>6. Register the repository. Your match shows on the Game Wall.</span></label></li>
+      <li data-item="7"><label><input type="checkbox"><span>7. Play a rematch. Copilot created branch <code>rematch</code>, and you played a second game on it.</span></label></li>
+    </ol>
+    <aside class="sacred-callout" aria-labelledby="sacred-title">
+      <p id="sacred-title" class="sacred-title">Main branch is sacred: don't modify it</p>
+    </aside>
     <p class="order-callout"><strong>(1)</strong> The owner adds the collaborator. <strong>(2)</strong> The owner creates branch <code>match</code> on github.com with the branch dropdown. <strong>(3)</strong> Only then do both of you open Codespaces.</p>
-    <nav class="jump-nav" aria-label="Quick jump to section"><span class="jump-nav-label">Jump to:</span><a href="#invite" class="jump-pill">Collaborator</a><a href="#create-match" class="jump-pill">Branch match</a><a href="#open-codespaces" class="jump-pill">Codespaces</a><a href="#turn" class="jump-pill">A turn</a><a href="#copilot" class="jump-pill">Copilot</a><a href="#register" class="jump-pill">Register</a></nav>
+    <nav class="jump-nav" aria-label="Quick jump to section"><span class="jump-nav-label">Jump to:</span><a href="#invite" class="jump-pill">Collaborator</a><a href="#accept" class="jump-pill">Accept</a><a href="#create-match" class="jump-pill">Branch match</a><a href="#turn" class="jump-pill">A turn</a><a href="#copilot" class="jump-pill">Copilot</a><a href="#register" class="jump-pill">Register</a><a href="#rematch" class="jump-pill">Rematch</a></nav>
 
     <section class="guide-section" id="invite">
-      <p class="section-goal">your partner accepted the invite (search for owner/repo and accept the banner, or use the email on the same device)</p>
-      <h2>Add a collaborator</h2>
+      <h2><span class="step-num">1</span> Add a collaborator</h2>
       <p class="section-subtitle">Do this once. The owner plays X and moves first. The partner plays O. Both of you need a GitHub account.</p>
       <h3>Owner: send the invitation</h3>
       <p><strong>X (owner):</strong></p>
@@ -49,6 +59,10 @@
         <figure class="step-shot"><p class="shot-instruction">Select <strong>Add … to this repository</strong>. After a person is selected, the button may read <strong>Add &lt;username&gt;</strong> (here, <strong>Add viyuetuki</strong>).</p><a class="step-image-link" href="images/guide/invite/06-add.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-size image: confirm Add username"><img src="images/guide/invite/06-add.png" alt="Add people dialog with the Add username confirm button outlined" loading="lazy" onerror="this.closest('figure').hidden=true"></a></figure>
         <figure class="step-shot"><p class="shot-instruction">The Collaborators page shows the pending invite, with <strong>Awaiting</strong> their response and <strong>Pending Invite</strong>.</p><a class="step-image-link" href="images/guide/invite/07-pending.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-size image: pending collaborator invite"><img src="images/guide/invite/07-pending.png" alt="Collaborators page with the pending invite row outlined" loading="lazy" onerror="this.closest('figure').hidden=true"></a></figure>
       </div>
+    </section>
+
+    <section class="guide-section" id="accept">
+      <h2><span class="step-num">2</span> Partner accepts the invitation</h2>
       <h3>O (partner): accept the invitation</h3>
       <p>While you are signed in to GitHub, open <code>https://github.com/&lt;owner&gt;/&lt;repo&gt;</code> or search <code>owner/repo</code> in GitHub search, and accept the invitation banner. You can also open the invitation email on that same signed-in device and select <strong>Accept invitation</strong>.</p>
       <div class="step-pictures">
@@ -58,9 +72,8 @@
     </section>
 
     <section class="guide-section" id="create-match">
-      <p class="section-goal"><code>match</code> exists, created on GitHub.com; <code>main</code> untouched</p>
-      <h2>Create branch match on github.com</h2>
-      <p class="section-subtitle"><strong>main is sacred. Don't touch it.</strong> The owner does this on the repository page, not inside a Codespace.</p>
+      <h2><span class="step-num">3</span> Create branch match on github.com</h2>
+      <p class="section-subtitle">The owner does this on the repository page, not inside a Codespace. Leave <code>main</code> unchanged.</p>
       <h3>Use the branch dropdown</h3>
       <ol>
         <li>On github.com, open the owner's repository. The branch menu still says <code>main</code>.</li>
@@ -83,8 +96,7 @@
     </section>
 
     <section class="guide-section" id="turn">
-      <p class="section-goal">you pulled, edited one cell, and did Commit &amp; Sync</p>
-      <h2>Take a turn</h2>
+      <h2><span class="step-num">4</span> Take a turn</h2>
       <p class="section-subtitle"><code>BOARD.txt</code> has three rows of three cells, such as <code>. . .</code>. Replace one dot with your mark.</p>
       <h3>Pull, edit one cell, Commit and Sync</h3>
       <aside class="turn-cycle" aria-labelledby="turn-cycle-title"><h3 id="turn-cycle-title">Your turn at a glance</h3><ol><li>Pull</li><li>Edit one cell and save</li><li>Commit and Sync</li></ol></aside>
@@ -119,8 +131,7 @@
     </section>
 
     <section class="guide-section" id="copilot">
-      <p class="section-goal">Copilot made your move and you checked the diff before committing</p>
-      <h2>Ask Copilot for one square</h2>
+      <h2><span class="step-num">5</span> Ask Copilot for one square</h2>
       <p class="section-subtitle">Ask mode explains. Agent mode edits. This workshop does not use Plan mode.</p>
       <h3>Agent mode</h3>
       <p>Name the square. Copilot edits <code>BOARD.txt</code>. Check the diff. If the square is wrong, discard the diff and ask again. When the diff is the one cell you named, Commit and Sync. You can ask Copilot to Pull in the chat.</p>
@@ -140,17 +151,27 @@
     </section>
 
     <section class="guide-section" id="register">
-      <p class="section-goal">your match shows on the Game Wall</p>
-      <h2>Register the repository</h2>
+      <h2><span class="step-num">6</span> Register the repository</h2>
       <p class="section-subtitle">Do this once, after the partner has accepted, with both GitHub handles.</p>
       <h3>One registration for the pair</h3>
       <p>Use <strong>Register repository</strong> in the header. A successful registration comment confirms the repository and workshop link. On each successful refresh the Game Wall shows every branch whose name contains <code>match</code> in any case: <code>match</code>, <code>Match</code>, <code>rematch</code>, and <code>match-1</code> all show. <code>main</code> never shows. Each of those branches is its own card.</p>
     </section>
 
-    <p class="stage-next"><a data-workshop-route href="play-2.html">Next: Slot 2</a></p>
+    <section class="guide-section" id="rematch">
+      <h2><span class="step-num">7</span> Play a rematch</h2>
+      <p class="section-subtitle">This is a second game. Copilot creates the branch. You still check every change.</p>
+      <h3>Ask Copilot in Agent mode</h3>
+      <p>Ask Copilot to create branch <code>rematch</code> from <code>main</code>. Leave <code>main</code> unchanged. Paste:</p>
+      <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-src-3" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-src-3">Create a branch named rematch from main. Do not change any files.</code></pre></div>
+      <p>Check that the status bar says <code>rematch</code>. Then play as you did on <code>match</code>: name one square, read the diff, and use Commit and Sync only when the diff is that square.</p>
+      <p>If your partner does not see <code>rematch</code>, sync or publish the branch. Your partner runs Pull or Fetch and picks <code>rematch</code> in the branch picker. If the branch is still missing, reload the Codespace.</p>
+    </section>
+
+    <p class="stage-next"><a data-workshop-route href="play-2.html">Next: Agentic Coding</a></p>
   </div></main>
   <script src="stage-strip.js"></script>
   <script src="workshop-context.js"></script>
+  <script src="page-checklist.js"></script>
   <script src="guide-utils.js"></script>
   <script src="copy-code.js"></script>
   <script src="shot-lightbox.js"></script>
