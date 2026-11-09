@@ -139,7 +139,7 @@ class TestWebGuides(unittest.TestCase):
         ):
             with self.subTest(page=name):
                 nav = html[html.index('class="jump-nav"'):]
-                section_ids = set(re.findall(r'<(?:section|article)[^>]+id="([^"]+)"', html))
+                section_ids = set(re.findall(r'<(?:section|article|h[1-6])[^>]+id="([^"]+)"', html))
                 for anchor in expected:
                     self.assertIn(f'href="#{anchor}"', nav)
                     self.assertIn(anchor, section_ids)
@@ -373,8 +373,8 @@ class TestWebGuides(unittest.TestCase):
     def test_copilot_prompts_and_guardrails(self):
         prompts = ("Explain the current board in BOARD.txt and whose turn it is.",
                    "Place O in the top-right cell of BOARD.txt. Change only that cell.")
-        planner = "You are the planner. Do not edit any file except PRD.md."
-        implementer = "You are the implementer. Read PRD.md and implement only that PRD."
+        planner = "You are the planner. When we update BOARD.txt, these things can go wrong:"
+        implementer = "Write pytest tests for these rules and a pyproject.toml so `uv run pytest` works."
         learner = (REPO_ROOT / "LEARNER_GUIDE.md").read_text(encoding="utf-8")
         for prompt in prompts:
             self.assertIn(prompt, self.guide)

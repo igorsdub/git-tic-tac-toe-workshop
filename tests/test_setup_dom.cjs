@@ -123,8 +123,9 @@ test('setup page opens each section with its goal and keeps the template and cod
   const account = html.match(/<section class="setup-guide-section" id="step-account">([\s\S]*?)<\/section>/)?.[1];
   const template = html.match(/<section class="setup-guide-section" id="guide-template">([\s\S]*?)<\/section>/)?.[1];
   const images = [...html.matchAll(/<a class="step-image-link" href="([^"]+)"[^>]*><img src="([^"]+)"/g)];
-  assert.match(html, /Copilot answers "what does this repository do\?"/);
-  assert.match(html, /You can sign in to GitHub\./);
+  assert.match(html, /Copilot answers 'what does this repository do\?'/);
+  assert.match(html, /you can sign in to GitHub with 2FA on/);
+  assert.match(html, /you have a public copy of the template/);
   assert.match(html, /<span class="step-num">1<\/span> Create a GitHub account/);
   assert.ok(account, 'account section exists');
   assert.match(account, /<aside class="student-pack-callout"[\s\S]*?<h3 id="student-pack-heading">Recommended: GitHub Student Developer Pack<\/h3>/);
@@ -150,7 +151,7 @@ test('setup page renders the new section and completion structure', opts, () => 
     const heading = selector => document.querySelector(selector).textContent.replace(/\\s+/g, ' ').trim();
     const images = [...document.querySelectorAll('#setup-codespaces .step-pictures img')];
     const checks = {
-      opening: document.querySelector('#step-account .section-goal').textContent === 'You can sign in to GitHub.',
+      opening: document.querySelector('#step-account .section-goal').textContent === 'you can sign in to GitHub with 2FA on',
       noSurvey: !survey && !document.querySelector('[data-survey-link]'),
       accountHeading: heading('#step-account .setup-section-heading') === '1 Create a GitHub account',
       accountCopy: account.textContent.includes('GitHub stores the project and the history of its changes.'),
@@ -160,7 +161,7 @@ test('setup page renders the new section and completion structure', opts, () => 
       templateCopy: template.textContent.includes('The template now has only main, so the copy is just main.'),
       templateLink: template.querySelector('.template-repository-link a')?.href === 'https://github.com/igorsdub/git-tic-tac-toe-template',
       noMatchReference: !template.textContent.includes('match-01'),
-      codespacesGoal: document.querySelector('#guide-codespaces .section-goal').textContent === 'Copilot answers "what does this repository do?"',
+      codespacesGoal: document.querySelector('#guide-codespaces .section-goal').textContent === "Copilot answers 'what does this repository do?'",
       codespacesHeading: heading('#guide-codespaces .setup-section-heading') === '3 Check Codespaces and GitHub Copilot',
       noCleanup: !cleanup && !text.includes('Delete the Codespace'),
       images: images.length === 21 && images.every(image => image.closest('a.step-image-link')?.getAttribute('href')),

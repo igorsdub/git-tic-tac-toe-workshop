@@ -29,7 +29,7 @@
     <nav class="jump-nav" aria-label="Quick jump to section"><span class="jump-nav-label">Jump to:</span><a href="#invite" class="jump-pill">Collaborator</a><a href="#create-match" class="jump-pill">Branch match</a><a href="#open-codespaces" class="jump-pill">Codespaces</a><a href="#turn" class="jump-pill">A turn</a><a href="#copilot" class="jump-pill">Copilot</a><a href="#register" class="jump-pill">Register</a></nav>
 
     <section class="guide-section" id="invite">
-      <p class="section-goal">Your partner can change the shared repository.</p>
+      <p class="section-goal">your partner accepted the invite (search for owner/repo and accept the banner, or use the email on the same device)</p>
       <h2>Add a collaborator</h2>
       <p class="section-subtitle">Do this once. The owner plays X and moves first. The partner plays O. Both of you need a GitHub account.</p>
       <h3>Owner: send the invitation</h3>
@@ -51,15 +51,11 @@
       </div>
       <h3>O (partner): accept the invitation</h3>
       <p>While you are signed in to GitHub, open <code>https://github.com/&lt;owner&gt;/&lt;repo&gt;</code> or search <code>owner/repo</code> in GitHub search, and accept the invitation banner. You can also open the invitation email on that same signed-in device and select <strong>Accept invitation</strong>.</p>
-      <figure class="figure-slot">
-        <div class="figure-slot-frame" role="img" aria-label="Empty screenshot slot for the GitHub invitation banner"></div>
-        <figcaption>Screenshot slot: the invitation banner after opening github.com/owner/repo, or after searching owner/repo. No picture yet.</figcaption>
-      </figure>
       <p>If the banner is missing, search <code>owner/repo</code> again, or open the invitation email on the same device that is signed in to GitHub. The owner checks the username and sends the invitation again if it is still missing. Invitations expire after 7 days. The owner can also paste <code>https://github.com/OWNER/REPO/invitations</code> for the partner to open.</p>
     </section>
 
     <section class="guide-section" id="create-match">
-      <p class="section-goal">Branch match exists on GitHub before either Codespace opens.</p>
+      <p class="section-goal"><code>match</code> exists, created on GitHub.com; <code>main</code> untouched</p>
       <h2>Create branch match on github.com</h2>
       <p class="section-subtitle"><strong>main is sacred. Don't touch it.</strong> The owner does this on the repository page, not inside a Codespace.</p>
       <h3>Use the branch dropdown</h3>
@@ -68,16 +64,8 @@
         <li>Open the branch dropdown and create a branch named <code>match</code> from <code>main</code>.</li>
         <li>Leave <code>main</code> unchanged. Do not commit on it.</li>
       </ol>
-      <figure class="figure-slot">
-        <div class="figure-slot-frame" role="img" aria-label="Empty screenshot slot for creating branch match in the GitHub branch dropdown"></div>
-        <figcaption>Screenshot slot: create branch match from main in the github.com branch dropdown. No picture yet.</figcaption>
-      </figure>
-    </section>
-
-    <section class="guide-section" id="open-codespaces">
-      <p class="section-goal">Both people open a Codespace only after branch match is on GitHub.</p>
-      <h2>Open Codespaces on match</h2>
-      <p class="section-subtitle">Each person uses a separate Codespace. Confirm the status bar says <code>match</code> before anyone edits the board.</p>
+      <h3 id="open-codespaces">Open Codespaces on match</h3>
+      <p>Each person uses a separate Codespace, and only after <code>match</code> exists on GitHub.com. Confirm the status bar says <code>match</code> before anyone edits the board.</p>
       <h3>Select the existing branch</h3>
       <p>Several pictures below were taken on a branch named <code>match-01</code>. Read those status bars as the branch in the picture. Your branch is <code>match</code>. The buttons are the same. Do not choose <strong>Create new branch…</strong>.</p>
       <div class="step-pictures">
@@ -89,7 +77,7 @@
     </section>
 
     <section class="guide-section" id="turn">
-      <p class="section-goal">On match, a turn is Pull, edit one cell, Commit and Sync.</p>
+      <p class="section-goal">you pulled, edited one cell, and did Commit &amp; Sync</p>
       <h2>Take a turn</h2>
       <p class="section-subtitle"><code>BOARD.txt</code> has three rows of three cells, such as <code>. . .</code>. Replace one dot with your mark.</p>
       <h3>Pull, edit one cell, Commit and Sync</h3>
@@ -125,7 +113,7 @@
     </section>
 
     <section class="guide-section" id="copilot">
-      <p class="section-goal">Copilot in Agent mode edits the square you name, and you keep the diff only when it is right.</p>
+      <p class="section-goal">Copilot made your move and you checked the diff before committing</p>
       <h2>Ask Copilot for one square</h2>
       <p class="section-subtitle">Ask mode explains. Agent mode edits. This workshop does not use Plan mode.</p>
       <h3>Agent mode</h3>
@@ -146,7 +134,7 @@
     </section>
 
     <section class="guide-section" id="register">
-      <p class="section-goal">The Game Wall knows which repository you share.</p>
+      <p class="section-goal">your match shows on the Game Wall</p>
       <h2>Register the repository</h2>
       <p class="section-subtitle">Do this once, after the partner has accepted, with both GitHub handles.</p>
       <h3>One registration for the pair</h3>

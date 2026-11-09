@@ -53,26 +53,26 @@ Stop the prompts, one sentence each:
 
 ## Slot 2
 
-With your partner, name at least two ways an update of the board can go wrong before anyone mentions checks. Then use the hint: the count of X minus the count of O is 0 or 1, lowercase x or o is illegal, the digit 0 is not the letter O, plus the other cases you named.
+With your partner, name at least two ways an update of the board can go wrong before anyone mentions checks. Then use the hint: X/O count difference (X moves first, so X−O is 0 or 1); lowercase `x`/`o` vs uppercase; the digit `0` typed instead of the letter `O` (this actually happened before); plus others the pairs find themselves.
 
-A skill is a `SKILL.md` file (Agent Skills). Matt Pocock's grill-me skill interviews you first: [AI Skills with Matt Pocock](https://www.youtube.com/watch?v=4DhcSPkEbwI). A pstack-style collection is a folder of those files.
+A skill is a `SKILL.md` file (Agent Skills). Matt Pocock's grill-me skill interviews you first. A pstack-style collection is a folder of those files. Grill Me prompt: "Interview me relentlessly about every aspect of this plan until we reach a shared understanding. Walk down each branch of the design tree, resolving dependencies between decisions one by one." Talk: https://ai.engineer/talks/v4F1gFy-hqg-software-fundamentals-for-ai-coding. Optional longer source: https://talksintel.ai/ai-ml/conferences/aie-eu-2026/full-walkthrough-workflow-for-ai-coding-matt-pocock/ ("implementation and review should never share a context", which is why the review happens in a fresh chat).
 
 The planner matters most. Order: planner, PRD, implementer, reviewer in a fresh chat, docs writer for `README.md` and `AGENTS.md`.
 
 Planner prompt:
 
 ```
-You are the planner. Do not edit any file except PRD.md. Ask what can go wrong in BOARD.txt until the rules are settled, then write the PRD.
-
-A legal board has exactly three rows. Each row has three cells separated by single spaces. An empty cell is a dot. A mark is the uppercase letter X or the uppercase letter O. X moves first, so the count of X minus the count of O is 0 or 1. A lowercase x or o is not a mark. The digit 0 is not the letter O. Record any other illegal cases we name.
-
-The PRD states the checks that test_board.py and pyproject.toml must implement. It does not contain the test code. Stop when PRD.md is written.
+You are the planner. When we update BOARD.txt, these things can go wrong:
+- case 1
+- case 2
+- case 3 (optional)
+Before writing anything, ask me one question at a time until we agree exactly which boards are valid. Then list the agreed rules as checks a test could make. Don't write code yet.
 ```
 
 Implementer prompt:
 
 ```
-You are the implementer. Read PRD.md and implement only that PRD. Add test_board.py and pyproject.toml so the command uv run pytest checks BOARD.txt. Do not widen the rules. Do not commit or push. Stop and show the diff.
+Write pytest tests for these rules and a pyproject.toml so `uv run pytest` works.
 ```
 
 Copilot writes `test_board.py` and `pyproject.toml`. Run `uv run pytest`. Break the board on purpose, see the check fail, and restore the board.

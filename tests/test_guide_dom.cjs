@@ -117,7 +117,7 @@ test('invite figures show the owner collaborator flow and the partner accept pat
   assert.match(partner, /github\.com\/&lt;owner&gt;\/&lt;repo&gt;/);
   assert.match(partner, /owner\/repo/);
   assert.match(partner, /same signed-in device/);
-  assert.match(partner, /class="figure-slot"/);
+  assert.doesNotMatch(guide, /figure-slot/);
   assert.doesNotMatch(partner, /<img/);
 });
 
@@ -142,20 +142,21 @@ test('slot 2 discusses the board before any check and ends on the reference repo
   const discussion = section(slot2, 'what-can-go-wrong', 'skills');
   assert.doesNotMatch(discussion, /test/i);
   assert.match(discussion, /at least two cases/i);
-  assert.match(discussion, /count of X minus the count of O is 0 or 1/);
-  assert.match(discussion, /lowercase x or o/);
-  assert.match(discussion, /digit 0 is not the letter O/);
+  assert.match(discussion, /X−O is 0 or 1/);
+  assert.match(discussion, /Lowercase/);
+  assert.match(discussion, /this actually happened before/);
   assert.ok(slot2.indexOf('id="board-hint"') < slot2.indexOf('id="checks"'));
-  assert.match(slot2, /https:\/\/www\.youtube\.com\/watch\?v=4DhcSPkEbwI/);
-  assert.match(slot2, /The planner writes the PRD, and that role matters most\./);
+  assert.match(slot2, /https:\/\/ai\.engineer\/talks\/v4F1gFy-hqg-software-fundamentals-for-ai-coding/);
+  assert.match(slot2, /Interview me relentlessly about every aspect of this plan/);
+  assert.match(slot2, /you and Copilot agreed the rules for a valid board/);
   assert.match(slot2, /id="copy-planner"/);
-  assert.match(slot2, /id="copy-implementer"/);
+  assert.match(slot2, /Write pytest tests for these rules and a pyproject.toml so `uv run pytest` works\./);
   assert.match(slot2, /uv run pytest/);
   assert.match(slot2, /GitHub Actions can run the same tests on every push\./);
   assert.match(slot2, /https:\/\/github\.com\/igorsdub\/git-tic-tac-toe-reference/);
   assert.ok(slot2.indexOf('id="reference"') > slot2.indexOf('id="reproducibility"'));
   assert.equal(linkedImages(slot2).length, 0);
-  assert.match(slot2, /class="figure-slot"/);
+  assert.doesNotMatch(slot2, /figure-slot/);
 });
 
 function findBrowser() {

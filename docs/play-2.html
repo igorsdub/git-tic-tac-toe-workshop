@@ -27,7 +27,7 @@
     <nav class="jump-nav" aria-label="Quick jump to section"><span class="jump-nav-label">Jump to:</span><a href="#what-can-go-wrong" class="jump-pill">What can go wrong</a><a href="#skills" class="jump-pill">Skills</a><a href="#planner" class="jump-pill">Planner</a><a href="#checks" class="jump-pill">Checks</a><a href="#rematch" class="jump-pill">Rematch</a><a href="#reproducibility" class="jump-pill">Reproducibility</a><a href="#reference" class="jump-pill">Reference</a></nav>
 
     <section class="guide-section" id="what-can-go-wrong">
-      <p class="section-goal">Name what can go wrong when you update the board, before you read any hint.</p>
+      <p class="section-goal">your pair wrote at least two cases</p>
       <h2>What can go wrong when you update the board?</h2>
       <p class="section-subtitle">With your partner, write at least two cases. Finish your own list before you open the hint.</p>
       <h3>Your cases</h3>
@@ -35,50 +35,42 @@
       <aside class="hint-box" id="board-hint">
         <h3>Hint, after your own cases</h3>
         <ul>
-          <li>The count of X minus the count of O is 0 or 1.</li>
-          <li>A lowercase x or o is not a mark.</li>
-          <li>The digit 0 is not the letter O.</li>
-          <li>Others you already thought of.</li>
+          <li>X/O count difference (X moves first, so X−O is 0 or 1).</li>
+          <li>Lowercase <code>x</code>/<code>o</code> vs uppercase.</li>
+          <li>The digit <code>0</code> typed instead of the letter <code>O</code> (this actually happened before).</li>
+          <li>Plus others the pairs find themselves.</li>
         </ul>
       </aside>
     </section>
 
-    <section class="guide-section" id="skills">
-      <p class="section-goal">You can point an agent at a written skill before it plans.</p>
-      <h2>Skills</h2>
-      <p class="section-subtitle">A skill is a <code>SKILL.md</code> file the agent reads before it acts. That file format is called Agent Skills.</p>
-      <h3>Grill the plan first</h3>
-      <p>Matt Pocock's grill-me skill interviews you until a loose idea is sharp enough to commit to. Start it in a fresh conversation. A pstack-style collection is a folder of those <code>SKILL.md</code> files you keep and reuse.</p>
-      <p>Watch <a href="https://www.youtube.com/watch?v=4DhcSPkEbwI" target="_blank" rel="noopener noreferrer">AI Skills with Matt Pocock</a>, and read the <a href="https://github.com/mattpocock/skills/blob/main/skills/productivity/grill-me/SKILL.md" target="_blank" rel="noopener noreferrer">grill-me SKILL.md</a>.</p>
-    </section>
-
     <section class="guide-section" id="planner">
-      <p class="section-goal">The planner writes the PRD, and that role matters most.</p>
+      <p class="section-goal">you and Copilot agreed the rules for a valid board</p>
       <h2>Planner, then everyone else</h2>
-      <p class="section-subtitle">A wrong PRD makes the implementer build the wrong thing. Weight the planner above the later roles.</p>
+      <p class="section-subtitle">The planner matters most. A wrong agreement here makes every later role build the wrong thing.</p>
+      <h3 id="skills">Skills, then grill the plan</h3>
+      <p>A skill is a <code>SKILL.md</code> file the agent reads before it acts. That file format is called Agent Skills. Matt Pocock's grill-me skill is one of them. A pstack-style collection is a folder of those <code>SKILL.md</code> files you keep and reuse.</p>
+      <p>Paste this Grill Me prompt:</p>
+      <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-grill" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-grill">Interview me relentlessly about every aspect of this plan until we reach a shared understanding. Walk down each branch of the design tree, resolving dependencies between decisions one by one.</code></pre></div>
+      <p>Talk: <a href="https://ai.engineer/talks/v4F1gFy-hqg-software-fundamentals-for-ai-coding" target="_blank" rel="noopener noreferrer">Software fundamentals for AI coding</a>. Optional longer source: <a href="https://talksintel.ai/ai-ml/conferences/aie-eu-2026/full-walkthrough-workflow-for-ai-coding-matt-pocock/" target="_blank" rel="noopener noreferrer">full walkthrough of Matt Pocock's AI coding workflow</a>. He says implementation and review should never share a context, which is why the review happens in a fresh chat.</p>
       <h3>The order of the chats</h3>
       <ol>
-        <li><strong>Planner.</strong> Paste the planner prompt. It writes <code>PRD.md</code> and does not build the check.</li>
-        <li><strong>Implementer.</strong> Paste the implementer prompt. It builds only what the PRD says.</li>
-        <li><strong>Reviewer, in a fresh chat.</strong> It reads the PRD and the diff and does not edit files.</li>
-        <li><strong>Docs writer.</strong> It updates <code>README.md</code> and <code>AGENTS.md</code> so the next person can follow the project.</li>
+        <li><strong>Planner.</strong> Paste the planner prompt. Agree the rules before any code.</li>
+        <li><strong>Implementer.</strong> Paste the implementer prompt.</li>
+        <li><strong>Reviewer, in a fresh chat.</strong> Implementation and review should never share a context.</li>
+        <li><strong>Docs writer.</strong> It updates <code>README.md</code> and <code>AGENTS.md</code>.</li>
       </ol>
       <h3>Planner prompt</h3>
-      <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-planner" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-planner">You are the planner. Do not edit any file except PRD.md. Ask what can go wrong in BOARD.txt until the rules are settled, then write the PRD.
-
-A legal board has exactly three rows. Each row has three cells separated by single spaces. An empty cell is a dot. A mark is the uppercase letter X or the uppercase letter O. X moves first, so the count of X minus the count of O is 0 or 1. A lowercase x or o is not a mark. The digit 0 is not the letter O. Record any other illegal cases we name.
-
-The PRD states the checks that test_board.py and pyproject.toml must implement. It does not contain the test code. Stop when PRD.md is written.</code></pre></div>
+      <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-planner" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-planner">You are the planner. When we update BOARD.txt, these things can go wrong:
+- case 1
+- case 2
+- case 3 (optional)
+Before writing anything, ask me one question at a time until we agree exactly which boards are valid. Then list the agreed rules as checks a test could make. Don't write code yet.</code></pre></div>
       <h3>Implementer prompt</h3>
-      <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-implementer" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-implementer">You are the implementer. Read PRD.md and implement only that PRD. Add test_board.py and pyproject.toml so the command uv run pytest checks BOARD.txt. Do not widen the rules. Do not commit or push. Stop and show the diff.</code></pre></div>
-      <h3>Reviewer and docs writer</h3>
-      <p>Open a fresh chat for the reviewer. Then ask the docs writer to update <code>README.md</code> and <code>AGENTS.md</code> only.</p>
-      <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-reviewer" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-reviewer">You are the reviewer, in a fresh chat. Read PRD.md and the diff. Do not edit files. Say whether test_board.py and pyproject.toml do only what the PRD says.</code></pre></div>
-      <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-docs" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-docs">You are the docs writer. Update README.md and AGENTS.md so a new person can run uv run pytest and play on branch rematch. Do not change the checks or BOARD.txt.</code></pre></div>
+      <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-implementer" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-implementer">Write pytest tests for these rules and a pyproject.toml so `uv run pytest` works.</code></pre></div>
     </section>
 
     <section class="guide-section" id="checks">
-      <p class="section-goal">You can watch a check fail on a broken board and pass after you restore it.</p>
+      <p class="section-goal"><code>uv run pytest</code> passes, and fails when you break the board</p>
       <h2>Let Copilot write the check</h2>
       <p class="section-subtitle">Copilot adds <code>test_board.py</code> and <code>pyproject.toml</code>. You run the check, break the board on purpose, and put the board back.</p>
       <h3>Run it, break it, restore it</h3>
@@ -92,15 +84,11 @@ The PRD states the checks that test_board.py and pyproject.toml must implement. 
     </section>
 
     <section class="guide-section" id="rematch">
-      <p class="section-goal">Branch rematch starts from main on github.com, and pytest runs before every commit.</p>
+      <p class="section-goal">every rematch commit had passing tests first</p>
       <h2>Create branch rematch</h2>
       <p class="section-subtitle"><strong>main is sacred. Don't touch it.</strong> Create <code>rematch</code> from <code>main</code> on github.com, the same way the owner created <code>match</code>.</p>
       <h3>Use the branch dropdown again</h3>
-      <p>On github.com, open the branch dropdown and create <code>rematch</code> from <code>main</code>. Then both of you open Codespaces on <code>rematch</code>. Run <code>uv run pytest</code> before every commit on this branch.</p>
-      <figure class="figure-slot">
-        <div class="figure-slot-frame" role="img" aria-label="Empty screenshot slot for creating branch rematch on GitHub.com"></div>
-        <figcaption>Screenshot slot: create branch rematch from main in the github.com branch dropdown. No picture yet.</figcaption>
-      </figure>
+      <p>On github.com, open the branch dropdown and create <code>rematch</code> from <code>main</code>. Leave <code>main</code> untouched. Then both of you open Codespaces on <code>rematch</code>. Run <code>uv run pytest</code> and see it pass before every commit on this branch.</p>
       <details id="pre-commit">
         <summary>Run the check before every commit</summary>
         <p>A pre-commit hook is a small program Git runs before it records a commit. In the Codespace, save this as <code>.git/hooks/pre-commit</code> and make it executable with <code>chmod +x .git/hooks/pre-commit</code>.</p>
@@ -111,25 +99,19 @@ uv run pytest</code></pre></div>
     </section>
 
     <section class="guide-section" id="reproducibility">
-      <p class="section-goal">You can name the manifest, the lock, the runner, and the check.</p>
+      <p class="section-goal">you can name the manifest, lock file, runner, and test module</p>
       <h2>Reproducibility</h2>
       <p class="section-subtitle">Someone else can rebuild the same check when the project records what it needs and the exact versions.</p>
       <h3>Four names in this project</h3>
       <ul>
         <li><strong>Manifest:</strong> <code>pyproject.toml</code> says what the project needs.</li>
-        <li><strong>Lock:</strong> <code>uv.lock</code> records the exact versions.</li>
+        <li><strong>Lock file:</strong> <code>uv.lock</code> records the exact versions.</li>
         <li><strong>Runner:</strong> <code>uv</code> builds the environment and runs the command.</li>
         <li><strong>Test module:</strong> <code>pytest</code> runs <code>test_board.py</code>.</li>
       </ul>
       <p>Julia records the same idea in <code>Project.toml</code> and <code>Manifest.toml</code>. R records it with <code>renv</code>.</p>
-    </section>
-
-    <section class="guide-section" id="reference">
-      <p class="section-goal">You can open the reference repository and compare it with yours.</p>
-      <h2>Reference repository</h2>
-      <p class="section-subtitle">Look at this only after your own PRD, check, and docs exist.</p>
-      <h3>Compare, do not copy first</h3>
-      <p>The reference repository is <a href="https://github.com/igorsdub/git-tic-tac-toe-reference" target="_blank" rel="noopener noreferrer">github.com/igorsdub/git-tic-tac-toe-reference</a>. Open it at the end and see how its board check, lockfile, and docs compare with yours.</p>
+      <h3 id="reference">Reference repository</h3>
+      <p>Look at this only after your own rules, check, and docs exist. The reference repository is <a href="https://github.com/igorsdub/git-tic-tac-toe-reference" target="_blank" rel="noopener noreferrer">github.com/igorsdub/git-tic-tac-toe-reference</a>. Open it at the end and see how its board check, lock file, and docs compare with yours.</p>
     </section>
 
     <p class="stage-next"><a data-workshop-route href="wall.html">Next: Game Wall</a></p>
