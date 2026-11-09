@@ -19,7 +19,7 @@ This two-hour workshop teaches collaborative Git through a paired tic-tac-toe ga
 
 ## Workshop links
 
-The plain site URL follows the single `setupOnly` setting in [`docs/site-config.js`](docs/site-config.js): when true, it opens Setup; when false, it opens the Game Wall. Open [`docs/wall.html`](docs/wall.html) directly for the Game Wall. The default workshop is RIKEN (2026-11-10). SOKENDAI and SCDA Training Week are archived and remain selectable so their history stays viewable. Use a workshop-specific `?workshop=<id>` link to select an event.
+The plain site URL follows the single `setupOnly` setting in [`docs/site-config.js`](docs/site-config.js): when true, it opens Setup; when false, it opens the Game Wall. Open [`docs/wall.html`](docs/wall.html) directly for the Game Wall. The default workshop is RIKEN (2026-11-10). SOKENDAI and SCDA Training Week are archived and omitted from the workshop selector. Their Game Wall history stays viewable at `?workshop=<id>`. Use a workshop-specific `?workshop=<id>` link to select an event.
 
 The shared event context on the Game Wall, Setup page, and How to play reads event names, ISO dates, status, registration links, and optional `note` text from [`docs/workshops.json`](docs/workshops.json). Each workshop may also set `setupTrack` (`"codespaces"` or `"local"`) and `surveyUrl`. Change the catalog's `defaultWorkshopId` to designate a different plain-URL default; stable workshop links continue using their own `?workshop=<id>` value.
 
@@ -35,7 +35,7 @@ In full mode, learners move through Setup (`docs/setup.html`), Slot 1 (`docs/gui
 
 The Setup page adapts to the selected workshop (`?workshop=<id>`):
 
-- **Archived** (SOKENDAI and SCDA Training Week): archived workshops stay in the selector under Archived, so their Game Wall history stays viewable. Setup for an archived workshop says the workshop has finished.
+- **Archived** (SOKENDAI and SCDA Training Week): archived workshops are omitted from the workshop selector. Open `?workshop=<id>` to view that Game Wall. Setup for an archived workshop says the workshop has finished.
 - **`setupTrack: "codespaces"`** (RIKEN): the Codespaces track with screenshots and per-step checkboxes remembered in the browser. The setup page has no survey and no Codespace-deletion section.
 - A workshop with no `setupTrack` shows "Setup for this workshop is not published yet".
 
