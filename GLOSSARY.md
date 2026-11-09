@@ -20,7 +20,7 @@ The GitHub repository a pair shares, created from the template. A repository bel
 A GitHub user who has been given access to someone else's repository. On a personal repository the partner becomes a collaborator with write access once they accept the owner's invitation.
 
 **Invitation**:
-The request the owner sends from Settings → Collaborators → Add people. The partner accepts it from the email, github.com/notifications, or the repository's `/invitations` page. It expires after 7 days.
+The request the owner sends from Settings → Collaborators → Add people. The partner accepts it by opening `github.com/<owner>/<repo>` or searching `owner/repo` and using the invitation banner, or from the invitation email on the same signed-in device. It expires after 7 days.
 
 **Registration**:
 A connection between a repository and a workshop, with two player GitHub handles supplied for avatars. The Game Wall watches the registered repository. Repeating registration for the same repository and workshop updates the existing registration and its handles rather than creating another entry. Among valid registration issues for that repository and workshop, the newest issue supplies the handles; corrections are submitted through a new form entry.
@@ -35,7 +35,7 @@ _Avoid_: Register every match branch
 The collaborative tic-tac-toe activity in general. Use *match* for one play-through.
 
 **Match**:
-One play-through of tic-tac-toe between a pair, represented by a repository branch whose name starts with the literal lowercase prefix `match`. The template supplies `match-01`; the pair creates `match-02` from clean `main` for the rematch. Neither is merged back. Each matching branch appears as a separate Game Wall card, identified by its full branch name. A pair may play several matches during a workshop.
+One play-through of tic-tac-toe between a pair, represented by a repository branch whose name contains `match` in any case. `match`, `Match`, `rematch`, and `match-1` all qualify. `main` never does. The owner creates `match`, and later `rematch`, from `main` on github.com. Neither is merged back. Each matching branch appears as a separate Game Wall card, identified by its full branch name.
 
 **Board**:
 The uppercase `BOARD.txt` file whose current version records a match's 3×3 squares: three rows of three single-space-separated cells, `.` (empty), `X`, or `O`. Game state is evaluated from the grid marks.
@@ -44,7 +44,7 @@ The uppercase `BOARD.txt` file whose current version records a match's 3×3 squa
 One player's change to one empty square, saved as a commit and shared with the other player.
 
 **Turn cycle**:
-The five steps a player follows to make a move, named after the Source Control buttons: Pull, edit one cell and save, stage with +, Commit with a clear message, Sync Changes. "Sync Changes" is used everywhere; never "Push" as a step name.
+On branch `match`, a turn is Pull, edit one cell, Commit and Sync. Staging with + is how Commit in Source Control picks up that one cell. "Sync Changes" is the share button.
 _Avoid_: Sacred turn cycle, Game loop, Play cycle
 
 **Conflict**:
@@ -60,7 +60,7 @@ The Source Control **Graph** section, which draws a branch's commits as a line, 
 The state after checking out an old commit directly instead of a branch. Safe for reading; leave it by switching back to a branch. Commits made there belong to no branch.
 
 **Experiment branch**:
-A published branch started from a past commit for a take-home what-if move. Its name never starts with `match`, so the Game Wall ignores it, and it is never merged into `main` or a match branch.
+A published branch started from a past commit for a take-home what-if move. Its name must not contain `match` in any case, so the Game Wall ignores it, and it is never merged into `main` or a match branch.
 
 **Ask mode**:
 Copilot Chat mode that only explains. Used for the first rematch move; the learner does all edits and Git steps.
@@ -69,14 +69,14 @@ Copilot Chat mode that only explains. Used for the first rematch move; the learn
 Copilot Chat mode that can edit files and, when explicitly asked, commit and push. Used for the next rematch move, one cell per request; the learner reviews the diff first.
 
 **Plan mode**:
-Copilot Chat mode that shows a plan before acting. Used for a later rematch move with one goal (pull, plan, place); the learner approves the plan, reviews the diff, then asks for the commit and push as a separate request.
+Not used in this workshop. Copilot Chat here is Ask (explain only) or Agent (edit the named square).
 
-**Agent-assisted rematch**:
-The phase that follows the manual match. Every pair starts a fresh match on the next numbered branch from clean `main`, and the learner asks Copilot in agent mode to make their chosen board edit. The learner still reviews the diff and completes the Git workflow.
-_Avoid_: Game 2, Rematch game, Branch rematch, Feature branch game
+**Agent-assisted turn**:
+On branch `match`, the learner names one square, Copilot in Agent mode edits `BOARD.txt`, and the learner keeps the diff only when it is that square. A wrong diff is discarded and requested again.
+_Avoid_: Plan mode, play the move by hand instead
 
-**Copilot demonstration**:
-The instructor's live demonstration of delegating one board edit to Copilot. A learner without Copilot access follows it and completes the rematch manually.
+**Rematch**:
+Branch `rematch`, created from `main` on github.com after the first match. `uv run pytest` runs before every commit on this branch.
 
 ## Pages and documents
 
@@ -98,7 +98,7 @@ The markdown documents `LEARNER_GUIDE.md`, `FACILITATOR_GUIDE.md`, `PRE_SESSION_
 ## Learner path
 
 **Stage**:
-One step of a learner's path through the training, shown in the header stage strip in full mode and ordered Setup, How to play, Game Wall. The strip also carries the unnumbered **Register repository** link. Setup-only mode hides the strip. Not to be confused with staging a file in Git.
+One step of a learner's path through the training, shown in the header stage strip in full mode and ordered Setup, Slot 1, Slot 2, Game Wall. The strip also carries the unnumbered **Register repository** link. Setup-only mode hides the strip. Not to be confused with staging a file in Git.
 
 **Setup track**:
 The variant of the Setup page a workshop uses, determined by how learners get a working environment. The Codespaces track needs only a browser; the local track needs software installed on the learner's own computer. Every active workshop has a track; for a workshop without one the Setup page says "Setup for this workshop is not published yet".

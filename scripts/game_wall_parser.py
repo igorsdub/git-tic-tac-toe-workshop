@@ -44,7 +44,16 @@ def extract_repo_info(url_or_text: str) -> Tuple[Optional[str], Optional[str], O
     return owner, repo, clean_url
 
 
+# A Game Wall match is any branch whose name contains "match", in any case.
+# `match`, `Match`, `rematch`, and `match-1` qualify. `main` does not.
+MATCH_BRANCH_RE = re.compile(r"match", re.IGNORECASE)
+
 WORKSHOP_CATALOG_PATH = Path(__file__).resolve().parent.parent / "docs" / "workshops.json"
+
+
+def is_match_branch(name: str) -> bool:
+    """True when the branch name contains 'match', ignoring case."""
+    return bool(name) and MATCH_BRANCH_RE.search(name) is not None
 
 
 def load_workshop_catalog(path: Path = WORKSHOP_CATALOG_PATH) -> Dict[str, Any]:
@@ -180,8 +189,8 @@ def fetch_registered_board(owner: str, repo: str, branch: str, timeout: int = 15
 
     No default-branch, legacy filename, or alternate-ref fallback is attempted.
     """
-    if not branch.startswith("match"):
-        raise ValueError("Match branch must start with the literal lowercase prefix 'match'.")
+    if not is_match_branch(branch):
+        raise ValueError("Match branch name must contain 'match' in any case. 'main' is not a match branch.")
     url = (
         "https://raw.githubusercontent.com/"
         f"{quote(owner, safe='')}/{quote(repo, safe='')}/"

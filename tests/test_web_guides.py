@@ -17,13 +17,14 @@ class TestWebGuides(unittest.TestCase):
         self.home = (DOCS_DIR / "index.html").read_text(encoding="utf-8")
         self.setup = (DOCS_DIR / "setup.html").read_text(encoding="utf-8")
         self.guide = (DOCS_DIR / "guide.html").read_text(encoding="utf-8")
+        self.slot2 = (DOCS_DIR / "play-2.html").read_text(encoding="utf-8")
         self.utils = (DOCS_DIR / "guide-utils.js").read_text(encoding="utf-8")
         self.theme_init = (DOCS_DIR / "theme-init.js").read_text(encoding="utf-8")
         self.context = (DOCS_DIR / "workshop-context.js").read_text(encoding="utf-8")
         self.styles = (DOCS_DIR / "styles.css").read_text(encoding="utf-8")
 
     def test_stage_strip_on_all_learner_pages(self):
-        pages = {"wall.html": "wall", "guide.html": "guide", "setup.html": "setup"}
+        pages = {"wall.html": "wall", "guide.html": "play-1", "play-2.html": "play-2", "setup.html": "setup"}
         for name, stage in pages.items():
             with self.subTest(page=name):
                 html = (DOCS_DIR / name).read_text(encoding="utf-8")
@@ -35,8 +36,10 @@ class TestWebGuides(unittest.TestCase):
         setup = (DOCS_DIR / "setup.html").read_text(encoding="utf-8")
         guide = (DOCS_DIR / "guide.html").read_text(encoding="utf-8")
         wall = (DOCS_DIR / "wall.html").read_text(encoding="utf-8")
-        self.assertIn('<a data-workshop-route href="guide.html">Next: How to play</a>', setup)
-        self.assertIn('<a data-workshop-route href="wall.html">Next: Game Wall</a>', guide)
+        self.assertIn('<a data-workshop-route href="guide.html">Next: Slot 1</a>', setup)
+        self.assertIn('<a data-workshop-route href="play-2.html">Next: Slot 2</a>', guide)
+        slot2 = (DOCS_DIR / "play-2.html").read_text(encoding="utf-8")
+        self.assertIn('<a data-workshop-route href="wall.html">Next: Game Wall</a>', slot2)
         self.assertIn('<a data-workshop-route href="setup.html">Back to start: Setup</a>', wall)
 
     def test_guide_assets_exist(self):
@@ -64,10 +67,14 @@ class TestWebGuides(unittest.TestCase):
             "2026-11-06-sokedai": ("SOKENDAI", "2026-11-06"),
             "2026-11-10-riken": ("RIKEN", "2026-11-10"),
         }
-        self.assertEqual(catalog["defaultWorkshopId"], "2026-11-06-sokedai")
+        self.assertEqual(catalog["defaultWorkshopId"], "2026-11-10-riken")
+        by_id = {item["id"]: item for item in catalog["workshops"]}
+        self.assertEqual(by_id["2026-11-06-sokedai"]["status"], "archived")
+        self.assertEqual(by_id["2026-11-10-riken"]["pages"]["slot1"], "guide.html")
+        self.assertEqual(by_id["2026-11-10-riken"]["pages"]["slot2"], "play-2.html")
         self.assertEqual({item["id"]: (item["name"], item["date"]) for item in catalog["workshops"]}, expected)
         self.assertNotIn('data-workshop-registration', self.setup)
-        for name, html in (("wall", self.index), ("learner", self.guide), ("setup", self.setup)):
+        for name, html in (("wall", self.index), ("learner", self.guide), ("slot2", self.slot2), ("setup", self.setup)):
             with self.subTest(page=name):
                 header = html[:html.index("</header>")]
                 self.assertIn('class="header-workshop-picker"', header)
@@ -126,12 +133,13 @@ class TestWebGuides(unittest.TestCase):
 
     def test_quick_jump_links_target_real_guide_sections(self):
         for name, html, expected in (
-            ("learner", self.guide, ("turn", "rematch")),
-            ("setup", self.setup, ("step-survey", "step-account", "step-repo", "step-codespace", "step-look-around", "step-delete")),
+            ("learner", self.guide, ("invite", "create-match", "turn", "copilot")),
+            ("slot2", self.slot2, ("what-can-go-wrong", "planner", "checks", "reference")),
+            ("setup", self.setup, ("step-account", "step-repo", "step-codespace")),
         ):
             with self.subTest(page=name):
                 nav = html[html.index('class="jump-nav"'):]
-                section_ids = set(re.findall(r'<(?:section|article)[^>]+id="([^"]+)"', html))
+                section_ids = set(re.findall(r'<(?:section|article|h[1-6])[^>]+id="([^"]+)"', html))
                 for anchor in expected:
                     self.assertIn(f'href="#{anchor}"', nav)
                     self.assertIn(anchor, section_ids)
@@ -143,10 +151,7 @@ class TestWebGuides(unittest.TestCase):
             "https://github.com/igorsdub/git-tic-tac-toe-template",
             "Use this template",
             "Create codespace on main",
-            "<strong>Delete</strong>",
-            "What is this project?",
-            "Codespaces and Copilot access are separate",
-            "manual rematch path",
+            "what does this repository do?",
             "https://github.com/signup",
             'id="setup-archived"',
             'id="setup-pending"',
@@ -157,19 +162,22 @@ class TestWebGuides(unittest.TestCase):
             'id="setup-error"',
             "Workshop details could not be loaded",
             'src="setup.js"',
+            "The template now has only",
         ):
             self.assertIn(requirement, self.setup)
         self.assertLess(self.setup.index('src="workshop-context.js"'), self.setup.index('src="setup.js"'))
-        for step in ("step-survey", "step-account", "step-repo", "step-codespace", "step-look-around", "step-delete"):
+        for step in ("step-account", "step-repo", "step-codespace", "step-look-around"):
             self.assertIn(f'<input type="checkbox" class="step-check" data-step="{step}" id="check-{step}">', self.setup)
+        for removed in ("step-survey", "step-delete", "03-cleaning-up", "Fill in the survey"):
+            self.assertNotIn(removed, self.setup)
         for old in ("docs.google.com/forms", "Keep the public repository and Codespace"):
             self.assertNotIn(old, self.setup)
 
     def test_setup_manual_picture_sections_follow_user_sequence(self):
         headings = (
+            ("1", "Create a GitHub account"),
             ("2", "Create a repository from the template"),
-            ("3", "Test Codespaces and GitHub Copilot"),
-            ("4", "Clean up"),
+            ("3", "Check Codespaces and GitHub Copilot"),
         )
         for number, heading in headings:
             self.assertIn(f'<span class="step-num">{number}</span> {heading}', self.setup)
@@ -177,29 +185,24 @@ class TestWebGuides(unittest.TestCase):
 
         manual = self.setup[self.setup.index('id="guide-template"'):self.setup.index('id="setup-next"')]
         files = re.findall(r'src="(images/setup/manual-images/[^"]+\.png)"', manual)
-        self.assertEqual(len(files), 28)
+        self.assertEqual(len(files), 21)
         self.assertEqual(sum("/01-template/" in name for name in files), 9)
         self.assertEqual(sum("/02-codepaces/" in name for name in files), 12)
-        self.assertEqual(sum("/03-cleaning-up/" in name for name in files), 7)
+        self.assertEqual(sum("/03-cleaning-up/" in name for name in files), 0)
         self.assertEqual(files, sorted(files))
         self.assertIn("Autopilot", manual)
         self.assertIn("What is this project?", manual)
+        self.assertIn("what does this repository do?", manual)
         self.assertIn("Copilot", manual)
         self.assertNotIn("Codex", manual)
         for figure in re.findall(r'<figure class="step-shot">(.*?)</figure>', manual):
             self.assertLess(figure.index("shot-instruction"), figure.index("<img"))
             self.assertIn('target="_blank"', figure)
 
-    def test_setup_cleanup_actions_match_manual_screenshots(self):
-        start = self.setup.index('id="step-delete"')
-        cleanup = self.setup[start:self.setup.index('</section>', self.setup.index('id="guide-cleanup"'))]
-        for asset in ("00-home.png", "01-menu.png", "02-select-codespace.png", "03-codespace-actions.png", "04-select-delete.png", "05-delete.png", "06-done.png"):
-            self.assertIn(asset, cleanup)
-        for action in ("GitHub home", "left navigation", "Codespaces", "Delete", "deleted"):
-            self.assertIn(action, cleanup)
-        self.assertIn("Open the top-left navigation.", cleanup)
-        self.assertIn("Open the ··· menu for the Codespace you created.", cleanup)
-        self.assertIn('<h2 id="setup-completion-heading">Done!</h2>', cleanup)
+    def test_setup_has_no_cleanup_section(self):
+        self.assertNotIn('id="guide-cleanup"', self.setup)
+        self.assertNotIn("03-cleaning-up", self.setup)
+        self.assertNotIn("Delete the Codespace", self.setup)
 
     def test_setup_media_never_shows_broken_icons(self):
         for tag in re.findall(r"<(?:img|video)\b[^>]*>", self.setup[self.setup.index("<main"):]):
@@ -224,8 +227,10 @@ class TestWebGuides(unittest.TestCase):
         expected = {f"images/setup/manual-images/{folder.name}/{image.name}"
                     for folder in sorted(manual_root.iterdir()) for image in sorted(folder.glob("*.png"))}
         referenced = set(re.findall(r'src="(images/setup/manual-images/[^"]+\.png)"', self.setup))
-        self.assertEqual(referenced, expected)
-        self.assertEqual(len(referenced), 28)
+        cleanup = {name for name in expected if "/03-cleaning-up/" in name}
+        self.assertEqual(referenced, expected - cleanup)
+        self.assertEqual(len(referenced), 21)
+        self.assertTrue(cleanup)
         for asset in referenced:
             with self.subTest(asset=asset):
                 path = DOCS_DIR / asset
@@ -233,39 +238,24 @@ class TestWebGuides(unittest.TestCase):
                 self.assertTrue(path.read_bytes().startswith(b"\x89PNG\r\n\x1a\n"), f"invalid PNG: {asset}")
 
     def test_learner_match_and_registration_use_the_workshop_contract(self):
-        for requirement in ("Source Control", "BOARD.txt", "match-01", "clean <code>main</code>", "stage <code>BOARD.txt</code> with <strong>+</strong>", "make the move manually"):
+        for requirement in ("Source Control", "BOARD.txt", "match-01", "<strong>main is sacred. Don't touch it.</strong>", "Commit and Sync"):
             self.assertIn(requirement, self.guide)
-        self.assertIn("Place X in the center of the board", self.guide)
-        ordered_sections = [self.guide.index(f'id="{section}"') for section in ("turn", "rematch")]
+        ordered_sections = [self.guide.index(f'id="{section}"') for section in ("invite", "create-match", "turn", "copilot", "register")]
         self.assertEqual(ordered_sections, sorted(ordered_sections))
-        for heading in ("One move and repeat", "Rematch"):
-            self.assertIn(f"<h2>{heading}</h2>", self.guide)
-        self.assertEqual(self.guide.count('<section class="guide-section"'), 5)
-        self.assertNotIn("then commit and push.", self.guide)
-        for cmd in ("git pull --no-rebase", "git add BOARD.txt", "git fetch", "git switch match-01", "git switch -c match-02", "git push -u origin match-02"):
-            self.assertIn(cmd, self.guide)
-            self.assertIn(cmd, (REPO_ROOT / "LEARNER_GUIDE.md").read_text(encoding="utf-8"))
-        self.assertLess(self.guide.index('id="terminal"'), self.guide.index('class="stage-next"'))
-        self.assertIn("<h2>Taking turns and fixing a conflict</h2>", self.guide)
-        self.assertIn('href="time-machine.html"', self.guide)
-        self.assertNotIn("Workshop setup", self.guide)
-        self.assertNotIn("History as a time machine", self.guide)
-        self.assertIn("create a branch named <code>match-02</code>", self.guide)
-        self.assertIn("partner fetches <code>match-02</code>, switches to it, and pulls", self.guide)
-        self.assertIn("select <strong>Agent</strong> mode", self.guide)
-        self.assertIn("follow the instructor’s Copilot demonstration", self.guide)
+        self.assertIn("<h2>Take a turn</h2>", self.guide)
+        self.assertNotIn("<h3>Plan mode</h3>", self.guide)
+        self.assertNotIn("follow the instructor", self.guide.casefold())
+        self.assertNotIn("play manually", self.guide.casefold())
         for requirement in (
-            "register it once",
-            "both player GitHub handles",
+            "both GitHub handles",
             "successful registration comment confirms",
-            "lowercase <code>match</code>",
-            "separate cards",
+            "contains <code>match</code>",
+            "main</code> never shows",
         ):
             self.assertIn(requirement.casefold(), self.guide.casefold())
-        for old in ("Rewind", "rewind", "Checkout (Detached)", "force-push"):
+        for old in ("Rewind", "rewind", "Checkout (Detached)", "force-push", "match-02"):
             self.assertNotIn(old, self.guide)
         self.assertNotIn("Register each match with its numbered branch", self.guide)
-        self.assertNotIn("Existing branchless records cannot be replayed", self.guide)
 
     def test_repository_registration_contract_is_consistent_in_markdown_guides(self):
         readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
@@ -283,20 +273,14 @@ class TestWebGuides(unittest.TestCase):
         self.assertIn("2026-10-01-scda", facilitator)
         self.assertIn("Register repository", glossary)
         self.assertIn("once per workshop, with both GitHub handles", glossary)
-        self.assertIn("literal lowercase prefix `match`", glossary)
+        self.assertIn("contains `match` in any case", glossary)
         self.assertIn("discovered automatically", glossary)
         self.assertFalse((REPO_ROOT / "CONTEXT.md").exists())
 
-    def test_turn_cycle_is_five_source_control_steps(self):
-        turn = self.guide[self.guide.index('id="turn"'):self.guide.index('id="rematch"')]
-        detailed_turn = turn[turn.index("</aside>"):]
-        steps = re.findall(r"<li>(.*?)</li>", re.search(r"<ol>(.*?)</ol>", detailed_turn, re.S).group(1), re.S)
-        self.assertEqual(len(steps), 5)
-        for step, button in zip(steps, ("Pull", None, "+", "Commit", "Sync Changes")):
-            if button:
-                self.assertIn(f"<strong>{button}</strong>", step)
-        self.assertNotIn("Push", turn)
-        self.assertNotIn("push", turn)
+    def test_turn_cycle_is_pull_edit_commit_sync(self):
+        turn = self.guide[self.guide.index('id="turn-cycle-title"'):self.guide.index('id="copilot"')]
+        steps = re.findall(r"<li>(.*?)</li>", re.search(r"<ol>(.*?)</ol>", turn, re.S).group(1), re.S)
+        self.assertEqual([re.sub(r"<[^>]+>", "", step) for step in steps], ["Pull", "Edit one cell and save", "Commit and Sync"])
 
     def test_no_archived_workshop_in_page_html_and_fallbacks_use_default(self):
         default = json.loads((DOCS_DIR / "workshops.json").read_text(encoding="utf-8"))["defaultWorkshopId"]
@@ -310,7 +294,7 @@ class TestWebGuides(unittest.TestCase):
         self.assertIn(f"placeholder: {default}", form)
 
     def test_each_page_has_one_h1_and_no_skipped_heading_levels(self):
-        for name, html in (("wall", self.index), ("learner", self.guide), ("setup", self.setup)):
+        for name, html in (("wall", self.index), ("learner", self.guide), ("slot2", self.slot2), ("setup", self.setup)):
             with self.subTest(page=name):
                 levels = [int(level) for level in re.findall(r"<h([1-6])[ >]", html)]
                 self.assertEqual(levels.count(1), 1)
@@ -319,7 +303,7 @@ class TestWebGuides(unittest.TestCase):
                     self.assertLessEqual(current, previous + 1)
 
     def test_pages_load_theme_init_first_and_avoid_dashboard_wording(self):
-        for name, html in (("wall", self.index), ("learner", self.guide), ("setup", self.setup)):
+        for name, html in (("wall", self.index), ("learner", self.guide), ("slot2", self.slot2), ("setup", self.setup)):
             with self.subTest(page=name):
                 head = html[:html.index("</head>")]
                 self.assertIn('src="site-config.js"', re.findall(r"<script[^>]*>", head)[0])
@@ -388,23 +372,28 @@ class TestWebGuides(unittest.TestCase):
 
     def test_copilot_prompts_and_guardrails(self):
         prompts = ("Explain the current board in BOARD.txt and whose turn it is.",
-                   "Place O in the top-right cell of BOARD.txt. Change only that cell.",
-                   "Commit this move with message 'O plays top-right' and push it.",
-                   "Pull, plan my next legal move as O, and place it. Then stop so I can review the diff.")
+                   "Place O in the top-right cell of BOARD.txt. Change only that cell.")
+        planner = "You are the planner. When we update BOARD.txt, these things can go wrong:"
+        implementer = "Write pytest tests for these rules and a pyproject.toml so `uv run pytest` works."
         learner = (REPO_ROOT / "LEARNER_GUIDE.md").read_text(encoding="utf-8")
         for prompt in prompts:
             self.assertIn(prompt, self.guide)
             self.assertIn(prompt, learner)
-        for mode in ("Ask", "Agent", "Plan"):
-            self.assertIn(f"<h3>{mode} mode</h3>", self.guide)
+        self.assertIn(planner, self.slot2)
+        self.assertIn(planner, learner)
+        self.assertIn(implementer, self.slot2)
+        self.assertIn(implementer, learner)
+        self.assertIn("<h3>Agent mode</h3>", self.guide)
+        self.assertNotIn("<h3>Plan mode</h3>", self.guide)
+        self.assertNotIn("<h3>Plan mode</h3>", self.slot2)
         self.assertNotIn("code-window-label", self.guide)
-        copilot = self.guide[self.guide.index('id="copilot"'):self.guide.index('id="terminal"')]
-        self.assertLess(copilot.index('callout-box warning'), copilot.index("<h3>Ask mode</h3>"))
-        self.assertIn("Some learners may lack Agent or Plan mode", copilot)
-        self.assertLess(self.guide.index('id="copilot"'), self.guide.index('id="terminal"'))
+        self.assertEqual(self.guide.count('id="stop-the-prompts"'), 1)
+        self.assertNotIn("stop-the-prompts", self.slot2)
         agents = (REPO_ROOT / "template" / "AGENTS.md").read_text(encoding="utf-8")
         for rule in ("commit or push only on the learner's explicit request", "force-push", "switch branches unasked", "Edit only `BOARD.txt`", "one cell per move"):
             self.assertIn(rule, agents)
+        self.assertNotIn("Plan mode, pull", agents)
+        self.assertIn("does not use Plan mode", agents)
         self.assertFalse((REPO_ROOT / "template" / ".github" / "prompts").exists())
 
     def test_copy_blocks_have_buttons_and_copy_visible_text(self):
@@ -412,7 +401,7 @@ class TestWebGuides(unittest.TestCase):
         script = (DOCS_DIR / "copy-code.js").read_text(encoding="utf-8")
         for needle in ("navigator.clipboard.writeText", "execCommand('copy')", "source.textContent", "'Copied'"):
             self.assertIn(needle, script)
-        for name in ("guide.html", "time-machine.html"):
+        for name in ("guide.html", "play-2.html", "time-machine.html"):
             html = (DOCS_DIR / name).read_text(encoding="utf-8")
             self.assertIn('src="copy-code.js"', html)
             windows = re.findall(r'<div class="code-window">(.*?)</pre></div>', html, re.S)
@@ -428,14 +417,12 @@ class TestWebGuides(unittest.TestCase):
                 self.assertNotIn("<", code.group(1))
         guide = (DOCS_DIR / "guide.html").read_text(encoding="utf-8")
         for prompt in ("Explain the current board in BOARD.txt and whose turn it is.",
-                       "Place O in the top-right cell of BOARD.txt. Change only that cell.",
-                       "Pull, plan my next legal move as O, and place it. Then stop so I can review the diff."):
+                       "Place O in the top-right cell of BOARD.txt. Change only that cell."):
             self.assertRegex(guide, rf'<code id="copy-src-\d+">{re.escape(prompt)}</code>')
-        self.assertIn("git pull --no-rebase", guide)
-        self.assertNotRegex(guide, r"git pull\s+#")
-        self.assertIn('Unmerged paths', guide)
-        for cmd in ("git pull --no-rebase", "git switch -c match-02", "git push -u origin match-02"):
-            self.assertRegex(guide, rf'<code id="copy-src-\d+">[^<]*{re.escape(cmd)}')
+        self.assertIn('id="copy-planner"', self.slot2)
+        self.assertIn("uv run pytest", self.slot2)
+        self.assertNotIn("<h3>Plan mode</h3>", guide)
+        self.assertIn("does not use Plan mode", guide)
 
     def test_copy_button_shares_row_with_code(self):
         css = self.styles[self.styles.index(".code-window {"):]
@@ -448,12 +435,11 @@ class TestWebGuides(unittest.TestCase):
         self.assertNotIn("border-bottom", bar)
         self.assertNotIn("background", bar)
 
-    def test_invite_step_comes_first_in_turn_section(self):
-        turn = self.guide[self.guide.index('id="turn"'):self.guide.index('id="rematch"')]
-        for text in ("Add people", "Accept invitation", "/invitations", "Step 1: Invite your partner", "7 days"):
-            self.assertIn(text, turn)
-        self.assertLess(turn.index("Add people"), turn.index("match-01"))
-        invite = turn[turn.index('id="invite"'):turn.index("O (partner)")]
+    def test_invite_step_comes_first(self):
+        invite = self.guide[self.guide.index('id="invite"'):self.guide.index('id="create-match"')]
+        for text in ("Add people", "Accept invitation", "/invitations", "7 days", "same signed-in device"):
+            self.assertIn(text, invite)
+        self.assertLess(self.guide.index('id="invite"'), self.guide.index("match-01"))
         files = re.findall(r'src="(images/guide/invite/[^"]+\.png)"', invite)
         self.assertEqual(files, [
             "images/guide/invite/01-settings.png",
@@ -471,12 +457,10 @@ class TestWebGuides(unittest.TestCase):
         self.assertLess(scroll, add_people)
         self.assertIn("Add &lt;username&gt;", invite)
         self.assertIn("you have not invited any collaborators", invite)
-        self.assertLess(turn.index("07-pending.png"), turn.index("Accept invitation"))
-        self.assertNotIn("images/guide/invite/08", turn)
+        self.assertLess(invite.index("07-pending.png"), invite.index("Accept invitation"))
         learner = (REPO_ROOT / "LEARNER_GUIDE.md").read_text(encoding="utf-8")
         for text in ("Add people", "Accept invitation", "/invitations", "Step 1: Invite your partner"):
             self.assertIn(text, learner)
-        self.assertLess(learner.index("Add people"), learner.index("Manual match"))
         self.assertIn('href="guide.html#invite"', self.setup)
         self.assertIn("email account linked to your GitHub account", (REPO_ROOT / "PRE_SESSION_CHECK.md").read_text(encoding="utf-8"))
 

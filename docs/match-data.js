@@ -6,8 +6,8 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
 
-  // A match is any branch whose full name starts with literal lowercase "match".
-  const MATCH_BRANCH_PATTERN = /^match/;
+  // A match is any branch whose name contains "match", in any case. `main` does not.
+  const MATCH_BRANCH_PATTERN = /match/i;
   const TERMINAL_STATES = new Set(['X won', 'O won', 'Draw']);
 
   function normalizeMatch(item) {
@@ -20,9 +20,9 @@
 
     if (!owner || !repo) errors.push('Registration does not identify a public repository.');
     if (!branch) {
-      errors.push('This repository has no discovered match branch beginning with “match”.');
+      errors.push('This repository has no discovered match branch whose name contains “match”.');
     } else if (!MATCH_BRANCH_PATTERN.test(branch)) {
-      errors.push(`Branch “${branch}” does not begin with the lowercase prefix “match”.`);
+      errors.push(`Branch “${branch}” does not contain “match”.`);
     }
     if (item.boardValid !== true && errors.length === 0) {
       errors.push('This registry record has no validated board. Sync the branch registry before displaying this match.');
@@ -74,7 +74,7 @@
 
   function historyApiUrl(match) {
     if (!match.owner || !match.repo || !MATCH_BRANCH_PATTERN.test(match.branch || '')) {
-      throw new Error('A valid repository and lowercase match-prefixed branch are required to load history.');
+      throw new Error('A valid repository and a branch whose name contains “match” are required to load history.');
     }
     return `https://api.github.com/repos/${encodeURIComponent(match.owner)}/${encodeURIComponent(match.repo)}/commits?sha=${encodeURIComponent(match.branch)}&path=BOARD.txt&per_page=100`;
   }

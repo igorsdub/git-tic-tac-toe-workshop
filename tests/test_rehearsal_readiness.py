@@ -87,11 +87,15 @@ class TestDocumentationReadiness(unittest.TestCase):
 
 
 class TestApprovedWorkshopPath(unittest.TestCase):
-    def test_agenda_protects_manual_and_agent_rematch(self):
+    def test_agenda_and_untested_fallbacks_live_on_the_facilitator_page(self):
         facilitator = (REPO_ROOT / "FACILITATOR_GUIDE.md").read_text(encoding="utf-8")
-        for block in ("40–70", "70–80", "80–105"):
+        for block in ("10:00–10:20", "13:00–13:30", "14:45–15:00"):
             self.assertIn(block, facilitator)
-        self.assertIn("At minute 80", facilitator)
+        for risk in ("Cross-codespace branch visibility", "Invite banner", "Copilot editing BOARD.txt wrongly"):
+            self.assertIn(risk, facilitator)
+        website = "\n".join((REPO_ROOT / "docs" / name).read_text(encoding="utf-8") for name in ("setup.html", "guide.html", "play-2.html"))
+        self.assertNotIn("10:00", website)
+        self.assertNotIn("minute", website.casefold())
 
     def test_public_repository_preflight_and_separate_copilot_access(self):
         preflight = (REPO_ROOT / "PRE_SESSION_CHECK.md").read_text(encoding="utf-8")
@@ -100,30 +104,32 @@ class TestApprovedWorkshopPath(unittest.TestCase):
             "Make your repository public",
             "Include all branches",
             "Description",
-            "Delete the Codespace",
+            "only `main`",
             "Keep your public repository",
             "separate Codespaces",
-            "Describe what to build",
             "What does this repository do?",
             "No board edit is required",
             "Codespaces and Copilot access are separate",
         ):
             self.assertIn(requirement, preflight)
+        self.assertNotIn("Delete the Codespace", preflight)
 
     def test_compact_board_contract_and_agent_prompt_are_current(self):
         board = (REPO_ROOT / "template/README.md").read_text(encoding="utf-8")
         learner = (REPO_ROOT / "LEARNER_GUIDE.md").read_text(encoding="utf-8")
         self.assertIn("exactly three rows of three cells", board)
         self.assertIn("replaces one `.`", board)
-        self.assertIn("Place X in the center of the board", learner)
-        self.assertIn("Sync the change", learner)
+        self.assertIn("Place O in the top-right cell of BOARD.txt. Change only that cell.", learner)
+        self.assertIn("Commit and Sync", learner)
 
     def test_learner_match_uses_board_and_source_control_contract(self):
         learner = (REPO_ROOT / "LEARNER_GUIDE.md").read_text(encoding="utf-8")
-        for requirement in ("Source Control", "BOARD.txt", "match-01", "from clean `main`", "rematch"):
+        for requirement in ("Source Control", "BOARD.txt", "match-01", "from `main` on github.com", "rematch"):
             self.assertIn(requirement, learner)
-        self.assertIn("complete the rematch manually", learner)
-        self.assertIn("instructor's Copilot demonstration", learner)
+        self.assertNotIn("complete the rematch manually", learner)
+        guide = (REPO_ROOT / "docs" / "guide.html").read_text(encoding="utf-8")
+        self.assertNotIn("<h3>Plan mode</h3>", guide)
+        self.assertIn("does not use Plan mode", guide)
 
     def test_history_fallback_and_research_transfer_are_documented(self):
         facilitator = (REPO_ROOT / "FACILITATOR_GUIDE.md").read_text(encoding="utf-8")

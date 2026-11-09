@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" class="setup-only">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slot 2 - How to play - Git Tic-Tac-Toe Workshop</title>
+  <meta name="description" content="Decide what can go wrong on the board, then plan, implement, review, and run the checks on branch rematch.">
+  <link id="theme-favicon" rel="icon" type="image/svg+xml" href="images/xo-logo-light.svg">
+  <script src="site-config.js"></script>
+  <script src="theme-init.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="wall-header"><div class="header-container">
+    <div class="brand"><a href="wall.html" class="brand-link"><img id="brand-logo" class="brand-icon" src="images/xo-logo-light.svg" data-light-src="images/xo-logo-light.svg" data-dark-src="images/xo-logo-dark.svg" alt="X and O"><div class="brand-text"><span class="brand-title" style="display:block;font-size:1.35rem;font-weight:700;letter-spacing:-0.02em;color:var(--text-primary)">Git Tic-Tac-Toe</span><p class="subtitle">Collaboration with Git and GitHub</p></div></a></div>
+    <div class="header-actions"><div class="header-workshop-picker"><label for="workshop-select" class="header-workshop-label">Workshop</label><select id="workshop-select" aria-describedby="workshop-context-status"></select><span id="workshop-context-status" class="visually-hidden" role="status">Choose a workshop to update the registration link and Game Wall.</span></div><button id="theme-toggle" class="header-icon" title="Toggle dark/light theme" aria-label="Toggle theme"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg></button><a href="https://github.com/igorsdub/git-tic-tac-toe-workshop" target="_blank" rel="noopener noreferrer" class="header-icon" aria-label="View repository on GitHub" title="View repository on GitHub"><svg class="github-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+          </svg></a></div>
+  </div><div data-stage-strip="play-2"></div>
+  </header>
+  <main class="guide-main" id="main"><div class="guide-container">
+    <header class="guide-hero">
+      <h1>Slot 2</h1>
+      <p class="lead">Agree what a legal board is, write that down, and only then ask an agent to build the check.</p>
+    </header>
+    <nav class="jump-nav" aria-label="Quick jump to section"><span class="jump-nav-label">Jump to:</span><a href="#what-can-go-wrong" class="jump-pill">What can go wrong</a><a href="#skills" class="jump-pill">Skills</a><a href="#planner" class="jump-pill">Planner</a><a href="#checks" class="jump-pill">Checks</a><a href="#rematch" class="jump-pill">Rematch</a><a href="#reproducibility" class="jump-pill">Reproducibility</a><a href="#reference" class="jump-pill">Reference</a></nav>
+
+    <section class="guide-section" id="what-can-go-wrong">
+      <p class="section-goal">your pair wrote at least two cases</p>
+      <h2>What can go wrong when you update the board?</h2>
+      <p class="section-subtitle">With your partner, write at least two cases. Finish your own list before you open the hint.</p>
+      <h3>Your cases</h3>
+      <p>Look at <code>BOARD.txt</code>. What would make an update the wrong board? Write two or more cases in your own words. Do not scroll to the hint until both of you have named them.</p>
+      <aside class="hint-box" id="board-hint">
+        <h3>Hint, after your own cases</h3>
+        <ul>
+          <li>X/O count difference (X moves first, so X−O is 0 or 1).</li>
+          <li>Lowercase <code>x</code>/<code>o</code> vs uppercase.</li>
+          <li>The digit <code>0</code> typed instead of the letter <code>O</code> (this actually happened before).</li>
+          <li>Plus others the pairs find themselves.</li>
+        </ul>
+      </aside>
+    </section>
+
+    <section class="guide-section" id="planner">
+      <p class="section-goal">you and Copilot agreed the rules for a valid board</p>
+      <h2>Planner, then everyone else</h2>
+      <p class="section-subtitle">The planner matters most. A wrong agreement here makes every later role build the wrong thing.</p>
+      <h3 id="skills">Skills, then grill the plan</h3>
+      <p>A skill is a <code>SKILL.md</code> file the agent reads before it acts. That file format is called Agent Skills. Matt Pocock's grill-me skill is one of them. A pstack-style collection is a folder of those <code>SKILL.md</code> files you keep and reuse.</p>
+      <p>Paste this Grill Me prompt:</p>
+      <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-grill" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-grill">Interview me relentlessly about every aspect of this plan until we reach a shared understanding. Walk down each branch of the design tree, resolving dependencies between decisions one by one.</code></pre></div>
+      <p>Talk: <a href="https://ai.engineer/talks/v4F1gFy-hqg-software-fundamentals-for-ai-coding" target="_blank" rel="noopener noreferrer">Software fundamentals for AI coding</a>. Optional longer source: <a href="https://talksintel.ai/ai-ml/conferences/aie-eu-2026/full-walkthrough-workflow-for-ai-coding-matt-pocock/" target="_blank" rel="noopener noreferrer">full walkthrough of Matt Pocock's AI coding workflow</a>. He says implementation and review should never share a context, which is why the review happens in a fresh chat.</p>
+      <h3>The order of the chats</h3>
+      <ol>
+        <li><strong>Planner.</strong> Paste the planner prompt. Agree the rules before any code.</li>
+        <li><strong>Implementer.</strong> Paste the implementer prompt.</li>
+        <li><strong>Reviewer, in a fresh chat.</strong> Implementation and review should never share a context.</li>
+        <li><strong>Docs writer.</strong> It updates <code>README.md</code> and <code>AGENTS.md</code>.</li>
+      </ol>
+      <h3>Planner prompt</h3>
+      <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-planner" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-planner">You are the planner. When we update BOARD.txt, these things can go wrong:
+- case 1
+- case 2
+- case 3 (optional)
+Before writing anything, ask me one question at a time until we agree exactly which boards are valid. Then list the agreed rules as checks a test could make. Don't write code yet.</code></pre></div>
+      <h3>Implementer prompt</h3>
+      <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-implementer" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-implementer">Write pytest tests for these rules and a pyproject.toml so `uv run pytest` works.</code></pre></div>
+    </section>
+
+    <section class="guide-section" id="checks">
+      <p class="section-goal"><code>uv run pytest</code> passes, and fails when you break the board</p>
+      <h2>Let Copilot write the check</h2>
+      <p class="section-subtitle">Copilot adds <code>test_board.py</code> and <code>pyproject.toml</code>. You run the check, break the board on purpose, and put the board back.</p>
+      <h3>Run it, break it, restore it</h3>
+      <ol>
+        <li>Ask Copilot, in Agent mode, to add <code>test_board.py</code> and <code>pyproject.toml</code> from the PRD.</li>
+        <li>In the terminal, run <code>uv run pytest</code>.</li>
+        <li>Break <code>BOARD.txt</code> on purpose: a lowercase mark, or a digit 0 where a letter O belongs.</li>
+        <li>Run <code>uv run pytest</code> again and watch it fail.</li>
+        <li>Restore the board and run <code>uv run pytest</code> once more.</li>
+      </ol>
+    </section>
+
+    <section class="guide-section" id="rematch">
+      <p class="section-goal">every rematch commit had passing tests first</p>
+      <h2>Create branch rematch</h2>
+      <p class="section-subtitle"><strong>main is sacred. Don't touch it.</strong> Create <code>rematch</code> from <code>main</code> on github.com, the same way the owner created <code>match</code>.</p>
+      <h3>Use the branch dropdown again</h3>
+      <p>On github.com, open the branch dropdown and create <code>rematch</code> from <code>main</code>. Leave <code>main</code> untouched. Then both of you open Codespaces on <code>rematch</code>. Run <code>uv run pytest</code> and see it pass before every commit on this branch.</p>
+      <details id="pre-commit">
+        <summary>Run the check before every commit</summary>
+        <p>A pre-commit hook is a small program Git runs before it records a commit. In the Codespace, save this as <code>.git/hooks/pre-commit</code> and make it executable with <code>chmod +x .git/hooks/pre-commit</code>.</p>
+        <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-hook" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-hook">#!/bin/sh
+uv run pytest</code></pre></div>
+        <p>GitHub Actions can run the same tests on every push.</p>
+      </details>
+    </section>
+
+    <section class="guide-section" id="reproducibility">
+      <p class="section-goal">you can name the manifest, lock file, runner, and test module</p>
+      <h2>Reproducibility</h2>
+      <p class="section-subtitle">Someone else can rebuild the same check when the project records what it needs and the exact versions.</p>
+      <h3>Four names in this project</h3>
+      <ul>
+        <li><strong>Manifest:</strong> <code>pyproject.toml</code> says what the project needs.</li>
+        <li><strong>Lock file:</strong> <code>uv.lock</code> records the exact versions.</li>
+        <li><strong>Runner:</strong> <code>uv</code> builds the environment and runs the command.</li>
+        <li><strong>Test module:</strong> <code>pytest</code> runs <code>test_board.py</code>.</li>
+      </ul>
+      <p>Julia records the same idea in <code>Project.toml</code> and <code>Manifest.toml</code>. R records it with <code>renv</code>.</p>
+      <h3 id="reference">Reference repository</h3>
+      <p>Look at this only after your own rules, check, and docs exist. The reference repository is <a href="https://github.com/igorsdub/git-tic-tac-toe-reference" target="_blank" rel="noopener noreferrer">github.com/igorsdub/git-tic-tac-toe-reference</a>. Open it at the end and see how its board check, lock file, and docs compare with yours.</p>
+    </section>
+
+    <p class="stage-next"><a data-workshop-route href="wall.html">Next: Game Wall</a></p>
+  </div></main>
+  <script src="stage-strip.js"></script>
+  <script src="workshop-context.js"></script>
+  <script src="guide-utils.js"></script>
+  <script src="copy-code.js"></script>
+  <script src="shot-lightbox.js"></script>
+</body>
+</html>

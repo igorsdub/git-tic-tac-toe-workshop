@@ -1,5 +1,5 @@
 {
-  "defaultWorkshopId": "2026-11-06-sokedai",
+  "defaultWorkshopId": "2026-11-10-riken",
   "workshops": [
     {
       "id": "2026-10-01-scda",
@@ -12,7 +12,7 @@
       "id": "2026-11-06-sokedai",
       "name": "SOKENDAI",
       "date": "2026-11-06",
-      "status": "active",
+      "status": "archived",
       "registrationUrl": "https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&workshop_id=2026-11-06-sokedai",
       "setupTrack": "codespaces",
       "surveyUrl": "https://forms.gle/eo9pgChEGpdvdcQ67"
@@ -23,7 +23,13 @@
       "date": "2026-11-10",
       "status": "active",
       "registrationUrl": "https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&workshop_id=2026-11-10-riken",
-      "setupTrack": "codespaces"
+      "setupTrack": "codespaces",
+      "pages": {
+        "setup": "setup.html",
+        "slot1": "guide.html",
+        "slot2": "play-2.html",
+        "wall": "wall.html"
+      }
     }
   ]
 }

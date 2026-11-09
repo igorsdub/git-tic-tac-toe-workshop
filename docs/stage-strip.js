@@ -4,8 +4,9 @@
 
   const STAGES = [
     { id: 'setup', number: 1, name: 'Setup', href: 'setup.html' },
-    { id: 'guide', number: 2, name: 'How to play', href: 'guide.html' },
-    { id: 'wall', number: 3, name: 'Game Wall', href: 'wall.html' },
+    { id: 'play-1', number: 2, name: 'Slot 1', href: 'guide.html' },
+    { id: 'play-2', number: 3, name: 'Slot 2', href: 'play-2.html' },
+    { id: 'wall', number: 4, name: 'Game Wall', href: 'wall.html' },
   ];
 
   function render(container) {
@@ -39,7 +40,7 @@
     const item = document.createElement('li');
     const registration = document.createElement('a');
     registration.setAttribute('data-workshop-registration', '');
-    registration.href = 'https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&workshop_id=2026-11-06-sokedai';
+    registration.href = 'https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/new?template=register-game.yml&workshop_id=2026-11-10-riken';
     registration.target = '_blank';
     registration.rel = 'noopener noreferrer';
     registration.textContent = 'Register repository';

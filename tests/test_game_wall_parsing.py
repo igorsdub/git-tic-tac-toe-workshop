@@ -394,7 +394,7 @@ State: Ready for X
         from game_wall_parser import fetch_registered_board
 
         with patch("game_wall_parser.urlopen") as open_url:
-            with self.assertRaisesRegex(ValueError, "literal lowercase prefix 'match'"):
+            with self.assertRaisesRegex(ValueError, "contain 'match'"):
                 fetch_registered_board("pair", "repo", "main")
         open_url.assert_not_called()
 

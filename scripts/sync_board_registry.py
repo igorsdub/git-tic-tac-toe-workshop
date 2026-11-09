@@ -16,6 +16,7 @@ sys.path.insert(0, str(SCRIPTS_DIR))
 
 from game_wall_parser import (  # noqa: E402
     evaluate_registered_board,
+    is_match_branch,
     load_workshop_catalog,
     parse_registration_issue,
 )
@@ -193,7 +194,7 @@ def build_match_snapshot(
             repository_status.append({"repoUrl": registration["repoUrl"], "status": "error", "error": str(error)})
             continue
 
-        matching = sorted({name for name in branches if name.startswith("match")})
+        matching = sorted({name for name in branches if is_match_branch(name)})
         repository_status.append({"repoUrl": registration["repoUrl"], "status": "success", "matchBranches": matching})
         workshop_name = _display_name(catalog, registration["workshopId"])
         for branch in matching:
