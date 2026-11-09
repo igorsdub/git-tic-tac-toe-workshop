@@ -6,7 +6,7 @@ A post-workshop activity, not part of the session. Look back through your match 
 
 Every commit is a saved snapshot of `BOARD.txt`. The *commit graph* draws these snapshots as a line, newest at the top.
 
-1. In your Codespace, switch to your match branch (for example `match-01`). In **Source Control**, select **Pull** on the **Graph** toolbar.
+1. In your Codespace, switch to your match branch (`match`). In **Source Control**, select **Pull** on the **Graph** toolbar.
 2. Expand the **Graph** section. Each dot is one commit.
 3. Select an older commit. VS Code lists the files it changed.
 4. Select `BOARD.txt` to open the diff. The removed line is the board before that commit, and the added line is the board after it.
@@ -42,7 +42,7 @@ Select the branch name in the status bar and choose your match branch. The origi
 git log --oneline                  # list commits, newest first
 git diff abc1234 HEAD              # compare an old commit with now
 git switch --detach abc1234        # look at the old board (detached HEAD)
-git switch match-01                # leave detached HEAD, return to the match
+git switch match                   # leave detached HEAD, return to the match
 git switch -c what-if-01 abc1234   # new branch from a past commit
 git push -u origin what-if-01      # publish it
 ```
