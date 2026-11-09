@@ -193,42 +193,6 @@
     "workshopId": "2026-11-06-sokedai",
     "workshopName": "SOKENDAI",
     "eventId": "2026-11-06-sokedai",
-    "owner": "igorsdub",
-    "repo": "git-tic-tac-toe",
-    "repoUrl": "https://github.com/igorsdub/git-tic-tac-toe",
-    "playerX": "igorsdub",
-    "playerO": "igorsdub",
-    "branch": "match-01",
-    "matchKey": "igorsdub/git-tic-tac-toe#match-01",
-    "status": "in_progress",
-    "state": "Ready for X",
-    "outcome": null,
-    "boardValid": true,
-    "board": [
-      [
-        " ",
-        " ",
-        " "
-      ],
-      [
-        " ",
-        " ",
-        " "
-      ],
-      [
-        " ",
-        " ",
-        " "
-      ]
-    ],
-    "errors": [],
-    "failureKind": null,
-    "refreshStatus": "fresh"
-  },
-  {
-    "workshopId": "2026-11-06-sokedai",
-    "workshopName": "SOKENDAI",
-    "eventId": "2026-11-06-sokedai",
     "owner": "mskt430",
     "repo": "work-shop-262206",
     "repoUrl": "https://github.com/mskt430/work-shop-262206",

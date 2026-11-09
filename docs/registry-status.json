@@ -59,9 +59,7 @@
     {
       "repoUrl": "https://github.com/igorsdub/git-tic-tac-toe",
       "status": "success",
-      "matchBranches": [
-        "match-01"
-      ]
+      "matchBranches": []
     },
     {
       "repoUrl": "https://github.com/mskt430/work-shop-262206",
