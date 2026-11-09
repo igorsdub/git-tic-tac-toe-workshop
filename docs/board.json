@@ -20,7 +20,7 @@
     ],
     "failureKind": "transport",
     "refreshStatus": "stale",
-    "boardRefreshError": "Could not read BOARD.txt from branch 'rematch!': the branch or BOARD.txt is missing, or the repository is private."
+    "boardRefreshError": "Could not read BOARD.txt from branch 'rematch!': <urlopen error [Errno 104] Connection reset by peer>."
   },
   {
     "workshopId": "2026-10-01-scda",
