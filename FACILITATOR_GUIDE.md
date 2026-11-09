@@ -33,7 +33,7 @@ These three steps were not rehearsed across two Codespaces. Use the fallback and
 
 Send the [Pre-session checklist](PRE_SESSION_CHECK.md) and the [Setup page](docs/setup.html). The template copy is `main` only, even when **Include all branches** is on. The readiness check is Copilot answering "what does this repository do?" with tic-tac-toe and `BOARD.txt`. There is no delete-Codespace section on the setup page.
 
-Each pair registers its shared repository once for the workshop, with both player GitHub handles, using **Register repository** after the partner has accepted. `docs/workshops.json` lists each workshop. RIKEN (`2026-11-10-riken`) is the default and points at Setup, Slot 1 (`docs/guide.html`), Slot 2 (`docs/play-2.html`), and the Game Wall. SOKENDAI is archived and stays selectable under Archived so its history stays viewable. SCDA Training Week (`2026-10-01-scda`) stays archived.
+Each pair registers its shared repository once for the workshop, with both player GitHub handles, using **Register repository** after the partner has accepted. `docs/workshops.json` lists each workshop. RIKEN (`2026-11-10-riken`) is the default and points at Setup, Slot 1 (`docs/guide.html`), Slot 2 (`docs/play-2.html`), and the Game Wall. SOKENDAI is archived and omitted from the workshop selector. Its history stays viewable at `?workshop=2026-11-06-sokedai`. SCDA Training Week (`2026-10-01-scda`) stays archived.
 
 ## Registration facts
 
