@@ -19,7 +19,8 @@
       "Could not read BOARD.txt from branch 'rematch!': the branch or BOARD.txt is missing, or the repository is private."
     ],
     "failureKind": "transport",
-    "refreshStatus": "error"
+    "refreshStatus": "stale",
+    "boardRefreshError": "Could not read BOARD.txt from branch 'rematch!': the branch or BOARD.txt is missing, or the repository is private."
   },
   {
     "workshopId": "2026-10-01-scda",
@@ -41,7 +42,8 @@
       "Could not read BOARD.txt from branch 'rematch': the branch or BOARD.txt is missing, or the repository is private."
     ],
     "failureKind": "transport",
-    "refreshStatus": "error"
+    "refreshStatus": "stale",
+    "boardRefreshError": "Could not read BOARD.txt from branch 'rematch': the branch or BOARD.txt is missing, or the repository is private."
   },
   {
     "workshopId": "2026-11-06-sokedai",
