@@ -201,22 +201,22 @@
     "branch": "match",
     "matchKey": "igorsdub/git-tic-tac-toe#match",
     "status": "in_progress",
-    "state": "Ready for X",
+    "state": "Waiting for X",
     "outcome": null,
     "boardValid": true,
     "board": [
       [
+        "O",
         " ",
-        " ",
-        " "
+        "X"
       ],
       [
         " ",
-        " ",
+        "X",
         " "
       ],
       [
-        " ",
+        "O",
         " ",
         " "
       ]
