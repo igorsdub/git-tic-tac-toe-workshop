@@ -200,10 +200,10 @@
     "playerO": "igorsdub",
     "branch": "match",
     "matchKey": "igorsdub/git-tic-tac-toe#match",
-    "status": "in_progress",
-    "state": "Waiting for X",
+    "status": "error",
+    "state": "Invalid board",
     "outcome": null,
-    "boardValid": true,
+    "boardValid": false,
     "board": [
       [
         "O",
@@ -218,11 +218,13 @@
       [
         "O",
         " ",
-        " "
+        "O"
       ]
     ],
-    "errors": [],
-    "failureKind": null,
+    "errors": [
+      "Invalid BOARD.txt: Invalid turn parity: Player O has 3 moves, Player X has 2. Player X moves first, so O cannot exceed X."
+    ],
+    "failureKind": "invalid_board",
     "refreshStatus": "fresh"
   },
   {
