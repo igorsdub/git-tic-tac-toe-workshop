@@ -27,6 +27,7 @@ const INVITE_SHOTS = [
   '05-result.png',
   '06-add.png',
   '07-pending.png',
+  '08-github-search-repo.png',
 ];
 const TURN_SHOTS = ['01-pull.png', '02-edit-cell.png', '03-saved.png', '04-stage.png', '05-commit.png', '06-sync.png'];
 const START_SHOTS = ['01-on-main.png', '02-select-match-01.png', '03-on-match-01.png'];
@@ -104,21 +105,26 @@ test('invite figures show the owner collaborator flow and the partner accept pat
   assert.deepEqual(images.map((image) => image.src), INVITE_SHOTS.map((name) => `images/guide/invite/${name}`));
   for (const image of images) assertLinkedPng(image);
   const figures = [...invite.matchAll(/<figure class="step-shot">([\s\S]*?)<\/figure>/g)].map((match) => match[1]);
-  assert.equal(figures.length, 7);
+  assert.equal(figures.length, 8);
   for (const figure of figures) assert.ok(figure.indexOf('shot-instruction') < figure.indexOf('<img'));
   assert.match(figures[2], /Scroll down until <strong>Add people<\/strong> is fully visible/);
   assert.match(invite, /you have not invited any collaborators/);
   assert.match(invite, /Add &lt;username&gt;/);
   assert.match(invite, /Add viyuetuki/);
-  assert.doesNotMatch(guide, /images\/guide\/invite\/08/);
   const partner = invite.slice(invite.indexOf('O (partner)'));
-  assert.equal(linkedImages(partner).length, 0);
+  assert.deepEqual(linkedImages(partner).map((image) => image.src), ['images/guide/invite/08-github-search-repo.png']);
   assert.match(partner, /Accept invitation/);
   assert.match(partner, /github\.com\/&lt;owner&gt;\/&lt;repo&gt;/);
   assert.match(partner, /owner\/repo/);
+  assert.match(partner, /igorsdub\/git-tic-tac-toe/);
   assert.match(partner, /same signed-in device/);
+  assert.match(partner, /top search bar/);
   assert.doesNotMatch(guide, /figure-slot/);
-  assert.doesNotMatch(partner, /<img/);
+  const branch = section(guide, 'create-match', 'open-codespaces');
+  assert.deepEqual(linkedImages(branch).map((image) => image.src), ['images/guide/create-match/01-github-create-match-branch.png']);
+  assert.match(branch, /Create branch match from main/);
+  assert.match(branch, /match-01/);
+  for (const image of linkedImages(branch)) assertLinkedPng(image);
 });
 
 test('conflict and copilot figures follow the shot pattern without Plan mode', () => {

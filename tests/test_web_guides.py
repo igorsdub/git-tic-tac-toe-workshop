@@ -449,6 +449,7 @@ class TestWebGuides(unittest.TestCase):
             "images/guide/invite/05-result.png",
             "images/guide/invite/06-add.png",
             "images/guide/invite/07-pending.png",
+            "images/guide/invite/08-github-search-repo.png",
         ])
         landing = invite.index("02-collaborators.png")
         add_people = invite.index("03-add-people.png")
@@ -458,6 +459,12 @@ class TestWebGuides(unittest.TestCase):
         self.assertIn("Add &lt;username&gt;", invite)
         self.assertIn("you have not invited any collaborators", invite)
         self.assertLess(invite.index("07-pending.png"), invite.index("Accept invitation"))
+        self.assertLess(invite.index("Accept invitation"), invite.index("08-github-search-repo.png"))
+        self.assertIn("igorsdub/git-tic-tac-toe", invite)
+        branch = self.guide[self.guide.index('id="create-match"'):self.guide.index('id="open-codespaces"')]
+        self.assertIn("images/guide/create-match/01-github-create-match-branch.png", branch)
+        self.assertIn("Create branch match from main", branch)
+        self.assertIn("match-01", branch)
         learner = (REPO_ROOT / "LEARNER_GUIDE.md").read_text(encoding="utf-8")
         for text in ("Add people", "Accept invitation", "/invitations", "Step 1: Invite your partner"):
             self.assertIn(text, learner)
