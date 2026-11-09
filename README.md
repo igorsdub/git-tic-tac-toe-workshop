@@ -6,7 +6,7 @@ This two-hour workshop teaches collaborative Git through a paired tic-tac-toe ga
 
 - [Design history](WORKSHOP_DESIGN_HANDOFF.md) (historical record; the guides below are current)
 - [Local delivery status and blockers](planning/delivery-status-2026-10-20.md)
-- [Learner guide](LEARNER_GUIDE.md), [Slot 1](docs/guide.html), and [Slot 2](docs/play-2.html)
+- [Learner guide](LEARNER_GUIDE.md), [Git Collaboration](docs/guide.html), and [Agentic Coding](docs/play-2.html)
 - [Time machine](TIME_MACHINE.md) take-home page ([web version](docs/time-machine.html))
 - [Facilitator guide](FACILITATOR_GUIDE.md), which holds the only copy of the agenda
 - [Pre-session checklist](PRE_SESSION_CHECK.md) and [Setup page](docs/setup.html)
@@ -31,12 +31,12 @@ The shared event context on the Game Wall, Setup page, and How to play reads eve
 
 ## Staged learner path
 
-In full mode, learners move through Setup (`docs/setup.html`), Slot 1 (`docs/guide.html`), Slot 2 (`docs/play-2.html`), and the Game Wall (`docs/wall.html`) using the stage strip, which ends with **Register repository**. In setup-only mode, the strip, registration controls, and onward links are hidden; the plain site URL opens Setup. Set `setupOnly` to `false` in `docs/site-config.js` to restore full mode. The RIKEN catalog entry's `pages` field points at those four pages.
+In full mode, learners move through Setup (`docs/setup.html`), Git Collaboration (`docs/guide.html`), Agentic Coding (`docs/play-2.html`), and the Game Wall (`docs/wall.html`) using the stage strip, which ends with **Register repository**. In setup-only mode, the strip, registration controls, and onward links are hidden; the plain site URL opens Setup. Set `setupOnly` to `false` in `docs/site-config.js` to restore full mode. The RIKEN catalog entry's `pages` field points at those four pages.
 
 The Setup page adapts to the selected workshop (`?workshop=<id>`):
 
 - **Archived** (SOKENDAI and SCDA Training Week): archived workshops are omitted from the workshop selector. Open `?workshop=<id>` to view that Game Wall. Setup for an archived workshop says the workshop has finished.
-- **`setupTrack: "codespaces"`** (RIKEN): the Codespaces track with screenshots and per-step checkboxes remembered in the browser. The setup page has no survey and no Codespace-deletion section.
+- **`setupTrack: "codespaces"`** (RIKEN): the Codespaces track with screenshots and a checklist remembered in the browser. The setup page has no survey and no Codespace-deletion section.
 - A workshop with no `setupTrack` shows "Setup for this workshop is not published yet".
 
 In full mode, use **Register repository** in the stage strip to open the selected workshop's registration form.
@@ -74,7 +74,7 @@ The agenda is in the [Facilitator guide](FACILITATOR_GUIDE.md#agenda-120-minutes
 
 ## Environment and Git workflow
 
-Each learner uses their own Codespace in the browser-based VS Code editor. Each pair works in one shared public GitHub repository. **main is sacred.** The owner creates branch `match` on github.com, and later `rematch`, before the pair opens Codespaces. A turn on `match` is Pull, edit one cell, Commit and Sync.
+Each learner uses their own Codespace in the browser-based VS Code editor. Each pair works in one shared public GitHub repository. **Main branch is sacred: don't modify it.** The owner creates branch `match` on github.com before the pair opens Codespaces. Copilot later creates `rematch` from `main` for a second game. Agentic Coding writes tests on `feature/testing`. A turn on `match` is Pull, edit one cell, Commit and Sync.
 
 `BOARD.txt` is three rows of three single-space-separated cells (`.`, `X`, `O`); a move replaces one `.`. Copilot in Agent mode edits the named square. The learner checks the diff and discards it when it is wrong. Ask mode explains. Plan mode is not used.
 
