@@ -12,7 +12,7 @@ This directory holds the board files and conventions used by the separate [learn
 
 The canonical board has exactly three rows of three cells separated by one space. A dot (`.`) is empty; uppercase `X` and `O` are marks. A legal move replaces one `.` with the current player's mark. Keep instructions and metadata out of `BOARD.txt`.
 
-Each match uses a fresh branch (`match-01`, `match-02`, …) created from the clean `main` branch so it starts with the initialized board. See the [starter repository README](https://github.com/igorsdub/git-tic-tac-toe-template/blob/main/README.md) for the learner workflow.
+The owner creates branch `match`, and later `rematch`, from clean `main` on github.com so each one starts with the initialized board. `main` is never edited. See the [starter repository README](https://github.com/igorsdub/git-tic-tac-toe-template/blob/main/README.md) for the learner workflow.
 
 ## Validation and compatibility fixtures
 

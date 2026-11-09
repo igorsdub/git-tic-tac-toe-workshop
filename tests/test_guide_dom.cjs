@@ -6,12 +6,12 @@ const { execFileSync, spawnSync } = require('node:child_process');
 
 const repo = path.resolve(__dirname, '..');
 const guide = fs.readFileSync(path.join(repo, 'docs/guide.html'), 'utf8');
+const slot2 = fs.readFileSync(path.join(repo, 'docs/play-2.html'), 'utf8');
 const setup = fs.readFileSync(path.join(repo, 'docs/setup.html'), 'utf8');
-const manifest = JSON.parse(fs.readFileSync(path.join(repo, 'scripts/capture/captures.json'), 'utf8'));
 const PNG = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
 
 function section(html, startId, endId) {
-  return html.slice(html.indexOf(`id="${startId}"`), html.indexOf(`id="${endId}"`));
+  return html.slice(html.indexOf(`id="${startId}"`), endId ? html.indexOf(`id="${endId}"`) : undefined);
 }
 
 function linkedImages(html) {
@@ -19,9 +19,6 @@ function linkedImages(html) {
     .map((match) => ({ href: match[1], src: match[2], tag: match[0] }));
 }
 
-const board = manifest.storyboards.find((item) => item.slug === 'how-to-play');
-const turn = section(guide, 'turn', 'rematch');
-const rematch = section(guide, 'rematch', 'conflict');
 const INVITE_SHOTS = [
   '01-settings.png',
   '02-collaborators.png',
@@ -31,17 +28,10 @@ const INVITE_SHOTS = [
   '06-add.png',
   '07-pending.png',
 ];
-
-function expectedSources(group) {
-  return group.screenshots.map((name) => `images/guide/${group.id}/${name}`);
-}
-
-function ownerInvite(html) {
-  const start = html.indexOf('id="invite"');
-  const end = html.indexOf('O (partner)');
-  assert.ok(start >= 0 && end > start);
-  return html.slice(start, end);
-}
+const TURN_SHOTS = ['01-pull.png', '02-edit-cell.png', '03-saved.png', '04-stage.png', '05-commit.png', '06-sync.png'];
+const START_SHOTS = ['01-on-main.png', '02-select-match-01.png', '03-on-match-01.png'];
+const CONFLICT_SHOTS = ['01-merge-changes.png', '02-merge-editor.png', '03-complete-merge.png', '04-commit-sync.png'];
+const COPILOT_SHOTS = ['01-ask-mode.png', '02-ask-reply.png', '03-agent-mode.png', '04-agent-diff.png'];
 
 function assertLinkedPng(image) {
   assert.equal(image.href, image.src);
@@ -52,42 +42,27 @@ function assertLinkedPng(image) {
   assert.deepEqual(fs.readFileSync(file).subarray(0, 8), PNG);
 }
 
-test('turn and rematch figures use the how-to-play storyboard', () => {
-  const turnGroup = board.groups.find((group) => group.id === 'turn');
-  const rematchGroup = board.groups.find((group) => group.id === 'rematch');
-  const turnImages = linkedImages(turn).filter((image) => image.src.startsWith('images/guide/turn/'));
-  const rematchImages = linkedImages(rematch);
-  assert.deepEqual(turnImages.map((image) => image.src), expectedSources(turnGroup));
-  assert.deepEqual(rematchImages.map((image) => image.src), expectedSources(rematchGroup));
-  for (const image of [...turnImages, ...rematchImages]) assertLinkedPng(image);
-  assert.equal(linkedImages(guide).length, 29);
-  assert.match(turn, new RegExp(turnGroup.caption.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
-  assert.match(rematch, new RegExp(rematchGroup.caption.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
-  assert.doesNotMatch(turn, /Push|push/);
-  assert.doesNotMatch(turn, /centre cell|before the edit|X takes centre/);
-  assert.match(turn, /bottom-right/);
-  assert.match(turn, /Auto Save/);
-  assert.match(turn, /Sync Changes 1↑/);
-  assert.match(turn, /X takes bottom-right/);
-  assert.match(rematch, /create a branch named <code>match-02<\/code>/);
-  assert.match(rematch, /next unused name, such as <code>match-03<\/code>/);
-  assert.match(rematch, /04-on-match-02\.png/);
-  assert.match(rematch, /status bar shows <code>match-03<\/code>/);
+test('slot 1 reuses accurate screenshots and does not relabel match-01 as match', () => {
+  const turn = section(guide, 'turn', 'copilot');
+  const start = section(guide, 'open-codespaces', 'turn');
+  assert.deepEqual(
+    linkedImages(turn).filter((image) => image.src.startsWith('images/guide/turn/')).map((image) => image.src),
+    TURN_SHOTS.map((name) => `images/guide/turn/${name}`),
+  );
+  assert.deepEqual(
+    linkedImages(start).map((image) => image.src),
+    START_SHOTS.map((name) => `images/guide/start-together/${name}`),
+  );
+  for (const image of [...linkedImages(turn), ...linkedImages(start)]) assertLinkedPng(image);
+  assert.match(start, /This picture shows the Codespace branch list with <code>origin\/match-01<\/code>/);
+  assert.match(start, /The status bar in this picture shows <code>match-01<\/code>/);
+  assert.match(turn, /This picture shows the graph for <code>match-01<\/code>/);
+  assert.doesNotMatch(guide, /images\/guide\/rematch\//);
+  assert.doesNotMatch(guide, /images\/guide\/copilot\/05-plan-mode\.png/);
+  assert.doesNotMatch(guide, /<h3>Plan mode<\/h3>/);
   assert.doesNotMatch(setup, /images\/guide\//);
-  assert.equal(linkedImages(setup).length, 28);
-  const start = turn.slice(turn.indexOf('Start the match'), turn.indexOf('Your turn at a glance'));
-  assert.deepEqual(linkedImages(start).map((image) => image.src), [
-    'images/guide/start-together/01-on-main.png',
-    'images/guide/start-together/02-select-match-01.png',
-    'images/guide/start-together/03-on-match-01.png',
-  ]);
-  for (const image of linkedImages(start)) assertLinkedPng(image);
-  assert.match(start, /not the <strong>Codespaces<\/strong> button/);
-  assert.match(start, /origin\/match-01/);
-  assert.match(start, /Do not choose <strong>Create new branch/);
-  assert.match(start, /<strong>Fetch<\/strong>/);
-  assert.match(start, /Then <strong>Pull<\/strong>/);
-  assert.doesNotMatch(start, /Push|push/);
+  assert.match(guide, /main is sacred\. Don't touch it\./);
+  assert.match(guide, /creates branch <code>match<\/code> on github\.com/);
 });
 
 function pngSize(file) {
@@ -123,65 +98,64 @@ test('Codespace guide and time-machine shots keep the full 1920x1200 frame', () 
   assert.doesNotMatch(rule, /object-fit:\s*cover|height:\s*\d|max-height:\s*\d/);
 });
 
-test('invite figures show the owner collaborator flow', () => {
-  const invite = ownerInvite(guide);
+test('invite figures show the owner collaborator flow and the partner accept paths', () => {
+  const invite = section(guide, 'invite', 'create-match');
   const images = linkedImages(invite);
   assert.deepEqual(images.map((image) => image.src), INVITE_SHOTS.map((name) => `images/guide/invite/${name}`));
   for (const image of images) assertLinkedPng(image);
   const figures = [...invite.matchAll(/<figure class="step-shot">([\s\S]*?)<\/figure>/g)].map((match) => match[1]);
   assert.equal(figures.length, 7);
   for (const figure of figures) assert.ok(figure.indexOf('shot-instruction') < figure.indexOf('<img'));
-  assert.match(figures[1], /02-collaborators\.png/);
   assert.match(figures[2], /Scroll down until <strong>Add people<\/strong> is fully visible/);
-  assert.match(figures[2], /03-add-people\.png/);
-  assert.ok(figures[2].indexOf('Scroll down') < figures[2].indexOf('03-add-people.png'));
   assert.match(invite, /you have not invited any collaborators/);
   assert.match(invite, /Add &lt;username&gt;/);
   assert.match(invite, /Add viyuetuki/);
   assert.doesNotMatch(guide, /images\/guide\/invite\/08/);
-  const partner = guide.slice(guide.indexOf('O (partner)'), guide.indexOf('Step 2: Start together'));
+  const partner = invite.slice(invite.indexOf('O (partner)'));
   assert.equal(linkedImages(partner).length, 0);
   assert.match(partner, /Accept invitation/);
+  assert.match(partner, /github\.com\/&lt;owner&gt;\/&lt;repo&gt;/);
+  assert.match(partner, /owner\/repo/);
+  assert.match(partner, /same signed-in device/);
+  assert.match(partner, /class="figure-slot"/);
+  assert.doesNotMatch(partner, /<img/);
 });
 
-const CONFLICT_SHOTS = [
-  '01-merge-changes.png',
-  '02-merge-editor.png',
-  '03-complete-merge.png',
-  '04-commit-sync.png',
-];
-const COPILOT_SHOTS = [
-  '01-ask-mode.png',
-  '02-ask-reply.png',
-  '03-agent-mode.png',
-  '04-agent-diff.png',
-  '05-plan-mode.png',
-];
+test('conflict and copilot figures follow the shot pattern without Plan mode', () => {
+  const turn = section(guide, 'turn', 'copilot');
+  const copilot = section(guide, 'copilot', 'register');
+  assert.deepEqual(
+    linkedImages(turn).filter((image) => image.src.includes('/conflict/')).map((image) => image.src),
+    CONFLICT_SHOTS.map((name) => `images/guide/conflict/${name}`),
+  );
+  assert.deepEqual(linkedImages(copilot).map((image) => image.src), COPILOT_SHOTS.map((name) => `images/guide/copilot/${name}`));
+  for (const image of linkedImages(copilot)) assertLinkedPng(image);
+  assert.ok(turn.indexOf('</details>') > turn.indexOf('images/guide/conflict/01-merge-changes.png'));
+  assert.match(copilot, /id="stop-the-prompts"/);
+  assert.match(copilot, /Turn on Copilot auto-approve\./);
+  assert.match(copilot, /don't ask again/);
+  assert.equal(guide.match(/id="stop-the-prompts"/g).length, 1);
+  assert.doesNotMatch(slot2, /stop-the-prompts|Plan mode/);
+});
 
-test('conflict and copilot figures follow the how-to-play shot pattern', () => {
-  const conflict = section(guide, 'conflict', 'copilot');
-  const copilot = section(guide, 'copilot', 'terminal');
-  const conflictImages = linkedImages(conflict);
-  const copilotImages = linkedImages(copilot);
-  assert.deepEqual(conflictImages.map((image) => image.src), CONFLICT_SHOTS.map((name) => `images/guide/conflict/${name}`));
-  assert.deepEqual(copilotImages.map((image) => image.src), COPILOT_SHOTS.map((name) => `images/guide/copilot/${name}`));
-  for (const image of [...conflictImages, ...copilotImages]) assertLinkedPng(image);
-  assert.ok(conflict.indexOf('</details>') < conflict.indexOf('images/guide/conflict/01-merge-changes.png'));
-  assert.ok(conflict.indexOf('04-commit-sync.png') < conflict.indexOf('time-machine.html'));
-  const ask = copilot.slice(copilot.indexOf('<h3>Ask mode</h3>'), copilot.indexOf('<h3>Agent mode</h3>'));
-  const agent = copilot.slice(copilot.indexOf('<h3>Agent mode</h3>'), copilot.indexOf('<h3>Plan mode</h3>'));
-  const plan = copilot.slice(copilot.indexOf('<h3>Plan mode</h3>'));
-  assert.deepEqual(linkedImages(ask).map((image) => image.src), COPILOT_SHOTS.slice(0, 2).map((name) => `images/guide/copilot/${name}`));
-  assert.deepEqual(linkedImages(agent).map((image) => image.src), COPILOT_SHOTS.slice(2, 4).map((name) => `images/guide/copilot/${name}`));
-  assert.deepEqual(linkedImages(plan).map((image) => image.src), [`images/guide/copilot/${COPILOT_SHOTS[4]}`]);
-  assert.ok(ask.indexOf('copy-src-1') < ask.indexOf('01-ask-mode.png'));
-  assert.ok(agent.indexOf('copy-src-2') < agent.indexOf('03-agent-mode.png'));
-  assert.ok(agent.indexOf('04-agent-diff.png') < agent.indexOf('copy-src-3'));
-  assert.ok(plan.indexOf('copy-src-4') < plan.indexOf('05-plan-mode.png'));
-  assert.match(ask, /Interactive/);
-  assert.match(ask, /Ask-style explain-only mode/);
-  assert.match(agent, /Keep/);
-  assert.match(plan, /<strong>Plan<\/strong>/);
+test('slot 2 discusses the board before any check and ends on the reference repository', () => {
+  const discussion = section(slot2, 'what-can-go-wrong', 'skills');
+  assert.doesNotMatch(discussion, /test/i);
+  assert.match(discussion, /at least two cases/i);
+  assert.match(discussion, /count of X minus the count of O is 0 or 1/);
+  assert.match(discussion, /lowercase x or o/);
+  assert.match(discussion, /digit 0 is not the letter O/);
+  assert.ok(slot2.indexOf('id="board-hint"') < slot2.indexOf('id="checks"'));
+  assert.match(slot2, /https:\/\/www\.youtube\.com\/watch\?v=4DhcSPkEbwI/);
+  assert.match(slot2, /The planner writes the PRD, and that role matters most\./);
+  assert.match(slot2, /id="copy-planner"/);
+  assert.match(slot2, /id="copy-implementer"/);
+  assert.match(slot2, /uv run pytest/);
+  assert.match(slot2, /GitHub Actions can run the same tests on every push\./);
+  assert.match(slot2, /https:\/\/github\.com\/igorsdub\/git-tic-tac-toe-reference/);
+  assert.ok(slot2.indexOf('id="reference"') > slot2.indexOf('id="reproducibility"'));
+  assert.equal(linkedImages(slot2).length, 0);
+  assert.match(slot2, /class="figure-slot"/);
 });
 
 function findBrowser() {
@@ -206,40 +180,17 @@ test('guide figures stay linked inside their sections', { skip: !browser }, () =
     `file://${path.join(repo, 'docs/guide.html')}`,
   ], { encoding: 'utf8', timeout: 20000 });
   assert.equal(result.status, 0, result.stderr);
-  const renderedTurn = section(result.stdout, 'turn', 'rematch');
-  const renderedRematch = section(result.stdout, 'rematch', 'conflict');
-  for (const [html, group] of [[renderedTurn, 'turn'], [renderedRematch, 'rematch']]) {
-    const shots = board.groups.find((item) => item.id === group).screenshots;
-    assert.equal(shots.length, group === 'turn' ? 6 : 4);
-    for (const name of shots) {
-      const src = `images/guide/${group}/${name}`;
-      assert.ok(html.includes(`href="${src}"`), src);
-      assert.ok(html.includes(`src="${src}"`), src);
-    }
+  const renderedTurn = section(result.stdout, 'turn', 'copilot');
+  const renderedStart = section(result.stdout, 'open-codespaces', 'turn');
+  for (const name of TURN_SHOTS) {
+    const src = `images/guide/turn/${name}`;
+    assert.ok(renderedTurn.includes(`href="${src}"`), src);
+    assert.ok(renderedTurn.includes(`src="${src}"`), src);
   }
-  const renderedOwner = ownerInvite(renderedTurn);
-  for (const name of INVITE_SHOTS) {
-    const src = `images/guide/invite/${name}`;
-    assert.ok(renderedOwner.includes(`href="${src}"`), src);
-    assert.ok(renderedOwner.includes(`src="${src}"`), src);
-  }
-  const landing = renderedOwner.indexOf('02-collaborators.png');
-  const addPeople = renderedOwner.indexOf('03-add-people.png');
-  const scrollBeat = renderedOwner.indexOf('Scroll down until', landing);
-  assert.ok(landing >= 0 && scrollBeat > landing && scrollBeat < addPeople);
-  assert.match(renderedTurn, /Your partner \(O\) now does the same steps/);
-  assert.match(renderedRematch, /Now play exactly the same way as before/);
-  const renderedConflict = section(result.stdout, 'conflict', 'copilot');
-  const renderedCopilot = section(result.stdout, 'copilot', 'terminal');
-  for (const name of CONFLICT_SHOTS) {
-    const src = `images/guide/conflict/${name}`;
-    assert.ok(renderedConflict.includes(`href="${src}"`), src);
-    assert.ok(renderedConflict.includes(`src="${src}"`), src);
-  }
-  for (const name of COPILOT_SHOTS) {
-    const src = `images/guide/copilot/${name}`;
-    assert.ok(renderedCopilot.includes(`href="${src}"`), src);
-    assert.ok(renderedCopilot.includes(`src="${src}"`), src);
-  }
-  assert.ok(renderedConflict.indexOf('</details>') < renderedConflict.indexOf('01-merge-changes.png'));
+  for (const name of START_SHOTS) assert.ok(renderedStart.includes(`src="images/guide/start-together/${name}"`));
+  for (const name of INVITE_SHOTS) assert.ok(section(result.stdout, 'invite', 'create-match').includes(`src="images/guide/invite/${name}"`));
+  for (const name of CONFLICT_SHOTS) assert.ok(renderedTurn.includes(`src="images/guide/conflict/${name}"`));
+  for (const name of COPILOT_SHOTS) assert.ok(section(result.stdout, 'copilot', 'register').includes(`src="images/guide/copilot/${name}"`));
+  assert.ok(!result.stdout.includes('images/guide/copilot/05-plan-mode.png'));
+  assert.match(renderedTurn, /match-01/);
 });

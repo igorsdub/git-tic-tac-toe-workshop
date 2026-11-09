@@ -14,7 +14,7 @@ test('every active catalog workshop has a setup track; the archived one shows th
   const views = Object.fromEntries(catalog.workshops.map((workshop) => [workshop.id, setupView(workshop)]));
   assert.deepEqual(views, {
     '2026-10-01-scda': 'archived',
-    '2026-11-06-sokedai': 'codespaces',
+    '2026-11-06-sokedai': 'archived',
     '2026-11-10-riken': 'codespaces',
   });
 });

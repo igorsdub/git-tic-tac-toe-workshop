@@ -6,7 +6,7 @@ This two-hour workshop teaches collaborative Git through a paired tic-tac-toe ga
 
 - [Design history](WORKSHOP_DESIGN_HANDOFF.md) (historical record; the guides below are current)
 - [Local delivery status and blockers](planning/delivery-status-2026-10-20.md)
-- [Learner guide](LEARNER_GUIDE.md) and [How to play](docs/guide.html)
+- [Learner guide](LEARNER_GUIDE.md), [Slot 1](docs/guide.html), and [Slot 2](docs/play-2.html)
 - [Time machine](TIME_MACHINE.md) take-home page ([web version](docs/time-machine.html))
 - [Facilitator guide](FACILITATOR_GUIDE.md), which holds the only copy of the agenda
 - [Pre-session checklist](PRE_SESSION_CHECK.md) and [Setup page](docs/setup.html)
@@ -19,7 +19,7 @@ This two-hour workshop teaches collaborative Git through a paired tic-tac-toe ga
 
 ## Workshop links
 
-The plain site URL follows the single `setupOnly` setting in [`docs/site-config.js`](docs/site-config.js): when true, it opens Setup; when false, it opens the Game Wall. Open [`docs/wall.html`](docs/wall.html) directly for the Game Wall. The default workshop is SOKENDAI (2026-11-06); SCDA Training Week is archived. Use a workshop-specific `?workshop=<id>` link to select an event.
+The plain site URL follows the single `setupOnly` setting in [`docs/site-config.js`](docs/site-config.js): when true, it opens Setup; when false, it opens the Game Wall. Open [`docs/wall.html`](docs/wall.html) directly for the Game Wall. The default workshop is RIKEN (2026-11-10). SOKENDAI and SCDA Training Week are archived and remain selectable so their history stays viewable. Use a workshop-specific `?workshop=<id>` link to select an event.
 
 The shared event context on the Game Wall, Setup page, and How to play reads event names, ISO dates, status, registration links, and optional `note` text from [`docs/workshops.json`](docs/workshops.json). Each workshop may also set `setupTrack` (`"codespaces"` or `"local"`) and `surveyUrl`. Change the catalog's `defaultWorkshopId` to designate a different plain-URL default; stable workshop links continue using their own `?workshop=<id>` value.
 
@@ -31,12 +31,12 @@ The shared event context on the Game Wall, Setup page, and How to play reads eve
 
 ## Staged learner path
 
-In full mode, learners move through Setup (`docs/setup.html`), How to play (`docs/guide.html`), and the Game Wall (`docs/wall.html`) using the stage strip, which ends with **Register repository**. In setup-only mode, the strip, registration controls, and onward links are hidden across all three pages; the plain site URL opens Setup. Set `setupOnly` to `false` in `docs/site-config.js` to restore full mode.
+In full mode, learners move through Setup (`docs/setup.html`), Slot 1 (`docs/guide.html`), Slot 2 (`docs/play-2.html`), and the Game Wall (`docs/wall.html`) using the stage strip, which ends with **Register repository**. In setup-only mode, the strip, registration controls, and onward links are hidden; the plain site URL opens Setup. Set `setupOnly` to `false` in `docs/site-config.js` to restore full mode. The RIKEN catalog entry's `pages` field points at those four pages.
 
 The Setup page adapts to the selected workshop (`?workshop=<id>`):
 
-- **Archived** (for example SCDA Training Week): archived workshops are omitted from the workshop selector.
-- **`setupTrack: "codespaces"`** (SOKENDAI and RIKEN): the step-by-step Codespaces track with screenshots, per-step checkboxes remembered in the browser, and the workshop's `surveyUrl` when set.
+- **Archived** (SOKENDAI and SCDA Training Week): archived workshops stay in the selector under Archived, so their Game Wall history stays viewable. Setup for an archived workshop says the workshop has finished.
+- **`setupTrack: "codespaces"`** (RIKEN): the Codespaces track with screenshots and per-step checkboxes remembered in the browser. The setup page has no survey and no Codespace-deletion section.
 - A workshop with no `setupTrack` shows "Setup for this workshop is not published yet".
 
 In full mode, use **Register repository** in the stage strip to open the selected workshop's registration form.
@@ -74,15 +74,15 @@ The agenda is in the [Facilitator guide](FACILITATOR_GUIDE.md#agenda-120-minutes
 
 ## Environment and Git workflow
 
-Each learner uses their own Codespace in the browser-based VS Code editor. Each pair works in one shared public GitHub repository. Learners use VS Code's Source Control view for every turn: Pull, edit one cell and save, stage with +, Commit with a clear message, Sync Changes. The terminal is not the teaching path.
+Each learner uses their own Codespace in the browser-based VS Code editor. Each pair works in one shared public GitHub repository. **main is sacred.** The owner creates branch `match` on github.com, and later `rematch`, before the pair opens Codespaces. A turn on `match` is Pull, edit one cell, Commit and Sync.
 
-`BOARD.txt` is three rows of three single-space-separated cells (`.`, `X`, `O`); a move replaces one `.`. The manual match teaches the whole workflow. In the agent-assisted rematch, learners ask Copilot in agent mode "Place X in the center of the board" for X's first move, inspect the diff, then stage, commit, and sync the change themselves. O players and later turns name their chosen square.
+`BOARD.txt` is three rows of three single-space-separated cells (`.`, `X`, `O`); a move replaces one `.`. Copilot in Agent mode edits the named square. The learner checks the diff and discards it when it is wrong. Ask mode explains. Plan mode is not used.
 
-Before the workshop, each learner creates a public repository from the template under their own account, fills in **Description**, and ticks **Include all branches** to get the template's empty `match-01`. They open it in a Codespace, run the readiness check, delete the Codespace at [github.com/codespaces](https://github.com/codespaces), and keep the repository. A running Codespace uses the limited free monthly allowance; a deleted one costs nothing. The readiness check: open Copilot Chat, type exactly "What does this repository do?", and expect an answer that mentions tic-tac-toe and `BOARD.txt`. See the [Pre-session checklist](PRE_SESSION_CHECK.md) and the [Setup page](docs/setup.html). At the session each pair chooses one prepared repository; its owner invites the partner, plays X and moves first. Both open fresh separate Codespaces, switch to `match-01`, and pull. For the rematch they create and publish `match-02` from clean `main`.
+Before the workshop, each learner creates a public repository from the template under their own account, fills in **Description**, and may tick **Include all branches**. The template has only `main`, so the copy is just `main`. They open it in a Codespace and run the readiness check: Copilot answers "What does this repository do?" with tic-tac-toe and `BOARD.txt`. See the [Pre-session checklist](PRE_SESSION_CHECK.md) and the [Setup page](docs/setup.html).
 
 ## Registration and delivery status
 
-Each pair registers its shared repository once for the workshop and supplies both player GitHub handles. The registry discovers every lowercase `match…` branch on each successful refresh; each matching branch becomes its own Game Wall card, and the board is read from that branch. A successful registration comment confirms the repository/workshop link. A card appears after a successful refresh finds a matching branch. A repository can belong to only one workshop; use a fresh template copy for another workshop. Archived workshops remain visible and accept updates to existing repositories, including corrected handles, while rejecting new repository registrations.
+Each pair registers its shared repository once for the workshop and supplies both player GitHub handles. The registry discovers every branch whose name contains `match` in any case (`match`, `Match`, `rematch`, `match-1`) on each successful refresh; `main` never appears. Each matching branch becomes its own Game Wall card, and the board is read from that branch. A successful registration comment confirms the repository/workshop link. A card appears after a successful refresh finds a matching branch. A repository can belong to only one workshop; use a fresh template copy for another workshop. Archived workshops remain visible and accept updates to existing repositories, including corrected handles, while rejecting new repository registrations.
 
 Existing registrations map to workshop `2026-10-01-scda`. The legacy `Default Event` record remains preserved outside workshop Game Walls pending review. The two-account rehearsal remains incomplete. See the [delivery status](planning/delivery-status-2026-10-20.md) before the workshop.
 

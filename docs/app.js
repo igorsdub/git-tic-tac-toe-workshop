@@ -598,7 +598,7 @@ State: Waiting for O
       }
       showNotice(messages.join(' '), 'notice-warning');
     } else if (games.length === 0) {
-      showNotice('No matching branches have been discovered for this workshop yet. Registered repositories appear here after a branch whose name begins with “match” is discovered.', 'notice-info');
+      showNotice('No matching branches have been discovered for this workshop yet. Registered repositories appear here after a branch whose name contains “match” (any case) is discovered. main never appears.', 'notice-info');
     } else {
       hideNotice();
     }
@@ -1042,7 +1042,7 @@ State: Waiting for O
       DOM.gameGrid.innerHTML = '';
       DOM.emptyState.classList.remove('hidden');
       if (currentGames.length === 0) {
-        DOM.emptyMessage.textContent = 'No matching branches have been found for this workshop yet. Registered repositories appear here after a branch whose name begins with “match” is discovered.';
+        DOM.emptyMessage.textContent = 'No matching branches have been found for this workshop yet. Registered repositories appear here after a branch whose name contains “match” (any case) is discovered. main never appears.';
       } else {
         DOM.emptyMessage.textContent = 'No games match the selected filter.';
       }

@@ -147,10 +147,23 @@ class TestMatchSnapshot(unittest.TestCase):
 
         branches = ["match01", "match-01", "match02", "match-test", "match", "main", "Match03", "feature/match04"]
         snapshot, status = build_match_snapshot([self.registration], [], CATALOG, lambda *_: branches, evaluate)
-        self.assertEqual([row["branch"] for row in snapshot], ["match", "match-01", "match-test", "match01", "match02"])
+        self.assertEqual(
+            [row["branch"] for row in snapshot],
+            ["Match03", "feature/match04", "match", "match-01", "match-test", "match01", "match02"],
+        )
         self.assertEqual(calls, [row["branch"] for row in snapshot])
         self.assertTrue(all(row["workshopId"] == "2026-10-01-scda" for row in snapshot))
         self.assertEqual(status[0]["status"], "success")
+
+    def test_discovers_match_substring_case_insensitively_and_never_main(self):
+        def evaluate(owner, repo, branch):
+            return {"is_valid": True, "status": "in_progress", "state": "Ready for X", "grid": [[branch]], "errors": []}
+
+        branches = ["main", "match", "Match", "rematch", "match-1", "feature", "README"]
+        snapshot, status = build_match_snapshot([self.registration], [], CATALOG, lambda *_: branches, evaluate)
+        self.assertEqual([row["branch"] for row in snapshot], ["Match", "match", "match-1", "rematch"])
+        self.assertNotIn("main", [row["branch"] for row in snapshot])
+        self.assertEqual(status[0]["matchBranches"], ["Match", "match", "match-1", "rematch"])
 
     def test_successful_listing_removes_a_deleted_match_branch(self):
         snapshot, _ = build_match_snapshot(

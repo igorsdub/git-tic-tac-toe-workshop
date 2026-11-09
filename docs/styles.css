@@ -1316,6 +1316,79 @@ a.skip-link:hover {
   line-height: 1.6;
 }
 
+/* Each section opens with its goal, then title, subtitle, lower heading, body. */
+.section-goal {
+  margin: 0;
+  font-size: 1.7rem;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.section-subtitle {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.sacred-callout {
+  margin: 0;
+  padding: 1rem 1.15rem;
+  border: 1px solid var(--border-medium);
+  border-left: 4px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--text-primary);
+}
+
+.order-callout {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.55;
+  color: var(--text-primary);
+}
+
+.hint-box {
+  margin: 0;
+  padding: 1rem 1.15rem;
+  border: 1px solid var(--border-light);
+  border-left: 4px solid #3b82f6;
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, #3b82f6 7%, var(--bg-surface));
+}
+
+.hint-box h3 { margin: 0 0 0.4rem; }
+
+.figure-slot {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 0.85rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+}
+
+.figure-slot-frame {
+  min-height: 7.5rem;
+  border: 2px dashed var(--border-medium);
+  border-radius: var(--radius-md);
+  background: transparent;
+}
+
+.figure-slot figcaption {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
 /* Quick-Jump Section Navigation */
 .jump-nav {
   display: flex;
@@ -1664,11 +1737,17 @@ a.register-btn:focus-visible {
 .username-tips { background-color: var(--bg-surface); border: 1px solid var(--border-light); border-left: 4px solid var(--border-medium); border-radius: var(--radius-md); padding: 0.9rem 1.1rem; }
 .username-tips-title { font-weight: 700; margin-bottom: 0.4rem; }
 .username-tips ul { padding-left: 1.25rem; display: flex; flex-direction: column; gap: 0.4rem; }
-.step-shot { margin: 0; display: flex; flex-direction: column; gap: 0.4rem; max-width: 100%; }
+.step-shot { margin: 0; display: flex; flex-direction: column; gap: 0.65rem; max-width: 100%; padding: 0.9rem; background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-md); }
 /* Full Codespace frames stay intact: scale to the column, never crop the window chrome. */
 .step-shot img { display: block; width: auto; max-width: 100%; height: auto; max-height: none; object-fit: contain; border: 1px solid var(--border-medium); border-radius: var(--radius-md); }
-.step-shot figcaption { font-size: 0.875rem; color: var(--text-secondary); }
-.step-pictures { display: flex; flex-direction: column; gap: 0.9rem; }
+.step-shot figcaption { font-size: 0.95rem; font-weight: 600; color: var(--text-primary); }
+.step-pictures { display: flex; flex-direction: column; gap: 2.25rem; }
+@media (max-width: 600px) {
+  .section-goal { font-size: 1.35rem; }
+  .guide-main { padding: 1.25rem 0.9rem 3rem; }
+  .guide-section { padding: 1.1rem; }
+  .step-pictures { gap: 1.75rem; }
+}
 [hidden] { display: none !important; }
 @media (max-width: 600px) { .setup-step { padding: 1rem 0; } }
 

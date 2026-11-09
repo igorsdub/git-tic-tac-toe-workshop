@@ -41,7 +41,7 @@ test('shared mode controls visibility class and logo destination on direct pages
 });
 
 test('all direct pages load mode before styles and setup-only CSS hides navigation and onward actions', () => {
-  for (const file of ['setup.html', 'guide.html', 'wall.html']) {
+  for (const file of ['setup.html', 'guide.html', 'play-2.html', 'wall.html']) {
     const html = fs.readFileSync(path.join(repo, 'docs', file), 'utf8');
     assert.match(html, /<html lang="en" class="setup-only">/);
     assert.ok(html.indexOf('src="site-config.js"') < html.indexOf('href="styles.css"'));

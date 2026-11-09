@@ -29,7 +29,7 @@ test('does not offer replay for a malformed branch registration', () => {
   const result = match({ branch: 'main' });
   assert.equal(result.status, 'error');
   assert.equal(result.historyUrl, null);
-  assert.throws(() => MatchData.historyApiUrl(result), /match-prefixed branch/);
+  assert.throws(() => MatchData.historyApiUrl(result), /contains/);
 });
 
 test('rebuilds a refreshed-history action from cached entries after rerender', () => {
@@ -58,19 +58,17 @@ test('history API is scoped to the registered branch and uppercase board filenam
     MatchData.historyApiUrl(current),
     'https://api.github.com/repos/pair/research-game/commits?sha=match-02&path=BOARD.txt&per_page=100',
   );
-  assert.throws(() => MatchData.historyApiUrl(match({ branch: 'main' })), /match-prefixed branch/);
+  assert.throws(() => MatchData.historyApiUrl(match({ branch: 'main' })), /contains/);
 });
 
-test('accepts every lowercase match-prefixed branch and preserves its full label', () => {
-  const branches = ['match', 'match01', 'match-01', 'match02', 'match-test'];
+test('accepts a branch whose name contains match in any case and rejects main', () => {
+  const branches = ['match', 'Match', 'rematch', 'match-1', 'match01', 'MATCH'];
   const normalized = branches.map((branch) => match({ branch }));
   assert.deepEqual(normalized.map((item) => item.branch), branches);
   assert.equal(new Set(normalized.map((item) => item.matchKey)).size, branches.length);
   assert.ok(normalized.every((item) => item.isValid));
-
-  assert.equal(MatchData.normalizeMatch({ ...normalized[3], branch: 'Match-test' }).isValid, false);
-  assert.equal(MatchData.normalizeMatch({ ...normalized[3], branch: 'MATCH' }).isValid, false);
-  assert.equal(MatchData.normalizeMatch({ ...normalized[3], branch: 'main' }).isValid, false);
+  assert.equal(MatchData.normalizeMatch({ ...normalized[0], branch: 'main' }).isValid, false);
+  assert.equal(MatchData.normalizeMatch({ ...normalized[0], branch: 'feature' }).isValid, false);
 });
 
 test('replays valid board snapshots oldest-first and reports invalid commits', async () => {
