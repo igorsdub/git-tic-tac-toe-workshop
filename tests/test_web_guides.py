@@ -242,7 +242,7 @@ class TestWebGuides(unittest.TestCase):
                 self.assertTrue(path.read_bytes().startswith(b"\x89PNG\r\n\x1a\n"), f"invalid PNG: {asset}")
 
     def test_learner_match_and_registration_use_the_workshop_contract(self):
-        for requirement in ("Source Control", "BOARD.txt", "match-01", "Main branch is sacred: don't modify it", "Commit and Sync"):
+        for requirement in ("Source Control", "BOARD.txt", "Main branch is sacred: don't modify it", "Commit and Sync"):
             self.assertIn(requirement, self.guide)
         ordered_sections = [self.guide.index(f'id="{section}"') for section in ("invite", "create-match", "turn", "copilot", "register")]
         self.assertEqual(ordered_sections, sorted(ordered_sections))
@@ -260,6 +260,13 @@ class TestWebGuides(unittest.TestCase):
         for old in ("Rewind", "rewind", "Checkout (Detached)", "force-push", "match-02"):
             self.assertNotIn(old, self.guide)
         self.assertNotIn("Register each match with its numbered branch", self.guide)
+
+    def test_no_page_contains_match_01(self):
+        pages = [path for path in REPO_ROOT.rglob("*.html") if "node_modules" not in path.parts]
+        self.assertGreater(len(pages), 0)
+        for path in pages:
+            text = path.read_text(encoding="utf-8")
+            self.assertNotIn("match-01", text, str(path.relative_to(REPO_ROOT)))
 
     def test_repository_registration_contract_is_consistent_in_markdown_guides(self):
         readme = (REPO_ROOT / "README.md").read_text(encoding="utf-8")
@@ -332,6 +339,8 @@ class TestWebGuides(unittest.TestCase):
             for branch in re.findall(r"(?:switch -c|Create Branch[^`]*`|named? )`?([\w.-]+)", content):
                 self.assertFalse(branch.startswith("match"), branch)
         self.assertIn("what-if-01", page)
+        self.assertIn("cd521651", page)
+        self.assertNotIn("119e9ff", page)
         self.assertNotIn("git switch -c match", page)
         sections = (
             ("look", "detached", (
@@ -348,7 +357,7 @@ class TestWebGuides(unittest.TestCase):
                 "09-stage-commit-ready.png",
                 "10-publish-branch.png",
             )),
-            ("return", "terminal", ("11-back-on-match-01.png",)),
+            ("return", "terminal", ("11-back-on-match.png",)),
         )
         for start, end, names in sections:
             section = page[page.index(f'id="{start}"'):page.index(f'id="{end}"')]
@@ -443,7 +452,7 @@ class TestWebGuides(unittest.TestCase):
         invite = self.guide[self.guide.index('id="invite"'):self.guide.index('id="create-match"')]
         for text in ("Add people", "Accept invitation", "/invitations", "7 days", "same signed-in device"):
             self.assertIn(text, invite)
-        self.assertLess(self.guide.index('id="invite"'), self.guide.index("match-01"))
+        self.assertLess(self.guide.index('id="invite"'), self.guide.index('id="create-match"'))
         files = re.findall(r'src="(images/guide/invite/[^"]+\.png)"', invite)
         self.assertEqual(files, [
             "images/guide/invite/01-settings.png",
@@ -468,7 +477,7 @@ class TestWebGuides(unittest.TestCase):
         branch = self.guide[self.guide.index('id="create-match"'):self.guide.index('id="open-codespaces"')]
         self.assertIn("images/guide/create-match/01-github-create-match-branch.png", branch)
         self.assertIn("Create branch match from main", branch)
-        self.assertIn("match-01", branch)
+        self.assertNotIn("match-01", branch)
         learner = (REPO_ROOT / "LEARNER_GUIDE.md").read_text(encoding="utf-8")
         for text in ("Add people", "Accept invitation", "/invitations", "Step 1: Invite your partner"):
             self.assertIn(text, learner)

@@ -124,7 +124,7 @@ class TestApprovedWorkshopPath(unittest.TestCase):
 
     def test_learner_match_uses_board_and_source_control_contract(self):
         learner = (REPO_ROOT / "LEARNER_GUIDE.md").read_text(encoding="utf-8")
-        for requirement in ("Source Control", "BOARD.txt", "match-01", "from `main` on github.com", "rematch"):
+        for requirement in ("Source Control", "BOARD.txt", "`match`", "from `main` on github.com", "rematch"):
             self.assertIn(requirement, learner)
         self.assertNotIn("complete the rematch manually", learner)
         guide = (REPO_ROOT / "docs" / "guide.html").read_text(encoding="utf-8")

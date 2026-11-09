@@ -30,7 +30,7 @@ const INVITE_SHOTS = [
   '08-github-search-repo.png',
 ];
 const TURN_SHOTS = ['01-pull.png', '02-edit-cell.png', '03-saved.png', '04-stage.png', '05-commit.png', '06-sync.png'];
-const START_SHOTS = ['01-on-main.png', '02-select-match-01.png', '03-on-match-01.png'];
+const START_SHOTS = ['01-on-main.png', '02-select-match.png', '03-on-match.png'];
 const CONFLICT_SHOTS = ['01-merge-changes.png', '02-merge-editor.png', '03-complete-merge.png', '04-commit-sync.png'];
 const COPILOT_SHOTS = ['01-ask-mode.png', '02-ask-reply.png', '03-agent-mode.png', '04-agent-diff.png'];
 
@@ -43,7 +43,7 @@ function assertLinkedPng(image) {
   assert.deepEqual(fs.readFileSync(file).subarray(0, 8), PNG);
 }
 
-test('slot 1 reuses accurate screenshots and does not relabel match-01 as match', () => {
+test('slot 1 screenshots are on match', () => {
   const turn = section(guide, 'turn', 'copilot');
   const start = section(guide, 'open-codespaces', 'turn');
   assert.deepEqual(
@@ -55,9 +55,10 @@ test('slot 1 reuses accurate screenshots and does not relabel match-01 as match'
     START_SHOTS.map((name) => `images/guide/start-together/${name}`),
   );
   for (const image of [...linkedImages(turn), ...linkedImages(start)]) assertLinkedPng(image);
-  assert.match(start, /This picture shows the Codespace branch list with <code>origin\/match-01<\/code>/);
-  assert.match(start, /The status bar in this picture shows <code>match-01<\/code>/);
-  assert.match(turn, /This picture shows the graph for <code>match-01<\/code>/);
+  assert.match(start, /The branch picker shows <code>origin\/match<\/code>/);
+  assert.match(start, /The status bar shows <code>match<\/code>/);
+  assert.match(turn, /The graph is on <code>match<\/code>/);
+  assert.doesNotMatch(guide, /match-01/);
   assert.doesNotMatch(guide, /images\/guide\/rematch\//);
   assert.doesNotMatch(guide, /images\/guide\/copilot\/05-plan-mode\.png/);
   assert.doesNotMatch(guide, /<h3>Plan mode<\/h3>/);
@@ -124,7 +125,7 @@ test('invite figures show the owner collaborator flow and the partner accept pat
   const branch = section(guide, 'create-match', 'open-codespaces');
   assert.deepEqual(linkedImages(branch).map((image) => image.src), ['images/guide/create-match/01-github-create-match-branch.png']);
   assert.match(branch, /Create branch match from main/);
-  assert.match(branch, /match-01/);
+  assert.doesNotMatch(branch, /match-01/);
   for (const image of linkedImages(branch)) assertLinkedPng(image);
 });
 
@@ -207,5 +208,5 @@ test('guide figures stay linked inside their sections', { skip: !browser }, () =
   for (const name of CONFLICT_SHOTS) assert.ok(renderedTurn.includes(`src="images/guide/conflict/${name}"`));
   for (const name of COPILOT_SHOTS) assert.ok(section(result.stdout, 'copilot', 'register').includes(`src="images/guide/copilot/${name}"`));
   assert.ok(!result.stdout.includes('images/guide/copilot/05-plan-mode.png'));
-  assert.match(renderedTurn, /match-01/);
+  assert.doesNotMatch(result.stdout, /match-01/);
 });

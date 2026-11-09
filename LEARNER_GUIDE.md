@@ -26,8 +26,6 @@ O (partner): while signed in, open `github.com/<owner>/<repo>` or search `owner/
 
 The owner creates `match` from `main` on github.com. Do not commit on `main`. If a Codespace cannot see `match`, it was opened too early: close it and open a new one. Do not create another branch.
 
-Pictures of the Codespace branch picker may show `match-01`. That is the branch in the picture. Yours is `match`.
-
 ### A turn on match
 
 In Source Control: Pull, edit one cell, Commit and Sync. `BOARD.txt` is three rows of three single-space-separated cells. A move replaces one `.`.
