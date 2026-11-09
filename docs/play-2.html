@@ -77,22 +77,22 @@ Before writing anything, ask me one question at a time until we agree exactly wh
       <h2><span class="step-num">3</span> After the plan: the other roles</h2>
       <p class="section-subtitle">Read the prompts now. You paste them in step 5, after branch <code>feature/testing</code> exists. Each role starts in a new chat, so paste the agreed rules into the prompt.</p>
       <h3>Implementer</h3>
-      <p>New chat in step 5. Paste:</p>
-      <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-implementer" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-implementer">You are the implementer. Paste the agreed rules here, then follow them.
+      <p>New chat in step 5. Replace <code>PASTE THE AGREED RULES HERE</code> with the agreed rules, then paste:</p>
+      <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-implementer" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-implementer">You are the implementer.
 
 PASTE THE AGREED RULES HERE
 
 Write pytest tests for these rules and a pyproject.toml so `uv run pytest` works. Put the tests in tests/test_board.py.</code></pre></div>
       <h3>Reviewer</h3>
-      <p>New chat in step 5. Paste:</p>
-      <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-reviewer" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-reviewer">You are the reviewer. Paste the agreed rules here.
+      <p>New chat in step 5. Replace <code>PASTE THE AGREED RULES HERE</code> with the agreed rules, then paste:</p>
+      <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-reviewer" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-reviewer">You are the reviewer.
 
 PASTE THE AGREED RULES HERE
 
 Run `uv run pytest` and read the diff. Say what does not match the agreed rules. Do not change files.</code></pre></div>
       <h3>Docs writer</h3>
-      <p>New chat in step 5. Paste:</p>
-      <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-docs" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-docs">You are the docs writer. Paste the agreed rules here.
+      <p>New chat in step 5. Replace <code>PASTE THE AGREED RULES HERE</code> with the agreed rules, then paste:</p>
+      <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-docs" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-docs">You are the docs writer.
 
 PASTE THE AGREED RULES HERE
 
@@ -102,7 +102,6 @@ Create or update README.md for people and AGENTS.md for agents so both match the
 
     <section class="guide-section repro-box" id="reproducibility">
       <h2><span class="step-num">4</span> Reproducibility</h2>
-      <p>The same setup runs on any machine.</p>
       <ul>
         <li>A <strong>virtual environment</strong> is an isolated set of packages for one project, so it runs the same on any machine.</li>
         <li>A virtual environment manager creates it. Ours is <a href="https://docs.astral.sh/uv/" target="_blank" rel="noopener noreferrer">uv</a>.</li>
@@ -124,16 +123,16 @@ Create or update README.md for people and AGENTS.md for agents so both match the
         <p>Tests usually live in a <code>tests/</code> folder. Use one test file per function or file, named <code>test_&lt;name&gt;.py</code>, with functions that start with <code>test_</code>. <code>uv run pytest</code> finds and runs them.</p>
       </aside>
       <h3>Run it, break it, restore it</h3>
-      <p>Use the prompts from step 3. Each one starts in a new chat. Paste the agreed rules into the prompt.</p>
+      <p>Use the prompts from step 3. Each one starts in a new chat. Replace <code>PASTE THE AGREED RULES HERE</code> with the agreed rules before you paste.</p>
       <ol>
         <li>New chat. Paste the implementer prompt. Copilot adds <code>tests/test_board.py</code> and <code>pyproject.toml</code>.</li>
         <li>In the terminal, run <code>uv run pytest</code>. uv also writes <code>uv.lock</code>.</li>
         <li>Break <code>BOARD.txt</code> on purpose: a lowercase mark, or a digit 0 where a letter O belongs.</li>
         <li>Run <code>uv run pytest</code> again and watch it fail.</li>
         <li>Restore the board and run <code>uv run pytest</code> once more.</li>
-        <li>Commit and Sync <code>tests/test_board.py</code>, <code>pyproject.toml</code>, and <code>uv.lock</code> on <code>feature/testing</code>.</li>
-        <li>New chat. Paste the reviewer prompt and the agreed rules.</li>
-        <li>New chat. Paste the docs writer prompt and the agreed rules.</li>
+        <li>New chat. Paste the reviewer prompt. The reviewer checks the diff and runs <code>uv run pytest</code>.</li>
+        <li>New chat. Paste the docs writer prompt. It updates <code>README.md</code> and creates or updates <code>AGENTS.md</code>.</li>
+        <li>Commit and Sync <code>tests/test_board.py</code>, <code>pyproject.toml</code>, <code>uv.lock</code>, <code>README.md</code>, and <code>AGENTS.md</code> on <code>feature/testing</code>.</li>
       </ol>
       <details id="pre-commit">
         <summary>Run the check before every commit</summary>

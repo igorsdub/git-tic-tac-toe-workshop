@@ -81,7 +81,7 @@ Write pytest tests for these rules and a pyproject.toml so `uv run pytest` works
 
 Reproducibility comes before the tests. A virtual environment is an isolated set of packages for one project. uv creates it. `pyproject.toml` is the manifest. `uv.lock` locks the exact versions. Julia uses `Project.toml` and `Manifest.toml`. R uses `renv`.
 
-Create `feature/testing` from `main` (GitHub branch dropdown, or Copilot in Agent mode). That name does not contain `match`, so it stays off the Game Wall. Copilot writes `tests/test_board.py` and `pyproject.toml`. Run `uv run pytest`. Break the board on purpose, see the check fail, and restore the board. Commit and Sync `tests/test_board.py`, `pyproject.toml`, and `uv.lock` on `feature/testing`. A pre-commit hook can run `uv run pytest`. GitHub Actions can run the same tests on every push.
+Create `feature/testing` from `main` (GitHub branch dropdown, or Copilot in Agent mode). That name does not contain `match`, so it stays off the Game Wall. Copilot writes `tests/test_board.py` and `pyproject.toml`. Run `uv run pytest`. Break the board on purpose, see the check fail, and restore the board. In a new chat the reviewer checks the diff and runs `uv run pytest`. In another new chat the docs writer updates `README.md` and creates or updates `AGENTS.md`. Then Commit and Sync `tests/test_board.py`, `pyproject.toml`, `uv.lock`, `README.md`, and `AGENTS.md` on `feature/testing`. A pre-commit hook can run `uv run pytest`. GitHub Actions can run the same tests on every push.
 
 The docs writer creates or updates `README.md` (people) and `AGENTS.md` (agents). The template does not include `AGENTS.md`.
 
