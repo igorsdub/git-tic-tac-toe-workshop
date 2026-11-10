@@ -17,8 +17,8 @@
     },
     {
       "repoUrl": "https://github.com/pmuskusv/TIC-TAC-TOE",
-      "status": "success",
-      "matchBranches": []
+      "status": "error",
+      "error": "Command '['gh', 'api', '--paginate', '--jq', '.[] | .name | @json', 'repos/pmuskusv/TIC-TAC-TOE/branches?per_page=100']' returned non-zero exit status 1."
     },
     {
       "repoUrl": "https://github.com/WLomics/sqcccccccccc",
