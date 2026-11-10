@@ -630,9 +630,8 @@
     "boardValid": false,
     "board": null,
     "errors": [
-      "Invalid BOARD.txt: Row 1 must contain three cells separated by single spaces: 'O O x'.",
-      "Invalid BOARD.txt: Row 2 must contain three cells separated by single spaces: 'x x x'.",
-      "Invalid BOARD.txt: Row 3 must contain three cells separated by single spaces: 'x O O'."
+      "Invalid BOARD.txt: Row 1 must contain three cells separated by single spaces: 'x x o'.",
+      "Invalid BOARD.txt: Row 2 must contain three cells separated by single spaces: '. o .'."
     ],
     "failureKind": "invalid_board",
     "refreshStatus": "fresh"
@@ -672,15 +671,15 @@
     "playerO": "017N",
     "branch": "rematch",
     "matchKey": "SatsukiHirasawa/git-tic-tac-toe-riken#rematch",
-    "status": "in_progress",
-    "state": "Waiting for O",
-    "outcome": null,
+    "status": "completed",
+    "state": "Draw",
+    "outcome": "Draw",
     "boardValid": true,
     "board": [
       [
         "X",
         "O",
-        " "
+        "X"
       ],
       [
         "O",
@@ -690,7 +689,7 @@
       [
         "X",
         "X",
-        " "
+        "O"
       ]
     ],
     "errors": [],
