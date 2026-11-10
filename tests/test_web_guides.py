@@ -229,12 +229,11 @@ class TestWebGuides(unittest.TestCase):
 
         manual_root = DOCS_DIR / "images" / "setup" / "manual-images"
         expected = {f"images/setup/manual-images/{folder.name}/{image.name}"
-                    for folder in sorted(manual_root.iterdir()) for image in sorted(folder.glob("*.png"))}
+                    for folder in sorted(manual_root.iterdir()) if folder.is_dir()
+                    for image in sorted(folder.glob("*.png"))}
         referenced = set(re.findall(r'src="(images/setup/manual-images/[^"]+\.png)"', self.setup))
-        cleanup = {name for name in expected if "/03-cleaning-up/" in name}
-        self.assertEqual(referenced, expected - cleanup)
+        self.assertEqual(referenced, expected)
         self.assertEqual(len(referenced), 21)
-        self.assertTrue(cleanup)
         for asset in referenced:
             with self.subTest(asset=asset):
                 path = DOCS_DIR / asset
