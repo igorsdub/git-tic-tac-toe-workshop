@@ -606,7 +606,9 @@
     "boardValid": false,
     "board": null,
     "errors": [
-      "Invalid BOARD.txt: Row 2 must contain three cells separated by single spaces: '. x o'."
+      "Invalid BOARD.txt: Row 1 must contain three cells separated by single spaces: 'o . o'.",
+      "Invalid BOARD.txt: Row 2 must contain three cells separated by single spaces: '. x o'.",
+      "Invalid BOARD.txt: Row 3 must contain three cells separated by single spaces: 'x x x'."
     ],
     "failureKind": "invalid_board",
     "refreshStatus": "fresh"
