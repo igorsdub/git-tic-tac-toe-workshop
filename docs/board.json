@@ -588,5 +588,41 @@
     "errors": [],
     "failureKind": null,
     "refreshStatus": "fresh"
+  },
+  {
+    "workshopId": "2026-11-10-riken",
+    "workshopName": "RIKEN",
+    "eventId": "2026-11-10-riken",
+    "owner": "SatsukiHirasawa",
+    "repo": "git-tic-tac-toe-riken",
+    "repoUrl": "https://github.com/SatsukiHirasawa/git-tic-tac-toe-riken",
+    "playerX": "SatsukiHirasawa",
+    "playerO": "017N",
+    "branch": "match",
+    "matchKey": "SatsukiHirasawa/git-tic-tac-toe-riken#match",
+    "status": "in_progress",
+    "state": "Ready for X",
+    "outcome": null,
+    "boardValid": true,
+    "board": [
+      [
+        " ",
+        " ",
+        " "
+      ],
+      [
+        " ",
+        " ",
+        " "
+      ],
+      [
+        " ",
+        " ",
+        " "
+      ]
+    ],
+    "errors": [],
+    "failureKind": null,
+    "refreshStatus": "fresh"
   }
 ]

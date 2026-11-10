@@ -153,6 +153,17 @@
       "issueNumber": 62,
       "issueUrl": "https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/62",
       "createdAt": "2026-11-06T07:58:32Z"
+    },
+    {
+      "workshopId": "2026-11-10-riken",
+      "owner": "SatsukiHirasawa",
+      "repo": "git-tic-tac-toe-riken",
+      "repoUrl": "https://github.com/SatsukiHirasawa/git-tic-tac-toe-riken",
+      "playerX": "SatsukiHirasawa",
+      "playerO": "017N",
+      "issueNumber": 71,
+      "issueUrl": "https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/71",
+      "createdAt": "2026-11-10T02:14:01Z"
     }
   ]
 }
