@@ -600,29 +600,15 @@
     "playerO": "017N",
     "branch": "match",
     "matchKey": "SatsukiHirasawa/git-tic-tac-toe-riken#match",
-    "status": "in_progress",
-    "state": "Ready for X",
+    "status": "error",
+    "state": "Invalid board",
     "outcome": null,
-    "boardValid": true,
-    "board": [
-      [
-        " ",
-        " ",
-        " "
-      ],
-      [
-        " ",
-        " ",
-        " "
-      ],
-      [
-        " ",
-        " ",
-        " "
-      ]
+    "boardValid": false,
+    "board": null,
+    "errors": [
+      "Invalid BOARD.txt: Row 2 must contain three cells separated by single spaces: '. x o'."
     ],
-    "errors": [],
-    "failureKind": null,
+    "failureKind": "invalid_board",
     "refreshStatus": "fresh"
   }
 ]
