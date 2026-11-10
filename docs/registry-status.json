@@ -98,6 +98,14 @@
       ]
     },
     {
+      "repoUrl": "https://github.com/MariiaIvonina/tic-tac-toe",
+      "status": "success",
+      "matchBranches": [
+        "match",
+        "re-match"
+      ]
+    },
+    {
       "repoUrl": "https://github.com/SatsukiHirasawa/git-tic-tac-toe-riken",
       "status": "success",
       "matchBranches": [

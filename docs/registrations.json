@@ -156,6 +156,17 @@
     },
     {
       "workshopId": "2026-11-10-riken",
+      "owner": "MariiaIvonina",
+      "repo": "tic-tac-toe",
+      "repoUrl": "https://github.com/MariiaIvonina/tic-tac-toe",
+      "playerX": "takumi",
+      "playerO": "mariia",
+      "issueNumber": 72,
+      "issueUrl": "https://github.com/igorsdub/git-tic-tac-toe-workshop/issues/72",
+      "createdAt": "2026-11-10T02:47:57Z"
+    },
+    {
+      "workshopId": "2026-11-10-riken",
       "owner": "SatsukiHirasawa",
       "repo": "git-tic-tac-toe-riken",
       "repoUrl": "https://github.com/SatsukiHirasawa/git-tic-tac-toe-riken",
