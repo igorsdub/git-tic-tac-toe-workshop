@@ -262,8 +262,10 @@ class TestWebGuides(unittest.TestCase):
 
     def test_no_page_contains_match_01(self):
         pages = [path for path in REPO_ROOT.rglob("*.html") if "node_modules" not in path.parts]
+        scripts = sorted((REPO_ROOT / "docs").glob("*.js"))
         self.assertGreater(len(pages), 0)
-        for path in pages:
+        self.assertIn(REPO_ROOT / "docs" / "app.js", scripts)
+        for path in [*pages, *scripts]:
             text = path.read_text(encoding="utf-8")
             self.assertNotIn("match-01", text, str(path.relative_to(REPO_ROOT)))
 
