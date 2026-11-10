@@ -101,7 +101,8 @@
       "repoUrl": "https://github.com/SatsukiHirasawa/git-tic-tac-toe-riken",
       "status": "success",
       "matchBranches": [
-        "match"
+        "match",
+        "rematch"
       ]
     }
   ]
