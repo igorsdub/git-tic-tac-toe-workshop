@@ -55,34 +55,18 @@ Stop the prompts, one sentence each:
 
 ## Agentic Coding
 
-With your partner, name at least two ways an update of the board can go wrong before anyone mentions checks. Then use the hint: X/O count difference (X moves first, so X−O is 0 or 1); lowercase `x`/`o` vs uppercase; the digit `0` typed instead of the letter `O` (this actually happened before); plus others the pairs find themselves.
+In this section we will think about how to get what you expect from the model, so its output matches the plan in your head.
 
-A skill is a `SKILL.md` file (Agent Skills). Matt Pocock's grill-me skill interviews you first. A pstack-style collection is a folder of those files. Grill Me prompt: "Interview me relentlessly about every aspect of this plan until we reach a shared understanding. Walk down each branch of the design tree, resolving dependencies between decisions one by one." Talk: https://ai.engineer/talks/v4F1gFy-hqg-software-fundamentals-for-ai-coding. Implementation and review should never share a context, which is why the review happens in a fresh chat.
+Grilling is the main part. Let Copilot interview you, one question at a time, until you agree with your partner and with Copilot. Then the agreed plan goes into `PLAN.md`. This file is usually called a PRD (product requirements document), `PRD.md`, and `PLAN.md` is just the plain name we use here.
 
-The planner matters most. Order: planner and PRD in one chat, then the other roles explained, then reproducibility, then tests on `feature/testing`. The implementer, reviewer, and docs writer each start a new chat. Paste the agreed rules into each of those prompts. One partner drives.
+A `SKILL.md` file is a reusable set of prompts. The grill-me skill is one of those files. It tells the agent to interview you about the plan until you agree, and to wait until then before it builds anything.
 
-Planner prompt:
-
-```
-You are the planner. When we update BOARD.txt, these things can go wrong:
-- case 1
-- case 2
-- case 3 (optional)
-Before writing anything, ask me one question at a time until we agree exactly which boards are valid. Then list the agreed rules as checks a test could make. Don't write code yet.
-```
-
-Implementer prompt:
+The task uses a separate new repository. Link the game repository you played in. Grill Copilot starting from the message below, write `PLAN.md`, then let Copilot build an automatic scoreboard website. The site reads the games stored as branches in the game repository and shows the score between the two players. Host it on GitHub Pages. `BOARD.txt` and the game repository stay unchanged. No programming knowledge is needed. You are done when the scoreboard is live on GitHub Pages.
 
 ```
-Write pytest tests for these rules and a pyproject.toml so `uv run pytest` works. Put the tests in tests/test_board.py.
+I need a scoreboard for a tic-tac-toe repository where games are stored on different branches: <link to our game repo>. A website should show the scores between the two players. I want to host it on GitHub Pages. I'm not an expert: guide me through the options one question at a time before building anything.
 ```
 
-Reproducibility comes before the tests. A virtual environment is an isolated set of packages for one project. uv creates it. `pyproject.toml` is the manifest. `uv.lock` locks the exact versions. Julia uses `Project.toml` and `Manifest.toml`. R uses `renv`.
-
-Create `feature/testing` from `main` (GitHub branch dropdown, or Copilot in Agent mode). That name does not contain `match`, so it stays off the Game Wall. Copilot writes `tests/test_board.py` and `pyproject.toml`. Run `uv run pytest`. Break the board on purpose, see the check fail, and restore the board. In a new chat the reviewer checks the diff and runs `uv run pytest`. In another new chat the docs writer updates `README.md` and creates or updates `AGENTS.md`. Then Commit and Sync `tests/test_board.py`, `pyproject.toml`, `uv.lock`, `README.md`, and `AGENTS.md` on `feature/testing`. A pre-commit hook can run `uv run pytest`. GitHub Actions can run the same tests on every push.
-
-The docs writer creates or updates `README.md` (people) and `AGENTS.md` (agents). The template does not include `AGENTS.md`.
-
-At the end, compare your work with the reference repository: https://github.com/igorsdub/git-tic-tac-toe-reference
+Each person then thinks of a task from their own work that they could grill an agent on.
 
 After the workshop, the [Time machine](TIME_MACHINE.md) ([web version](docs/time-machine.html)) is optional.

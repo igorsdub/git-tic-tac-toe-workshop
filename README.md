@@ -74,7 +74,7 @@ The agenda is in the [Facilitator guide](FACILITATOR_GUIDE.md#agenda-120-minutes
 
 ## Environment and Git workflow
 
-Each learner uses their own Codespace in the browser-based VS Code editor. Each pair works in one shared public GitHub repository. **Main branch is sacred: don't modify it.** The owner creates branch `match` on github.com before the pair opens Codespaces. Copilot later creates `rematch` from `main` for a second game. Agentic Coding writes tests on `feature/testing`. A turn on `match` is Pull, edit one cell, Commit and Sync.
+Each learner uses their own Codespace in the browser-based VS Code editor. Each pair works in one shared public GitHub repository. **Main branch is sacred: don't modify it.** The owner creates branch `match` on github.com before the pair opens Codespaces. Copilot later creates `rematch` from `main` for a second game. In Agentic Coding the pair creates a separate repository, writes the agreed plan in `PLAN.md`, and publishes a scoreboard on GitHub Pages. `BOARD.txt` and the game repository stay unchanged. A turn on `match` is Pull, edit one cell, Commit and Sync.
 
 `BOARD.txt` is three rows of three single-space-separated cells (`.`, `X`, `O`); a move replaces one `.`. Copilot in Agent mode edits the named square. The learner checks the diff and discards it when it is wrong. Ask mode explains. Plan mode is not used.
 
