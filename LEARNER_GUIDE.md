@@ -83,6 +83,4 @@ Create `feature/testing` from `main` (GitHub branch dropdown, or Copilot in Agen
 
 The docs writer creates or updates `README.md` (people) and `AGENTS.md` (agents). The template does not include `AGENTS.md`.
 
-At the end, compare your work with the reference repository: https://github.com/igorsdub/git-tic-tac-toe-reference
-
 After the workshop, the [Time machine](TIME_MACHINE.md) ([web version](docs/time-machine.html)) is optional.
