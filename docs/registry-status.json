@@ -2,8 +2,8 @@
   "repositories": [
     {
       "repoUrl": "https://github.com/igorsdub/workshop-dashboard-verification-20261020",
-      "status": "error",
-      "error": "Command '['gh', 'api', '--paginate', '--jq', '.[] | .name | @json', 'repos/igorsdub/workshop-dashboard-verification-20261020/branches?per_page=100']' returned non-zero exit status 1."
+      "status": "success",
+      "matchBranches": []
     },
     {
       "repoUrl": "https://github.com/nanetteraczka1/tictactoe",
