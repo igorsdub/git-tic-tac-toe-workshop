@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Agentic Coding - Git Tic-Tac-Toe Workshop</title>
-  <meta name="description" content="Agree what a legal board is, then let Copilot write the checks on a feature branch.">
+  <meta name="description" content="Let Copilot interview you, write the agreed plan in PLAN.md, and publish a scoreboard on GitHub Pages.">
   <link id="theme-favicon" rel="icon" type="image/svg+xml" href="images/xo-logo-light.svg">
   <script src="site-config.js"></script>
   <script src="theme-init.js"></script>
@@ -22,130 +22,102 @@
   <main class="guide-main" id="main"><div class="guide-container">
     <header class="guide-hero">
       <h1>Agentic Coding</h1>
-      <p class="lead">In this section we will think about how to get what you expect from Copilot, so its output matches the plan in your head.</p>
+      <p class="lead">In this section we will think about how to get what you expect from the model, so its output matches the plan in your head.</p>
     </header>
     <ol class="page-checklist" data-checklist="agentic">
-      <li data-item="1"><label><input type="checkbox"><span>1. What can go wrong. Your pair wrote at least two cases.</span></label></li>
-      <li data-item="2"><label><input type="checkbox"><span>2. Grilling. You and Copilot agreed the rules for a valid board.</span></label></li>
-      <li data-item="3"><label><input type="checkbox"><span>3. After the plan: the other roles. You started a new chat for the implementer, the reviewer, and the docs writer.</span></label></li>
-      <li data-item="4"><label><input type="checkbox"><span>4. Reproducibility. You can name the virtual environment, uv, <code>pyproject.toml</code>, and <code>uv.lock</code>.</span></label></li>
-      <li data-item="5"><label><input type="checkbox"><span>5. Let Copilot write the check. You ran <code>uv run pytest</code>. It passes, and it fails when you break the board.</span></label></li>
-      <li data-item="6"><label><input type="checkbox"><span>6. Reference repository. You opened the reference repository after your own work.</span></label></li>
+      <li data-item="1"><label><input type="checkbox"><span>1. Grilling. You let Copilot interview you until you agreed, and the plan is in <code>PLAN.md</code>.</span></label></li>
+      <li data-item="2"><label><input type="checkbox"><span>2. Build the scoreboard. Your pair has a live scoreboard on GitHub Pages, and the game repository is unchanged.</span></label></li>
+      <li data-item="3"><label><input type="checkbox"><span>3. A task from your own work. You thought of a task from your own work that you could grill an agent on.</span></label></li>
     </ol>
-    <nav class="jump-nav" aria-label="Quick jump to section"><span class="jump-nav-label">Jump to:</span><a href="#what-can-go-wrong" class="jump-pill">What can go wrong</a><a href="#grilling" class="jump-pill">Grilling</a><a href="#roles" class="jump-pill">Other roles</a><a href="#reproducibility" class="jump-pill">Reproducibility</a><a href="#checks" class="jump-pill">Checks</a><a href="#reference" class="jump-pill">Reference</a></nav>
-
-    <section class="guide-section" id="what-can-go-wrong">
-      <h2><span class="step-num">1</span> What can go wrong when you update the board?</h2>
-      <p class="section-subtitle">With your partner or on your own, come up with at least two cases. Finish your own list before you open the hint.</p>
-      <h3>Your cases</h3>
-      <p>Look at <code>BOARD.txt</code>. What would make an update the wrong board? Write two or more cases in your own words.</p>
-      <details class="hint-box" id="board-hint">
-        <summary>Hint, after your own cases</summary>
-        <ul>
-          <li>X/O count difference (X moves first, so X−O is 0 or 1).</li>
-          <li>Lowercase <code>x</code>/<code>o</code> vs uppercase.</li>
-          <li>The digit <code>0</code> typed instead of the letter <code>O</code> (this actually happened before).</li>
-          <li>Plus others the pairs find themselves.</li>
-        </ul>
-      </details>
-    </section>
+    <nav class="jump-nav" aria-label="Quick jump to section"><span class="jump-nav-label">Jump to:</span><a href="#grilling" class="jump-pill">Grilling</a><a href="#scoreboard" class="jump-pill">Scoreboard</a><a href="#reflection" class="jump-pill">Your own work</a></nav>
 
     <section class="guide-section" id="grilling">
-      <h2><span class="step-num">2</span> Grilling</h2>
-      <p class="section-subtitle">Agree the rules with Copilot before anyone writes a test. A wrong agreement makes the later roles build the wrong thing.</p>
-      <h3>Three ideas</h3>
-      <p><strong>PRD</strong> (product requirements document). A PRD is one document of what you are trying to achieve.</p>
-      <p><strong>Grilling.</strong> Align the plan by letting the agent interview you.</p>
-      <p><strong>TDD</strong> (test-driven development). Write the tests first, watch them fail, then have the agent write code until they pass.</p>
-      <h3 id="skills">Skills</h3>
-      <p>A skill is a reusable set of prompts stored as a <code>SKILL.md</code> file. You do not have to retype the same instructions in every chat. The grill-me skill is one example. pstack is a bigger example: a set of skills for a whole workflow.</p>
-      <p>Paste this Grill Me prompt into the planner chat:</p>
-      <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-grill" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-grill">Interview me relentlessly about every aspect of this plan until we reach a shared understanding. Walk down each branch of the design tree, resolving dependencies between decisions one by one.</code></pre></div>
-      <p>Want more? Watch <a href="https://ai.engineer/talks/v4F1gFy-hqg-software-fundamentals-for-ai-coding" target="_blank" rel="noopener noreferrer">Software Fundamentals for AI Coding</a>.</p>
-      <h3 id="planner">Planner prompt</h3>
-      <p>Stay in this same chat. Replace the cases with the ones you wrote. Paste:</p>
-      <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-planner" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-planner">You are the planner. When we update BOARD.txt, these things can go wrong:
-- case 1
-- case 2
-- case 3 (optional)
-Before writing anything, ask me one question at a time until we agree exactly which boards are valid. Then list the agreed rules as checks a test could make. Don't write code yet.</code></pre></div>
-      <h3>Same chat or a new chat</h3>
-      <p>Keep the planner grilling and the PRD in this same chat. Start a new chat for the implementer, a new chat for the reviewer, and a new chat for the docs writer.</p>
-    </section>
-
-    <section class="guide-section" id="roles">
-      <h2><span class="step-num">3</span> After the plan: the other roles</h2>
-      <p class="section-subtitle">Read the prompts now. You paste them in step 5, after branch <code>feature/testing</code> exists. Each role starts in a new chat, so paste the agreed rules into the prompt.</p>
-      <h3>Implementer</h3>
-      <p>New chat in step 5. Replace <code>PASTE THE AGREED RULES HERE</code> with the agreed rules, then paste:</p>
-      <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-implementer" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-implementer">You are the implementer.
-
-PASTE THE AGREED RULES HERE
-
-Write pytest tests for these rules and a pyproject.toml so `uv run pytest` works. Put the tests in tests/test_board.py.</code></pre></div>
-      <h3>Reviewer</h3>
-      <p>New chat in step 5. Replace <code>PASTE THE AGREED RULES HERE</code> with the agreed rules, then paste:</p>
-      <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-reviewer" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-reviewer">You are the reviewer.
-
-PASTE THE AGREED RULES HERE
-
-Run `uv run pytest` and read the diff. Say what does not match the agreed rules. Do not change files.</code></pre></div>
-      <h3>Docs writer</h3>
-      <p>New chat in step 5. Replace <code>PASTE THE AGREED RULES HERE</code> with the agreed rules, then paste:</p>
-      <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-docs" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-docs">You are the docs writer.
-
-PASTE THE AGREED RULES HERE
-
-Create or update README.md for people and AGENTS.md for agents so both match the agreed rules. Do not change the tests.</code></pre></div>
-      <p><code>README.md</code> is the file for people. <code>AGENTS.md</code> is the file for agents and language models. It tells them how to work in this repository so they stay on the plan. The template does not include <code>AGENTS.md</code>, so this role creates it.</p>
-    </section>
-
-    <section class="guide-section repro-box" id="reproducibility">
-      <h2><span class="step-num">4</span> Reproducibility</h2>
+      <h2><span class="step-num">1</span> Grilling</h2>
+      <p class="section-subtitle">Let Copilot interview you until you agree. Then the agreed plan goes into <code>PLAN.md</code>. Nothing gets built before that.</p>
+      <h3>Let the agent interview you</h3>
+      <p>Copilot is the model in this workshop. It can write files and put a website online, but it cannot see the plan in your head. If you only say "build it," it will guess. The guess is often a different piece of work from the one you meant.</p>
+      <p>Grilling closes that gap. You say the idea in ordinary words. Then you let the agent interview you. It asks one question at a time, and you answer. Each answer settles one choice: who it is for, what they should see, where the information comes from, and what must stay as it is.</p>
+      <p>When you and the agent would describe the finished thing the same way, you are aligned. Aligned means you both want the same result.</p>
+      <p>You do not need to know how to program. You do need to say what you want, and you can decide that while you answer. If you are unsure, say so. A question is there so you can choose. While you are still deciding, an honest "I have not chosen yet" is a complete answer.</p>
+      <p>Stay in one chat for the whole interview. If a question depends on a choice you have not made, say that, and decide the earlier choice first. Tell Copilot not to create or change any file until you say the plan is agreed.</p>
+      <p>One question at a time matters because a long list gets a hurried yes. A single question gets a real decision. If Copilot asks three things in one message, answer the first and ask it to hold the rest.</p>
+      <h3>Agree with your partner as well</h3>
+      <p>The interview is between you, your partner, and Copilot. Your partner has a picture of the result too. Before you send an answer, say it out loud and check that you both mean it. If you do not, that question is not finished. Send the answer you both mean. Do not send a compromise that neither of you actually wants, hoping Copilot will sort it out later.</p>
+      <p>Take turns at the keyboard. The person who is not typing listens for a word that could mean two things. "Score" might mean games won, or it might mean a list of every game. When a word can mean two things, ask Copilot to split it into its own question.</p>
+      <h3>What agreement looks like</h3>
+      <p>You are ready to write the plan when you can answer these without guessing:</p>
       <ul>
-        <li>A <strong>virtual environment</strong> is an isolated set of packages for one project, so it runs the same on any machine.</li>
-        <li>A virtual environment manager creates it. Ours is <a href="https://docs.astral.sh/uv/" target="_blank" rel="noopener noreferrer">uv</a>.</li>
-        <li><code>pyproject.toml</code> is the project manifest. It holds the package info, dependencies, versions, and a description. This is what you reinstall the environment from.</li>
-        <li><code>uv.lock</code> locks the exact versions.</li>
-        <li>Other languages do the same thing. Julia uses <code>Project.toml</code> and <code>Manifest.toml</code>. R uses <code>renv</code>.</li>
+        <li>What will exist when you are finished?</li>
+        <li>Who will look at it, and what will they see first?</li>
+        <li>Where does the information come from?</li>
+        <li>What are you leaving unchanged?</li>
       </ul>
-    </section>
-
-    <section class="guide-section" id="checks">
-      <h2><span class="step-num">5</span> Let Copilot write the check</h2>
-      <p class="section-subtitle">One partner drives. The other watches the diff. Write the tests on <code>feature/testing</code>. That name does not contain "match", so the branch stays off the Game Wall. Leave <code>main</code> unchanged.</p>
-      <h3>Create the branch</h3>
-      <p>On github.com, open the branch dropdown and create <code>feature/testing</code> from <code>main</code>. Or ask Copilot in Agent mode. Paste:</p>
-      <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-feature" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-feature">Create a branch named feature/testing from main, switch to it, and publish it to GitHub. Do not change any files.</code></pre></div>
-      <p>Check that the status bar says <code>feature/testing</code> before anyone edits.</p>
-      <aside class="pytest-box">
-        <h3>How pytest finds tests</h3>
-        <p>Tests usually live in a <code>tests/</code> folder. Use one test file per function or file, named <code>test_&lt;name&gt;.py</code>, with functions that start with <code>test_</code>. <code>uv run pytest</code> finds and runs them.</p>
-      </aside>
-      <h3>Run it, break it, restore it</h3>
-      <p>Use the prompts from step 3. Each one starts in a new chat. Replace <code>PASTE THE AGREED RULES HERE</code> with the agreed rules before you paste.</p>
+      <p>If you cannot answer one of those, that is the next question. Do not fill the gap yourself and call it a plan. Let Copilot ask, and answer in your own words.</p>
+      <h3>How the conversation goes</h3>
+      <p>Keep this order. Do not skip ahead to building.</p>
       <ol>
-        <li>New chat. Paste the implementer prompt. Copilot adds <code>tests/test_board.py</code> and <code>pyproject.toml</code>.</li>
-        <li>In the terminal, run <code>uv run pytest</code>. uv also writes <code>uv.lock</code>.</li>
-        <li>Break <code>BOARD.txt</code> on purpose: a lowercase mark, or a digit 0 where a letter O belongs.</li>
-        <li>Run <code>uv run pytest</code> again and watch it fail.</li>
-        <li>Restore the board and run <code>uv run pytest</code> once more.</li>
-        <li>New chat. Paste the reviewer prompt. The reviewer checks the diff and runs <code>uv run pytest</code>.</li>
-        <li>New chat. Paste the docs writer prompt. It updates <code>README.md</code> and creates or updates <code>AGENTS.md</code>.</li>
-        <li>Commit and Sync <code>tests/test_board.py</code>, <code>pyproject.toml</code>, <code>uv.lock</code>, <code>README.md</code>, and <code>AGENTS.md</code> on <code>feature/testing</code>.</li>
+        <li>Say the idea in a few sentences, as you would to a colleague who was not in the room.</li>
+        <li>Let the agent ask one question.</li>
+        <li>Answer that question only. Then wait for the next one.</li>
+        <li>Repeat until nothing important is still a guess. You and the agent should be able to say the same plan back to each other.</li>
+        <li>Ask the agent to write that plan into <code>PLAN.md</code>.</li>
+        <li>Read <code>PLAN.md</code>. Correct it before anyone builds anything.</li>
       </ol>
-      <details id="pre-commit">
-        <summary>Run the check before every commit</summary>
-        <p>A pre-commit hook is a small program Git runs before it records a commit. In the Codespace, save this as <code>.git/hooks/pre-commit</code> and make it executable with <code>chmod +x .git/hooks/pre-commit</code>.</p>
-        <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-hook" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-hook">#!/bin/sh
-uv run pytest</code></pre></div>
-        <p>GitHub Actions can run the same tests on every push.</p>
-      </details>
+      <p>If Copilot starts creating files, or describes a finished website, before you have agreed, stop it. Say that you want one question at a time, and that the plan comes first. You can say "not yet."</p>
+      <p>Here is the shape of a grilling conversation. These lines show the kind of question to expect. They are not a script, and they are not the task in the next section.</p>
+      <ul>
+        <li>Agent: Should this show one result, or every result you have saved?</li>
+        <li>You: Every result.</li>
+        <li>Agent: Who are the two people it should compare?</li>
+        <li>You: The two of us.</li>
+        <li>Agent: What would you open at the end, to know it worked?</li>
+        <li>You: A page in the browser, with our names and the score between us.</li>
+      </ul>
+      <p>Your real conversation will be longer. That is the point of grilling. The questions you answer now are the ones Copilot would otherwise answer for you.</p>
+      <h3>The agreed plan goes into PLAN.md</h3>
+      <p>When you agree, ask the agent to write the plan into a file named <code>PLAN.md</code>. Read it. If a sentence is not what you decided, say what to change, and read it again. That file is what you point back to if the later work leaves the plan.</p>
+      <p>This file is usually called a PRD (product requirements document), <code>PRD.md</code>, and <code>PLAN.md</code> is just the plain name we use here.</p>
+      <p>In plain words, the file should say what you are making, who it is for, what "done" looks like, and what must not change.</p>
+      <aside class="aside-box" aria-label="Aside">
+        <h3>Aside: the grill-me skill</h3>
+        <p>A <code>SKILL.md</code> file is a reusable set of prompts. A prompt is a message you give the model. You save the messages you want to use again, and you point the agent at that file, so you do not retype them in every chat.</p>
+        <p>The grill-me skill is one <code>SKILL.md</code>. It tells the agent to interview you about the plan, one decision at a time, until you share an understanding, and to wait until then before it builds anything. You can keep that instruction and use it on a later task, including a task from your own work.</p>
+      </aside>
     </section>
 
-    <section class="guide-section" id="reference">
-      <h2><span class="step-num">6</span> Reference repository</h2>
-      <p>Open this only after your own rules, check, and docs exist. The reference repository is <a href="https://github.com/igorsdub/git-tic-tac-toe-reference" target="_blank" rel="noopener noreferrer">github.com/igorsdub/git-tic-tac-toe-reference</a>.</p>
+    <section class="guide-section" id="scoreboard">
+      <h2><span class="step-num">2</span> Build the scoreboard</h2>
+      <p class="section-subtitle">With your partner, make a website that shows the score between the two of you. You are done when that website is live on GitHub Pages. You do not need to know how to program. You grill the idea, then you let Copilot build it.</p>
+      <h3>Create a separate new repository</h3>
+      <p>Do this work in a new repository. Do not do it in the repository where you played. Leave <code>BOARD.txt</code> as it is. Do not commit anything to the game repository. That repository stays unchanged.</p>
+      <p>One of you creates the new repository. The other joins it.</p>
+      <ol>
+        <li>On GitHub, open <a href="https://github.com/new" target="_blank" rel="noopener noreferrer">github.com/new</a>.</li>
+        <li>Type a name you will remember. Choose <strong>Public</strong>.</li>
+        <li>Tick <strong>Add a README file</strong> so the repository has a first file. A Codespace needs that.</li>
+        <li>Select <strong>Create repository</strong>.</li>
+        <li>Invite your partner, the same way you did for the game.</li>
+        <li>Open a Codespace on the new repository, the same way you opened one for the game.</li>
+      </ol>
+      <p>One of you drives the chat. The other reads each question and the plan.</p>
+      <h3>Grill Copilot, starting from this message</h3>
+      <p>Copy the address of the game repository, the one you played in. It is the address in the browser when that repository is open. The game repository is already public, which lets the new site read the games stored there as branches.</p>
+      <p>Paste the message below into Copilot. Replace <code>&lt;link to our game repo&gt;</code> with that address, and delete the angle brackets. Stay in this chat. Answer one question at a time, the way the grilling section describes. The message asks Copilot to walk you through the options before it builds anything. Let it.</p>
+      <div class="code-window"><div class="code-window-bar"><button type="button" class="copy-button" data-copy-target="copy-scoreboard" aria-label="Copy to clipboard">Copy</button><span class="copy-status visually-hidden" role="status" aria-live="polite"></span></div><pre><code id="copy-scoreboard">I need a scoreboard for a tic-tac-toe repository where games are stored on different branches: &lt;link to our game repo&gt;. A website should show the scores between the two players. I want to host it on GitHub Pages. I'm not an expert: guide me through the options one question at a time before building anything.</code></pre></div>
+      <p>When you agree, switch to Agent mode if you are not already there, and ask Copilot to write the plan into <code>PLAN.md</code>. Read the file. If it does not match what you agreed, say what is wrong and ask for a change. Do not start the website until <code>PLAN.md</code> says what you decided.</p>
+      <h3>Let Copilot build the website</h3>
+      <p>GitHub Pages is GitHub's way of publishing a website from a repository. When it is on, GitHub gives you an address you can open in a browser.</p>
+      <p>Ask Copilot to build the website from <code>PLAN.md</code> and to turn GitHub Pages on. The site reads the games stored as branches in your game repository and shows the score between the two players.</p>
+      <p>If Copilot offers a choice, answer it. If it starts to edit <code>BOARD.txt</code>, or to change the game repository, tell it to stop. Those stay as they are. Every new file belongs in the new repository. You do not have to repair files yourself. Describe what you see, and ask Copilot to try again.</p>
+      <h3>A live page is the end</h3>
+      <p>Open the Pages address. GitHub shows it in the new repository under <strong>Settings</strong>, then <strong>Pages</strong>. You are done when that page loads and shows the score between the two players.</p>
+      <p>If the page does not load, tell Copilot what you see and ask it to fix the Pages setup. Keep <code>PLAN.md</code> as the plan you already agreed.</p>
+    </section>
+
+    <section class="guide-section" id="reflection">
+      <h2><span class="step-num">3</span> A task from your own work</h2>
+      <p class="section-subtitle">Each person does this alone. You do not have to build it today.</p>
+      <p>Think of a task from your own work that you could grill an agent on. It might be a figure, a table, a protocol, or a piece of writing. Picture the questions you would want the agent to ask before it started, and what you would want written into a <code>PLAN.md</code> so the result matched the plan in your head.</p>
     </section>
 
     <p class="stage-next"><a data-workshop-route href="wall.html">Next: Game Wall</a></p>
