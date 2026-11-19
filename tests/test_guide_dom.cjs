@@ -146,29 +146,24 @@ test('conflict and copilot figures follow the shot pattern without Plan mode', (
   assert.doesNotMatch(slot2, /stop-the-prompts|Plan mode/);
 });
 
-test('agentic coding discusses the board before any check', () => {
-  const discussion = section(slot2, 'what-can-go-wrong', 'grilling');
-  assert.doesNotMatch(discussion, /test/i);
-  assert.match(discussion, /at least two cases/i);
-  assert.match(discussion, /X−O is 0 or 1/);
-  assert.match(discussion, /Lowercase/);
-  assert.match(discussion, /this actually happened before/);
-  assert.match(discussion, /<details class="hint-box" id="board-hint">/);
-  assert.ok(slot2.indexOf('id="board-hint"') < slot2.indexOf('id="checks"'));
-  assert.ok(slot2.indexOf('id="reproducibility"') < slot2.indexOf('id="checks"'));
-  assert.match(slot2, /https:\/\/ai\.engineer\/talks\/v4F1gFy-hqg-software-fundamentals-for-ai-coding/);
-  assert.doesNotMatch(slot2, /talksintel\.ai/);
+test('agentic coding is a grill that ends in a scoreboard', () => {
+  const order = ['intro', 'grilling', 'scoreboard', 'play', 'reflection'].map((id) => slot2.indexOf(`id="${id}"`));
+  assert.ok(order.every((index) => index >= 0));
+  assert.deepEqual(order, [...order].sort((a, b) => a - b));
+  assert.match(slot2, /class="page-checklist" data-checklist="agentic"/);
+  assert.match(slot2, /I need a scoreboard for a tic-tac-toe repository where games are stored on different branches: &lt;link to our game repo&gt;\./);
+  assert.match(slot2, /guide me through the options one question at a time before building anything\./);
+  assert.match(slot2, /usually called a PRD \(product requirements document\), <code>PRD\.md<\/code>/);
+  assert.match(slot2, /<aside class="student-pack-callout"[\s\S]*<code>SKILL\.md<\/code>[\s\S]*grill-me skill/);
   assert.match(slot2, /Interview me relentlessly about every aspect of this plan/);
-  assert.match(slot2, /You and Copilot agreed the rules for a valid board/);
-  assert.match(slot2, /id="copy-planner"/);
-  assert.match(slot2, /id="copy-reviewer"/);
-  assert.match(slot2, /id="copy-docs"/);
-  assert.match(slot2, /Write pytest tests for these rules and a pyproject.toml so `uv run pytest` works\./);
-  assert.match(slot2, /feature\/testing/);
+  assert.match(slot2, /<details class="hint-box" id="stuck">[\s\S]*Stuck\?[\s\S]*https:\/\/github\.com\/igorsdub\/tic-tac-toe-scoreboard-reference/);
+  assert.match(slot2, /Main branch is sacred: don't modify it/);
+  assert.match(slot2, /a few minutes/);
+  assert.match(slot2, /your own work/);
+  assert.match(setup, /The repository must be <strong>Public<\/strong>\. The scoreboard reads the game branches in this repository\./);
+  assert.doesNotMatch(slot2, /pytest|feature\/testing|pyproject|pre-commit|what can go wrong|git-tic-tac-toe-reference|talksintel|ai\.engineer|You are the planner|uv run|uv\.lock|three in a row|commit author|out of order|one commit/i);
   assert.doesNotMatch(slot2, /rematch/i);
-  assert.match(slot2, /uv run pytest/);
-  assert.match(slot2, /GitHub Actions can run the same tests on every push\./);
-  assert.ok(slot2.indexOf('id="reference"') > slot2.indexOf('id="reproducibility"'));
+  assert.doesNotMatch(slot2, /stop-the-prompts|Plan mode/);
   assert.equal(linkedImages(slot2).length, 0);
   assert.doesNotMatch(slot2, /figure-slot/);
 });

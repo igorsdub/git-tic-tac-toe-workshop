@@ -6,7 +6,7 @@ This workshop uses GitHub Codespaces and the Visual Studio Code web interface. T
 
 Please prepare once before the session, using the [tic-tac-toe starter template](https://github.com/igorsdub/git-tic-tac-toe-template):
 
-1. Choose **Use this template → Create a new repository**. Make your repository public under your own account, fill in **Description**, and tick **Include all branches**. The template now has only `main`, so the copy is just `main`.
+1. Choose **Use this template → Create a new repository**. Make your repository public under your own account, fill in **Description**, and tick **Include all branches**. The template now has only `main`, so the copy is just `main`. It has to stay public, because the scoreboard reads its branches.
 2. Open your new repository in a Codespace.
 3. Run the readiness check. Open Copilot Chat, choose Ask, type exactly **"What does this repository do?"**, and press Enter. It passes when the answer mentions tic-tac-toe and `BOARD.txt`.
 4. Keep your public repository. At the session, the owner adds the partner as a collaborator (see [Slot 1](docs/guide.html#invite)), creates branch `match` on github.com, and only then do both people open fresh separate Codespaces.
