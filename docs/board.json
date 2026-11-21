@@ -421,7 +421,7 @@
     "branch": "match-03",
     "matchKey": "SatsukiHirasawa/git-tic-tac-toe#match-03",
     "status": "in_progress",
-    "state": "Waiting for X",
+    "state": "Waiting for O",
     "outcome": null,
     "boardValid": true,
     "board": [
@@ -437,7 +437,7 @@
       ],
       [
         " ",
-        " ",
+        "X",
         " "
       ]
     ],
