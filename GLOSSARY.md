@@ -76,7 +76,7 @@ On branch `match`, the learner names one square, Copilot in Agent mode edits `BO
 _Avoid_: Plan mode, play the move by hand instead
 
 **Rematch**:
-Branch `rematch`, created from `main` on github.com after the first match. `uv run pytest` runs before every commit on this branch.
+Branch `rematch`, created by Copilot from `main` after the first match. It is a second game on the Git Collaboration page.
 
 ## Pages and documents
 

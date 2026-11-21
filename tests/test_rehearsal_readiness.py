@@ -89,13 +89,17 @@ class TestDocumentationReadiness(unittest.TestCase):
 class TestApprovedWorkshopPath(unittest.TestCase):
     def test_agenda_and_untested_fallbacks_live_on_the_facilitator_page(self):
         facilitator = (REPO_ROOT / "FACILITATOR_GUIDE.md").read_text(encoding="utf-8")
-        for block in ("10:00–10:20", "13:00–13:30", "14:45–15:00"):
+        for block in ("10:00–10:20", "13:00–13:10", "13:10–13:45", "13:45–14:30", "14:30–14:45", "14:45–15:00"):
             self.assertIn(block, facilitator)
         for risk in ("Cross-codespace branch visibility", "Invite banner", "Copilot editing BOARD.txt wrongly"):
             self.assertIn(risk, facilitator)
-        website = "\n".join((REPO_ROOT / "docs" / name).read_text(encoding="utf-8") for name in ("setup.html", "guide.html", "play-2.html"))
+        setup = (REPO_ROOT / "docs" / "setup.html").read_text(encoding="utf-8")
+        guide = (REPO_ROOT / "docs" / "guide.html").read_text(encoding="utf-8")
+        play2 = (REPO_ROOT / "docs" / "play-2.html").read_text(encoding="utf-8")
+        website = "\n".join((setup, guide, play2))
         self.assertNotIn("10:00", website)
-        self.assertNotIn("minute", website.casefold())
+        self.assertNotIn("minute", (setup + "\n" + guide).casefold())
+        self.assertIn("a few minutes", play2.casefold())
 
     def test_public_repository_preflight_and_separate_copilot_access(self):
         preflight = (REPO_ROOT / "PRE_SESSION_CHECK.md").read_text(encoding="utf-8")
