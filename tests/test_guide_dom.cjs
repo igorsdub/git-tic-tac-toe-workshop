@@ -146,7 +146,7 @@ test('conflict and copilot figures follow the shot pattern without Plan mode', (
   assert.doesNotMatch(slot2, /stop-the-prompts|Plan mode/);
 });
 
-test('agentic coding discusses the board before any check and ends on the reference repository', () => {
+test('agentic coding discusses the board before any check', () => {
   const discussion = section(slot2, 'what-can-go-wrong', 'grilling');
   assert.doesNotMatch(discussion, /test/i);
   assert.match(discussion, /at least two cases/i);
@@ -168,7 +168,6 @@ test('agentic coding discusses the board before any check and ends on the refere
   assert.doesNotMatch(slot2, /rematch/i);
   assert.match(slot2, /uv run pytest/);
   assert.match(slot2, /GitHub Actions can run the same tests on every push\./);
-  assert.match(slot2, /https:\/\/github\.com\/igorsdub\/git-tic-tac-toe-reference/);
   assert.ok(slot2.indexOf('id="reference"') > slot2.indexOf('id="reproducibility"'));
   assert.equal(linkedImages(slot2).length, 0);
   assert.doesNotMatch(slot2, /figure-slot/);

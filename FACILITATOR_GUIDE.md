@@ -17,7 +17,7 @@ Turns on `match` are Pull, edit one cell, Commit and Sync. Copilot is Ask or Age
 | 13:00–13:30 | Agentic Coding discussion: what can go wrong when you update the board? At least two cases before the hint |
 | 13:30–14:20 | Grilling (planner), PRD, implementer, reviewer in a fresh chat, docs writer |
 | 14:20–14:45 | Reproducibility, then `uv run pytest` on `feature/testing`, break the board, restore it |
-| 14:45–15:00 | Reference repository, Game Wall |
+| 14:45–15:00 | Game Wall |
 
 The first game stays on `match`. `rematch` is the second game in Git Collaboration, created by Copilot from `main`. Leave both branches as they are. Do not merge them into `main`. Agentic Coding writes tests on `feature/testing`, which stays off the Game Wall.
 
@@ -50,5 +50,3 @@ Each pair registers its shared repository once for the workshop, with both playe
 The Game Wall reads `BOARD.txt` from each discovered branch. If replay cannot load, use the GitHub commit history for that branch. At wrap-up, mention the take-home [Time machine](TIME_MACHINE.md) page ([web version](docs/time-machine.html)), which is not used in the session.
 
 Connect the workflow to research files, analysis code, and shared manuscripts: a manifest, a lock, a runner, and a check are what make a later rerun possible. Python uses `pyproject.toml`, `uv.lock`, `uv`, and `pytest`. Julia uses `Project.toml` and `Manifest.toml`. R uses `renv`.
-
-The reference repository, shown only at the end of Agentic Coding, is https://github.com/igorsdub/git-tic-tac-toe-reference
