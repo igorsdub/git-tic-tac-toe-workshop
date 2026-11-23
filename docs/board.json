@@ -43,7 +43,7 @@
     ],
     "failureKind": "transport",
     "refreshStatus": "stale",
-    "boardRefreshError": "Could not read BOARD.txt from branch 'rematch': the branch or BOARD.txt is missing, or the repository is private."
+    "boardRefreshError": "Could not read BOARD.txt from branch 'rematch': GitHub returned HTTP 503."
   },
   {
     "workshopId": "2026-11-06-sokedai",
@@ -151,7 +151,8 @@
     ],
     "errors": [],
     "failureKind": null,
-    "refreshStatus": "fresh"
+    "refreshStatus": "stale",
+    "boardRefreshError": "Could not read BOARD.txt from branch 'match-02': GitHub returned HTTP 503."
   },
   {
     "workshopId": "2026-11-06-sokedai",
@@ -299,7 +300,8 @@
     ],
     "errors": [],
     "failureKind": null,
-    "refreshStatus": "fresh"
+    "refreshStatus": "stale",
+    "boardRefreshError": "Could not read BOARD.txt from branch 'match-02': GitHub returned HTTP 503."
   },
   {
     "workshopId": "2026-11-06-sokedai",
@@ -335,7 +337,8 @@
     ],
     "errors": [],
     "failureKind": null,
-    "refreshStatus": "fresh"
+    "refreshStatus": "stale",
+    "boardRefreshError": "Could not read BOARD.txt from branch 'match-03': GitHub returned HTTP 503."
   },
   {
     "workshopId": "2026-11-06-sokedai",
@@ -443,7 +446,8 @@
     ],
     "errors": [],
     "failureKind": null,
-    "refreshStatus": "fresh"
+    "refreshStatus": "stale",
+    "boardRefreshError": "Could not read BOARD.txt from branch 'match-03': GitHub returned HTTP 503."
   },
   {
     "workshopId": "2026-11-06-sokedai",
