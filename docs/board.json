@@ -79,7 +79,8 @@
     ],
     "errors": [],
     "failureKind": null,
-    "refreshStatus": "fresh"
+    "refreshStatus": "stale",
+    "boardRefreshError": "Could not read BOARD.txt from branch 'match-01': GitHub returned HTTP 503."
   },
   {
     "workshopId": "2026-11-06-sokedai",
@@ -611,7 +612,8 @@
       "Invalid BOARD.txt: Row 3 must contain three cells separated by single spaces: 'x . O'."
     ],
     "failureKind": "invalid_board",
-    "refreshStatus": "fresh"
+    "refreshStatus": "stale",
+    "boardRefreshError": "Could not read BOARD.txt from branch 'match': GitHub returned HTTP 503."
   },
   {
     "workshopId": "2026-11-10-riken",
