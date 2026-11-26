@@ -134,7 +134,7 @@ class TestWebGuides(unittest.TestCase):
     def test_quick_jump_links_target_real_guide_sections(self):
         for name, html, expected in (
             ("learner", self.guide, ("invite", "create-match", "turn", "copilot")),
-            ("slot2", self.slot2, ("what-can-go-wrong", "grilling", "checks", "reference")),
+            ("slot2", self.slot2, ("grilling", "scoreboard", "reflection")),
             ("setup", self.setup, ("step-account", "step-repo", "step-codespace")),
         ):
             with self.subTest(page=name):
@@ -387,16 +387,15 @@ class TestWebGuides(unittest.TestCase):
     def test_copilot_prompts_and_guardrails(self):
         prompts = ("Explain the current board in BOARD.txt and whose turn it is.",
                    "Place O in the top-right cell of BOARD.txt. Change only that cell.")
-        planner = "You are the planner. When we update BOARD.txt, these things can go wrong:"
-        implementer = "Write pytest tests for these rules and a pyproject.toml so `uv run pytest` works."
+        scoreboard = "I need a scoreboard for a tic-tac-toe repository where games are stored on different branches:"
         learner = (REPO_ROOT / "LEARNER_GUIDE.md").read_text(encoding="utf-8")
         for prompt in prompts:
             self.assertIn(prompt, self.guide)
             self.assertIn(prompt, learner)
-        self.assertIn(planner, self.slot2)
-        self.assertIn(planner, learner)
-        self.assertIn(implementer, self.slot2)
-        self.assertIn(implementer, learner)
+        self.assertIn(scoreboard, self.slot2)
+        self.assertIn(scoreboard, learner)
+        self.assertNotIn("You are the planner.", self.slot2)
+        self.assertNotIn("uv run pytest", self.slot2)
         self.assertIn("<h3>Agent mode</h3>", self.guide)
         self.assertNotIn("<h3>Plan mode</h3>", self.guide)
         self.assertNotIn("<h3>Plan mode</h3>", self.slot2)
@@ -433,8 +432,9 @@ class TestWebGuides(unittest.TestCase):
         for prompt in ("Explain the current board in BOARD.txt and whose turn it is.",
                        "Place O in the top-right cell of BOARD.txt. Change only that cell."):
             self.assertRegex(guide, rf'<code id="copy-src-\d+">{re.escape(prompt)}</code>')
-        self.assertIn('id="copy-planner"', self.slot2)
-        self.assertIn("uv run pytest", self.slot2)
+        self.assertIn('id="copy-scoreboard"', self.slot2)
+        self.assertIn("guide me through the options one question at a time before building anything.", self.slot2)
+        self.assertNotIn("uv run pytest", self.slot2)
         self.assertNotIn("<h3>Plan mode</h3>", guide)
         self.assertIn("does not use Plan mode", guide)
 
