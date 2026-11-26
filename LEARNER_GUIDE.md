@@ -8,7 +8,7 @@ The web pages are [Setup](docs/setup.html), [Git Collaboration](docs/guide.html)
 
 Follow the [Setup page](docs/setup.html) or the [Pre-session checklist](PRE_SESSION_CHECK.md):
 
-1. Create a public repository from the template. **Include all branches** may stay on. The template now has only `main`, so the copy is just `main`.
+1. Create a public repository from the template. It must be public. The scoreboard reads its branches. **Include all branches** may stay on. The template now has only `main`, so the copy is just `main`.
 2. Open a Codespace and ask Copilot, in Ask mode: what does this repository do?
 3. The check passes when the answer mentions tic-tac-toe and `BOARD.txt`. Do not edit the board.
 
@@ -55,32 +55,22 @@ Stop the prompts, one sentence each:
 
 ## Agentic Coding
 
-With your partner, name at least two ways an update of the board can go wrong before anyone mentions checks. Then use the hint: X/O count difference (X moves first, so X−O is 0 or 1); lowercase `x`/`o` vs uppercase; the digit `0` typed instead of the letter `O` (this actually happened before); plus others the pairs find themselves.
+Let Copilot ask questions until the plan matches the one in your head. Then it writes that plan in `PLAN.md` and builds it. This file is usually called a PRD (product requirements document), `PRD.md`.
 
-A skill is a `SKILL.md` file (Agent Skills). Matt Pocock's grill-me skill interviews you first. A pstack-style collection is a folder of those files. Grill Me prompt: "Interview me relentlessly about every aspect of this plan until we reach a shared understanding. Walk down each branch of the design tree, resolving dependencies between decisions one by one." Talk: https://ai.engineer/talks/v4F1gFy-hqg-software-fundamentals-for-ai-coding. Implementation and review should never share a context, which is why the review happens in a fresh chat.
+The partner who was added to the game repository creates a new public repository on their own account and opens it in a Codespace, or on a laptop where Copilot is already signed in. The owner sits beside them. Leave `main` in the game repository as it is. The game repository has to be public. The scoreboard reads its branches.
 
-The planner matters most. Order: planner and PRD in one chat, then the other roles explained, then reproducibility, then tests on `feature/testing`. The implementer, reviewer, and docs writer each start a new chat. Paste the agreed rules into each of those prompts. One partner drives.
-
-Planner prompt:
+Paste this prompt. Replace the link with the web address of your game repository. Answer one question at a time. Do not let Copilot build the site until `PLAN.md` says what you meant.
 
 ```
-You are the planner. When we update BOARD.txt, these things can go wrong:
-- case 1
-- case 2
-- case 3 (optional)
-Before writing anything, ask me one question at a time until we agree exactly which boards are valid. Then list the agreed rules as checks a test could make. Don't write code yet.
+I need a scoreboard for a tic-tac-toe repository where games are stored on different branches: <link to our game repo>. A website should show the scores between the two players. I want to host it on GitHub Pages. I'm not an expert: guide me through the options one question at a time before building anything.
 ```
 
-Implementer prompt:
+A skill is a set of prompts saved as `SKILL.md`. The grill-me skill tells the agent to interview you until you share one plan: "Interview me relentlessly about every aspect of this plan until we reach a shared understanding. Walk down each branch of the design tree, resolving dependencies between decisions one by one."
 
-```
-Write pytest tests for these rules and a pyproject.toml so `uv run pytest` works. Put the tests in tests/test_board.py.
-```
+Then tell Copilot to build the scoreboard and publish it on GitHub Pages. The site reads the branches of the public game repository and shows the score between the two players. If you are stuck, open https://github.com/igorsdub/tic-tac-toe-scoreboard-reference
 
-Reproducibility comes before the tests. A virtual environment is an isolated set of packages for one project. uv creates it. `pyproject.toml` is the manifest. `uv.lock` locks the exact versions. Julia uses `Project.toml` and `Manifest.toml`. R uses `renv`.
+Play a match in the game repository and watch the scoreboard. The new score can take a few minutes to appear.
 
-Create `feature/testing` from `main` (GitHub branch dropdown, or Copilot in Agent mode). That name does not contain `match`, so it stays off the Game Wall. Copilot writes `tests/test_board.py` and `pyproject.toml`. Run `uv run pytest`. Break the board on purpose, see the check fail, and restore the board. In a new chat the reviewer checks the diff and runs `uv run pytest`. In another new chat the docs writer updates `README.md` and creates or updates `AGENTS.md`. Then Commit and Sync `tests/test_board.py`, `pyproject.toml`, `uv.lock`, `README.md`, and `AGENTS.md` on `feature/testing`. A pre-commit hook can run `uv run pytest`. GitHub Actions can run the same tests on every push.
-
-The docs writer creates or updates `README.md` (people) and `AGENTS.md` (agents). The template does not include `AGENTS.md`.
+Then each person thinks of a task from their own work they could grill an agent on.
 
 After the workshop, the [Time machine](TIME_MACHINE.md) ([web version](docs/time-machine.html)) is optional.
